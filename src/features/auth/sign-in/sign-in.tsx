@@ -4,17 +4,24 @@ import {
   ContentLeftContainer,
   FormContainer,
   LeftContainer,
-  RightContainer,
-  SignInButton,
+  RightContainer
 } from "./sign-in.styles"
+import Button from "../../../components/custom-button/Button"
+import Input from "../../../components/custom-input/Input"
 import ImgHeader from "../../../assets/img/img_signin.webp"
 import ImgLogo from "../../../assets/img/logo.webp"
 import { useNavigate } from "react-router-dom"
+import { User } from "@styled-icons/boxicons-solid/User"
+import { Password } from "@styled-icons/material-twotone/Password"
+import { EyeFill, EyeSlashFill } from "@styled-icons/bootstrap"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as Yup from 'yup'
 
 const SignIn: React.FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const handleSingIn = () => navigate("/dashboard")
+  const handleSingIn = () => navigate("/dashboard");
 
   return (
     <ContainerSignIn>
@@ -32,19 +39,19 @@ const SignIn: React.FC = () => {
           <h1>Sign In</h1>
           <div>
             <div>
-              <label htmlFor="email-signin">Your email</label>
-              <input id="email-signin" type="email" />
+            <label className="label" htmlFor="email-signin">Your email</label>
+              <Input placeholder="Your Email" icon={User}/>
             </div>
             <div>
-              <label htmlFor="password-signin">Your password</label>
-              <input id="password-signin" type="password" />
+            <label className="label" htmlFor="password-signin">Your password</label>
+              <Input placeholder="Your Password" icon={Password} type="password" toggleIcon={{ Show: EyeFill, Hide: EyeSlashFill }}/>
             </div>
           </div>
-          <SignInButton onClick={handleSingIn}>Sign in</SignInButton>
+          <Button onClick={handleSingIn}>Sign In</Button>
         </FormContainer>
       </RightContainer>
     </ContainerSignIn>
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;

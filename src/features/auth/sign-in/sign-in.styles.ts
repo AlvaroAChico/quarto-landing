@@ -82,23 +82,9 @@ export const FormContainer = styled.div`
   width: fit-content;
   height: fit-content;
   min-width: 350px;
-  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
-
-  > div div {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-
-    > input {
-      outline: none;
-      border: 1px solid #ebebeb;
-      background: white;
-      padding: 10px;
-      border-radius: 10px;
-    }
+  gap: 40px; 
   }
 `
 export const SignInButton = styled.button`
