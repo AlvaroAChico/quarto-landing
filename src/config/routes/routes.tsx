@@ -4,6 +4,7 @@ import SignIn from "../../features/auth/sign-in/sign-in"
 import DashboardLayout from "../../components/dashboard-layout/dashboard-layout"
 import Permissions from "../../features/users/permissions/permissions"
 import Users from "../../features/users/users"
+import Roles from "../../features/roles/funcionalities/create-rol/create-rol"
 import Dashboard from "../../features/dashboard/dashboard"
 
 export const router = createBrowserRouter([
@@ -37,7 +38,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/roles",
-        element: <>Roles</>,
+        element: <Roles/>,
       },
       {
         path: "/proyectos",
