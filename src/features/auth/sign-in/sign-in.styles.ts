@@ -9,13 +9,13 @@ export const ContainerSignIn = styled.div`
   align-items: center;
 `
 export const LeftContainer = styled.div<{ imgHeader: string }>`
-  background-image: url("${p => p.imgHeader}");
+   background-image: url("${p => p.imgHeader}");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   position: relative;
   height: 100%;
-  width: 45%;
+  width: 100%; // Asumimos full-width en móviles
 
   &::before {
     content: "";
@@ -35,7 +35,11 @@ export const LeftContainer = styled.div<{ imgHeader: string }>`
   ${breakpoints.tabletS} {
     width: 30%;
   }
-`
+  ${breakpoints.phoneL} {
+    width: 100%; // Volver a 100% en dispositivos muy pequeños
+  }
+`;
+
 export const ContentLeftContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -69,24 +73,46 @@ export const ContentLeftContainer = styled.div`
 export const RightContainer = styled.div`
   background-color: white;
   height: 100%;
-  width: 55%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%; // Full width en móviles
 
   ${breakpoints.tabletS} {
     width: 70%;
   }
-`
+  ${breakpoints.phoneL} {
+    width: 100%; // Volver a 100% para teléfonos
+  }
+`;
+
 export const FormContainer = styled.div`
   width: fit-content;
   height: fit-content;
   min-width: 350px;
+  max-width: 90%; // Limitar el ancho máximo para evitar que sea demasiado grande en desktops
   display: flex;
   flex-direction: column;
-  gap: 40px; 
+  gap: 40px;
+  margin: auto; // Centrar automáticamente dentro de 
+  margin-top: 20vh; // Añadir margen superior para bajar el formulario
+
+
+
+  ${breakpoints.phoneL} {
+    padding: 20px; // Añadir más padding en dispositivos pequeños
   }
-`
+  > div > div {
+    display: flex;
+    flex-direction: column;
+  }
+  > div > .div-with-margin {
+    margin-bottom: 23px;
+  }
+  > div > .div-sin-margen {
+    margin-bottom: 0;
+  }
+  .label {
+    margin-bottom: 9px;
+  }
+`;
 export const SignInButton = styled.button`
   background: linear-gradient(
     90deg,

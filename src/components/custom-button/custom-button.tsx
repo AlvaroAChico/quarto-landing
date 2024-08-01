@@ -1,6 +1,6 @@
 // src/components/ui/Button/Button.tsx
 import React from 'react';
-import { StyledButton } from './Button.styles';
+import { StyledButton } from './custom-button.styles';
 
 interface ButtonProps {
     children?: React.ReactNode;

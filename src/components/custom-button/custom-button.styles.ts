@@ -11,7 +11,7 @@ export const StyledButton = styled.button`
   outline: none;
   border: none;
   color: white;
-  padding: 10px 30px;
+  height: 50px;
   border-radius: 10px;
   box-shadow: 5px 5px 30px 2px rgba(245, 134, 52, 0.5);
   cursor: pointer;

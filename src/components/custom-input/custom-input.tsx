@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { InputWrapper, StyledInput, IconContainer } from './Input.styles';
+import { InputWrapper, StyledInput, IconContainer } from './custom-input.styles';
 
 interface InputProps {
     placeholder?:string;
