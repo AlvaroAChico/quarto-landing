@@ -9,7 +9,7 @@ export const ContainerSignIn = styled.div`
   align-items: center;
 `
 export const LeftContainer = styled.div<{ imgHeader: string }>`
-   background-image: url("${p => p.imgHeader}");
+  background-image: url("${p => p.imgHeader}");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -32,13 +32,17 @@ export const LeftContainer = styled.div<{ imgHeader: string }>`
     z-index: 1;
   }
 
-  ${breakpoints.tabletS} {
+  ${breakpoints.desktopMedium} {
     width: 30%;
   }
-  ${breakpoints.phoneL} {
-    width: 100%; // Volver a 100% en dispositivos muy pequeños
+  ${breakpoints.laptop} {
+    width: 25%; // Volver a 100% en dispositivos muy pequeños
   }
-`;
+
+  ${breakpoints.tabletLargeMax} {
+    width: 0%; // Volver a 100% para teléfonos
+  }
+`
 
 export const ContentLeftContainer = styled.div`
   display: flex;
@@ -75,13 +79,17 @@ export const RightContainer = styled.div`
   height: 100%;
   width: 100%; // Full width en móviles
 
-  ${breakpoints.tabletS} {
+  ${breakpoints.desktopMedium} {
     width: 70%;
   }
-  ${breakpoints.phoneL} {
+  ${breakpoints.laptop} {
+    width: 75%; // Volver a 100% para teléfonos
+  }
+
+  ${breakpoints.tabletLargeMax} {
     width: 100%; // Volver a 100% para teléfonos
   }
-`;
+`
 
 export const FormContainer = styled.div`
   width: fit-content;
@@ -91,14 +99,9 @@ export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 40px;
-  margin: auto; // Centrar automáticamente dentro de 
+  margin: auto; // Centrar automáticamente dentro de
   margin-top: 20vh; // Añadir margen superior para bajar el formulario
 
-
-
-  ${breakpoints.phoneL} {
-    padding: 20px; // Añadir más padding en dispositivos pequeños
-  }
   > div > div {
     display: flex;
     flex-direction: column;
@@ -112,7 +115,15 @@ export const FormContainer = styled.div`
   .label {
     margin-bottom: 9px;
   }
-`;
+
+  ${breakpoints.tabletSmall} {
+    min-width: 200px;
+  }
+
+  ${breakpoints.phoneSmall} {
+    min-width: 100px;
+  }
+`
 export const SignInButton = styled.button`
   background: linear-gradient(
     90deg,

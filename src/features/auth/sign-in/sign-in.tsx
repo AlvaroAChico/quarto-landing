@@ -4,9 +4,9 @@ import {
   ContentLeftContainer,
   FormContainer,
   LeftContainer,
-  RightContainer
+  RightContainer,
 } from "./sign-in.styles"
-import Button from "../../../components/custom-button/custom-button"
+import CustomButton from "../../../components/custom-button/custom-button"
 import Input from "../../../components/custom-input/custom-input"
 import ImgHeader from "../../../assets/img/img_signin.webp"
 import ImgLogo from "../../../assets/img/logo.webp"
@@ -14,14 +14,11 @@ import { useNavigate } from "react-router-dom"
 import { User } from "@styled-icons/boxicons-solid/User"
 import { Password } from "@styled-icons/material-twotone/Password"
 import { EyeFill, EyeSlashFill } from "@styled-icons/bootstrap"
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as Yup from 'yup'
 
 const SignIn: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const handleSingIn = () => navigate("/dashboard");
+  const handleSingIn = () => navigate("/dashboard")
 
   return (
     <ContainerSignIn>
@@ -39,19 +36,28 @@ const SignIn: React.FC = () => {
           <h1>Sign In</h1>
           <div>
             <div className="div-with-margin">
-            <label className="label" htmlFor="email-signin">Your email</label>
-              <Input placeholder="Your Email" icon={User}/>
+              <label className="label" htmlFor="email-signin">
+                Your email
+              </label>
+              <Input placeholder="Your Email" icon={User} />
             </div>
             <div className="div-without-margin">
-            <label className="label" htmlFor="password-signin">Your password</label>
-              <Input placeholder="Your Password" icon={Password} type="password" toggleIcon={{ Show: EyeFill, Hide: EyeSlashFill }}/>
+              <label className="label" htmlFor="password-signin">
+                Your password
+              </label>
+              <Input
+                placeholder="Your Password"
+                icon={Password}
+                type="password"
+                toggleIcon={{ Show: EyeFill, Hide: EyeSlashFill }}
+              />
             </div>
           </div>
-          <Button onClick={handleSingIn}>Sign In</Button>
+          <CustomButton onClick={handleSingIn}>Sign In</CustomButton>
         </FormContainer>
       </RightContainer>
     </ContainerSignIn>
-  );
-};
+  )
+}
 
-export default SignIn;
+export default SignIn

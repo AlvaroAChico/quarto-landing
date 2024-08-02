@@ -9,7 +9,7 @@ interface ButtonProps {
     className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, onClick, type = 'button', className}) => {
+const CustomButton: React.FC<ButtonProps> = ({ children, onClick, type = 'button', className}) => {
     return (
         <StyledButton onClick={onClick} type={type} className={className}>
             {children}
@@ -17,4 +17,4 @@ const Button: React.FC<ButtonProps> = ({ children, onClick, type = 'button', cla
     );
 };
 
-export default Button;
+export default CustomButton;

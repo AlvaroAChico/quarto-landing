@@ -1,5 +1,6 @@
 // src/components/ui/Button/Button.styles.ts
-import styled from 'styled-components';
+import styled from "styled-components"
+import { breakpoints } from "../../constants/breakpoints"
 
 export const StyledButton = styled.button`
   background: linear-gradient(
@@ -20,4 +21,9 @@ export const StyledButton = styled.button`
   &:hover {
     transform: scale(1.05);
   }
-`;
+
+  ${breakpoints.phoneSmall} {
+    min-width: 150px;
+    margin: auto;
+  }
+`
