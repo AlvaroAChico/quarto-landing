@@ -15,7 +15,7 @@ export const LeftContainer = styled.div<{ imgHeader: string }>`
   background-size: cover;
   position: relative;
   height: 100%;
-  width: 45%;
+  width: 100%; // Asumimos full-width en móviles
 
   &::before {
     content: "";
@@ -32,10 +32,18 @@ export const LeftContainer = styled.div<{ imgHeader: string }>`
     z-index: 1;
   }
 
-  ${breakpoints.tabletS} {
+  ${breakpoints.desktopMedium} {
     width: 30%;
   }
+  ${breakpoints.laptop} {
+    width: 25%; // Volver a 100% en dispositivos muy pequeños
+  }
+
+  ${breakpoints.tabletLargeMax} {
+    width: 0%; // Volver a 100% para teléfonos
+  }
 `
+
 export const ContentLeftContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -69,36 +77,51 @@ export const ContentLeftContainer = styled.div`
 export const RightContainer = styled.div`
   background-color: white;
   height: 100%;
-  width: 55%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%; // Full width en móviles
 
-  ${breakpoints.tabletS} {
+  ${breakpoints.desktopMedium} {
     width: 70%;
   }
+  ${breakpoints.laptop} {
+    width: 75%; // Volver a 100% para teléfonos
+  }
+
+  ${breakpoints.tabletLargeMax} {
+    width: 100%; // Volver a 100% para teléfonos
+  }
 `
+
 export const FormContainer = styled.div`
   width: fit-content;
   height: fit-content;
   min-width: 350px;
-  padding: 20px;
+  max-width: 90%; // Limitar el ancho máximo para evitar que sea demasiado grande en desktops
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 40px;
+  margin: auto; // Centrar automáticamente dentro de
+  margin-top: 20vh; // Añadir margen superior para bajar el formulario
 
-  > div div {
+  > div > div {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+  }
+  > div > .div-with-margin {
+    margin-bottom: 23px;
+  }
+  > div > .div-sin-margen {
+    margin-bottom: 0;
+  }
+  .label {
+    margin-bottom: 9px;
+  }
 
-    > input {
-      outline: none;
-      border: 1px solid #ebebeb;
-      background: white;
-      padding: 10px;
-      border-radius: 10px;
-    }
+  ${breakpoints.tabletSmall} {
+    min-width: 200px;
+  }
+
+  ${breakpoints.phoneSmall} {
+    min-width: 100px;
   }
 `
 export const SignInButton = styled.button`

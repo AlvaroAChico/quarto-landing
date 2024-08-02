@@ -5,11 +5,15 @@ import {
   FormContainer,
   LeftContainer,
   RightContainer,
-  SignInButton,
 } from "./sign-in.styles"
+import CustomButton from "../../../components/custom-button/custom-button"
+import Input from "../../../components/custom-input/custom-input"
 import ImgHeader from "../../../assets/img/img_signin.webp"
 import ImgLogo from "../../../assets/img/logo.webp"
 import { useNavigate } from "react-router-dom"
+import { User } from "@styled-icons/boxicons-solid/User"
+import { Password } from "@styled-icons/material-twotone/Password"
+import { EyeFill, EyeSlashFill } from "@styled-icons/bootstrap"
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate()
@@ -31,16 +35,25 @@ const SignIn: React.FC = () => {
         <FormContainer>
           <h1>Sign In</h1>
           <div>
-            <div>
-              <label htmlFor="email-signin">Your email</label>
-              <input id="email-signin" type="email" />
+            <div className="div-with-margin">
+              <label className="label" htmlFor="email-signin">
+                Your email
+              </label>
+              <Input placeholder="Your Email" icon={User} />
             </div>
-            <div>
-              <label htmlFor="password-signin">Your password</label>
-              <input id="password-signin" type="password" />
+            <div className="div-without-margin">
+              <label className="label" htmlFor="password-signin">
+                Your password
+              </label>
+              <Input
+                placeholder="Your Password"
+                icon={Password}
+                type="password"
+                toggleIcon={{ Show: EyeFill, Hide: EyeSlashFill }}
+              />
             </div>
           </div>
-          <SignInButton onClick={handleSingIn}>Sign in</SignInButton>
+          <CustomButton onClick={handleSingIn}>Sign In</CustomButton>
         </FormContainer>
       </RightContainer>
     </ContainerSignIn>
