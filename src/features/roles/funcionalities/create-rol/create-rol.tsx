@@ -7,14 +7,14 @@ import {
   InputIcon,
   PermissionsContainer,
   PermissionRow,
-  CreateButton,
-  IconContainer,
   PermissionItem,
   SectionIcon,
   PermissionName,
 } from './create-rol.styles';
-import Dropdown from '../../switch/Dropdown';
-import Switch from '../../switch/Switch';
+import Dropdown from '../../dropdown/Dropdown';
+import Switch from '../../../../components/Toggle-container/toggle-container';
+import Button from '../../button/button';
+import { Title } from './create-rol.styles'; 
 // Icons
 import { User } from "@styled-icons/boxicons-regular/User"
 import { LocalPolice } from "@styled-icons/material/LocalPolice"
@@ -22,7 +22,9 @@ import { FolderOpen } from "@styled-icons/fa-regular/FolderOpen"
 import { Task } from "@styled-icons/boxicons-regular/Task"
 import { Calendar } from "@styled-icons/bootstrap/Calendar"
 import { BarChartFill } from "@styled-icons/bootstrap/BarChartFill"
-import { AccountCircle } from "@styled-icons/material/AccountCircle"
+import { AccountCircle } from "@styled-icons/material/AccountCircle";
+
+import { Shield } from "@styled-icons/boxicons-regular/Shield";
 
 const sectionIcons: { [key: string]: React.ReactNode } = {
   users: <User size="20" />,
@@ -58,19 +60,23 @@ const Roles: React.FC = () => {
 
   return (
     <ContainerRoles>
+     <Title>Roles</Title> {/* Usando el nuevo componente Title */}
       <FormGroup>
         <Label htmlFor="roleName">Name</Label>
         <InputIcon>
-          <AccountCircle size="24" />
+        <AccountCircle size="24"  />
         </InputIcon>
         <Input
           id="roleName"
           value={roleName}
           onChange={e => setRoleName(e.target.value)}
+          placeholder='Name'
         />
       </FormGroup>
-      <FormGroup>
-        <Dropdown title="List of permissions">
+<FormGroup>
+        <Label htmlFor="roleName">List of Permission</Label>
+     
+        <Dropdown title={<span style={{ display: 'flex', alignItems: 'center' }}><Shield size="20" style={{ color: 'black', marginRight: '0.5rem' }} />Permissions</span>}>
           <PermissionsContainer>
             {Object.keys(permissions).map(section => (
               <PermissionRow key={section}>
@@ -95,7 +101,7 @@ const Roles: React.FC = () => {
           </PermissionsContainer>
         </Dropdown>
       </FormGroup>
-      <CreateButton onClick={handleSubmit}>Create</CreateButton>
+      <Button onClick={handleSubmit}>Create</Button>
     </ContainerRoles>
   );
 };

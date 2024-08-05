@@ -2,12 +2,15 @@ import styled from 'styled-components';
 
 export const ContainerRoles = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  min-height: 100vh;
-  background-color: #f5f5f5;
+  flex-direction: column;
+
+`;
+export const Title = styled.h2`
+  color: orange;
+  margin-bottom: 1.5rem;
+  align-self: flex-start;
 `;
 
 export const FormGroup = styled.div`
@@ -26,18 +29,21 @@ export const Label = styled.label`
 
 export const Input = styled.input`
   width: 100%;
-  padding: 0.5rem 0.5rem 0.5rem 2.5rem; /* Added padding for icon */
+  padding: 0.5rem 0.5rem 0.5rem 2.5rem; 
   border: 1px solid #ccc;
   border-radius: 10px;
   font-size: 1rem;
+
+  box-sizing: border-box; 
 `;
+
 
 export const InputIcon = styled.div`
   position: absolute;
   left: 0.75rem;
-  top: 50%;
+  top: 70%;
   transform: translateY(-50%);
-  color: #ff9800;
+  color: black; 
 `;
 
 export const PermissionsContainer = styled.div`
@@ -47,37 +53,26 @@ export const PermissionsContainer = styled.div`
   border-radius: 10px;
   padding: 1rem;
   background-color: white;
+  box-sizing: border-box; 
 `;
 
 export const PermissionRow = styled.div`
-  display: flex;
+display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
-
+  padding: 1rem; 
+  border: 1px solid #ccc; 
+  border-radius: 5px; 
+  background-color: #fff; 
+  
   &:last-child {
     margin-bottom: 0;
   }
+
+
 `;
 
-export const CreateButton = styled.button`
-  display: block;
-  width: 100%;
-  max-width: 600px;
-  padding: 0.5rem 1rem;
-  background-color: #ff9800;
-  color: white;
-  font-weight: bold;
-  border: 2px solid #ff9800;
-  border-radius: 10px;
-  cursor: pointer;
-  text-align: center;
-  margin-top: 1rem;
-
-  &:hover {
-    background-color: #fb8c00;
-  }
-`;
 
 export const IconContainer = styled.div`
   display: flex;
@@ -88,13 +83,18 @@ export const IconContainer = styled.div`
 
 export const PermissionItem = styled.span`
   display: flex;
-  align-items: center;
+  align-items: center; 
+  justify-content: flex-start; 
+  width: 200px;
   font-weight: bold;
   color: #333;
-  padding: 0.5rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  background-color: #fff5e1;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  border-radius: 8px;
+  
+  &:hover {
+    background-color: #f7f7f7;
+  }
 `;
 
 export const SectionIcon = styled.div`
@@ -102,9 +102,13 @@ export const SectionIcon = styled.div`
   align-items: center;
   justify-content: center;
   color: #ff9800;
-  margin-right: 0.5rem;
+  margin-right: 0.5rem; 
 `;
 
 export const PermissionName = styled.span`
-  margin-right: 0.5rem;
+  margin-left: 0.5rem; 
 `;
+
+
+
+
