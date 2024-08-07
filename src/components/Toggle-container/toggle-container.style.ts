@@ -2,9 +2,9 @@ import styled from 'styled-components';
 
 export const ToggleContainer = styled.div<{ isActive: boolean }>`
   width: 80px;
-  height: 30px;
+  height: 32px;
   border-radius: 15px;
-  background: ${props => (props.isActive ? '#4caf50' : '#ccc')};
+  background: ${props => (props.isActive ? '#4caf50' : '#FF8E8E;')};
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -15,7 +15,7 @@ export const ToggleContainer = styled.div<{ isActive: boolean }>`
     position: absolute;
     left: ${props => (props.isActive ? '5px' : 'auto')};
     right: ${props => (props.isActive ? 'auto' : '5px')};
-    color: ${props => (props.isActive ? '#fff' : '#333')};
+    color: ${props => (props.isActive ? '#fff' : '#fff')};
     font-size: 12px;
     transition: 0.2s;
   }

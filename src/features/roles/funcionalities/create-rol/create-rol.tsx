@@ -22,8 +22,6 @@ import { FolderOpen } from "@styled-icons/fa-regular/FolderOpen"
 import { Task } from "@styled-icons/boxicons-regular/Task"
 import { Calendar } from "@styled-icons/bootstrap/Calendar"
 import { BarChartFill } from "@styled-icons/bootstrap/BarChartFill"
-import { AccountCircle } from "@styled-icons/material/AccountCircle";
-
 import { Shield } from "@styled-icons/boxicons-regular/Shield";
 
 const sectionIcons: { [key: string]: React.ReactNode } = {
@@ -64,7 +62,7 @@ const Roles: React.FC = () => {
       <FormGroup>
         <Label htmlFor="roleName">Name</Label>
         <InputIcon>
-        <AccountCircle size="24"  />
+        <LocalPolice size="20"  />
         </InputIcon>
         <Input
           id="roleName"

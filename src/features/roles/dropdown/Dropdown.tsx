@@ -13,7 +13,7 @@ const DropdownHeader = styled.div`
   align-items: center;
   cursor: pointer;
   padding: 0.5rem 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid #D9D9D9;
   border-radius: 10px;
   background-color: #fff;
   font-weight: bold;

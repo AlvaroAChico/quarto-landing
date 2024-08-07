@@ -30,10 +30,9 @@ export const Label = styled.label`
 export const Input = styled.input`
   width: 100%;
   padding: 0.5rem 0.5rem 0.5rem 2.5rem; 
-  border: 1px solid #ccc;
+  border: 1px solid #D9D9D9;
   border-radius: 10px;
   font-size: 1rem;
-
   box-sizing: border-box; 
 `;
 
