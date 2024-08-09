@@ -33,7 +33,7 @@ const DashboardLayout: React.FC = () => {
             <span>
               <User />
             </span>
-            <span>Usuarios</span>
+            <span>Users</span>
           </ItemMenu>
           <ItemMenu onClick={handleNavigate("roles")}>
             <span>
@@ -45,28 +45,28 @@ const DashboardLayout: React.FC = () => {
             <span>
               <FolderOpen />
             </span>
-            <span>Proyectos</span>
+            <span>Projects</span>
           </ItemMenu>
           <ItemMenu onClick={handleNavigate("tareas")}>
             <span>
               <Task />
             </span>
-            <span>Tareas</span>
+            <span>Tasks</span>
           </ItemMenu>
           <ItemMenu onClick={handleNavigate("calendario")}>
             <span>
               <Calendar />
             </span>
-            <span>Calendario</span>
+            <span>Calendar</span>
           </ItemMenu>
           <ItemMenu onClick={handleNavigate("reportes")}>
             <span>
               <BarChartFill />
             </span>
-            <span>Reportes</span>
+            <span>Reports</span>
           </ItemMenu>
         </ContainerMenu>
-        <div>Cerrar sesión</div>
+        <div>Logout</div>
       </ContainerSidebar>
       <ContainerOutlet>
         <div>Navbar</div>

@@ -1,6 +1,14 @@
 import { palette } from "../../config/theme/theme"
 import styled from "styled-components"
 
+export const ContainerHeaderBar = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+`
+
 export const UsersContainer = styled.div`
   display: flex;
   align-items: center;

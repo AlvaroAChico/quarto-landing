@@ -1,5 +1,5 @@
 // src/components/ui/Button/Button.styles.ts
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 import { breakpoints } from "../../constants/breakpoints"
 
 export const StyledButton = styled.button`
@@ -17,6 +17,7 @@ export const StyledButton = styled.button`
   box-shadow: 5px 5px 30px 2px rgba(245, 134, 52, 0.5);
   cursor: pointer;
   transition: 0.2s;
+  padding: 6px 20px;
 
   &:hover {
     transform: scale(1.05);
@@ -25,5 +26,26 @@ export const StyledButton = styled.button`
   ${breakpoints.phoneSmall} {
     min-width: 150px;
     margin: auto;
+  }
+`
+const rotation = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} `
+
+export const LoaderStyles = styled.button`
+  width: 25px;
+  height: 25px;
+  border: 2px solid #FFF;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  background: transparent;
+  box-sizing: border-box;
+  animation: ${rotation} 1s linear infinite;
   }
 `

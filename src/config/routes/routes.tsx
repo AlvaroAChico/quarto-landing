@@ -4,9 +4,12 @@ import SignIn from "../../features/auth/sign-in/sign-in"
 import DashboardLayout from "../../components/dashboard-layout/dashboard-layout"
 import Permissions from "../../features/users/permissions/permissions"
 import Users from "../../features/users/users"
-import Roles from "../../features/roles/funcionalities/create-rol/create-rol"
 import Dashboard from "../../features/dashboard/dashboard"
-
+import Projects from "../../features/projects/projects"
+import Details from "../../features/projects/details/details"
+import CreateRole from "../../features/roles/funcionalities/create-role/create-role"
+import Roles from "../../features/roles/roles"
+        
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -31,6 +34,10 @@ export const router = createBrowserRouter([
             element: <>View User</>,
           },
           {
+            path: "/usuarios/create",
+            element: <>Create User</>,
+          },
+          {
             path: "/usuarios/:id/permisos",
             element: <Permissions />,
           },
@@ -38,11 +45,33 @@ export const router = createBrowserRouter([
       },
       {
         path: "/roles",
-        element: <Roles/>,
+        children: [
+          {
+            path: "/roles",
+            element: <Roles />,
+          },
+          {
+            path: "/roles/:id",
+            element: <>View Role</>,
+          },
+          {
+            path: "/roles/create",
+            element: <CreateRole />,
+          },
+        ],
       },
       {
         path: "/proyectos",
-        element: <>Proyectos</>,
+        children: [
+            {
+              path: "/proyectos",
+              element: <>Projectos</>,
+            },
+            {
+              path: "/proyectos/:id/detalle",
+              element: <><Details/></>,
+            },
+          ],
       },
       {
         path: "/tareas",

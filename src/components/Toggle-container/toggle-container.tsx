@@ -1,10 +1,10 @@
-import React from 'react';
-import { ToggleContainer, ToggleCircle } from './toggle-container.style';
+import React from "react"
+import { ToggleContainer, ToggleCircle } from "./toggle-container.style"
 
 interface SwitchProps {
-  isActive: boolean;
-  onToggle: () => void;
-  label: string;
+  isActive: boolean
+  onToggle: () => void
+  label: string
 }
 
 const Switch: React.FC<SwitchProps> = ({ isActive, onToggle, label }) => {
@@ -13,7 +13,7 @@ const Switch: React.FC<SwitchProps> = ({ isActive, onToggle, label }) => {
       <ToggleCircle isActive={isActive} />
       <span>{label}</span>
     </ToggleContainer>
-  );
-};
+  )
+}
 
-export default Switch;
+export default Switch

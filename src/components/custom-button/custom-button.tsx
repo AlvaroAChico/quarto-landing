@@ -1,20 +1,34 @@
 // src/components/ui/Button/Button.tsx
-import React from 'react';
-import { StyledButton } from './custom-button.styles';
+import React from "react"
+import { LoaderStyles, StyledButton } from "./custom-button.styles"
 
 interface ButtonProps {
-    children?: React.ReactNode;
-    onClick?: () => void;
-    type?: "button" | "submit" | "reset";
-    className?: string;
+  //   children?: React.ReactNode
+  onClick: () => void
+  type?: "button" | "submit" | "reset"
+  className?: string
+  text: string
+  isLoading?: boolean
 }
 
-const CustomButton: React.FC<ButtonProps> = ({ children, onClick, type = 'button', className}) => {
-    return (
-        <StyledButton onClick={onClick} type={type} className={className}>
-            {children}
-        </StyledButton>
-    );
-};
+const CustomButton: React.FC<ButtonProps> = ({
+  onClick,
+  type = "button",
+  className,
+  text,
+  isLoading = false,
+}) => {
+  const handleClick = React.useCallback(() => {
+    if (!isLoading) {
+      onClick()
+    }
+  }, [isLoading])
 
-export default CustomButton;
+  return (
+    <StyledButton onClick={handleClick} type={type} className={className}>
+      {isLoading ? <LoaderStyles /> : <>{text}</>}
+    </StyledButton>
+  )
+}
+
+export default CustomButton

@@ -14,11 +14,54 @@ import { useNavigate } from "react-router-dom"
 import { User } from "@styled-icons/boxicons-solid/User"
 import { Password } from "@styled-icons/material-twotone/Password"
 import { EyeFill, EyeSlashFill } from "@styled-icons/bootstrap"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { useForm } from "react-hook-form"
+import { UserForm, UserSchema } from "../../../core/models/user-model"
+import axios from "axios"
+import { toast } from "sonner"
+import Cookies from "js-cookie"
 
 const SignIn: React.FC = () => {
+  const [isSubmitLogin, setIsSubmitLogin] = React.useState<boolean>(false)
   const navigate = useNavigate()
 
-  const handleSingIn = () => navigate("/dashboard")
+  const methods = useForm<UserForm>({
+    resolver: yupResolver(UserSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  })
+
+  const {
+    handleSubmit: submitWrapper,
+    formState: { errors },
+    register,
+  } = methods
+
+  const handleSubmit = React.useCallback((data: any) => {
+    setIsSubmitLogin(true)
+    axios
+      .post("http://localhost:3000/auth/login", {
+        email: data.email,
+        password: data.password,
+      })
+      .then(response => {
+        // Manejo de la respuesta exitosa
+        setIsSubmitLogin(false)
+        // Convertir el objeto a una cadena JSON y guardar en cookies
+        Cookies.set("userData", JSON.stringify(response.data), { expires: 7 }) // Expira en 7 días
+        navigate("/dashboard")
+        // console.log("Data Axios -> ", response.data)
+      })
+      .catch(err => {
+        // Manejo de errores
+        // setError(err) // Descomentar si estás usando para manejar el estado de un error
+        setIsSubmitLogin(false)
+        toast.error("Failed to authenticate")
+        console.log("Error Axios -> ", err.response ? err.response.data : err)
+      })
+  }, [])
 
   return (
     <ContainerSignIn>
@@ -39,7 +82,14 @@ const SignIn: React.FC = () => {
               <label className="label" htmlFor="email-signin">
                 Your email
               </label>
-              <Input placeholder="Your Email" icon={User} />
+              <Input
+                placeholder="Your Email"
+                icon={User}
+                props={register("email")}
+              />
+              {!!(errors.email as any)?.message && (
+                <>{(errors.email as any)?.message}</>
+              )}
             </div>
             <div className="div-without-margin">
               <label className="label" htmlFor="password-signin">
@@ -50,10 +100,20 @@ const SignIn: React.FC = () => {
                 icon={Password}
                 type="password"
                 toggleIcon={{ Show: EyeFill, Hide: EyeSlashFill }}
+                props={register("password")}
               />
+              {/* <input {...register("email")} />
+              <input {...register("password")} /> */}
+              {!!(errors.password as any)?.message && (
+                <>{(errors.password as any)?.message}</>
+              )}
             </div>
           </div>
-          <CustomButton onClick={handleSingIn}>Sign In</CustomButton>
+          <CustomButton
+            onClick={submitWrapper(handleSubmit)}
+            text="Sign In"
+            isLoading={isSubmitLogin}
+          />
         </FormContainer>
       </RightContainer>
     </ContainerSignIn>

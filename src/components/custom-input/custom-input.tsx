@@ -6,6 +6,7 @@ interface InputProps {
   icon?: any
   type?: string
   toggleIcon?: any
+  props: any
 }
 
 const CustomInput: React.FC<InputProps> = ({
@@ -13,10 +14,11 @@ const CustomInput: React.FC<InputProps> = ({
   icon: Icon,
   type = "text",
   toggleIcon: ToggleIcon,
+  props,
 }) => {
   const [showPassword, setShowPassword] = useState(false)
   const handleTogglePasswordVisibility = () => setShowPassword(!showPassword)
-
+  console.log("props -> ", props)
   return (
     <InputWrapper>
       {Icon && (
@@ -27,6 +29,7 @@ const CustomInput: React.FC<InputProps> = ({
       <StyledInput
         type={showPassword ? "text" : type}
         placeholder={placeholder}
+        {...props}
       />
       {type === "password" && ToggleIcon && (
         <IconContainer onClick={handleTogglePasswordVisibility}>
