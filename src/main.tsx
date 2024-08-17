@@ -5,6 +5,10 @@ import App from "./App"
 import { RouterProvider } from "react-router-dom"
 import { router } from "./config/routes/routes"
 import { store } from "./core/store/store"
+import { worker } from "./config/mocks/msw/browser" // Importa el worker de MSW
+
+// Inicia el worker de MSW
+// worker.start()
 
 const container = document.getElementById("root")
 

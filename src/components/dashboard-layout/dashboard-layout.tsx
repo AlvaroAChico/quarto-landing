@@ -1,11 +1,15 @@
 import React from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 import {
+  ContainerAvatar,
+  ContainerBreadcrumb,
   ContainerDashboardLayout,
+  ContainerDataProfile,
   ContainerLogo,
   ContainerMenu,
   ContainerOutlet,
   ContainerSidebar,
+  ContainerUser,
   ItemMenu,
 } from "./dashboard-layout.styles"
 import ImgLogo from "../../assets/img/logo.webp"
@@ -16,6 +20,7 @@ import { FolderOpen } from "@styled-icons/fa-regular/FolderOpen"
 import { Task } from "@styled-icons/boxicons-regular/Task"
 import { Calendar } from "@styled-icons/bootstrap/Calendar"
 import { BarChartFill } from "@styled-icons/bootstrap/BarChartFill"
+import { pathRoutes } from "../../config/routes/path"
 
 const DashboardLayout: React.FC = () => {
   const navigate = useNavigate()
@@ -25,51 +30,66 @@ const DashboardLayout: React.FC = () => {
   return (
     <ContainerDashboardLayout>
       <ContainerSidebar>
-        <ContainerLogo>
-          <img src={ImgLogo} />
-        </ContainerLogo>
-        <ContainerMenu>
-          <ItemMenu onClick={handleNavigate("usuarios")}>
-            <span>
-              <User />
-            </span>
-            <span>Users</span>
-          </ItemMenu>
-          <ItemMenu onClick={handleNavigate("roles")}>
-            <span>
-              <LocalPolice />
-            </span>
-            <span>Roles</span>
-          </ItemMenu>
-          <ItemMenu onClick={handleNavigate("proyectos")}>
-            <span>
-              <FolderOpen />
-            </span>
-            <span>Projects</span>
-          </ItemMenu>
-          <ItemMenu onClick={handleNavigate("tareas")}>
-            <span>
-              <Task />
-            </span>
-            <span>Tasks</span>
-          </ItemMenu>
-          <ItemMenu onClick={handleNavigate("calendario")}>
-            <span>
-              <Calendar />
-            </span>
-            <span>Calendar</span>
-          </ItemMenu>
-          <ItemMenu onClick={handleNavigate("reportes")}>
-            <span>
-              <BarChartFill />
-            </span>
-            <span>Reports</span>
-          </ItemMenu>
-        </ContainerMenu>
-        <div>Logout</div>
+        <div>
+          <ContainerLogo>
+            <img src={ImgLogo} />
+          </ContainerLogo>
+          <ContainerMenu>
+            <ItemMenu onClick={handleNavigate(pathRoutes.USERS.LIST)}>
+              <span>
+                <User />
+              </span>
+              <span>Users</span>
+            </ItemMenu>
+            <ItemMenu onClick={handleNavigate(pathRoutes.ROLES.LIST)}>
+              <span>
+                <LocalPolice />
+              </span>
+              <span>Roles</span>
+            </ItemMenu>
+            <ItemMenu onClick={handleNavigate(pathRoutes.PROJECTS.LIST)}>
+              <span>
+                <FolderOpen />
+              </span>
+              <span>Projects</span>
+            </ItemMenu>
+            <ItemMenu onClick={handleNavigate(pathRoutes.TASKS.LIST)}>
+              <span>
+                <Task />
+              </span>
+              <span>Tasks</span>
+            </ItemMenu>
+            <ItemMenu onClick={handleNavigate(pathRoutes.CALENDAR.LIST)}>
+              <span>
+                <Calendar />
+              </span>
+              <span>Calendar</span>
+            </ItemMenu>
+            <ItemMenu onClick={handleNavigate(pathRoutes.REPORTS.LIST)}>
+              <span>
+                <BarChartFill />
+              </span>
+              <span>Reports</span>
+            </ItemMenu>
+          </ContainerMenu>
+          <div>Logout</div>
+        </div>
       </ContainerSidebar>
       <ContainerOutlet>
-        <div>Navbar</div>
+        <div>
+          <ContainerBreadcrumb>Breadcrumb</ContainerBreadcrumb>
+          <ContainerDataProfile>
+            <div>
+              <ContainerUser>
+                <h4>Alvaro Chico</h4>
+                <span>Administrador</span>
+              </ContainerUser>
+              <ContainerAvatar>
+                <div>AC</div>
+              </ContainerAvatar>
+            </div>
+          </ContainerDataProfile>
+        </div>
         <div>
           <Outlet />
         </div>

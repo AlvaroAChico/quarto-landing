@@ -14,7 +14,7 @@ interface SwitchProps {
 const Switch: React.FC<SwitchProps> = ({ isActive, onToggle, label }) => {
   return (
     <SwitchContainer>
-      <SwitchLabel>{label}fff</SwitchLabel>
+      <SwitchLabel>{label}</SwitchLabel>
       <ToggleStyles type="checkbox" checked={isActive} onChange={onToggle} />
     </SwitchContainer>
   )

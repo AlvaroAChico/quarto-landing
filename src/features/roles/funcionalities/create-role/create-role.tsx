@@ -6,10 +6,6 @@ import {
   Label,
   InputIcon,
   PermissionsContainer,
-  PermissionRow,
-  PermissionItem,
-  SectionIcon,
-  PermissionName,
   ContainerAccordion,
   ContainerTitle,
   ItemPermission,
@@ -23,14 +19,14 @@ import { FolderOpen } from "@styled-icons/fa-regular/FolderOpen"
 import { Task } from "@styled-icons/boxicons-regular/Task"
 import { Calendar } from "@styled-icons/bootstrap/Calendar"
 import { BarChartFill } from "@styled-icons/bootstrap/BarChartFill"
-import { Shield } from "@styled-icons/boxicons-regular/Shield"
-import CustomButton from "../../../../components/custom-button/custom-button"
 // External Librarys
 import { Accordion } from "react-accordion-ts"
 import "react-accordion-ts/src/panel.css"
 import { mockListPermissions } from "../../../../config/mocks/functionalities"
 import { APP_MENU } from "../../../../constants/app"
 import CustomSwitch from "../../custom-switch/custom-switch"
+import HeaderSection from "../../../../components/header-section/header-section"
+import Button from "../../../../components/button/button"
 
 const sectionIcons: { [key: string]: React.ReactNode } = {
   users: <User size="20" />,
@@ -72,49 +68,54 @@ const CreateRole: React.FC = () => {
             />
           </ItemPermission>
         ))}
-        {/* {Object.keys(permissions).map(section => (
-          <PermissionRow key={section}>
-            <PermissionItem>
-              <SectionIcon>{sectionIcons[section]}</SectionIcon>
-              <PermissionName>
-                {section.charAt(0).toUpperCase() + section.slice(1)}
-              </PermissionName>
-            </PermissionItem>
-            {Object.keys(permissions[section]).map(permission => (
-            ))}
-          </PermissionRow>
-        ))} */}
       </PermissionsContainer>
     ),
   }))
 
-  return (
-    <ContainerRoles>
-      <Title>Roles</Title> {/* Usando el nuevo componente Title */}
-      <FormGroup>
-        <Label htmlFor="roleName">Name</Label>
-        <InputIcon>
-          <LocalPolice size="20" />
-        </InputIcon>
-        <Input
-          id="roleName"
-          value={"roleName"}
-          onChange={e => {
-            console.log("a")
-            // setRoleName(e.target.value)
-          }}
-          placeholder="Name"
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label htmlFor="roleName">List of Permission</Label>
+  {
+    /* {Object.keys(permissions).map(section => (
+    <PermissionRow key={section}>
+      <PermissionItem>
+        <SectionIcon>{sectionIcons[section]}</SectionIcon>
+        <PermissionName>
+          {section.charAt(0).toUpperCase() + section.slice(1)}
+        </PermissionName>
+      </PermissionItem>
+      {Object.keys(permissions[section]).map(permission => (
+      ))}
+    </PermissionRow>
+  ))} */
+  }
 
-        <ContainerAccordion>
-          <Accordion items={items} duration={300} multiple={false} />
-        </ContainerAccordion>
-      </FormGroup>
-      <CustomButton text="Create" onClick={handleSubmit} />
-    </ContainerRoles>
+  return (
+    <div>
+      <HeaderSection title="Roles" subtitle="Create role" />
+      <ContainerRoles>
+        <FormGroup>
+          <Label htmlFor="roleName">Name</Label>
+          <InputIcon>
+            <LocalPolice size="20" />
+          </InputIcon>
+          <Input
+            id="roleName"
+            value={"roleName"}
+            onChange={e => {
+              console.log("a")
+              // setRoleName(e.target.value)
+            }}
+            placeholder="Name"
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="roleName">List of Permission</Label>
+
+          <ContainerAccordion>
+            <Accordion items={items} duration={300} multiple={false} />
+          </ContainerAccordion>
+        </FormGroup>
+        <Button text="Create" onClick={handleSubmit} />
+      </ContainerRoles>
+    </div>
   )
 }
 

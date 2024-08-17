@@ -6,44 +6,54 @@ export const ContainerDashboardLayout = styled.div`
   width: 100vw;
   display: flex;
   flex-direction: row;
+  background: #f0f2f5;
 `
 
 export const ContainerSidebar = styled.div`
-  background: ${palette.blackColor};
+  padding: 10px;
   width: 30%;
   transition: 0.5s;
   max-width: 300px;
-  padding: 10px;
+  box-sizing: border-box;
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: ${palette.primaryColor};
-    width: 4px;
+  > div {
+    background: ${palette.blackColor};
     height: 100%;
+    padding: 25px 15px;
+    border-radius: 15px;
+    border-left: 4px ${palette.primaryColor} solid;
   }
 `
 
 export const ContainerOutlet = styled.div`
   width: 100%;
+  padding: 10px 20px 10px 10px;
+  box-sizing: border-box;
 
   > div:nth-child(1) {
-    background: #cfcfcf;
-    height: 60px;
+    box-sizing: border-box;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    jusfity-content: space-between;
+    width: 100%;
+    padding: 10px;
   }
 
   > div:nth-child(2) {
     background: white;
+    box-shadow:
+      rgba(17, 17, 26, 0.1) 0px 4px 16px,
+      rgba(17, 17, 26, 0.1) 0px 8px 24px,
+      rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    border-radius: 20px;
     width: 100%;
-    height: calc(100% - 60px);
+    height: calc(100% - 80px);
     box-sizing: border-box;
-    padding: 20px;
+    padding: 30px;
     margin: 0;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 `
 
@@ -79,4 +89,42 @@ export const ItemMenu = styled.div`
       max-width: 20px;
     }
   }
+`
+
+export const ContainerBreadcrumb = styled.div`
+  width: 50%;
+`
+
+export const ContainerDataProfile = styled.div`
+  width: 50%;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+
+  > div {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+`
+
+export const ContainerUser = styled.div`
+  > h2 {
+    margin: 0;
+    padding: 0;
+  }
+
+  > span {
+    font-size: 12px;
+  }
+`
+
+export const ContainerAvatar = styled.div`
+  width: 50px;
+  height: 50px;
+  background: ${palette.blackColor};
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  color: white;
 `

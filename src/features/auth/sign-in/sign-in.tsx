@@ -6,7 +6,6 @@ import {
   LeftContainer,
   RightContainer,
 } from "./sign-in.styles"
-import CustomButton from "../../../components/custom-button/custom-button"
 import Input from "../../../components/custom-input/custom-input"
 import ImgHeader from "../../../assets/img/img_signin.webp"
 import ImgLogo from "../../../assets/img/logo.webp"
@@ -20,6 +19,8 @@ import { UserForm, UserSchema } from "../../../core/models/user-model"
 import axios from "axios"
 import { toast } from "sonner"
 import Cookies from "js-cookie"
+import { pathRoutes } from "../../../config/routes/path"
+import Button from "../../../components/button/button"
 
 const SignIn: React.FC = () => {
   const [isSubmitLogin, setIsSubmitLogin] = React.useState<boolean>(false)
@@ -47,12 +48,9 @@ const SignIn: React.FC = () => {
         password: data.password,
       })
       .then(response => {
-        // Manejo de la respuesta exitosa
         setIsSubmitLogin(false)
-        // Convertir el objeto a una cadena JSON y guardar en cookies
-        Cookies.set("userData", JSON.stringify(response.data), { expires: 7 }) // Expira en 7 días
-        navigate("/dashboard")
-        // console.log("Data Axios -> ", response.data)
+        Cookies.set("userData", JSON.stringify(response.data), { expires: 7 }) // Expiración expresado en dias
+        navigate(pathRoutes.DASHBOARD)
       })
       .catch(err => {
         // Manejo de errores
@@ -109,7 +107,7 @@ const SignIn: React.FC = () => {
               )}
             </div>
           </div>
-          <CustomButton
+          <Button
             onClick={submitWrapper(handleSubmit)}
             text="Sign In"
             isLoading={isSubmitLogin}

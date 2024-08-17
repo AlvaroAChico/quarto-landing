@@ -1,20 +1,20 @@
 import React from "react"
-import { useNavigate } from "react-router-dom"
 import HeaderSection from "../../components/header-section/header-section"
+import { useNavigate } from "react-router-dom"
 import { pathRoutes } from "../../config/routes/path"
 
-const Roles: React.FC = () => {
+const Projects: React.FC = () => {
   const navigate = useNavigate()
 
-  const handleClick = React.useCallback(() => {
-    navigate(pathRoutes.ROLES.CREATE)
-  }, [])
+  const handleClick = () => {
+    navigate(pathRoutes.PROJECTS.CREATE)
+  }
 
   return (
     <div>
       <HeaderSection
-        title="Roles"
-        subtitle="List of roles"
+        title="Projects"
+        subtitle="List of projects"
         nameButton="Create"
         onPrimaryClick={handleClick}
       />
@@ -22,4 +22,4 @@ const Roles: React.FC = () => {
   )
 }
 
-export default Roles
+export default Projects

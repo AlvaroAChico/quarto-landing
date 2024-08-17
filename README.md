@@ -9,3 +9,5 @@
 
 Node: v20.16.0
 React: 18.2.0
+
+## npx msw init public/

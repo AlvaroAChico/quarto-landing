@@ -2,7 +2,11 @@ import React from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 import { mockUsersPermissions } from "../../config/mocks/users"
 import {
+  ContainerActions,
+  ContainerBody,
+  ContainerHead,
   ContainerHeaderBar,
+  ContainerTable,
   ItemUserContainer,
   ListPermissionsContainer,
   UsersContainer,
@@ -15,23 +19,24 @@ import axios from "axios"
 import Cookies from "js-cookie"
 import { DataUserResponse, UserResponse } from "../../core/models/user-model"
 import { toast } from "sonner"
-import CustomButton from "../../components/custom-button/custom-button"
+import HeaderSection from "../../components/header-section/header-section"
+import { pathRoutes } from "../../config/routes/path"
+import Modal from "../../components/modal/modal"
 
 const Users: React.FC = () => {
   const [listUsers, setListUsers] = React.useState<UserResponse[]>([])
   const navigate = useNavigate()
 
-  const handleEditUser = (userId: string) => () =>
-    navigate(`/usuarios/${userId}`)
+  const handleEditUser = (userId: string) => () => navigate(`/users/${userId}`)
 
   const handleChangeUserPermissions = (userId: string) => () =>
-    navigate(`/usuarios/${userId}/permisos`)
+    navigate(`/users/${userId}/permisos`)
 
   const handleDeleteUser = (userId: string) => () =>
     console.log("Delete user -> ", userId)
 
   const handleClick = React.useCallback(() => {
-    navigate("/users/create")
+    navigate(pathRoutes.USERS.CREATE)
   }, [])
 
   React.useEffect(() => {
@@ -70,33 +75,43 @@ const Users: React.FC = () => {
 
   return (
     <div>
-      <ContainerHeaderBar>
-        <div>Users</div>
-        <div>
-          <CustomButton text="Create" onClick={handleClick} />
-        </div>
-      </ContainerHeaderBar>
-      <UsersContainer>
-        {(listUsers || []).map(user => (
-          <ItemUserContainer>
-            <div>
-              {user.firstName} {user.lastName}
-            </div>
-            {/* <div>{user.email}</div> */}
-            <ListPermissionsContainer>
-              {/* <div onClick={handleChangeUserPermissions(`${user.id}`)}>
-                <Security />
-              </div> */}
-              <div onClick={handleEditUser(`${user.id}`)}>
-                <Edit />
-              </div>
-              <div onClick={handleDeleteUser(`${user.id}`)}>
-                <Trash />
-              </div>
-            </ListPermissionsContainer>
-          </ItemUserContainer>
-        ))}
-      </UsersContainer>
+      <HeaderSection
+        title="Users"
+        subtitle="List of users"
+        nameButton="Create"
+        onPrimaryClick={handleClick}
+      />
+      <ContainerTable>
+        <ContainerHead>
+          <tr>
+            <td>Nº</td>
+            <td>Name</td>
+            <td>Status</td>
+            <td>Actions</td>
+          </tr>
+        </ContainerHead>
+        <ContainerBody>
+          {/* <UsersContainer> */}
+          {(listUsers || []).map((user, index) => (
+            <tr>
+              <td>{index + 1}</td>
+              <td>
+                {user.firstName} {user.lastName}
+              </td>
+              <td>Active</td>
+              <ContainerActions>
+                <div onClick={handleEditUser(`${user.id}`)}>
+                  <Edit />
+                </div>
+                <div onClick={handleDeleteUser(`${user.id}`)}>
+                  <Trash />
+                </div>
+              </ContainerActions>
+            </tr>
+          ))}
+          {/* </UsersContainer> */}
+        </ContainerBody>
+      </ContainerTable>
     </div>
   )
 }

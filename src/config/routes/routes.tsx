@@ -5,85 +5,92 @@ import DashboardLayout from "../../components/dashboard-layout/dashboard-layout"
 import Permissions from "../../features/users/permissions/permissions"
 import Users from "../../features/users/users"
 import Dashboard from "../../features/dashboard/dashboard"
-import Projects from "../../features/projects/projects"
 import Details from "../../features/projects/details/details"
 import CreateRole from "../../features/roles/funcionalities/create-role/create-role"
 import Roles from "../../features/roles/roles"
-        
+import Projects from "../../features/projects/projects"
+import CreateUser from "../../features/users/functionalities/create-user/create-user"
+import { pathRoutes } from "./path"
+import Tasks from "../../features/tasks/tasks"
+import CreateTask from "../../features/tasks/functionalities/create-task/create-task"
+import Reports from "../../features/reports/reports"
+import Calendar from "../../features/calendar/calendar"
+
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: pathRoutes.SIGN_IN,
     element: <SignIn />,
   },
   {
     element: <DashboardLayout />,
     children: [
       {
-        path: "/dashboard",
+        path: pathRoutes.DASHBOARD,
         element: <Dashboard />,
       },
       {
-        path: "/usuarios",
+        path: pathRoutes.USERS.LIST,
         children: [
           {
-            path: "/usuarios",
+            path: pathRoutes.USERS.LIST,
             element: <Users />,
           },
           {
-            path: "/usuarios/:id",
-            element: <>View User</>,
-          },
-          {
-            path: "/usuarios/create",
-            element: <>Create User</>,
-          },
-          {
-            path: "/usuarios/:id/permisos",
-            element: <Permissions />,
+            path: pathRoutes.USERS.CREATE,
+            element: <CreateUser />,
           },
         ],
       },
       {
-        path: "/roles",
+        path: pathRoutes.ROLES.LIST,
         children: [
           {
-            path: "/roles",
+            path: pathRoutes.ROLES.LIST,
             element: <Roles />,
           },
           {
-            path: "/roles/:id",
-            element: <>View Role</>,
-          },
-          {
-            path: "/roles/create",
+            path: pathRoutes.ROLES.CREATE,
             element: <CreateRole />,
           },
         ],
       },
       {
-        path: "/proyectos",
+        path: pathRoutes.PROJECTS.LIST,
         children: [
-            {
-              path: "/proyectos",
-              element: <>Projectos</>,
-            },
-            {
-              path: "/proyectos/:id/detalle",
-              element: <><Details/></>,
-            },
-          ],
+          {
+            path: pathRoutes.PROJECTS.LIST,
+            element: <Projects />,
+          },
+          {
+            path: pathRoutes.PROJECTS.CREATE,
+            element: <Projects />,
+          },
+          {
+            path: pathRoutes.PROJECTS.DETAIL,
+            element: <Details />,
+          },
+        ],
       },
       {
-        path: "/tareas",
-        element: <>Tareas</>,
+        path: pathRoutes.TASKS.LIST,
+        children: [
+          {
+            path: pathRoutes.TASKS.LIST,
+            element: <Tasks />,
+          },
+          {
+            path: pathRoutes.TASKS.CREATE,
+            element: <CreateTask />,
+          },
+        ],
       },
       {
-        path: "/calendario",
-        element: <>Calendario</>,
+        path: pathRoutes.CALENDAR.LIST,
+        element: <Calendar />,
       },
       {
-        path: "/reportes",
-        element: <>Reportes</>,
+        path: pathRoutes.REPORTS.LIST,
+        element: <Reports />,
       },
     ],
   },

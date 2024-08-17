@@ -1,6 +1,6 @@
 // src/components/ui/Button/Button.tsx
 import React from "react"
-import { LoaderStyles, StyledButton } from "./custom-button.styles"
+import { LoaderStyles, StyledButton } from "./button.styles"
 
 interface ButtonProps {
   //   children?: React.ReactNode
@@ -11,7 +11,7 @@ interface ButtonProps {
   isLoading?: boolean
 }
 
-const CustomButton: React.FC<ButtonProps> = ({
+const Button: React.FC<ButtonProps> = ({
   onClick,
   type = "button",
   className,
@@ -31,4 +31,4 @@ const CustomButton: React.FC<ButtonProps> = ({
   )
 }
 
-export default CustomButton
+export default Button
