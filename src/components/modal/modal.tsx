@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { CloseButton, ModalContent, ModalOverlay } from "./modal.styles"
+import { Close } from "styled-icons/evaicons-solid"
 
 interface IOwnProps {
   isOpen: boolean
@@ -14,7 +15,9 @@ const Modal: React.FC<IOwnProps> = ({ isOpen, onClose, children }) => {
   return ReactDOM.createPortal(
     <ModalOverlay>
       <ModalContent>
-        <CloseButton onClick={onClose}>X</CloseButton>
+        <CloseButton onClick={onClose}>
+          <Close />
+        </CloseButton>
         {children}
       </ModalContent>
     </ModalOverlay>,

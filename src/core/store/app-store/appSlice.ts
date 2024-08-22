@@ -3,7 +3,6 @@ import { RootState } from "../store"
 
 export interface LandingState {
   isLoadingApp: boolean
-  
 }
 
 const initialState: LandingState = {

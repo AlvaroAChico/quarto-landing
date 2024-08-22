@@ -1,0 +1,57 @@
+{
+  "user": {
+    "id": 1,
+    "firstName": "Alvaro",
+    "lastName": "Chico",
+    "email": "alvaro.achico@gmail.com",
+    "createdAt": "2024-08-08T12:24:25.190Z",
+    "updatedAt": "2024-08-08T12:24:25.190Z",
+    "role": {
+      "id": 1,
+      "uuid": "fe504222-2014-42a8-ad88-4ea41b6623ee",
+      "name": "admin",
+      "functionalities": [
+        {
+          "id": 1,
+          "uuid": "24950dbd-a86d-4262-92b1-537016633001",
+          "name": "MENU_USERS",
+          "permissions": ["CREATE", "READ", "UPDATE", "DELETE"]
+        },
+        {
+          "id": 2,
+          "uuid": "24950dbd-a86d-4262-92b1-537016633002",
+          "name": "MENU_ROLES",
+          "permissions": ["CREATE", "READ", "UPDATE", "DELETE"]
+        },
+        {
+          "id": 3,
+          "uuid": "24950dbd-a86d-4262-92b1-537016633003",
+          "name": "MENU_PROJECTS",
+          "permissions": ["CREATE", "READ", "UPDATE", "DELETE"]
+        },
+        {
+          "id": 4,
+          "uuid": "24950dbd-a86d-4262-92b1-537016633004",
+          "name": "MENU_TASKS",
+          "permissions": ["CREATE", "READ", "UPDATE", "DELETE"]
+        },
+        {
+          "id": 5,
+          "uuid": "24950dbd-a86d-4262-92b1-537016633005",
+          "name": "MENU_CALENDAR",
+          "permissions": ["CREATE", "READ", "UPDATE", "DELETE"]
+        },
+        {
+          "id": 6,
+          "uuid": "24950dbd-a86d-4262-92b1-537016633006",
+          "name": "MENU_REPORTS",
+          "permissions": ["CREATE", "READ", "UPDATE", "DELETE"]
+        }
+      ]
+    }
+  },
+  "token": {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsdmFyby5hY2hpY29AZ21haWwuY29tIiwiaWF0IjoxNzI0MjU5MzY5LCJleHAiOjE3MjQyNTk5Njl9.sJfdEO_YEFpwl-yqGkZSB5IVsduG-VoxF-5NuWf5nNc",
+    "expire": 12312308123
+  }
+}

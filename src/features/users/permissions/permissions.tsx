@@ -11,7 +11,7 @@ import {
 } from "./permissions.styles"
 import { Outlet, useParams } from "react-router-dom"
 import { mockUsersPermissions } from "../../../config/mocks/users"
-import { Permission, User } from "../../../core/models/user-model"
+import { Permission, User } from "../../../core/models/interfaces/user-model"
 import { APP_MENU, APP_PERMISSIONS } from "../../../constants/app"
 
 const Permissions: React.FC = () => {

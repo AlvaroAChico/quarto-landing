@@ -8,7 +8,7 @@ import { store } from "./core/store/store"
 import { worker } from "./config/mocks/msw/browser" // Importa el worker de MSW
 
 // Inicia el worker de MSW
-// worker.start()
+worker.start()
 
 const container = document.getElementById("root")
 

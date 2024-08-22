@@ -5,32 +5,24 @@ import {
   ContainerActions,
   ContainerBody,
   ContainerHead,
-  ContainerHeaderBar,
   ContainerTable,
-  ItemUserContainer,
-  ListPermissionsContainer,
-  UsersContainer,
 } from "./users.styles"
 // Icons
-import { Security } from "@styled-icons/material/Security"
 import { Edit } from "@styled-icons/fluentui-system-filled/Edit"
 import { Trash } from "@styled-icons/ionicons-solid/Trash"
 import axios from "axios"
 import Cookies from "js-cookie"
-import { DataUserResponse, UserResponse } from "../../core/models/user-model"
 import { toast } from "sonner"
 import HeaderSection from "../../components/header-section/header-section"
 import { pathRoutes } from "../../config/routes/path"
-import Modal from "../../components/modal/modal"
+import { COOKIES_APP } from "../../constants/app"
+import { UserDTO } from "../../core/models/interfaces/user-model"
 
 const Users: React.FC = () => {
-  const [listUsers, setListUsers] = React.useState<UserResponse[]>([])
+  const [listUsers, setListUsers] = React.useState<UserDTO[]>([])
   const navigate = useNavigate()
 
   const handleEditUser = (userId: string) => () => navigate(`/users/${userId}`)
-
-  const handleChangeUserPermissions = (userId: string) => () =>
-    navigate(`/users/${userId}/permisos`)
 
   const handleDeleteUser = (userId: string) => () =>
     console.log("Delete user -> ", userId)
@@ -40,30 +32,20 @@ const Users: React.FC = () => {
   }, [])
 
   React.useEffect(() => {
-    // Para extraer y usar la cookie
-    const storedUserData = Cookies.get("userData")
-    console.log("Data Cookie -> ", storedUserData)
+    const storedToken = Cookies.get(COOKIES_APP.TOKEN_APP)
 
-    if (storedUserData) {
-      const parsedUserData: DataUserResponse = JSON.parse(
-        storedUserData,
-      ) as DataUserResponse
-
+    if (storedToken) {
       axios
         .get("http://localhost:3000/users", {
           headers: {
-            Authorization: `Bearer ${parsedUserData.access_token}`, // Reemplaza yourAuthToken con el token real
+            Authorization: `Bearer ${storedToken}`,
           },
         })
         .then(response => {
-          // Manejo de la respuesta exitosa
-          const listData: UserResponse[] = response.data as UserResponse[]
+          const listData: UserDTO[] = response.data as UserDTO[]
           setListUsers(listData)
-          // Aquí puedes realizar otras acciones dependiendo de tus necesidades
         })
         .catch(err => {
-          // Manejo de errores
-          // setError(err) // Descomentar si estás usando para manejar el estado de un error
           toast.error("Failed to fetch data")
           console.log(
             "Error Axios GET -> ",

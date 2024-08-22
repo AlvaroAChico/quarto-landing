@@ -1,4 +1,4 @@
-import { Permission } from "../../core/models/functionality-model"
+import { Permission } from "../../core/models/interfaces/functionality-model"
 
 export const mockListPermissions: Permission[] = [
   {

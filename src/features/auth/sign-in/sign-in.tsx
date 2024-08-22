@@ -15,12 +15,14 @@ import { Password } from "@styled-icons/material-twotone/Password"
 import { EyeFill, EyeSlashFill } from "@styled-icons/bootstrap"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
-import { UserForm, UserSchema } from "../../../core/models/user-model"
 import axios from "axios"
 import { toast } from "sonner"
 import Cookies from "js-cookie"
 import { pathRoutes } from "../../../config/routes/path"
 import Button from "../../../components/button/button"
+import { UserForm, UserSchema } from "../../../core/models/schemas/user-schema"
+import { DataUserResponse } from "../../../core/models/interfaces/user-model"
+import { COOKIES_APP } from "../../../constants/app"
 
 const SignIn: React.FC = () => {
   const [isSubmitLogin, setIsSubmitLogin] = React.useState<boolean>(false)
@@ -49,12 +51,21 @@ const SignIn: React.FC = () => {
       })
       .then(response => {
         setIsSubmitLogin(false)
-        Cookies.set("userData", JSON.stringify(response.data), { expires: 7 }) // Expiración expresado en dias
+        // Expiración expresada en dias
+        const data: DataUserResponse = response.data as DataUserResponse
+        Cookies.set(COOKIES_APP.USER_RES, JSON.stringify(data.user), {
+          expires: 7,
+        })
+        Cookies.set(
+          COOKIES_APP.TOKEN_APP,
+          JSON.stringify(data.token.access_token),
+          {
+            expires: 7,
+          },
+        )
         navigate(pathRoutes.DASHBOARD)
       })
       .catch(err => {
-        // Manejo de errores
-        // setError(err) // Descomentar si estás usando para manejar el estado de un error
         setIsSubmitLogin(false)
         toast.error("Failed to authenticate")
         console.log("Error Axios -> ", err.response ? err.response.data : err)

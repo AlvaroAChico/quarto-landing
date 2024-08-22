@@ -18,3 +18,8 @@ export enum APP_PERMISSIONS {
   UPDATE = "UPDATE",
   DELETE = "DELETE",
 }
+
+export enum COOKIES_APP {
+  USER_RES = "USER_RES",
+  TOKEN_APP = "TOKEN_APP",
+}

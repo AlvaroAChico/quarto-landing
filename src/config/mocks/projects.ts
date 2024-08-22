@@ -1,4 +1,4 @@
-import { Project ,Task} from "../../core/models/project-model";
+import { Project ,Task} from "../../core/models/interfaces/project-model";
 
 
 export const mockProjects: Project[] = [

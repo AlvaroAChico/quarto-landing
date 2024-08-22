@@ -1,18 +1,24 @@
 import { http, HttpResponse } from "msw"
+import SignInJSON from "../sign-in.json"
+import UserListJSON from "../users-list.json"
+import RolesListJSON from "../roles-list.json"
+import ProjectsListJSON from "../projects-list.json"
+import meJSON from "../me.json"
 
 export const handlers = [
-  http.get("https://example.com/user", () => {
-    return HttpResponse.json({
-      id: "c7b3d8e0-5e0b-4b0f-8b3a-3b9f4b3d3b3d",
-      firstName: "John",
-      lastName: "Maverick",
-    })
-  }),
   http.post("http://localhost:3000/auth/login", async ({ request }) => {
-    return HttpResponse.json({
-      id: "c7b3d8e0-5e0b-4b0f-8b3a-3b9f4b3d3b3d",
-      firstName: "John",
-      lastName: "Maverick",
-    })
+    return HttpResponse.json(SignInJSON)
+  }),
+  http.get("http://localhost:3000/me", async ({ request }) => {
+    return HttpResponse.json(meJSON)
+  }),
+  http.get("http://localhost:3000/users", () => {
+    return HttpResponse.json(UserListJSON)
+  }),
+  http.get("http://localhost:3000/roles", () => {
+    return HttpResponse.json(RolesListJSON)
+  }),
+  http.get("http://localhost:3000/projects", () => {
+    return HttpResponse.json(ProjectsListJSON)
   }),
 ]
