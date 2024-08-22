@@ -7,6 +7,7 @@ export const palette = {
   successColor: "#40c04c",
   successColorHover: "#198323",
   infoColor: "#6FA4F2",
+  infoColorHover: "#345c96",
   errorColor: "#FF8D87",
   errorColorHover: "#b6524d",
   grayLightColor: "#F5F9FF",

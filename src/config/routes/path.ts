@@ -25,3 +25,6 @@ export const pathRoutes = {
     LIST: "/reports",
   },
 }
+
+export const routeWithReplaceId = (route: string, id: string) =>
+  route.replace(":id", id.toString())

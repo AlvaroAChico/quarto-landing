@@ -16,10 +16,10 @@ export const ContainerHead = styled.thead`
   }
 
   > tr td:nth-child(1) {
-    width: 10%;
+    width: 10px;
   }
   > tr td:nth-child(2) {
-    width: 70%;
+    width: 80%;
   }
 `
 export const ContainerBody = styled.tbody`
@@ -32,10 +32,10 @@ export const ContainerBody = styled.tbody`
     }
   }
   > tr td:nth-child(1) {
-    width: 10%;
+    width: 10px;
   }
   > tr td:nth-child(2) {
-    width: 70%;
+    width: 80%;
   }
 `
 

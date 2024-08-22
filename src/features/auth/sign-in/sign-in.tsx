@@ -1,12 +1,13 @@
 import React from "react"
 import {
+  ContainerInputs,
   ContainerSignIn,
   ContentLeftContainer,
   FormContainer,
   LeftContainer,
   RightContainer,
 } from "./sign-in.styles"
-import Input from "../../../components/custom-input/custom-input"
+import Input from "../../../components/input/input"
 import ImgHeader from "../../../assets/img/img_signin.webp"
 import ImgLogo from "../../../assets/img/logo.webp"
 import { useNavigate } from "react-router-dom"
@@ -20,16 +21,20 @@ import { toast } from "sonner"
 import Cookies from "js-cookie"
 import { pathRoutes } from "../../../config/routes/path"
 import Button from "../../../components/button/button"
-import { UserForm, UserSchema } from "../../../core/models/schemas/user-schema"
-import { DataUserResponse } from "../../../core/models/interfaces/user-model"
 import { COOKIES_APP } from "../../../constants/app"
+import { SignInResponse } from "../../../core/models/interfaces/user-model"
+import {
+  SignInForm,
+  SignInSchema,
+} from "../../../core/models/schemas/signin-schema"
+import { ErrorMessage, WrapperInput } from "../../../config/theme/global-styles"
 
 const SignIn: React.FC = () => {
   const [isSubmitLogin, setIsSubmitLogin] = React.useState<boolean>(false)
   const navigate = useNavigate()
 
-  const methods = useForm<UserForm>({
-    resolver: yupResolver(UserSchema),
+  const methods = useForm<SignInForm>({
+    resolver: yupResolver(SignInSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -52,7 +57,7 @@ const SignIn: React.FC = () => {
       .then(response => {
         setIsSubmitLogin(false)
         // Expiración expresada en dias
-        const data: DataUserResponse = response.data as DataUserResponse
+        const data: SignInResponse = response.data as SignInResponse
         Cookies.set(COOKIES_APP.USER_RES, JSON.stringify(data.user), {
           expires: 7,
         })
@@ -68,7 +73,6 @@ const SignIn: React.FC = () => {
       .catch(err => {
         setIsSubmitLogin(false)
         toast.error("Failed to authenticate")
-        console.log("Error Axios -> ", err.response ? err.response.data : err)
       })
   }, [])
 
@@ -86,21 +90,20 @@ const SignIn: React.FC = () => {
       <RightContainer>
         <FormContainer>
           <h1>Sign In</h1>
-          <div>
-            <div className="div-with-margin">
-              <label className="label" htmlFor="email-signin">
-                Your email
-              </label>
+          <ContainerInputs>
+            <WrapperInput>
+              <label htmlFor="email-signin">Your email</label>
               <Input
+                id="email-signin"
                 placeholder="Your Email"
                 icon={User}
                 props={register("email")}
               />
               {!!(errors.email as any)?.message && (
-                <>{(errors.email as any)?.message}</>
+                <ErrorMessage>{(errors.email as any)?.message}</ErrorMessage>
               )}
-            </div>
-            <div className="div-without-margin">
+            </WrapperInput>
+            <WrapperInput>
               <label className="label" htmlFor="password-signin">
                 Your password
               </label>
@@ -111,13 +114,11 @@ const SignIn: React.FC = () => {
                 toggleIcon={{ Show: EyeFill, Hide: EyeSlashFill }}
                 props={register("password")}
               />
-              {/* <input {...register("email")} />
-              <input {...register("password")} /> */}
               {!!(errors.password as any)?.message && (
-                <>{(errors.password as any)?.message}</>
+                <ErrorMessage>{(errors.password as any)?.message}</ErrorMessage>
               )}
-            </div>
-          </div>
+            </WrapperInput>
+          </ContainerInputs>
           <Button
             onClick={submitWrapper(handleSubmit)}
             text="Sign In"

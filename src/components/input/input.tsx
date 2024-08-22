@@ -1,24 +1,28 @@
 import React, { useState } from "react"
-import { InputWrapper, StyledInput, IconContainer } from "./custom-input.styles"
+import { InputWrapper, StyledInput, IconContainer } from "./input.styles"
 
 interface InputProps {
-  placeholder?: string
+  id?: string
   icon?: any
   type?: string
   toggleIcon?: any
+  placeholder?: string
+  customStyles?: string
   props: any
 }
 
-const CustomInput: React.FC<InputProps> = ({
-  placeholder,
+const Input: React.FC<InputProps> = ({
+  id = "",
+  placeholder = "",
   icon: Icon,
   type = "text",
   toggleIcon: ToggleIcon,
+  customStyles = "",
   props,
 }) => {
   const [showPassword, setShowPassword] = useState(false)
   const handleTogglePasswordVisibility = () => setShowPassword(!showPassword)
-  console.log("props -> ", props)
+
   return (
     <InputWrapper>
       {Icon && (
@@ -27,6 +31,7 @@ const CustomInput: React.FC<InputProps> = ({
         </IconContainer>
       )}
       <StyledInput
+        id={id}
         type={showPassword ? "text" : type}
         placeholder={placeholder}
         {...props}
@@ -44,4 +49,4 @@ const CustomInput: React.FC<InputProps> = ({
   )
 }
 
-export default CustomInput
+export default Input

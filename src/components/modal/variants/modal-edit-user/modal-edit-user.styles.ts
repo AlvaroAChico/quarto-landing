@@ -5,6 +5,7 @@ export const FormContainer = styled.div`
   flex-direction: column;
   gap: 15px;
   width: fit-content;
-  min-width: 400px;
+  width: 100%;
   margin: auto;
+  min-width: 200px;
 `

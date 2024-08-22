@@ -1,4 +1,5 @@
 import { styled } from "styled-components"
+import { palette } from "../../config/theme/theme"
 
 export const ModalOverlay = styled.div`
   position: fixed;
@@ -10,15 +11,34 @@ export const ModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10;
 `
 
 export const ModalContent = styled.div`
   background: white;
-  padding: 20px;
-  border-radius: 5px;
+  padding: 40px;
+  border-radius: 15px;
   width: 400px;
+  z-index: 12;
+  position: relative;
+  padding-top: 40px;
+`
+
+export const ContainerTitle = styled.div`
+  width: 100%;
+  padding: 10px 0 30px;
+
+  > h3 {
+    font-size: 25px;
+    color: ${palette.primaryColor};
+  }
 `
 
 export const CloseButton = styled.div`
-  margin-bottom: 20px;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
 `

@@ -83,16 +83,10 @@ export const ContainerHead = styled.thead`
   }
 
   > tr td:nth-child(1) {
-    width: 10%;
+    width: 10px;
   }
   > tr td:nth-child(2) {
-    width: 60%;
-  }
-  > tr td:nth-child(3) {
-    width: 20%;
-  }
-  > tr td:nth-child(3) {
-    width: 20%;
+    width: 80%;
   }
 `
 export const ContainerBody = styled.tbody`
@@ -105,16 +99,10 @@ export const ContainerBody = styled.tbody`
     }
   }
   > tr td:nth-child(1) {
-    width: 10%;
+    width: 10px;
   }
   > tr td:nth-child(2) {
-    width: 60%;
-  }
-  > tr td:nth-child(3) {
-    width: 20%;
-  }
-  > tr td:nth-child(3) {
-    width: 20%;
+    width: 80%;
   }
 `
 
@@ -141,7 +129,6 @@ export const ContainerActions = styled.td`
 
       &:hover {
         background: ${palette.successColorHover};
-        
       }
     }
     &:nth-child(2) {

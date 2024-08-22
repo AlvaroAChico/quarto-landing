@@ -15,6 +15,7 @@ import {
 } from "./roles.styles"
 import { Edit } from "styled-icons/fluentui-system-filled"
 import { Trash } from "styled-icons/bootstrap"
+import StatusPoint from "../../components/status-point/status-point"
 
 const Roles: React.FC = () => {
   const [listRoles, setListRoles] = React.useState<DataRoleResponse[]>([])
@@ -65,7 +66,7 @@ const Roles: React.FC = () => {
       <ContainerTable>
         <ContainerHead>
           <tr>
-            <td>Nº</td>
+            <td></td>
             <td>Name</td>
             <td>Actions</td>
           </tr>
@@ -74,7 +75,10 @@ const Roles: React.FC = () => {
           {/* <UsersContainer> */}
           {(listRoles || []).map((role, index) => (
             <tr>
-              <td>{index + 1}</td>
+              {/* <td>{index + 1}</td> */}
+              <td>
+                <StatusPoint isActive={role.isActive} />
+              </td>
               <td>{role.name} </td>
               <ContainerActions>
                 <div onClick={handleEditRole(`${role.id}`)}>

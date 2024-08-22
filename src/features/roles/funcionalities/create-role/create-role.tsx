@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import {
   ContainerRoles,
   FormGroup,
-  Input,
+  InputStyles,
   Label,
   InputIcon,
   PermissionsContainer,
@@ -96,7 +96,7 @@ const CreateRole: React.FC = () => {
           <InputIcon>
             <LocalPolice size="20" />
           </InputIcon>
-          <Input
+          <InputStyles
             id="roleName"
             value={"roleName"}
             onChange={e => {

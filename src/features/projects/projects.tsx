@@ -1,7 +1,7 @@
 import React from "react"
 import HeaderSection from "../../components/header-section/header-section"
 import { useNavigate } from "react-router-dom"
-import { pathRoutes } from "../../config/routes/path"
+import { pathRoutes, routeWithReplaceId } from "../../config/routes/path"
 import {
   ContainerActions,
   ContainerBody,
@@ -14,11 +14,15 @@ import { COOKIES_APP } from "../../constants/app"
 import axios from "axios"
 import { toast } from "sonner"
 import { Edit } from "styled-icons/fluentui-system-filled"
-import { Trash } from "styled-icons/bootstrap"
+import { Eye, Trash } from "styled-icons/bootstrap"
+import StatusPoint from "../../components/status-point/status-point"
 
 const Projects: React.FC = () => {
   const [listProjects, setListProjects] = React.useState<ProjectDTO[]>([])
   const navigate = useNavigate()
+
+  const handleViewProject = (projectId: string) => () =>
+    navigate(routeWithReplaceId(pathRoutes.PROJECTS.DETAIL, projectId))
 
   const handleEditProject = (projectId: string) => () =>
     navigate(`/role/${projectId}`)
@@ -66,7 +70,6 @@ const Projects: React.FC = () => {
         <ContainerHead>
           <tr>
             <td></td>
-            <td>Nº</td>
             <td>Name</td>
             <td>Actions</td>
           </tr>
@@ -75,10 +78,15 @@ const Projects: React.FC = () => {
           {/* <UsersContainer> */}
           {(listProjects || []).map((project, index) => (
             <tr>
-              <td></td>
-              <td>{index + 1}</td>
+              <td>
+                <StatusPoint isActive={project.isActive} />
+              </td>
+              {/* <td>{index + 1}</td> */}
               <td>{project.name} </td>
               <ContainerActions>
+                <div onClick={handleViewProject(`${project.id}`)}>
+                  <Eye />
+                </div>
                 <div onClick={handleEditProject(`${project.id}`)}>
                   <Edit />
                 </div>

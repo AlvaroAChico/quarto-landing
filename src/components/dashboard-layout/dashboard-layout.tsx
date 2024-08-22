@@ -21,11 +21,48 @@ import { Task } from "@styled-icons/boxicons-regular/Task"
 import { Calendar } from "@styled-icons/bootstrap/Calendar"
 import { BarChartFill } from "@styled-icons/bootstrap/BarChartFill"
 import { pathRoutes } from "../../config/routes/path"
+import Cookies from "js-cookie"
+import { COOKIES_APP } from "../../constants/app"
+import axios from "axios"
+import { UserDTO } from "../../core/models/interfaces/user-model"
+import { toast } from "sonner"
 
 const DashboardLayout: React.FC = () => {
   const navigate = useNavigate()
 
   const handleNavigate = (path: string) => () => navigate(path)
+
+  React.useEffect(() => {
+    const refreshDataMe = async () => {
+      const storedToken = Cookies.get(COOKIES_APP.TOKEN_APP)
+
+      if (storedToken) {
+        try {
+          const response = await axios
+            .get("http://localhost:3000/me", {
+              headers: {
+                Authorization: `Bearer ${storedToken}`,
+              },
+            })
+            .then(response => {
+              const meData: UserDTO[] = response.data as UserDTO[]
+              // setListUsers(listData)
+              console.log("meData -> ", meData)
+            })
+            .catch(err => {
+              toast.error("Failed to fetch data")
+            })
+        } catch (err) {
+          toast.error("Failed to fetch data")
+        }
+      }
+    }
+    refreshDataMe()
+
+    const intervalId = setInterval(refreshDataMe, 60000)
+
+    return () => clearInterval(intervalId)
+  }, [])
 
   return (
     <ContainerDashboardLayout>

@@ -5,22 +5,11 @@ import { InferType, object, string } from "yup"
 const rgxEmail =
   /^(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/
 
-export const CreateUserSchema = object({
-  firstName: string().required("Enter a firstName"),
-  lastName: string().required("Enter a lastName"),
+export const SignInSchema = object({
   email: string()
     .matches(rgxEmail, "Enter a valid email")
     .required("Enter a email"),
   password: string().required("Enter a password"),
-  codeRole: string().required("Enter a role"),
 })
 
-export const UpdateUserSchema = object({
-  firstName: string(),
-  lastName: string(),
-  email: string().matches(rgxEmail, "Enter a valid email"),
-  codeRole: string(),
-})
-
-export type CreateUserForm = InferType<typeof CreateUserSchema>
-export type UpdateUserForm = InferType<typeof UpdateUserSchema>
+export type SignInForm = InferType<typeof SignInSchema>

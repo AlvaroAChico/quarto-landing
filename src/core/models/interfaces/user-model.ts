@@ -25,6 +25,7 @@ export interface UserDTO {
   firstName: string
   lastName: string
   email: string
+  isActive: boolean
   createdAt: string
   updatedAt: string
   role: RoleDTO
@@ -42,4 +43,10 @@ export interface FunctionalityDTO {
   uuid: string
   name: string
   permissions: string[]
+}
+
+export interface CreateUserDTO {
+  code: number
+  message: string
+  data: UserDTO
 }

@@ -4,6 +4,7 @@
     "firstName": "Alvaro",
     "lastName": "Chico",
     "email": "alvaro.achico@gmail.com",
+    "isActive": true,
     "createdAt": "2024-08-08T12:24:25.190Z",
     "updatedAt": "2024-08-08T12:24:25.190Z",
     "role": {
@@ -17,6 +18,7 @@
     "firstName": "Pablo",
     "lastName": "Mendoza",
     "email": "andrec@gmail.com",
+    "isActive": true,
     "createdAt": "2024-08-08T12:24:25.190Z",
     "updatedAt": "2024-08-08T12:24:25.190Z",
     "role": {
@@ -30,6 +32,7 @@
     "firstName": "Joe",
     "lastName": "Doe",
     "email": "joed@gmail.com",
+    "isActive": true,
     "createdAt": "2024-08-08T12:24:25.190Z",
     "updatedAt": "2024-08-08T12:24:25.190Z",
     "role": {
@@ -43,6 +46,7 @@
     "firstName": "Juan",
     "lastName": "Rodriguez",
     "email": "juanr@gmail.com",
+    "isActive": true,
     "createdAt": "2024-08-08T12:24:25.190Z",
     "updatedAt": "2024-08-08T12:24:25.190Z",
     "role": {
@@ -56,6 +60,7 @@
     "firstName": "Alberto",
     "lastName": "Gonzales",
     "email": "alvaro.achico@gmail.com",
+    "isActive": true,
     "createdAt": "2024-08-08T12:24:25.190Z",
     "updatedAt": "2024-08-08T12:24:25.190Z",
     "role": {
@@ -69,6 +74,7 @@
     "firstName": "Pedro",
     "lastName": "Villa",
     "email": "pedrov@gmail.com",
+    "isActive": true,
     "createdAt": "2024-08-08T12:24:25.190Z",
     "updatedAt": "2024-08-08T12:24:25.190Z",
     "role": {

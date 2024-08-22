@@ -16,10 +16,10 @@ export const ContainerHead = styled.thead`
   }
 
   > tr td:nth-child(1) {
-    width: 10%;
+    width: 10px;
   }
   > tr td:nth-child(2) {
-    width: 70%;
+    width: 80%;
   }
 `
 export const ContainerBody = styled.tbody`
@@ -32,10 +32,10 @@ export const ContainerBody = styled.tbody`
     }
   }
   > tr td:nth-child(1) {
-    width: 10%;
+    width: 10px;
   }
   > tr td:nth-child(2) {
-    width: 70%;
+    width: 80%;
   }
 `
 
@@ -58,6 +58,15 @@ export const ContainerActions = styled.td`
     }
 
     &:nth-child(1) {
+      background: ${palette.infoColor};
+      cursor: pointer;
+      transition: 0.5s;
+
+      &:hover {
+        background: ${palette.infoColorHover};
+      }
+    }
+    &:nth-child(2) {
       background: ${palette.successColor};
       cursor: pointer;
       transition: 0.5s;
@@ -66,7 +75,7 @@ export const ContainerActions = styled.td`
         background: ${palette.successColorHover};
       }
     }
-    &:nth-child(2) {
+    &:nth-child(3) {
       background: ${palette.errorColor};
       cursor: pointer;
       transition: 0.5s;

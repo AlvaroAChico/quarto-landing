@@ -1,47 +1,54 @@
 import React from "react"
-import HeaderSection from "../../../../components/header-section/header-section"
-import { FormContainer } from "./create-user.styles"
+import Modal from "../../modal"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
-  CreateUserForm,
-  CreateUserSchema,
+  UpdateUserForm,
+  UpdateUserSchema,
 } from "../../../../core/models/schemas/user-schema"
-import axios from "axios"
-import { useNavigate } from "react-router-dom"
-import { toast } from "sonner"
-import { CreateUserDTO } from "../../../../core/models/interfaces/user-model"
-import { pathRoutes } from "../../../../config/routes/path"
+import {
+  CreateUserDTO,
+  UserDTO,
+} from "../../../../core/models/interfaces/user-model"
+import { FormContainer } from "./modal-edit-user.styles"
 import {
   ErrorMessage,
   WrapperInput,
 } from "../../../../config/theme/global-styles"
-import Input from "../../../../components/input/input"
 import { User } from "styled-icons/boxicons-solid"
-import { Password } from "@styled-icons/material-twotone/Password"
-import { EyeFill, EyeSlashFill } from "@styled-icons/bootstrap"
-import Button from "../../../../components/button/button"
+import { palette } from "../../../../config/theme/theme"
+import Button from "../../../button/button"
+import Input from "../../../input/input"
+import Select from "react-select"
 import Cookies from "js-cookie"
+import axios from "axios"
+import { toast } from "sonner"
 import { COOKIES_APP } from "../../../../constants/app"
 import { DataRoleResponse } from "../../../../core/models/interfaces/roles-model"
-import { palette } from "../../../../config/theme/theme"
-import Select from "react-select"
 
-const CreateUser: React.FC = () => {
+interface IOwnProps {
+  isOpen: boolean
+  dataUserEdit: UserDTO
+  handleClose: () => void
+}
+
+const ModalEditUser: React.FC<IOwnProps> = ({
+  isOpen,
+  dataUserEdit,
+  handleClose,
+}) => {
   const [optionsRoles, setOptionsRoles] = React.useState<any>([])
   const [selectedOptionRole, setSelectedOptionRole] = React.useState(null)
-  const [isSubmitUserCreate, setIsSubmitUserCreate] =
+  const [isSubmitUserUpdate, setIsSubmitUserUpdate] =
     React.useState<boolean>(false)
-  const navigate = useNavigate()
 
-  const methods = useForm<CreateUserForm>({
-    resolver: yupResolver(CreateUserSchema),
+  const methods = useForm<UpdateUserForm>({
+    resolver: yupResolver(UpdateUserSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      codeRole: "",
+      firstName: !!dataUserEdit ? dataUserEdit.firstName : "",
+      lastName: !!dataUserEdit ? dataUserEdit.lastName : "",
+      email: !!dataUserEdit ? dataUserEdit.email : "",
+      codeRole: !!dataUserEdit ? dataUserEdit.role.uuid : "",
     },
   })
 
@@ -58,24 +65,23 @@ const CreateUser: React.FC = () => {
   }
 
   const handleSubmit = React.useCallback((data: any) => {
-    setIsSubmitUserCreate(true)
+    setIsSubmitUserUpdate(true)
     axios
-      .post("http://localhost:3000/users/create", {
+      .post("http://localhost:3000/users/update", {
         firstname: data.firstname,
         lastname: data.lastname,
         email: data.email,
         password: data.password,
       })
       .then(response => {
-        setIsSubmitUserCreate(false)
+        setIsSubmitUserUpdate(false)
         const data: CreateUserDTO = response.data as CreateUserDTO
         if (!!data && data.code == 200 && !!data.data) {
           toast.success(data.message)
-          navigate(pathRoutes.USERS.LIST)
         }
       })
       .catch(err => {
-        setIsSubmitUserCreate(false)
+        setIsSubmitUserUpdate(false)
         toast.error("Failed to authenticate")
       })
   }, [])
@@ -106,9 +112,21 @@ const CreateUser: React.FC = () => {
     }
   }, [])
 
+  React.useEffect(() => {
+    if (!!dataUserEdit) {
+      setValue("firstName", dataUserEdit.firstName)
+      setValue("lastName", dataUserEdit.lastName)
+      setValue("email", dataUserEdit.email)
+      setValue("codeRole", dataUserEdit.role.uuid)
+      setSelectedOptionRole({
+        value: dataUserEdit.role.uuid,
+        label: dataUserEdit.role.name,
+      })
+    }
+  }, [dataUserEdit])
+
   return (
-    <div>
-      <HeaderSection title="Users" subtitle="Create user" />
+    <Modal isOpen={isOpen} onClose={handleClose} title="Edit User">
       <FormContainer>
         <WrapperInput>
           <label htmlFor="firstname-create-user">First Name</label>
@@ -144,19 +162,6 @@ const CreateUser: React.FC = () => {
           />
           {!!(errors.email as any)?.message && (
             <ErrorMessage>{(errors.email as any)?.message}</ErrorMessage>
-          )}
-        </WrapperInput>
-        <WrapperInput>
-          <label htmlFor="password-create-user">Password</label>
-          <Input
-            placeholder="Password"
-            icon={Password}
-            type="password"
-            toggleIcon={{ Show: EyeFill, Hide: EyeSlashFill }}
-            props={register("password")}
-          />
-          {!!(errors.password as any)?.message && (
-            <ErrorMessage>{(errors.password as any)?.message}</ErrorMessage>
           )}
         </WrapperInput>
         <WrapperInput>
@@ -197,11 +202,11 @@ const CreateUser: React.FC = () => {
         <Button
           onClick={submitWrapper(handleSubmit)}
           text="Create User"
-          isLoading={isSubmitUserCreate}
+          isLoading={isSubmitUserUpdate}
         />
       </FormContainer>
-    </div>
+    </Modal>
   )
 }
 
-export default CreateUser
+export default ModalEditUser
