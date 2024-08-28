@@ -6,9 +6,12 @@ import { RouterProvider } from "react-router-dom"
 import { router } from "./config/routes/routes"
 import { store } from "./core/store/store"
 import { worker } from "./config/mocks/msw/browser" // Importa el worker de MSW
+import { settingsApp } from "./config/environment/settings"
 
 // Inicia el worker de MSW
-worker.start()
+if (settingsApp.app.mocks) {
+  worker.start()
+}
 
 const container = document.getElementById("root")
 
@@ -21,6 +24,7 @@ if (container) {
         <RouterProvider router={router} />
         <App />
       </Provider>
+      ,
     </React.StrictMode>,
   )
 } else {

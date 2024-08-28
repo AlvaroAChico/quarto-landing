@@ -1,10 +1,11 @@
 import { http, HttpResponse } from "msw"
-import SignInJSON from "../sign-in.json"
-import UserListJSON from "../user-list.json"
-import UserCreateJSON from "../user-create.json"
-import RolesListJSON from "../role-list.json"
-import ProjectsListJSON from "../project-list.json"
-import meJSON from "../me.json"
+import SignInJSON from "../features/auth/sign-in.json"
+import UserListJSON from "../features/users/user-list.json"
+import UserCreateJSON from "../features/users/user-create.json"
+import UserDeleteJSON from "../features/users/user-delete.json"
+import RolesListJSON from "../features/roles/role-list.json"
+import ProjectsListJSON from "../features/projects/project-list.json"
+import meJSON from "../features/auth/me.json"
 
 export const handlers = [
   http.post("http://localhost:3000/auth/login", async ({ request }) => {
@@ -18,12 +19,10 @@ export const handlers = [
     return HttpResponse.json(UserListJSON)
   }),
   http.post("http://localhost:3000/users/create", async ({ request }) => {
-    console.log("User create -> ", request)
     return HttpResponse.json(UserCreateJSON)
   }),
   http.post("http://localhost:3000/users/delete/1", async ({ request }) => {
-    console.log("User create -> ", request)
-    return HttpResponse.json(UserCreateJSON)
+    return HttpResponse.json(UserDeleteJSON)
   }),
   // ******** ROLES ********
   http.get("http://localhost:3000/roles", () => {

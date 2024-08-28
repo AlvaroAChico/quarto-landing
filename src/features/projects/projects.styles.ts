@@ -1,88 +1,107 @@
 import styled from "styled-components"
 import { palette } from "../../config/theme/theme"
 
-export const ContainerTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-`
-export const ContainerHead = styled.thead`
-  width: 100%;
-
-  > tr {
-    border-bottom: 1px #e0e0e0 solid;
-    > td {
-      padding: 10px;
-    }
-  }
-
-  > tr td:nth-child(1) {
-    width: 10px;
-  }
-  > tr td:nth-child(2) {
-    width: 80%;
-  }
-`
-export const ContainerBody = styled.tbody`
-  width: 100%;
-
-  > tr {
-    border-bottom: 1px #e0e0e0 solid;
-    > td {
-      padding: 10px;
-    }
-  }
-  > tr td:nth-child(1) {
-    width: 10px;
-  }
-  > tr td:nth-child(2) {
-    width: 80%;
-  }
-`
-
-export const ContainerActions = styled.td`
-  color: white;
-  display: flex;
+export const CardStadistics = styled.div`
   flex-direction: row;
-  gap: 10px;
+  display: flex;
+  gap: 40px;
+`
 
+export const ContentStylesSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+`
+
+export const SectionRoute = styled.div``
+
+export const ContainerFilters = styled.div`
+  justify-content: space-between;
+  flex-direction: row;
+  display: flex;
+  padding: 20px 10px 30px;
+`
+
+export const NameStylesTD = styled.td`
   > div {
-    width: 35px;
-    height: 35px;
-    display: grid;
-    place-items: center;
-    border-radius: 10px;
+    flex-direction: column;
+    display: flex;
+    gap: 2px;
 
-    > svg {
-      max-width: 25px;
+    > span {
+      &:nth-child(1) {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      &:nth-child(2) {
+        color: ${palette.grayColor};
+        font-size: 12px;
+        font-weight: 200;
+      }
+    }
+  }
+`
+
+export const ProgressStylesTD = styled.td<{ progress: number }>`
+  > div {
+    > span {
+      color: ${palette.grayColor};
+      font-size: 12px;
+      font-weight: 500;
+
+      &:nth-child(1) {
+        font-size: 14px;
+        color: black;
+      }
+    }
+
+    > div {
+      background: ${palette.grayLightColor};
+      border-radius: 20px;
+      position: relative;
+      height: 4px;
       width: 100%;
-    }
 
-    &:nth-child(1) {
-      background: ${palette.infoColor};
-      cursor: pointer;
-      transition: 0.5s;
-
-      &:hover {
-        background: ${palette.infoColorHover};
+      &:before {
+        content: "";
+        position: absolute;
+        border-radius: 20px;
+        background: ${p =>
+          p.progress < 30
+            ? palette.errorColor
+            : p.progress > 30 && p.progress < 70
+              ? palette.orangeColor
+              : palette.successColor};
+        height: 4px;
+        width: ${p => p.progress}%;
+        top: 0;
       }
     }
-    &:nth-child(2) {
-      background: ${palette.successColor};
-      cursor: pointer;
-      transition: 0.5s;
+  }
+`
+export const ClientStylesTD = styled.td`
+  > div {
+    width: fit-content;
+    min-width: 80px;
 
-      &:hover {
-        background: ${palette.successColorHover};
+    > span {
+      color: ${palette.grayColor};
+      font-size: 12px;
+      font-weight: 500;
+
+      > svg {
+        width: 100%;
+        max-width: 15px;
       }
     }
-    &:nth-child(3) {
-      background: ${palette.errorColor};
-      cursor: pointer;
-      transition: 0.5s;
-
-      &:hover {
-        background: ${palette.errorColorHover};
-      }
+  }
+`
+export const DateStylesTD = styled.td`
+  > div {
+    > span {
+      color: ${palette.grayColor};
+      font-size: 12px;
+      font-weight: 500;
     }
   }
 `

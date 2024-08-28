@@ -1,0 +1,102 @@
+{
+  "stadistics": {
+    "projects": {
+      "total": 68,
+      "complete": 5,
+      "pending": 8,
+      "todo": 4
+    },
+    "customers": {
+      "total": 6
+    },
+    "contractors": {
+      "total": 9
+    }
+  },
+  "listProjects": [
+    {
+      "id": 1,
+      "name": "Construction of central park",
+      "status": "Construction",
+      "progress": 100,
+      "pending_task": 12,
+      "dueDate": "02/08/2024",
+      "client": "Miguel Zicia",
+      "contractors": [
+        {
+          "id": 1,
+          "full_name": "Joe Doe",
+          "avatar": ""
+        },
+        {
+          "id": 2,
+          "full_name": "Juan Perez",
+          "avatar": ""
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Beach house remodeling",
+      "status": "Remodeling",
+      "progress": 35,
+      "pending_task": 8,
+      "dueDate": "02/08/2024",
+      "client": "Dante Smith",
+      "contractors": [
+        {
+          "id": 1,
+          "full_name": "Pedro Suarez",
+          "avatar": ""
+        },
+        {
+          "id": 2,
+          "full_name": "Peter Sanz",
+          "avatar": ""
+        },
+        {
+          "id": 3,
+          "full_name": "Joel Burga",
+          "avatar": ""
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "House Remodeling",
+      "status": "Remodeling",
+      "progress": 70,
+      "pending_task": 12,
+      "dueDate": "02/08/2024",
+      "client": "Sonia Alayo",
+      "contractors": [
+        {
+          "id": 1,
+          "full_name": "Joe Doe",
+          "avatar": ""
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Construction of secondary school",
+      "status": "Construction",
+      "progress": 0,
+      "pending_task": 19,
+      "dueDate": "02/08/2024",
+      "client": "Leonel Zicia",
+      "contractors": [
+        {
+          "id": 1,
+          "full_name": "Pedro Paredes",
+          "avatar": ""
+        },
+        {
+          "id": 2,
+          "full_name": "Julio Araos",
+          "avatar": ""
+        }
+      ]
+    }
+  ]
+}

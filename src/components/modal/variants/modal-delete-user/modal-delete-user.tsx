@@ -15,12 +15,14 @@ interface IOwnProps {
   isOpen: boolean
   dataUserDelete: UserDTO
   handleClose: () => void
+  handleDeleteUser: () => void
 }
 
 const ModalDeleteUser: React.FC<IOwnProps> = ({
   isOpen,
   dataUserDelete,
   handleClose,
+  handleDeleteUser,
 }) => {
   const [isSubmitUserDelete, setIsSubmitUserDelete] =
     React.useState<boolean>(false)
@@ -30,6 +32,7 @@ const ModalDeleteUser: React.FC<IOwnProps> = ({
     const storedToken = Cookies.get(COOKIES_APP.TOKEN_APP)
 
     if (storedToken) {
+      console.log("Delete User -> ", dataUserDelete)
       axios
         .post(`http://localhost:3000/users/delete/${dataUserDelete.id}`, {
           headers: {
@@ -39,8 +42,9 @@ const ModalDeleteUser: React.FC<IOwnProps> = ({
         .then(response => {
           setIsSubmitUserDelete(false)
           const data: CreateUserDTO = response.data as CreateUserDTO
-          if (!!data && data.code == 200 && !!data.data) {
+          if (!!data && data.code == 200) {
             toast.success(data.message)
+            handleDeleteUser()
           }
         })
         .catch(err => {
@@ -48,7 +52,7 @@ const ModalDeleteUser: React.FC<IOwnProps> = ({
           toast.error("Failed to delete user")
         })
     }
-  }, [])
+  }, [dataUserDelete])
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="Delete User">
@@ -60,11 +64,7 @@ const ModalDeleteUser: React.FC<IOwnProps> = ({
           </p>
         </div>
         <div>
-          <Button
-            onClick={handleClose}
-            text="Cancel"
-            isLoading={isSubmitUserDelete}
-          />
+          <Button onClick={handleClose} text="Cancel" isLoading={false} />
           <Button
             onClick={handleDelete}
             text="Delete"

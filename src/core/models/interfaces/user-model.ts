@@ -1,52 +1,46 @@
-export interface User {
-  id: string
-  name: string
-  allUsers: boolean
-  permissions: Permission[]
-}
-
-export interface Permission {
-  name: string
-  permissions: string[]
-}
-// USER RESPONSE SERVICE
 export interface SignInResponse {
-  token: TokenDTO
-  user: UserDTO
-}
-
-export interface TokenDTO {
-  access_token: string
-  expire: number
+  "0": UserDTO
+  roles: string[]
+  token: string
+  permisos: PermissionDTO[]
 }
 
 export interface UserDTO {
   id: number
   firstName: string
   lastName: string
+  picture: string
+  contactNumber: string
+  documentType: string
+  documentNumber: string
   email: string
+  status: string
   isActive: boolean
   createdAt: string
+  username: string
+}
+
+export interface PermissionDTO {
+  id: number
+  name: string
+  guardName: string
+  createdAt: string
   updatedAt: string
-  role: RoleDTO
+  pivot: PivotDTO
 }
 
-export interface RoleDTO {
-  id: number
-  uuid: string
-  name: string
-  functionalities: FunctionalityDTO[]
+export interface PivotDTO {
+  roleId: number
+  permissionId: number
 }
 
-export interface FunctionalityDTO {
-  id: number
-  uuid: string
-  name: string
-  permissions: string[]
-}
-
-export interface CreateUserDTO {
-  code: number
-  message: string
-  data: UserDTO
+export interface FilterPermissionsDTO {
+  user: string[]
+  category: string[]
+  client: string[]
+  contractor: string[]
+  project: string[]
+  projectfile: string[]
+  setting: string[]
+  task: string[]
 }

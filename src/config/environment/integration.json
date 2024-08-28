@@ -1,0 +1,13 @@
+{
+  "app": {
+    "name": "TST Admin - INT",
+    "mocks": false,
+    "local": "http://services-api-local.ocasystem.com:7003"
+  },
+  "api": {
+    "base": "http://services-api-local.ocasystem.com:7003/api",
+    "auth": "http://services-api-local.ocasystem.com:7003/api"
+  },
+  "i18nDebug": false,
+  "cloudEnv": "integration"
+}

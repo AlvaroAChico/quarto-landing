@@ -22,7 +22,6 @@ import { BarChartFill } from "@styled-icons/bootstrap/BarChartFill"
 // External Librarys
 import { Accordion } from "react-accordion-ts"
 import "react-accordion-ts/src/panel.css"
-import { mockListPermissions } from "../../../../config/mocks/functionalities"
 import { APP_MENU } from "../../../../constants/app"
 import CustomSwitch from "../../custom-switch/custom-switch"
 import HeaderSection from "../../../../components/header-section/header-section"
@@ -55,7 +54,7 @@ const CreateRole: React.FC = () => {
     ),
     content: (
       <PermissionsContainer>
-        {(mockListPermissions || []).map(permission => (
+        {/* {(mockListPermissions || []).map(permission => (
           <ItemPermission>
             <span>{APP_MENU[permission.name as keyof typeof APP_MENU]}</span>
             <CustomSwitch
@@ -67,7 +66,7 @@ const CreateRole: React.FC = () => {
               label={""}
             />
           </ItemPermission>
-        ))}
+        ))} */}
       </PermissionsContainer>
     ),
   }))

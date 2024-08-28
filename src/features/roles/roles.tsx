@@ -8,18 +8,33 @@ import { COOKIES_APP } from "../../constants/app"
 import { DataRoleResponse } from "../../core/models/interfaces/roles-model"
 import { toast } from "sonner"
 import {
+  ClasicStylesTD,
   ContainerActions,
   ContainerBody,
+  ContainerDropdown,
   ContainerHead,
   ContainerTable,
-} from "./roles.styles"
-import { Edit } from "styled-icons/fluentui-system-filled"
-import { Trash } from "styled-icons/bootstrap"
-import StatusPoint from "../../components/status-point/status-point"
+} from "../../config/theme/global-styles"
+import { Ellipsis } from "@styled-icons/fa-solid/Ellipsis"
 
 const Roles: React.FC = () => {
   const [listRoles, setListRoles] = React.useState<DataRoleResponse[]>([])
+  const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
+    null,
+  )
   const navigate = useNavigate()
+
+  const toggleDropdown = (projectId: string) => {
+    setDropdownVisible(prev => (prev === projectId ? null : projectId))
+    setTimeout(() => {
+      const dropOv = document.getElementById(`dropdown_ov${projectId}`)
+      if (!!dropOv) {
+        dropOv.focus()
+      }
+    }, 100)
+  }
+
+  const handleCleanDropdown = () => toggleDropdown("")
 
   const handleEditRole = (userId: string) => () => navigate(`/role/${userId}`)
 
@@ -64,34 +79,52 @@ const Roles: React.FC = () => {
         onPrimaryClick={handleClick}
       />
       <ContainerTable>
-        <ContainerHead>
-          <tr>
-            <td></td>
-            <td>Name</td>
-            <td>Actions</td>
-          </tr>
-        </ContainerHead>
-        <ContainerBody>
-          {/* <UsersContainer> */}
-          {(listRoles || []).map((role, index) => (
+        <table>
+          <ContainerHead>
             <tr>
-              {/* <td>{index + 1}</td> */}
-              <td>
-                <StatusPoint isActive={role.isActive} />
-              </td>
-              <td>{role.name} </td>
-              <ContainerActions>
-                <div onClick={handleEditRole(`${role.id}`)}>
-                  <Edit />
-                </div>
-                <div onClick={handleDeleteRole(`${role.id}`)}>
-                  <Trash />
-                </div>
-              </ContainerActions>
+              <td>Name</td>
+              <td>Email</td>
+              <td></td>
             </tr>
-          ))}
-          {/* </UsersContainer> */}
-        </ContainerBody>
+          </ContainerHead>
+          <ContainerBody>
+            {(listRoles || []).map(role => (
+              <tr>
+                <ClasicStylesTD>
+                  <div>
+                    <span>{role.name}</span>
+                  </div>
+                </ClasicStylesTD>
+                <ClasicStylesTD>
+                  <div>
+                    <span>{role.isActive}</span>
+                  </div>
+                </ClasicStylesTD>
+                <ContainerActions>
+                  <div>
+                    <div onClick={() => toggleDropdown(`${role.id}`)}>
+                      <Ellipsis />
+                    </div>
+                    {dropdownVisible === `${role.id}` && (
+                      <ContainerDropdown
+                        id={`dropdown_ov${role.id}`}
+                        tabIndex={0}
+                        onBlur={handleCleanDropdown}
+                      >
+                        <span onClick={handleEditRole(`${role.id}`)}>
+                          Editar
+                        </span>
+                        <span onClick={handleDeleteRole(`${role.id}`)}>
+                          Eliminar
+                        </span>
+                      </ContainerDropdown>
+                    )}
+                  </div>
+                </ContainerActions>
+              </tr>
+            ))}
+          </ContainerBody>
+        </table>
       </ContainerTable>
     </div>
   )

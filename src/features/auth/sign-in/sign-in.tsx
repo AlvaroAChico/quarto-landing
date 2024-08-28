@@ -22,12 +22,16 @@ import Cookies from "js-cookie"
 import { pathRoutes } from "../../../config/routes/path"
 import Button from "../../../components/button/button"
 import { COOKIES_APP } from "../../../constants/app"
-import { SignInResponse } from "../../../core/models/interfaces/user-model"
+import {
+  FilterPermissionsDTO,
+  SignInResponse,
+} from "../../../core/models/interfaces/user-model"
 import {
   SignInForm,
   SignInSchema,
 } from "../../../core/models/schemas/signin-schema"
 import { ErrorMessage, WrapperInput } from "../../../config/theme/global-styles"
+import { settingsApp } from "../../../config/environment/settings"
 
 const SignIn: React.FC = () => {
   const [isSubmitLogin, setIsSubmitLogin] = React.useState<boolean>(false)
@@ -50,29 +54,73 @@ const SignIn: React.FC = () => {
   const handleSubmit = React.useCallback((data: any) => {
     setIsSubmitLogin(true)
     axios
-      .post("http://localhost:3000/auth/login", {
-        email: data.email,
-        password: data.password,
-      })
+      .post(
+        `${settingsApp.api.base}/auth/login`,
+        {
+          email: data.email,
+          password: data.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        },
+      )
       .then(response => {
         setIsSubmitLogin(false)
         // Expiración expresada en dias
         const data: SignInResponse = response.data as SignInResponse
-        Cookies.set(COOKIES_APP.USER_RES, JSON.stringify(data.user), {
+        const expiration = {
           expires: 7,
-        })
+        }
+        Cookies.set(COOKIES_APP.USER_RES, JSON.stringify(data["0"]), expiration)
         Cookies.set(
           COOKIES_APP.TOKEN_APP,
-          JSON.stringify(data.token.access_token),
-          {
-            expires: 7,
-          },
+          JSON.stringify(data.token),
+          expiration,
         )
+        Cookies.set(
+          COOKIES_APP.ROLES_APP,
+          JSON.stringify(data.roles),
+          expiration,
+        )
+        // Filter data permissions
+        const result: FilterPermissionsDTO = {
+          user: [],
+          category: [],
+          client: [],
+          contractor: [],
+          project: [],
+          projectfile: [],
+          setting: [],
+          task: [],
+        }
+
+        data.permisos
+          .map(permission => permission.name)
+          .forEach(permission => {
+            const parts = permission.split("-")
+            const type = parts[0]
+
+            if (type in result) {
+              const action = parts.slice(1).join("-")
+              result[type as keyof FilterPermissionsDTO].push(action)
+            }
+          })
+
+        if (!!result) {
+          Cookies.set(
+            COOKIES_APP.PERMISSIONS_APP,
+            JSON.stringify(result),
+            expiration,
+          )
+        }
         navigate(pathRoutes.DASHBOARD)
       })
       .catch(err => {
         setIsSubmitLogin(false)
-        toast.error("Failed to authenticate")
+        toast.error(err.response.data.message)
       })
   }, [])
 

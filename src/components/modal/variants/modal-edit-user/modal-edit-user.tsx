@@ -13,6 +13,7 @@ import {
 import { FormContainer } from "./modal-edit-user.styles"
 import {
   ErrorMessage,
+  selectStyles,
   WrapperInput,
 } from "../../../../config/theme/global-styles"
 import { User } from "styled-icons/boxicons-solid"
@@ -171,29 +172,7 @@ const ModalEditUser: React.FC<IOwnProps> = ({
             onChange={handleChangeOptionRole}
             options={optionsRoles}
             isSearchable={false}
-            styles={{
-              control: (provided, state) => ({
-                ...provided,
-                borderColor: state.isFocused ? "#f59e36" : provided.borderColor,
-                boxShadow: state.isFocused
-                  ? "0 0 5px #f59e36"
-                  : provided.boxShadow,
-                "&:hover": {
-                  borderColor: state.isFocused ? "#f59e36" : "gray", // color al pasar el ratón
-                },
-              }),
-              option: (provided, state) => ({
-                ...provided,
-                backgroundColor: state.isFocused
-                  ? palette.primaryColor
-                  : "white",
-                color: state.isSelected ? "black" : "black",
-                "&:hover": {
-                  backgroundColor: palette.primaryColor,
-                  color: "white",
-                },
-              }),
-            }}
+            styles={selectStyles}
           />
           {!!(errors.codeRole as any)?.message && (
             <ErrorMessage>{(errors.codeRole as any)?.message}</ErrorMessage>

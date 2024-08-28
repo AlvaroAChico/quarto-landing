@@ -10,4 +10,6 @@
 Node: v20.16.0
 React: 18.2.0
 
-## npx msw init public/
+## MockServicesWorker
+
+- `npx msw init public/` - Create MSW config file

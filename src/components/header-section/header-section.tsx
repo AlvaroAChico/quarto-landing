@@ -18,7 +18,7 @@ const HeaderSection: React.FC<IOwnProps> = ({
   return (
     <ContainerHeader>
       <div>
-        <h2>{title}</h2>
+        {/* <h2>{title}</h2> */}
         <p>{subtitle}</p>
       </div>
       <div>

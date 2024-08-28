@@ -1,12 +1,5 @@
 import React from "react"
-import { Outlet, useNavigate } from "react-router-dom"
-import { mockUsersPermissions } from "../../config/mocks/users"
-import {
-  ContainerActions,
-  ContainerBody,
-  ContainerHead,
-  ContainerTable,
-} from "./users.styles"
+import { useNavigate } from "react-router-dom"
 // Icons
 import { Edit } from "@styled-icons/fluentui-system-filled/Edit"
 import { Trash } from "@styled-icons/ionicons-solid/Trash"
@@ -17,9 +10,17 @@ import HeaderSection from "../../components/header-section/header-section"
 import { pathRoutes } from "../../config/routes/path"
 import { COOKIES_APP } from "../../constants/app"
 import { UserDTO } from "../../core/models/interfaces/user-model"
-import StatusPoint from "../../components/status-point/status-point"
 import ModalEditUser from "../../components/modal/variants/modal-edit-user/modal-edit-user"
 import ModalDeleteUser from "../../components/modal/variants/modal-delete-user/modal-delete-user"
+import {
+  ClasicStylesTD,
+  ContainerActions,
+  ContainerBody,
+  ContainerDropdown,
+  ContainerHead,
+  ContainerTable,
+} from "../../config/theme/global-styles"
+import { Ellipsis } from "@styled-icons/fa-solid/Ellipsis"
 
 const Users: React.FC = () => {
   const [listUsers, setListUsers] = React.useState<UserDTO[]>([])
@@ -28,10 +29,25 @@ const Users: React.FC = () => {
     React.useState<boolean>(false)
   const [dataUserEdit, setDataUserEdit] = React.useState<UserDTO>()
   const [dataUserDelete, setDataUserDelete] = React.useState<UserDTO>()
+  const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
+    null,
+  )
   const navigate = useNavigate()
 
   const handleCloseModalEdit = () => setIsOpenModalEdit(false)
   const handleCloseModalDelete = () => setIsOpenModalDelete(false)
+
+  const toggleDropdown = (projectId: string) => {
+    setDropdownVisible(prev => (prev === projectId ? null : projectId))
+    setTimeout(() => {
+      const dropOv = document.getElementById(`dropdown_ov${projectId}`)
+      if (!!dropOv) {
+        dropOv.focus()
+      }
+    }, 100)
+  }
+
+  const handleCleanDropdown = () => toggleDropdown("")
 
   const handleEditUser = React.useCallback(
     (userId: string) => () => {
@@ -49,13 +65,17 @@ const Users: React.FC = () => {
     [listUsers],
   )
 
+  const handleDeleteUserModal = () => {
+    handleCloseModalDelete()
+    fetchListUsers()
+  }
+
   const handleClick = React.useCallback(() => {
     navigate(pathRoutes.USERS.CREATE)
   }, [])
 
-  React.useEffect(() => {
+  const fetchListUsers = React.useCallback(() => {
     const storedToken = Cookies.get(COOKIES_APP.TOKEN_APP)
-
     if (storedToken) {
       axios
         .get("http://localhost:3000/users", {
@@ -77,6 +97,10 @@ const Users: React.FC = () => {
     }
   }, [])
 
+  React.useEffect(() => {
+    fetchListUsers()
+  }, [])
+
   return (
     <div>
       <HeaderSection
@@ -86,35 +110,52 @@ const Users: React.FC = () => {
         onPrimaryClick={handleClick}
       />
       <ContainerTable>
-        <ContainerHead>
-          <tr>
-            <td></td>
-            <td>Name</td>
-            <td>Actions</td>
-          </tr>
-        </ContainerHead>
-        <ContainerBody>
-          {/* <UsersContainer> */}
-          {(listUsers || []).map((user, index) => (
+        <table>
+          <ContainerHead>
             <tr>
-              {/* <td>{index + 1}</td> */}
-              <td>
-                <StatusPoint isActive={user.isActive} />
-              </td>
-              <td>
-                {user.firstName} {user.lastName}
-              </td>
-              <ContainerActions>
-                <div onClick={handleEditUser(`${user.id}`)}>
-                  <Edit />
-                </div>
-                <div onClick={handleDeleteUser(`${user.id}`)}>
-                  <Trash />
-                </div>
-              </ContainerActions>
+              <td>Name</td>
+              <td>Email</td>
+              <td></td>
             </tr>
-          ))}
-        </ContainerBody>
+          </ContainerHead>
+          <ContainerBody>
+            {(listUsers || []).map(user => (
+              <tr>
+                <ClasicStylesTD>
+                  <div>
+                    <span>{user.firstName}</span>
+                  </div>
+                </ClasicStylesTD>
+                <ClasicStylesTD>
+                  <div>
+                    <span>{user.email}</span>
+                  </div>
+                </ClasicStylesTD>
+                <ContainerActions>
+                  <div>
+                    <div onClick={() => toggleDropdown(`${user.id}`)}>
+                      <Ellipsis />
+                    </div>
+                    {dropdownVisible === `${user.id}` && (
+                      <ContainerDropdown
+                        id={`dropdown_ov${user.id}`}
+                        tabIndex={0}
+                        onBlur={handleCleanDropdown}
+                      >
+                        <span onClick={handleEditUser(`${user.id}`)}>
+                          Editar
+                        </span>
+                        <span onClick={handleDeleteUser(`${user.id}`)}>
+                          Eliminar
+                        </span>
+                      </ContainerDropdown>
+                    )}
+                  </div>
+                </ContainerActions>
+              </tr>
+            ))}
+          </ContainerBody>
+        </table>
       </ContainerTable>
       <ModalEditUser
         isOpen={isOpenModalEdit}
@@ -124,6 +165,7 @@ const Users: React.FC = () => {
       <ModalDeleteUser
         isOpen={isOpenModalDelete}
         handleClose={handleCloseModalDelete}
+        handleDeleteUser={handleDeleteUserModal}
         dataUserDelete={dataUserDelete!!}
       />
     </div>

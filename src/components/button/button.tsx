@@ -9,6 +9,8 @@ interface ButtonProps {
   className?: string
   text: string
   isLoading?: boolean
+  IconLeft?: any
+  IconRight?: any
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -17,6 +19,8 @@ const Button: React.FC<ButtonProps> = ({
   className,
   text,
   isLoading = false,
+  IconLeft,
+  IconRight,
 }) => {
   const handleClick = React.useCallback(() => {
     if (!isLoading) {
@@ -26,7 +30,9 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <StyledButton onClick={handleClick} type={type} className={className}>
+      {!!IconLeft && <IconLeft />}
       {isLoading ? <LoaderStyles /> : <>{text}</>}
+      {!!IconRight && <IconRight />}
     </StyledButton>
   )
 }
