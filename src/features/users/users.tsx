@@ -9,7 +9,10 @@ import { toast } from "sonner"
 import HeaderSection from "../../components/header-section/header-section"
 import { pathRoutes } from "../../config/routes/path"
 import { COOKIES_APP } from "../../constants/app"
-import { UserDTO } from "../../core/models/interfaces/user-model"
+import {
+  FilterPermissionsDTO,
+  UserDTO,
+} from "../../core/models/interfaces/user-model"
 import ModalEditUser from "../../components/modal/variants/modal-edit-user/modal-edit-user"
 import ModalDeleteUser from "../../components/modal/variants/modal-delete-user/modal-delete-user"
 import {
@@ -21,6 +24,8 @@ import {
   ContainerTable,
 } from "../../config/theme/global-styles"
 import { Ellipsis } from "@styled-icons/fa-solid/Ellipsis"
+import { settingsApp } from "../../config/environment/settings"
+import useDataUser from "../../utils/use-data-user"
 
 const Users: React.FC = () => {
   const [listUsers, setListUsers] = React.useState<UserDTO[]>([])
@@ -32,10 +37,25 @@ const Users: React.FC = () => {
   const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
     null,
   )
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
   const navigate = useNavigate()
 
   const handleCloseModalEdit = () => setIsOpenModalEdit(false)
   const handleCloseModalDelete = () => setIsOpenModalDelete(false)
+
+  const { handleGetPermissions } = useDataUser()
+
+  const getCookiesDataPermission = React.useCallback(() => {
+    const data = handleGetPermissions()
+    if (!!data) {
+      setDataPermissions(data)
+    }
+  }, [handleGetPermissions])
+
+  React.useEffect(() => {
+    getCookiesDataPermission()
+  }, [])
 
   const toggleDropdown = (projectId: string) => {
     setDropdownVisible(prev => (prev === projectId ? null : projectId))
@@ -78,9 +98,11 @@ const Users: React.FC = () => {
     const storedToken = Cookies.get(COOKIES_APP.TOKEN_APP)
     if (storedToken) {
       axios
-        .get("http://localhost:3000/users", {
+        .get(`${settingsApp.api.base}/users`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
           },
         })
         .then(response => {
@@ -106,7 +128,7 @@ const Users: React.FC = () => {
       <HeaderSection
         title="Users"
         subtitle="List of users"
-        nameButton="Create"
+        nameButton="New User"
         onPrimaryClick={handleClick}
       />
       <ContainerTable>
@@ -142,12 +164,22 @@ const Users: React.FC = () => {
                         tabIndex={0}
                         onBlur={handleCleanDropdown}
                       >
-                        <span onClick={handleEditUser(`${user.id}`)}>
-                          Editar
-                        </span>
-                        <span onClick={handleDeleteUser(`${user.id}`)}>
-                          Eliminar
-                        </span>
+                        {(
+                          dataPermissions ||
+                          ({ user: [] } as unknown as FilterPermissionsDTO)
+                        ).user.includes("edit") && (
+                          <span onClick={handleEditUser(`${user.id}`)}>
+                            Editar
+                          </span>
+                        )}
+                        {(
+                          dataPermissions ||
+                          ({ user: [] } as unknown as FilterPermissionsDTO)
+                        ).user.includes("delete") && (
+                          <span onClick={handleDeleteUser(`${user.id}`)}>
+                            Eliminar
+                          </span>
+                        )}
                       </ContainerDropdown>
                     )}
                   </div>

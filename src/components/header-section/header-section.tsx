@@ -1,6 +1,10 @@
 import React from "react"
 import { ContainerHeader } from "./header-section.styles"
+import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
 import Button from "../button/button"
+import { COOKIES_APP } from "../../constants/app"
+import Cookies from "js-cookie"
+import useDataUser from "../../utils/use-data-user"
 
 interface IOwnProps {
   title: string
@@ -15,6 +19,21 @@ const HeaderSection: React.FC<IOwnProps> = ({
   nameButton = "",
   onPrimaryClick = () => console.log,
 }) => {
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
+  const { handleGetPermissions } = useDataUser()
+
+  const getCookiesDataPermission = React.useCallback(() => {
+    const data = handleGetPermissions()
+    if (!!data) {
+      setDataPermissions(data)
+    }
+  }, [handleGetPermissions])
+
+  React.useEffect(() => {
+    getCookiesDataPermission()
+  }, [])
+
   return (
     <ContainerHeader>
       <div>
@@ -22,7 +41,12 @@ const HeaderSection: React.FC<IOwnProps> = ({
         <p>{subtitle}</p>
       </div>
       <div>
-        {!!nameButton && <Button text={nameButton} onClick={onPrimaryClick} />}
+        {!!nameButton &&
+          (
+            dataPermissions || ({ user: [] } as unknown as FilterPermissionsDTO)
+          ).user.includes("create") && (
+            <Button text={nameButton} onClick={onPrimaryClick} />
+          )}
       </div>
     </ContainerHeader>
   )
