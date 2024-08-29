@@ -6,30 +6,31 @@ import UserDeleteJSON from "../features/users/user-delete.json"
 import RolesListJSON from "../features/roles/role-list.json"
 import ProjectsListJSON from "../features/projects/project-list.json"
 import meJSON from "../features/auth/me.json"
+import { settingsApp } from "../../environment/settings"
 
 export const handlers = [
-  http.post("http://localhost:3000/auth/login", async ({ request }) => {
+  http.post(`${settingsApp.api.base}/auth/login`, async ({ request }) => {
     return HttpResponse.json(SignInJSON)
   }),
-  http.get("http://localhost:3000/me", async ({ request }) => {
+  http.get(`${settingsApp.api.base}/me`, async ({ request }) => {
     return HttpResponse.json(meJSON)
   }),
   // ******** USERS ********
-  http.get("http://localhost:3000/users", () => {
+  http.get(`${settingsApp.api.base}/users`, () => {
     return HttpResponse.json(UserListJSON)
   }),
-  http.post("http://localhost:3000/users/create", async ({ request }) => {
+  http.post(`${settingsApp.api.base}/users/create`, async ({ request }) => {
     return HttpResponse.json(UserCreateJSON)
   }),
-  http.post("http://localhost:3000/users/delete/1", async ({ request }) => {
+  http.post(`${settingsApp.api.base}/users/delete/1`, async ({ request }) => {
     return HttpResponse.json(UserDeleteJSON)
   }),
   // ******** ROLES ********
-  http.get("http://localhost:3000/roles", () => {
+  http.get(`${settingsApp.api.base}/roles`, () => {
     return HttpResponse.json(RolesListJSON)
   }),
   // ******** PROJECTS ********
-  http.get("http://localhost:3000/projects", () => {
+  http.get(`${settingsApp.api.base}/projects`, () => {
     return HttpResponse.json(ProjectsListJSON)
   }),
 ]
