@@ -1,64 +1,35 @@
 import React from "react"
-// Importación correcta
-import { useParams } from "react-router-dom"
-import {
-  AddNewTaskButton,
-  AddNewTaskButtonWrapper,
-  CircleGreen,
-  DataBlock,
-  InputAndButton,
-  InputSearch,
-  InputWrapper,
-  SearchIcon,
-  SwitchButton,
-  TaskBlock,
-  TaskList,
-  Title,
-  ItemTask,
-  ItemTaskName,
-  ItemTaskDate,
-  ItemTaskButtons,
-  DeleteButtonWithIcon,
-  DeleteIcon,
-  CircleOrange,
-  ItemTaskNameCircle,
-  ArrowRightIcon,
-  CompletedButton,
-  Check2Icon,
-} from "./details.styles"
-import {
-  DetailsContainer,
-  BackButton,
-  BackButtonBlock,
-  InfoAndButtons,
-  DateandSwitch,
-  Date,
-  EditButtonWithIcon,
-  EditIcon,
-  Switch,
-  Info,
-  Buttons,
-  DeleteButton,
-  EditButton,
-  StyledDeleteIcon,
-  StyledEditIcon,
-  NameProject,
-  Back,
-  DateSpace,
-  SwitchContainer,
-} from "./details.styles"
+import { Outlet, useParams } from "react-router-dom"
 import { useState } from "react"
-// import { mockProjects } from "../../../config/mocks/projects"
+import {
+  DataBlock,
+  DetailsContainer,
+  TaskList,
+  ImageContainer,
+  InfoBlock,
+  InfoItem,
+  ContractorSection,
+  IconWrapper,
+  AddButton,
+  Icon,
+  Text,
+  LeftSideDataBlock,
+  InfoBlockUp,
+  InfoBlockDown,
+  NameProject,
+  RightSideDataBlock,
+  ProjectMenu,
+  MenuItem,
+  CalendarIcon,
+  ClientNameProject,
+  ArrowDownIcon,
+  ButtonDown,
+  ContainerOutletProjectDetails,
+} from "./details.styles"
 
 const Details: React.FC = () => {
   const { id } = useParams<{ id: string }>()
   const [isActive, setIsActive] = useState(false)
-
-  //   const project = mockProjects.find(p => p.id === id)
-
-  //   if (!project) {
-  //     return <div>Proyecto no encontrado</div>
-  //   }
 
   const handleToggle = () => {
     setIsActive(prevState => !prevState)
@@ -67,77 +38,75 @@ const Details: React.FC = () => {
   return (
     <DetailsContainer>
       <DataBlock>
-        <BackButtonBlock>
-          <BackButton>
-            <Back />
-            Back
-          </BackButton>
-        </BackButtonBlock>
-        <InfoAndButtons>
-          <Info>
-            {/* <CircleGreen /> <NameProject>{project.name}</NameProject> */}
-          </Info>
-          <Buttons>
-            <EditButton>
-              Edit
-              <StyledEditIcon />
-            </EditButton>
-            <DeleteButton>
-              Delete <StyledDeleteIcon />
-            </DeleteButton>
-          </Buttons>
-        </InfoAndButtons>
-        <DateandSwitch>
-          <DateSpace>
-            {/* <Date>Start date: {project.startDate.toLocaleDateString()}</Date>
-            <Date>End date: {project.endDate.toLocaleDateString()}</Date> */}
-          </DateSpace>
-          <SwitchContainer onClick={handleToggle}>
-            <Switch isActive={isActive}>
-              <SwitchButton isActive={isActive} />
-            </Switch>
-          </SwitchContainer>
-        </DateandSwitch>
-      </DataBlock>
-      <TaskBlock>
-        <Title>Search task</Title>
-        <InputAndButton>
-          <InputWrapper>
-            <InputSearch placeholder="Search " />
-            <SearchIcon />
-          </InputWrapper>
-          <AddNewTaskButtonWrapper>
-            <AddNewTaskButton>Add New Task</AddNewTaskButton>
-          </AddNewTaskButtonWrapper>
-        </InputAndButton>
-      </TaskBlock>
-      <TaskList>
-        {/* {project.tasks.map((task, index) => (
-          <ItemTask key={index}>
-            <ItemTaskNameCircle>
-              <CircleOrange />
-              <ItemTaskName>{task.name}</ItemTaskName>
-            </ItemTaskNameCircle>
 
-            <ItemTaskDate>
-              <span>{task.startDate.toLocaleDateString()}</span>
-              <ArrowRightIcon />
-              <span>{task.endDate.toLocaleDateString()}</span>
-            </ItemTaskDate>
-            <ItemTaskButtons>
-              <CompletedButton>
-                Mark as completed <Check2Icon />{" "}
-              </CompletedButton>
-              <EditButtonWithIcon>
-                <EditIcon />
-              </EditButtonWithIcon>
-              <DeleteButtonWithIcon>
-                <DeleteIcon />
-              </DeleteButtonWithIcon>
-            </ItemTaskButtons>
-          </ItemTask>
-        ))} */}
-      </TaskList>
+        <LeftSideDataBlock>
+          <ImageContainer />
+          <InfoBlock>
+         {/*Nombre del proyecto */}
+            <InfoBlockUp>
+              <NameProject>Construction of Central Park</NameProject>
+            </InfoBlockUp>
+          {/*Datos como el cliente fecha y Contratista */}
+            <InfoBlockDown>
+              <InfoItem>
+                <Text>
+                  Cliente: <ClientNameProject>Zicia</ClientNameProject>
+                </Text>
+              </InfoItem>
+              <InfoItem>
+                <CalendarIcon />
+                <Text>23-Mar - 12 Apr</Text>
+                <ButtonDown>
+                  <ArrowDownIcon />
+                </ButtonDown>
+              </InfoItem>
+              <InfoItem>
+                <Icon className="person-icon" />
+                <Text>Contractor 1</Text>
+                <ButtonDown>
+                  <ArrowDownIcon />
+                </ButtonDown>
+              </InfoItem>
+            </InfoBlockDown>
+          </InfoBlock>
+        </LeftSideDataBlock>
+
+        <RightSideDataBlock>
+          <Text>Contractor:</Text>
+          {/*Falta hacer el bucle , de acuerdo a la cantidad de trabajadores */}
+          <ContractorSection>
+            <IconWrapper>👤</IconWrapper>
+            <IconWrapper>👤</IconWrapper>
+            <IconWrapper>👤</IconWrapper>
+            <IconWrapper>👤</IconWrapper>
+            <IconWrapper>
+              <AddButton>+2</AddButton>
+            </IconWrapper>
+            <AddButton>+</AddButton>
+          </ContractorSection>
+        </RightSideDataBlock>
+
+      </DataBlock>
+          {/*Menu*/}
+
+      <ProjectMenu>
+        <MenuItem to={`/projects/${id}/detail/overview`} end>
+          Overview
+        </MenuItem>
+        <MenuItem to={`/projects/${id}/detail/activity`}>Activity</MenuItem>
+        <MenuItem to={`/projects/${id}/detail/tasks`}>Tasks</MenuItem>
+        <MenuItem to={`/projects/${id}/detail/contractor`}>Contractor</MenuItem>
+        <MenuItem to={`/projects/${id}/detail/file`}>File</MenuItem>
+        <MenuItem to={`/projects/${id}/detail/settings`}>Settings</MenuItem>
+      </ProjectMenu>
+
+      {/*Espacio para outlet y barra inferior*/}
+      <ContainerOutletProjectDetails>
+        <div>
+          <Outlet />
+        </div>
+        <div></div>
+      </ContainerOutletProjectDetails>
     </DetailsContainer>
   )
 }
