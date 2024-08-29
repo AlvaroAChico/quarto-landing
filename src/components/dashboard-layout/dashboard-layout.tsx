@@ -31,13 +31,16 @@ import { pathRoutes } from "../../config/routes/path"
 import { COOKIES_APP } from "../../constants/app"
 import {
   FilterPermissionsDTO,
+  MeDTO,
   PermissionDTO,
+  SignInResponse,
   UserDTO,
 } from "../../core/models/interfaces/user-model"
 import Cookies from "js-cookie"
 import { toast } from "sonner"
 import axios from "axios"
 import { settingsApp } from "../../config/environment/settings"
+import useDataUser from "../../utils/use-data-user"
 
 const DashboardLayout: React.FC = () => {
   const [dataPermissions, setDataPermissions] =
@@ -46,10 +49,12 @@ const DashboardLayout: React.FC = () => {
   const [dataUser, setDataUser] = React.useState<UserDTO>()
   const navigate = useNavigate()
 
-  const refreshDataMe = async () => {
-    const storedToken = Cookies.get(COOKIES_APP.TOKEN_APP)
+  const { handleGetToken, clearAllDataAPP } = useDataUser()
 
-    if (storedToken) {
+  const refreshDataMe = async () => {
+    const storedToken = handleGetToken()
+
+    if (!!storedToken) {
       try {
         const response = await axios
           .get(`${settingsApp.api.base}/auth/me`, {
@@ -60,9 +65,54 @@ const DashboardLayout: React.FC = () => {
             },
           })
           .then(response => {
-            const meData: UserDTO[] = response.data as UserDTO[]
-            // setListUsers(listData)
-            console.log("meData -> ", meData)
+            const meData: MeDTO = response.data as MeDTO
+            if (!!meData && !!meData.id) {
+              const expiration = {
+                expires: 7,
+              }
+              const { roles, permisos, ...meUser } = meData
+              Cookies.set(
+                COOKIES_APP.USER_RES,
+                JSON.stringify(meUser),
+                expiration,
+              )
+              Cookies.set(
+                COOKIES_APP.ROLES_APP,
+                JSON.stringify(roles),
+                expiration,
+              )
+              // Filter data permissions
+              const result: FilterPermissionsDTO = {
+                user: [],
+                category: [],
+                client: [],
+                contractor: [],
+                project: [],
+                projectfile: [],
+                setting: [],
+                task: [],
+              }
+
+              permisos
+                .map(permission => permission.name)
+                .forEach(permission => {
+                  const parts = permission.split("-")
+                  const type = parts[0]
+
+                  if (type in result) {
+                    const action = parts.slice(1).join("-")
+                    result[type as keyof FilterPermissionsDTO].push(action)
+                  }
+                })
+
+              if (!!result) {
+                Cookies.set(
+                  COOKIES_APP.PERMISSIONS_APP,
+                  JSON.stringify(result),
+                  expiration,
+                )
+              }
+            }
           })
           .catch(err => {
             toast.error("Failed to fetch data")
@@ -70,6 +120,9 @@ const DashboardLayout: React.FC = () => {
       } catch (err) {
         toast.error("Failed to fetch data")
       }
+    } else {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
     }
   }
 
@@ -108,6 +161,11 @@ const DashboardLayout: React.FC = () => {
       ) as FilterPermissionsDTO
       setDataPermissions(permissions)
     }
+  }, [])
+
+  const handleLogout = React.useCallback(() => {
+    clearAllDataAPP()
+    navigate(pathRoutes.SIGN_IN)
   }, [])
 
   return (
@@ -177,10 +235,16 @@ const DashboardLayout: React.FC = () => {
           <ContainerProfile>
             <ContainerAvatarSide>
               <div>
-                <div>
-                  {!!dataUser?.firstName ? dataUser?.firstName[0] : ""}
-                  {!!dataUser?.lastName ? dataUser?.lastName[0] : ""}
-                </div>
+                {!!dataUser && !!dataUser?.picture ? (
+                  <div>
+                    <img src={dataUser?.picture} />
+                  </div>
+                ) : (
+                  <div>
+                    {!!dataUser?.firstName ? dataUser?.firstName[0] : ""}
+                    {!!dataUser?.lastName ? dataUser?.lastName[0] : ""}
+                  </div>
+                )}
                 <StatusOnline />
               </div>
               <div>
@@ -191,7 +255,7 @@ const DashboardLayout: React.FC = () => {
               </div>
             </ContainerAvatarSide>
             <ContainerOptions>
-              <ExitToApp />
+              <ExitToApp onClick={handleLogout} />
             </ContainerOptions>
           </ContainerProfile>
         </div>

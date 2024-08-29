@@ -22,6 +22,8 @@ export const ModalContent = styled.div`
   z-index: 12;
   position: relative;
   padding-top: 40px;
+  max-height: 85%;
+  overflow: auto;
 `
 
 export const ContainerTitle = styled.div`

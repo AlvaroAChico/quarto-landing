@@ -1,22 +1,110 @@
 import styled, { createGlobalStyle } from "styled-components"
 import { palette } from "./theme"
-import { BorderRadius } from "styled-icons/boxicons-regular"
 
 export const GlobalStyles = createGlobalStyle`
-    // input {
-    //     display: flex;
-    //     align-items: center;
-    //     border: 1px solid #ebebeb; // Color del borde
-    //     border-radius: 10px; // Radio del borde
-    //     padding: 10px 15px;
-    //     max-width: 400px;
-    //     width: 100%;
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-    //     &:focus-within {
-    //       border-color: #f59e36; // Color del borde cuando está enfocado
-    //       box-shadow: 0 0 8px rgba(245, 158, 54, 0.5); // Sombra cuando está enfocado
-    //     }
-    // }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  .react-datepicker-wrapper {
+    // visibility: hidden;
+    // position: absolute;
+    // opacity: 0;
+    // bottom: 0;
+  }
+
+  .react-datepicker {
+    border-radius: 22px 22px 8px 8px;
+    border-top: 0;
+  }
+  
+  .react-datepicker__input-container{
+    display: flex;
+    gap:20px;
+
+    > svg {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      margin-left: 10px;
+    }
+
+    > input {
+      border: 1px solid #ebebeb;
+      border-radius: 10px;
+      padding-left: 50px;
+      max-width: 400px;
+      font-size: 15px;
+      height: 47px;
+      width: 100%;
+
+      &:focus-within {
+        border-color: #f59e36; // Color del borde cuando está enfocado
+        box-shadow: 0 0 8px rgba(245, 158, 54, 0.5); // Sombra cuando está enfocado
+      }
+    }
+  }
+
+  .react-datepicker__current-month {
+    color: white;
+  }
+
+  .react-datepicker__header__dropdown {
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  .react-datepicker__day-name {
+    color: white !important;
+  }
+
+  .react-datepicker__month-select,
+  .react-datepicker__year-select {
+    color: ${palette.primaryColor};
+    border-radius: 6px;
+    padding: 3px 15px;
+    outline: none;
+    width: 100%;
+  }
+
+  .react-datepicker__month-dropdown-container--select,
+  .react-datepicker__year-dropdown-container--select {
+    margin: 0px 5px;
+  }
+
+  .react-datepicker__day-name {
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+
+  .react-datepicker__header {
+    background: ${palette.primaryColor};
+    border-bottom: 0px solid #aeaeae;
+    border-top: 0px solid #aeaeae;
+    border-radius: 6px;
+    margin: auto;
+    width: 100%;
+  }
+
+  .react-datepicker__triangle::after,
+  .react-datepicker__triangle::before {
+    border-bottom-color: ${palette.primaryColor} !important;
+    top: 1px !important;
+  }
+
+  .react-datepicker__day--selected,
+  .react-datepicker__day--keyboard-selected {
+    background: ${palette.secondaryColor};
+    outline: none;
+    color: white;
+  }
   `
 
 export const WrapperInput = styled.div`
@@ -140,6 +228,83 @@ export const ContainerDropdown = styled.div`
     &:hover {
       background: ${palette.grayLightColor};
     }
+  }
+`
+
+export const CustomWrapperInputAvatar = styled(WrapperInput)`
+  > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    div {
+      > svg {
+        width: 100%;
+        max-width: 20px;
+      }
+    }
+  }
+`
+export const ContainerImageAvatar = styled.div`
+  position: relative;
+  height: 160px;
+  width: 160px;
+
+  > img {
+    border: 2px solid ${palette.grayColor};
+    place-items: center;
+    border-radius: 50%;
+    object-fit: cover;
+    display: grid;
+    height: 160px;
+    width: 160px;
+  }
+
+  > div {
+    box-shadow:
+      rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+      rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+    background: ${palette.errorColor};
+    place-items: center;
+    position: absolute;
+    border-radius: 50%;
+    cursor: pointer;
+    display: grid;
+    padding: 8px;
+    height: 40px;
+    width: 40px;
+    bottom: 0;
+    right: 0;
+
+    > svg {
+      color: white;
+      width: 100%;
+      max-width: 15px;
+    }
+  }
+`
+
+export const ContainerDragAndDropAvatar = styled.div<{ isDragActive: boolean }>`
+  border: 1px solid ${p => (p.isDragActive ? palette.successColor : "#ebebeb")};
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-radius: 50%;
+  padding: 4px 14px;
+  display: flex;
+  height: 160px;
+  width: 160px;
+  gap: 10px;
+
+  > p {
+    color: ${palette.grayColor};
+    font-size: 14px;
+  }
+
+  &:focus-within {
+    border-color: #f59e36; // Color del borde cuando está enfocado
+    box-shadow: 0 0 8px rgba(245, 158, 54, 0.5); // Sombra cuando está enfocado
   }
 `
 

@@ -1,8 +1,17 @@
 export interface DataRoleResponse {
   id: number
-  uuid: string
   name: string
-  isActive: boolean
+  guardName: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface RoleDTO {
+  id: number
+  name: string
+  guardName: string
+  createdAt: string
+  updatedAt: string
 }
 
 export interface RoleOptionType {

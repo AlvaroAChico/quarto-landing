@@ -1,24 +1,22 @@
 import React from "react"
 import Modal from "../../modal"
-import {
-  MessageResponsedDTO,
-  UserDTO,
-} from "../../../../core/models/interfaces/user-model"
+import { MessageResponsedDTO } from "../../../../core/models/interfaces/user-model"
 import Button from "../../../button/button"
 import axios from "axios"
 import { toast } from "sonner"
-import { ContainerModal } from "./modal-delete-user.styles"
+import { ContainerModal } from "./modal-delete-role.styles"
 import { settingsApp } from "../../../../config/environment/settings"
 import useDataUser from "../../../../utils/use-data-user"
+import { RoleDTO } from "../../../../core/models/interfaces/roles-model"
 
 interface IOwnProps {
   isOpen: boolean
-  dataUserDelete: UserDTO
+  dataUserDelete: RoleDTO
   handleClose: () => void
   handleDeleteUser: () => void
 }
 
-const ModalDeleteUser: React.FC<IOwnProps> = ({
+const ModalDeleteRole: React.FC<IOwnProps> = ({
   isOpen,
   dataUserDelete,
   handleClose,
@@ -35,7 +33,7 @@ const ModalDeleteUser: React.FC<IOwnProps> = ({
 
     if (!!storedToken) {
       axios
-        .delete(`${settingsApp.api.base}/users/${dataUserDelete.id}`, {
+        .delete(`${settingsApp.api.base}/roles/${dataUserDelete.id}`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             "Content-Type": "application/json",
@@ -63,7 +61,7 @@ const ModalDeleteUser: React.FC<IOwnProps> = ({
         <div>
           <p>
             Are you sure you want to delete user{" "}
-            <span>{!!dataUserDelete ? dataUserDelete.firstName : ""}</span>?
+            <span>{!!dataUserDelete ? dataUserDelete.name : ""}</span>?
           </p>
         </div>
         <div>
@@ -79,4 +77,4 @@ const ModalDeleteUser: React.FC<IOwnProps> = ({
   )
 }
 
-export default ModalDeleteUser
+export default ModalDeleteRole

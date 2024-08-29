@@ -38,6 +38,9 @@ import {
 import Input from "../../components/input/input"
 import { Search } from "styled-icons/bootstrap"
 import Select from "react-select"
+import useDataUser from "../../utils/use-data-user"
+import { settingsApp } from "../../config/environment/settings"
+import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
 
 const Projects: React.FC = () => {
   const [listProjects, setListProjects] = React.useState<ProjectDTO[]>([])
@@ -45,7 +48,22 @@ const Projects: React.FC = () => {
   const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
     null,
   )
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
   const navigate = useNavigate()
+
+  const { handleGetToken, handleGetPermissions } = useDataUser()
+
+  const getCookiesDataPermission = React.useCallback(() => {
+    const data = handleGetPermissions()
+    if (!!data) {
+      setDataPermissions(data)
+    }
+  }, [handleGetPermissions])
+
+  React.useEffect(() => {
+    getCookiesDataPermission()
+  }, [])
 
   const toggleDropdown = (projectId: string) => {
     setDropdownVisible(prev => (prev === projectId ? null : projectId))
@@ -79,12 +97,14 @@ const Projects: React.FC = () => {
   }, [])
 
   const fetchDataProjects = React.useCallback(() => {
-    const storedToken = Cookies.get(COOKIES_APP.TOKEN_APP)
-    if (storedToken) {
+    const storedToken = handleGetToken()
+    if (!!storedToken) {
       axios
-        .get("http://localhost:3000/projects", {
+        .get(`${settingsApp.api.base}/projects`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
           },
         })
         .then(response => {
@@ -127,6 +147,9 @@ const Projects: React.FC = () => {
         title="Projects"
         subtitle="Projects"
         nameButton="New Project"
+        havePermissionCreate={
+          dataPermissions?.project.includes("create") || false
+        }
         onPrimaryClick={handleClick}
       />
       <ContentStylesSection>

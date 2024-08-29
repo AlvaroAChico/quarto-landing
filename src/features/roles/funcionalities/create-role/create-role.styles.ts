@@ -5,6 +5,18 @@ export const ContainerRoles = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  gap: 20px;
+
+  > div:nth-child(1) {
+    max-width: 600px;
+    margin: auto;
+    width: 100%;
+
+    > div {
+      max-width: 600px;
+      width: 100%;
+    }
+  }
 `
 export const Title = styled.h2`
   color: orange;
@@ -124,11 +136,34 @@ export const ContainerTitle = styled.div`
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  padding: 0.5rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
   background-color: #fff;
   font-weight: bold;
+  border: 1px solid #ebebeb;
+  border-radius: 10px;
+  padding: 15px 20px;
+  width: 100%;
 `
 
 export const ItemPermission = styled.div``
+
+export const ContainerSwitchs = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
+export const ContainerListSwitchs = styled.div`
+  flex-direction: row;
+  display: flex;
+  gap: 10px;
+`
+
+export const ContainerBodySwitch = styled.div`
+  justify-content: space-between;
+  flex-direction: row;
+  display: flex;
+  gap: 10px;
+
+  > span {
+    text-transform: capitalize;
+  }
+`

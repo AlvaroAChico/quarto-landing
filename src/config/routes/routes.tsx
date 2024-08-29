@@ -15,6 +15,7 @@ import Tasks from "../../features/tasks/tasks"
 import CreateTask from "../../features/tasks/functionalities/create-task/create-task"
 import Reports from "../../features/reports/reports"
 import Calendar from "../../features/calendar/calendar"
+import CreateProject from "../../features/projects/functionalities/create-project/create-project"
 
 export const router = createBrowserRouter([
   {
@@ -63,7 +64,7 @@ export const router = createBrowserRouter([
           },
           {
             path: pathRoutes.PROJECTS.CREATE,
-            element: <Projects />,
+            element: <CreateProject />,
           },
           {
             path: pathRoutes.PROJECTS.DETAIL,

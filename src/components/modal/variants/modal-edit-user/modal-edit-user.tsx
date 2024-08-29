@@ -12,6 +12,9 @@ import {
 } from "../../../../core/models/interfaces/user-model"
 import { FormContainer } from "./modal-edit-user.styles"
 import {
+  ContainerDragAndDropAvatar,
+  ContainerImageAvatar,
+  CustomWrapperInputAvatar,
   ErrorMessage,
   selectStyles,
   WrapperInput,
@@ -21,11 +24,13 @@ import { palette } from "../../../../config/theme/theme"
 import Button from "../../../button/button"
 import Input from "../../../input/input"
 import Select from "react-select"
-import Cookies from "js-cookie"
 import axios from "axios"
 import { toast } from "sonner"
-import { COOKIES_APP } from "../../../../constants/app"
 import { DataRoleResponse } from "../../../../core/models/interfaces/roles-model"
+import useDataUser from "../../../../utils/use-data-user"
+import { Trash } from "@styled-icons/ionicons-solid/Trash"
+import { CardImage } from "@styled-icons/bootstrap/CardImage"
+import { useDropzone } from "react-dropzone"
 
 interface IOwnProps {
   isOpen: boolean
@@ -43,13 +48,17 @@ const ModalEditUser: React.FC<IOwnProps> = ({
   const [isSubmitUserUpdate, setIsSubmitUserUpdate] =
     React.useState<boolean>(false)
 
+  const { handleGetToken } = useDataUser()
+
   const methods = useForm<UpdateUserForm>({
     resolver: yupResolver(UpdateUserSchema),
     defaultValues: {
       firstName: !!dataUserEdit ? dataUserEdit.firstName : "",
       lastName: !!dataUserEdit ? dataUserEdit.lastName : "",
+      contactNumber: "",
       email: !!dataUserEdit ? dataUserEdit.email : "",
-      codeRole: !!dataUserEdit ? dataUserEdit.role.uuid : "",
+      password: "",
+      role: "",
     },
   })
 
@@ -61,7 +70,7 @@ const ModalEditUser: React.FC<IOwnProps> = ({
   } = methods
 
   const handleChangeOptionRole = (value: any) => {
-    setValue("codeRole", value.value)
+    setValue("role", value.value)
     setSelectedOptionRole(value)
   }
 
@@ -77,9 +86,9 @@ const ModalEditUser: React.FC<IOwnProps> = ({
       .then(response => {
         setIsSubmitUserUpdate(false)
         const data: CreateUserDTO = response.data as CreateUserDTO
-        if (!!data && data.code == 200 && !!data.data) {
-          toast.success(data.message)
-        }
+        // if (!!data && data == 200 && !!data.data) {
+        //   toast.success(data.message)
+        // }
       })
       .catch(err => {
         setIsSubmitUserUpdate(false)
@@ -88,9 +97,9 @@ const ModalEditUser: React.FC<IOwnProps> = ({
   }, [])
 
   React.useEffect(() => {
-    const storedToken = Cookies.get(COOKIES_APP.TOKEN_APP)
+    const storedToken = handleGetToken()
 
-    if (storedToken) {
+    if (!!storedToken) {
       axios
         .get("http://localhost:3000/roles", {
           headers: {
@@ -102,7 +111,7 @@ const ModalEditUser: React.FC<IOwnProps> = ({
             response.data as DataRoleResponse[]
           setOptionsRoles(
             listData.map(role => ({
-              value: role.uuid,
+              value: role.name,
               label: role.name,
             })),
           )
@@ -118,17 +127,94 @@ const ModalEditUser: React.FC<IOwnProps> = ({
       setValue("firstName", dataUserEdit.firstName)
       setValue("lastName", dataUserEdit.lastName)
       setValue("email", dataUserEdit.email)
-      setValue("codeRole", dataUserEdit.role.uuid)
-      setSelectedOptionRole({
-        value: dataUserEdit.role.uuid,
-        label: dataUserEdit.role.name,
-      })
+      // setValue("role", dataUserEdit.role)
+      // setSelectedOptionRole({
+      //   value: dataUserEdit.role.uuid,
+      //   label: dataUserEdit.role.name,
+      // })
     }
   }, [dataUserEdit])
+
+  const [infoPicture, setInfoPicture] = React.useState<any>()
+  const handleDeletePictureUser = () => {
+    setValue("picture", "")
+    setInfoPicture("")
+  }
+  const onDrop = React.useCallback((acceptedFiles: any, rejectedFiles: any) => {
+    if (acceptedFiles.length > 0) {
+      if (acceptedFiles.length > 1) {
+        toast.error("Solo se permite un archivo.")
+        return
+      }
+      const file = acceptedFiles[0]
+      setValue("picture", file)
+
+      const reader = new FileReader()
+
+      reader.onabort = () => toast.error("File reading was aborted")
+      reader.onerror = () => toast.error("File reading has failed")
+      reader.onload = () => {
+        const binaryStr = reader.result
+        if (binaryStr instanceof ArrayBuffer) {
+          const blob = new Blob([binaryStr], { type: file.type })
+          const imageUrl = URL.createObjectURL(blob)
+          setInfoPicture(imageUrl)
+        } else {
+          toast.error("Error al leer el archivo.")
+        }
+      }
+      reader.readAsArrayBuffer(file)
+    }
+
+    if (rejectedFiles.length > 0) {
+      console.log("rejectedFiles -> ", rejectedFiles)
+      toast.error(
+        'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
+      )
+    }
+  }, [])
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "image/png": [".png"],
+      "image/jpeg": [".jpg", ".jpeg"],
+    },
+    maxFiles: 1,
+  })
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="Edit User">
       <FormContainer>
+        <CustomWrapperInputAvatar>
+          <label htmlFor="picture-create-project">Picture</label>
+          <div>
+            {!!infoPicture ? (
+              <ContainerImageAvatar>
+                <img src={infoPicture} />
+                <div onClick={handleDeletePictureUser}>
+                  <Trash />
+                </div>
+              </ContainerImageAvatar>
+            ) : (
+              <ContainerDragAndDropAvatar
+                {...getRootProps()}
+                isDragActive={isDragActive}
+              >
+                <CardImage />
+                <input {...getInputProps()} />
+                {isDragActive ? (
+                  <p>Drop picture here</p>
+                ) : (
+                  <p>Drag or click to upload an image</p>
+                )}
+              </ContainerDragAndDropAvatar>
+            )}
+          </div>
+          {!!(errors.picture as any)?.message && (
+            <ErrorMessage>{(errors.picture as any)?.message}</ErrorMessage>
+          )}
+        </CustomWrapperInputAvatar>
         <WrapperInput>
           <label htmlFor="firstname-create-user">First Name</label>
           <Input
@@ -174,8 +260,8 @@ const ModalEditUser: React.FC<IOwnProps> = ({
             isSearchable={false}
             styles={selectStyles}
           />
-          {!!(errors.codeRole as any)?.message && (
-            <ErrorMessage>{(errors.codeRole as any)?.message}</ErrorMessage>
+          {!!(errors.role as any)?.message && (
+            <ErrorMessage>{(errors.role as any)?.message}</ErrorMessage>
           )}
         </WrapperInput>
         <Button

@@ -23,6 +23,11 @@ export const StyledButton = styled.button`
     transform: scale(1.05);
   }
 
+  > svg {
+    width: 100%;
+    max-width: 20px;
+  }
+
   ${breakpoints.phoneSmall} {
     min-width: 150px;
     margin: auto;

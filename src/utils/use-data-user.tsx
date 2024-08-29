@@ -18,10 +18,11 @@ const useDataUser = () => {
   const handleGetToken = (): string => {
     const storedToken = Cookies.get(COOKIES_APP.TOKEN_APP)
     if (storedToken != null && storedToken != undefined) {
-      return storedToken
+      return JSON.parse(storedToken)
     }
     return ""
   }
+
   const handleGetPermissions = (): FilterPermissionsDTO => {
     const data = Cookies.get(COOKIES_APP.PERMISSIONS_APP)
     if (!!data && data != null && data != undefined) {
@@ -37,9 +38,17 @@ const useDataUser = () => {
     }, {} as FilterPermissionsDTO)
   }
 
+  const clearAllDataAPP = () => {
+    Cookies.remove(COOKIES_APP.USER_RES)
+    Cookies.remove(COOKIES_APP.TOKEN_APP)
+    Cookies.remove(COOKIES_APP.ROLES_APP)
+    Cookies.remove(COOKIES_APP.PERMISSIONS_APP)
+  }
+
   return {
     handleGetToken,
     handleGetPermissions,
+    clearAllDataAPP,
   }
 }
 

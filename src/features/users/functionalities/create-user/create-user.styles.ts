@@ -1,4 +1,6 @@
 import styled from "styled-components"
+import { WrapperInput } from "../../../../config/theme/global-styles"
+import { palette } from "../../../../config/theme/theme"
 
 export const FormContainer = styled.div`
   display: flex;

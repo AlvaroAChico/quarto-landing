@@ -5,11 +5,13 @@ import Button from "../button/button"
 import { COOKIES_APP } from "../../constants/app"
 import Cookies from "js-cookie"
 import useDataUser from "../../utils/use-data-user"
+import { Plus } from "styled-icons/boxicons-regular"
 
 interface IOwnProps {
   title: string
   subtitle?: string
   nameButton?: string
+  havePermissionCreate?: boolean
   onPrimaryClick?: () => void
 }
 
@@ -17,23 +19,9 @@ const HeaderSection: React.FC<IOwnProps> = ({
   title,
   subtitle = "",
   nameButton = "",
+  havePermissionCreate = false,
   onPrimaryClick = () => console.log,
 }) => {
-  const [dataPermissions, setDataPermissions] =
-    React.useState<FilterPermissionsDTO>()
-  const { handleGetPermissions } = useDataUser()
-
-  const getCookiesDataPermission = React.useCallback(() => {
-    const data = handleGetPermissions()
-    if (!!data) {
-      setDataPermissions(data)
-    }
-  }, [handleGetPermissions])
-
-  React.useEffect(() => {
-    getCookiesDataPermission()
-  }, [])
-
   return (
     <ContainerHeader>
       <div>
@@ -41,12 +29,9 @@ const HeaderSection: React.FC<IOwnProps> = ({
         <p>{subtitle}</p>
       </div>
       <div>
-        {!!nameButton &&
-          (
-            dataPermissions || ({ user: [] } as unknown as FilterPermissionsDTO)
-          ).user.includes("create") && (
-            <Button text={nameButton} onClick={onPrimaryClick} />
-          )}
+        {havePermissionCreate && (
+          <Button text={nameButton} onClick={onPrimaryClick} IconLeft={Plus} />
+        )}
       </div>
     </ContainerHeader>
   )
