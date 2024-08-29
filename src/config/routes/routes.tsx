@@ -16,6 +16,9 @@ import CreateTask from "../../features/tasks/functionalities/create-task/create-
 import Reports from "../../features/reports/reports"
 import Calendar from "../../features/calendar/calendar"
 import CreateProject from "../../features/projects/functionalities/create-project/create-project"
+import DetailsOverview from "../../features/projects/details/components/overview/overview"
+import DetailsTask from "../../features/projects/details/components/task/task"
+import DetailsActivity from "../../features/projects/details/components/activity/activity"
 
 export const router = createBrowserRouter([
   {
@@ -67,8 +70,36 @@ export const router = createBrowserRouter([
             element: <CreateProject />,
           },
           {
-            path: pathRoutes.PROJECTS.DETAIL,
+            path: pathRoutes.PROJECTS.DETAIL.LIST,
             element: <Details />,
+            children: [
+              {
+                path: pathRoutes.PROJECTS.DETAIL.OVERVIEW,
+                element: <DetailsOverview />,
+                index: true,
+              },
+              {
+                path: pathRoutes.PROJECTS.DETAIL.ACTIVITY,
+                element: <DetailsActivity />,
+              },
+
+              {
+                path: pathRoutes.PROJECTS.DETAIL.TASKS,
+                element: <DetailsTask />,
+              },
+              {
+                path: "/projects/:id/detail/contractor",
+                element: <></>,
+              },
+              {
+                path: "/projects/:id/detail/file",
+                element: <></>,
+              },
+              {
+                path: "/projects/:id/detail/settings",
+                element: <></>,
+              },
+            ],
           },
         ],
       },
