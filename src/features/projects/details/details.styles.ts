@@ -33,6 +33,7 @@ export const DataBlock = styled.div`
 export const ImageContainer = styled.div`
   width: 80px;
   height: 70px;
+  min-width: 80px;
   border-radius: 20px;
   background-color: #e0e0e0; /* Fondo gris claro como placeholder */
   display: flex;
@@ -231,7 +232,6 @@ export const ContainerOutletProjectDetails = styled.div`
   & > div:nth-child(1) {
     flex: 1;
     border-bottom: 6px solid #eff1f6;
-    overflow-y: auto;
   }
 
   & > div:nth-child(2) {
