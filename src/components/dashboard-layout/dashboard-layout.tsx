@@ -189,7 +189,7 @@ const DashboardLayout: React.FC = () => {
               <p>Dashboard</p>
             </ItemNavLink>
             {dataPermissions?.user.includes("list") && (
-              <ItemNavLink
+            <ItemNavLink
                 to={pathRoutes.USERS.LIST}
                 className={({ isActive }) => (isActive ? "active" : "inactive")}
               >
