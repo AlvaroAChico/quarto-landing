@@ -32,6 +32,7 @@ import {
   ContainerDropdown,
   ContainerHead,
   ContainerTable,
+  NotFoundStyles,
   selectStyles,
   WrapperInput,
 } from "../../config/theme/global-styles"
@@ -41,9 +42,13 @@ import Select from "react-select"
 import useDataUser from "../../utils/use-data-user"
 import { settingsApp } from "../../config/environment/settings"
 import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
+import Skeleton from "react-loading-skeleton"
+import "react-loading-skeleton/dist/skeleton.css"
 
 const Projects: React.FC = () => {
   const [listProjects, setListProjects] = React.useState<ProjectDTO[]>([])
+  const [isLoadingListProjects, setIsLoadingListProjects] =
+    React.useState<boolean>(false)
   const [stadisticts, setStadisticts] = React.useState<StadisticsDTO>()
   const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
     null,
@@ -81,7 +86,6 @@ const Projects: React.FC = () => {
     handleCleanDropdown()
     console.log("Delete edit -> ", projectId)
   }
-  // navigate(`/role/${projectId}`)
 
   const handleDeleteProject = (projectId: string) => () => {
     handleCleanDropdown()
@@ -97,6 +101,7 @@ const Projects: React.FC = () => {
   }, [])
 
   const fetchDataProjects = React.useCallback(() => {
+    setIsLoadingListProjects(true)
     const storedToken = handleGetToken()
     if (!!storedToken) {
       axios
@@ -119,13 +124,11 @@ const Projects: React.FC = () => {
             setListProjects(dataResponse.listProjects)
             setStadisticts(dataResponse.stadistics)
           }
+          setIsLoadingListProjects(false)
         })
         .catch(err => {
           toast.error("Failed to fetch data")
-          console.log(
-            "Error Axios GET -> ",
-            err.response ? err.response.data : err,
-          )
+          setIsLoadingListProjects(false)
         })
     }
   }, [])
@@ -167,98 +170,149 @@ const Projects: React.FC = () => {
             </>
           )}
         </CardStadistics>
-        <ContainerTable>
-          <ContainerFilters>
-            <div>
-              <WrapperInput>
-                <Input
-                  id="email-create-user"
-                  placeholder="Search"
-                  icon={Search}
-                  props={undefined} // props={register("email")}
-                />
-              </WrapperInput>
-            </div>
-            <div>
-              <div>
-                <Select
-                  defaultValue={selectedOptionRole}
-                  onChange={handleChangeOptionRole}
-                  options={monthsSelect}
-                  isSearchable={false}
-                  styles={selectStyles}
-                  placeholder="Month"
-                />
-              </div>
-            </div>
-          </ContainerFilters>
-          <table>
-            <ContainerHead>
-              <tr>
-                <td>Project</td>
-                <td>Progress</td>
-                {/* <td>Contractor</td> */}
-                <td>Client</td>
-                <td>Due Date</td>
-                <td></td>
-              </tr>
-            </ContainerHead>
-            <ContainerBody>
-              {(listProjects || []).map(project => (
+        {isLoadingListProjects && (
+          <ContainerTable>
+            <table>
+              <ContainerHead>
                 <tr>
-                  <NameStylesTD>
-                    <div>
-                      <span>{project.name}</span>
-                      <span>{project.status}</span>
-                    </div>
-                  </NameStylesTD>
-                  <ProgressStylesTD progress={project.progress}>
-                    <div>
-                      <span>{project.progress} %</span>
-                      <div></div>
-                      <span>{project.pending_task} tasks</span>
-                    </div>
-                  </ProgressStylesTD>
-                  {/* <td>{project.contractors[0].fullName}</td> */}
-                  <ClientStylesTD>
-                    <div>
-                      <span>
-                        <User />
-                      </span>
-                      <span>{project.client.split(" ")[1]}</span>
-                    </div>
-                  </ClientStylesTD>
-                  <DateStylesTD>
-                    <div>
-                      <span>{formatDate(project.dueDate)}</span>
-                    </div>
-                  </DateStylesTD>
-                  <ContainerActions>
-                    <div>
-                      <div onClick={() => toggleDropdown(`${project.id}`)}>
-                        <Ellipsis />
-                      </div>
-                      {dropdownVisible === `${project.id}` && (
-                        <ContainerDropdown
-                          id={`dropdown_ov${project.id}`}
-                          tabIndex={0}
-                          onBlur={handleCleanDropdown}
-                        >
-                          <span onClick={handleEditProject(`${project.id}`)}>
-                            Editar
-                          </span>
-                          <span onClick={handleDeleteProject(`${project.id}`)}>
-                            Eliminar
-                          </span>
-                        </ContainerDropdown>
-                      )}
-                    </div>
-                  </ContainerActions>
+                  <td>Project</td>
+                  <td>Progress</td>
+                  <td>Client</td>
+                  <td>Due Date</td>
+                  <td></td>
                 </tr>
-              ))}
-            </ContainerBody>
-          </table>
-        </ContainerTable>
+              </ContainerHead>
+              <ContainerBody>
+                <tr>
+                  <td colSpan={5}>
+                    <Skeleton count={3} height={40} />
+                  </td>
+                </tr>
+              </ContainerBody>
+            </table>
+          </ContainerTable>
+        )}
+        {!isLoadingListProjects &&
+          !!listProjects &&
+          listProjects.length <= 0 && (
+            <>
+              <ContainerTable>
+                <table>
+                  <ContainerHead>
+                    <tr>
+                      <td>Project</td>
+                      <td>Progress</td>
+                      <td>Client</td>
+                      <td>Due Date</td>
+                      <td></td>
+                    </tr>
+                  </ContainerHead>
+                </table>
+                <NotFoundStyles>
+                  <span>No projects found</span>
+                </NotFoundStyles>
+              </ContainerTable>
+            </>
+          )}
+        {!isLoadingListProjects &&
+          !!listProjects &&
+          listProjects.length > 0 && (
+            <ContainerTable>
+              <ContainerFilters>
+                <div>
+                  <WrapperInput>
+                    <Input
+                      id="email-create-user"
+                      placeholder="Search"
+                      icon={Search}
+                      props={undefined} // props={register("email")}
+                    />
+                  </WrapperInput>
+                </div>
+                <div>
+                  <div>
+                    <Select
+                      defaultValue={selectedOptionRole}
+                      onChange={handleChangeOptionRole}
+                      options={monthsSelect}
+                      isSearchable={false}
+                      styles={selectStyles}
+                      placeholder="Month"
+                    />
+                  </div>
+                </div>
+              </ContainerFilters>
+              <table>
+                <ContainerHead>
+                  <tr>
+                    <td>Project</td>
+                    <td>Progress</td>
+                    <td>Client</td>
+                    <td>Due Date</td>
+                    <td></td>
+                  </tr>
+                </ContainerHead>
+                <ContainerBody>
+                  {(listProjects || []).map(project => (
+                    <tr>
+                      <NameStylesTD>
+                        <div>
+                          <span>{project.name}</span>
+                          <span>{project.status}</span>
+                        </div>
+                      </NameStylesTD>
+                      <ProgressStylesTD progress={project.progress}>
+                        <div>
+                          <span>{project.progress} %</span>
+                          <div></div>
+                          <span>{project.pending_task} tasks</span>
+                        </div>
+                      </ProgressStylesTD>
+                      {/* <td>{project.contractors[0].fullName}</td> */}
+                      <ClientStylesTD>
+                        <div>
+                          <span>
+                            <User />
+                          </span>
+                          <span>{project.client.split(" ")[1]}</span>
+                        </div>
+                      </ClientStylesTD>
+                      <DateStylesTD>
+                        <div>
+                          <span>{formatDate(project.dueDate)}</span>
+                        </div>
+                      </DateStylesTD>
+                      <ContainerActions>
+                        <div>
+                          <div onClick={() => toggleDropdown(`${project.id}`)}>
+                            <Ellipsis />
+                          </div>
+                          {dropdownVisible === `${project.id}` && (
+                            <ContainerDropdown
+                              id={`dropdown_ov${project.id}`}
+                              tabIndex={0}
+                              onBlur={handleCleanDropdown}
+                            >
+                              <span
+                                onClick={handleEditProject(`${project.id}`)}
+                              >
+                                Editar
+                              </span>
+                              <span
+                                onClick={handleDeleteProject(`${project.id}`)}
+                              >
+                                Eliminar
+                              </span>
+                            </ContainerDropdown>
+                          )}
+                        </div>
+                      </ContainerActions>
+                    </tr>
+                  ))}
+                </ContainerBody>
+              </table>
+            </ContainerTable>
+          )}
       </ContentStylesSection>
     </SectionRoute>
   )

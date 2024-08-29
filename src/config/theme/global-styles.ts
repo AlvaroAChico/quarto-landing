@@ -166,6 +166,16 @@ export const ContainerBody = styled.tbody`
     }
   }
 `
+export const NotFoundStyles = styled.div`
+  text-align: center;
+  padding: 40px 0 !important;
+
+  > span {
+    color: ${palette.errorColor};
+    text-align: center;
+  }
+`
+
 export const ClasicStylesTD = styled.td`
   > div {
     flex-direction: column;
@@ -245,6 +255,25 @@ export const CustomWrapperInputAvatar = styled(WrapperInput)`
     }
   }
 `
+
+export const CustomWrapperInputFiles = styled(WrapperInput)`
+  margin: auto;
+  max-width: 800px;
+
+  > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+
+    div {
+      > svg {
+        width: 100%;
+        max-width: 20px;
+      }
+    }
+  }
+`
 export const ContainerImageAvatar = styled.div`
   position: relative;
   height: 160px;
@@ -285,6 +314,30 @@ export const ContainerImageAvatar = styled.div`
 `
 
 export const ContainerDragAndDropAvatar = styled.div<{ isDragActive: boolean }>`
+  border: 1px solid ${p => (p.isDragActive ? palette.successColor : "#ebebeb")};
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-radius: 50%;
+  padding: 4px 14px;
+  display: flex;
+  height: 160px;
+  width: 160px;
+  gap: 10px;
+
+  > p {
+    color: ${palette.grayColor};
+    font-size: 14px;
+  }
+
+  &:focus-within {
+    border-color: #f59e36; // Color del borde cuando está enfocado
+    box-shadow: 0 0 8px rgba(245, 158, 54, 0.5); // Sombra cuando está enfocado
+  }
+`
+
+export const ContainerDragAndDropFiles = styled.div<{ isDragActive: boolean }>`
   border: 1px solid ${p => (p.isDragActive ? palette.successColor : "#ebebeb")};
   justify-content: center;
   flex-direction: column;

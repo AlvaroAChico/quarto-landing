@@ -17,6 +17,7 @@ import {
   ContainerDropdown,
   ContainerHead,
   ContainerTable,
+  NotFoundStyles,
 } from "../../config/theme/global-styles"
 import { Ellipsis } from "@styled-icons/fa-solid/Ellipsis"
 import { settingsApp } from "../../config/environment/settings"
@@ -25,9 +26,13 @@ import { formatToDDMonth } from "../../utils/date-util"
 import ModalDeleteRole from "../../components/modal/variants/modal-delete-role/modal-delete-role"
 import { ContainerNameRoleTD } from "./roles.styles"
 import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
+import Skeleton from "react-loading-skeleton"
+import "react-loading-skeleton/dist/skeleton.css"
 
 const Roles: React.FC = () => {
   const [listRoles, setListRoles] = React.useState<DataRoleResponse[]>([])
+  const [isLoadingListRoles, setIsLoadingListRoles] =
+    React.useState<boolean>(false)
   const [isOpenModalDelete, setIsOpenModalDelete] =
     React.useState<boolean>(false)
   const [dataRoleDelete, setDataRoleDelete] = React.useState<RoleDTO>()
@@ -81,6 +86,7 @@ const Roles: React.FC = () => {
   }, [])
 
   const fetchListRole = React.useCallback(() => {
+    setIsLoadingListRoles(true)
     const storedToken = handleGetToken()
     if (storedToken) {
       axios
@@ -95,13 +101,11 @@ const Roles: React.FC = () => {
           const listData: DataRoleResponse[] =
             response.data as DataRoleResponse[]
           setListRoles(listData)
+          setIsLoadingListRoles(false)
         })
         .catch(err => {
           toast.error("Failed to fetch data")
-          console.log(
-            "Error Axios GET -> ",
-            err.response ? err.response.data : err,
-          )
+          setIsLoadingListRoles(false)
         })
     }
   }, [handleGetToken])
@@ -124,54 +128,92 @@ const Roles: React.FC = () => {
         havePermissionCreate={dataPermissions?.user.includes("create") || false}
         onPrimaryClick={handleClick}
       />
-      <ContainerTable>
-        <table>
-          <ContainerHead>
-            <tr>
-              <td>Name</td>
-              <td>Creado</td>
-              <td></td>
-            </tr>
-          </ContainerHead>
-          <ContainerBody>
-            {(listRoles || []).map(role => (
+      {isLoadingListRoles && (
+        <ContainerTable>
+          <table>
+            <ContainerHead>
               <tr>
-                <ContainerNameRoleTD>
-                  <div>
-                    <span>{role.name}</span>
-                  </div>
-                </ContainerNameRoleTD>
-                <ClasicStylesTD>
-                  <div>
-                    <span>{formatToDDMonth(role.createdAt)}</span>
-                  </div>
-                </ClasicStylesTD>
-                <ContainerActions>
-                  <div>
-                    <div onClick={() => toggleDropdown(`${role.id}`)}>
-                      <Ellipsis />
-                    </div>
-                    {dropdownVisible === `${role.id}` && (
-                      <ContainerDropdown
-                        id={`dropdown_ov${role.id}`}
-                        tabIndex={0}
-                        onBlur={handleCleanDropdown}
-                      >
-                        <span onClick={handleEditRole(`${role.id}`)}>
-                          Editar
-                        </span>
-                        <span onClick={handleDeleteRole(`${role.id}`)}>
-                          Eliminar
-                        </span>
-                      </ContainerDropdown>
-                    )}
-                  </div>
-                </ContainerActions>
+                <td>Name</td>
+                <td>Email</td>
+                <td></td>
               </tr>
-            ))}
-          </ContainerBody>
-        </table>
-      </ContainerTable>
+            </ContainerHead>
+            <ContainerBody>
+              <tr>
+                <td colSpan={3}>
+                  <Skeleton count={3} height={40} />
+                </td>
+              </tr>
+            </ContainerBody>
+          </table>
+        </ContainerTable>
+      )}
+      {!isLoadingListRoles && !!listRoles && listRoles.length <= 0 && (
+        <ContainerTable>
+          <table>
+            <ContainerHead>
+              <tr>
+                <td>Name</td>
+                <td>Email</td>
+                <td></td>
+              </tr>
+            </ContainerHead>
+          </table>
+          <NotFoundStyles>
+            <span>No roles found</span>
+          </NotFoundStyles>
+        </ContainerTable>
+      )}
+      {!isLoadingListRoles && !!listRoles && listRoles.length > 0 && (
+        <ContainerTable>
+          <table>
+            <ContainerHead>
+              <tr>
+                <td>Name</td>
+                <td>CreatedAt</td>
+                <td></td>
+              </tr>
+            </ContainerHead>
+            <ContainerBody>
+              {(listRoles || []).map(role => (
+                <tr>
+                  <ContainerNameRoleTD>
+                    <div>
+                      <span>{role.name}</span>
+                    </div>
+                  </ContainerNameRoleTD>
+                  <ClasicStylesTD>
+                    <div>
+                      <span>{formatToDDMonth(role.createdAt)}</span>
+                    </div>
+                  </ClasicStylesTD>
+                  <ContainerActions>
+                    <div>
+                      <div onClick={() => toggleDropdown(`${role.id}`)}>
+                        <Ellipsis />
+                      </div>
+                      {dropdownVisible === `${role.id}` && (
+                        <ContainerDropdown
+                          id={`dropdown_ov${role.id}`}
+                          tabIndex={0}
+                          onBlur={handleCleanDropdown}
+                        >
+                          <span onClick={handleEditRole(`${role.id}`)}>
+                            Editar
+                          </span>
+                          <span onClick={handleDeleteRole(`${role.id}`)}>
+                            Eliminar
+                          </span>
+                        </ContainerDropdown>
+                      )}
+                    </div>
+                  </ContainerActions>
+                </tr>
+              ))}
+            </ContainerBody>
+          </table>
+        </ContainerTable>
+      )}
       <ModalDeleteRole
         isOpen={isOpenModalDelete}
         handleClose={handleCloseModalDelete}

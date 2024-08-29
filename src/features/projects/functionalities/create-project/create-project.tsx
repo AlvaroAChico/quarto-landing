@@ -15,6 +15,11 @@ import { toast } from "sonner"
 import { CreateUserResponseDTO } from "../../../../core/models/interfaces/user-model"
 import { pathRoutes } from "../../../../config/routes/path"
 import {
+  ContainerDragAndDropAvatar,
+  ContainerDragAndDropFiles,
+  ContainerImageAvatar,
+  CustomWrapperInputAvatar,
+  CustomWrapperInputFiles,
   ErrorMessage,
   WrapperInput,
 } from "../../../../config/theme/global-styles"
@@ -43,6 +48,7 @@ import "react-datepicker/dist/react-datepicker.css"
 import { settingsApp } from "../../../../config/environment/settings"
 import useDataUser from "../../../../utils/use-data-user"
 import { formatToDMYHH } from "../../../../utils/date-util"
+import { Trash } from "@styled-icons/ionicons-solid/Trash"
 
 const CreateProject: React.FC = () => {
   const [optionsRoles, setOptionsRoles] = React.useState<any>([])
@@ -159,17 +165,20 @@ const CreateProject: React.FC = () => {
     }
   }, [])
 
-  const [namePathPicture, setNamePathPicture] = React.useState<string>("")
+  const [infoPicture, setInfoPicture] = React.useState<any>()
+  const handleDeletePictureUser = () => {
+    setValue("picture", "")
+    setInfoPicture("")
+  }
+
   const onDrop = React.useCallback((acceptedFiles: any, rejectedFiles: any) => {
     if (acceptedFiles.length > 0) {
       if (acceptedFiles.length > 1) {
         toast.error("Solo se permite un archivo.")
         return
       }
-
       const file = acceptedFiles[0]
-      console.log("Archivo aceptado:", file)
-      setNamePathPicture(file.path)
+      setValue("picture", file)
 
       const reader = new FileReader()
 
@@ -177,7 +186,13 @@ const CreateProject: React.FC = () => {
       reader.onerror = () => toast.error("File reading has failed")
       reader.onload = () => {
         const binaryStr = reader.result
-        console.log(binaryStr)
+        if (binaryStr instanceof ArrayBuffer) {
+          const blob = new Blob([binaryStr], { type: file.type })
+          const imageUrl = URL.createObjectURL(blob)
+          setInfoPicture(imageUrl)
+        } else {
+          toast.error("Error al leer el archivo.")
+        }
       }
       reader.readAsArrayBuffer(file)
     }
@@ -199,9 +214,88 @@ const CreateProject: React.FC = () => {
     maxFiles: 1,
   })
 
+  // Many files
+  const [listFiles, setListFiles] = React.useState<any>()
+  const handleDeleteOneFile = () => {
+    // setValue("picture", "")
+    // setInfoPicture("")
+  }
+
+  const onDropManyFiles = React.useCallback(
+    (acceptedFiles: any, rejectedFiles: any) => {
+      if (acceptedFiles.length > 0) {
+        if (acceptedFiles.length > 1) {
+          toast.error("Solo se permite un archivo.")
+          return
+        }
+        const file = acceptedFiles[0]
+        setValue("picture", file)
+
+        const reader = new FileReader()
+
+        reader.onabort = () => toast.error("File reading was aborted")
+        reader.onerror = () => toast.error("File reading has failed")
+        reader.onload = () => {
+          const binaryStr = reader.result
+          if (binaryStr instanceof ArrayBuffer) {
+            const blob = new Blob([binaryStr], { type: file.type })
+            const imageUrl = URL.createObjectURL(blob)
+            setInfoPicture(imageUrl)
+          } else {
+            toast.error("Error al leer el archivo.")
+          }
+        }
+        reader.readAsArrayBuffer(file)
+      }
+
+      if (rejectedFiles.length > 0) {
+        console.log("rejectedFiles -> ", rejectedFiles)
+        toast.error(
+          'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
+        )
+      }
+    },
+    [],
+  )
+
+  const {
+    getRootProps: getRootPropsFiles,
+    getInputProps: getInputPropsFiles,
+    isDragActive: isDragActiveFiles,
+  } = useDropzone({ onDropManyFiles })
+
   return (
     <ContainerBodyCreate>
       <HeaderSection title="Projects" subtitle="Create project" />
+      <CustomWrapperInputAvatar>
+        <label htmlFor="picture-create-project">Picture</label>
+        <div>
+          {!!infoPicture ? (
+            <ContainerImageAvatar>
+              <img src={infoPicture} />
+              <div onClick={handleDeletePictureUser}>
+                <Trash />
+              </div>
+            </ContainerImageAvatar>
+          ) : (
+            <ContainerDragAndDropAvatar
+              {...getRootProps()}
+              isDragActive={isDragActive}
+            >
+              <CardImage />
+              <input {...getInputProps()} />
+              {isDragActive ? (
+                <p>Drop picture here</p>
+              ) : (
+                <p>Drag or click to upload an image</p>
+              )}
+            </ContainerDragAndDropAvatar>
+          )}
+        </div>
+        {!!(errors.picture as any)?.message && (
+          <ErrorMessage>{(errors.picture as any)?.message}</ErrorMessage>
+        )}
+      </CustomWrapperInputAvatar>
       <FormContainer>
         <WrapperInput>
           <label htmlFor="code-create-project">Code</label>
@@ -297,7 +391,7 @@ const CreateProject: React.FC = () => {
             <ErrorMessage>{(errors.dueDate as any)?.message}</ErrorMessage>
           )}
         </WrapperInput>
-        <WrapperInput>
+        {/* <WrapperInput>
           <label htmlFor="currency-create-project">Currency</label>
           <Input
             id="currency-create-project"
@@ -308,7 +402,7 @@ const CreateProject: React.FC = () => {
           {!!(errors.currency as any)?.message && (
             <ErrorMessage>{(errors.currency as any)?.message}</ErrorMessage>
           )}
-        </WrapperInput>
+        </WrapperInput> */}
         <WrapperInput>
           <label htmlFor="price-create-project">Price</label>
           <Input
@@ -346,29 +440,32 @@ const CreateProject: React.FC = () => {
             <ErrorMessage>{(errors.categoryId as any)?.message}</ErrorMessage>
           )}
         </WrapperInput>
-        <CustomWrapperInput>
-          <label htmlFor="picture-create-project">
-            Picture
-            {!!namePathPicture && (
+      </FormContainer>
+      <CustomWrapperInputFiles>
+        <label htmlFor="picture-create-project">
+          Picture
+          {/* {!!namePathPicture && (
               <>
                 : <span>{namePathPicture}</span>
               </>
-            )}
-          </label>
-          <ContainerDragAndDrop {...getRootProps()} isDragActive={isDragActive}>
-            <CardImage />
-            <input {...getInputProps()} />
-            {isDragActive ? (
-              <p>Drop picture here</p>
-            ) : (
-              <p>Drag or click this container to upload an image</p>
-            )}
-          </ContainerDragAndDrop>
-          {!!(errors.picture as any)?.message && (
-            <ErrorMessage>{(errors.picture as any)?.message}</ErrorMessage>
+            )} */}
+        </label>
+        <ContainerDragAndDropFiles
+          {...getRootPropsFiles()}
+          isDragActive={isDragActiveFiles}
+        >
+          <CardImage />
+          <input {...getInputPropsFiles()} />
+          {isDragActive ? (
+            <p>Drop picture here</p>
+          ) : (
+            <p>Drag or click this container to upload an image</p>
           )}
-        </CustomWrapperInput>
-      </FormContainer>
+        </ContainerDragAndDropFiles>
+        {!!(errors.picture as any)?.message && (
+          <ErrorMessage>{(errors.picture as any)?.message}</ErrorMessage>
+        )}
+      </CustomWrapperInputFiles>
       <ContainerButton>
         <Button
           onClick={submitWrapper(handleSubmit)}
