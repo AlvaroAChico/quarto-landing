@@ -91,6 +91,9 @@ const DashboardLayout: React.FC = () => {
                 projectfile: [],
                 setting: [],
                 task: [],
+                calendar: [],
+                reports: [],
+                role: []
               }
 
               permisos
