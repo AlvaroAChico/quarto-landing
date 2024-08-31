@@ -1,9 +1,10 @@
 import React from "react"
-import { NavLink, Outlet, useNavigate } from "react-router-dom"
+import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom"
 import {
+  AvatarStyles,
   ContainerAvatar,
   ContainerAvatarSide,
-  ContainerBreadcrumb,
+  ContainerTitleApp,
   ContainerDashboardLayout,
   ContainerDataProfile,
   ContainerLogo,
@@ -13,6 +14,7 @@ import {
   ContainerProfile,
   ContainerSidebar,
   ContainerUser,
+  DataUserStyles,
   ItemMenu,
   ItemNavLink,
   StatusOnline,
@@ -28,7 +30,7 @@ import { BarChartFill } from "@styled-icons/bootstrap/BarChartFill"
 import { Dashboard } from "@styled-icons/boxicons-solid/Dashboard"
 import { ExitToApp } from "@styled-icons/material-rounded/ExitToApp"
 import { pathRoutes } from "../../config/routes/path"
-import { COOKIES_APP } from "../../constants/app"
+import { ACTIONS_TITLE_APP, COOKIES_APP } from "../../constants/app"
 import {
   FilterPermissionsDTO,
   MeDTO,
@@ -41,15 +43,22 @@ import { toast } from "sonner"
 import axios from "axios"
 import { settingsApp } from "../../config/environment/settings"
 import useDataUser from "../../utils/use-data-user"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import {
+  getActionTitleApp,
+  updateActionTitleApp,
+} from "../../core/store/app-store/appSlice"
 
 const DashboardLayout: React.FC = () => {
   const [dataPermissions, setDataPermissions] =
     React.useState<FilterPermissionsDTO>()
   const [dataRoles, setDataRoles] = React.useState<string[]>()
   const [dataUser, setDataUser] = React.useState<UserDTO>()
+  const titleApp = useAppSelector(getActionTitleApp)
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
   const navigate = useNavigate()
-
-  const { handleGetToken, clearAllDataAPP } = useDataUser()
+  const dispatch = useAppDispatch()
 
   const refreshDataMe = async () => {
     const storedToken = handleGetToken()
@@ -93,7 +102,7 @@ const DashboardLayout: React.FC = () => {
                 task: [],
                 calendar: [],
                 reports: [],
-                role: []
+                role: [],
               }
 
               permisos
@@ -157,12 +166,10 @@ const DashboardLayout: React.FC = () => {
   }, [])
 
   const getCookiesDataPermission = React.useCallback(() => {
-    const data = Cookies.get(COOKIES_APP.PERMISSIONS_APP)
+    const data = handleGetPermissions()
+
     if (!!data) {
-      const permissions: FilterPermissionsDTO = JSON.parse(
-        data,
-      ) as FilterPermissionsDTO
-      setDataPermissions(permissions)
+      setDataPermissions(data)
     }
   }, [])
 
@@ -188,56 +195,106 @@ const DashboardLayout: React.FC = () => {
               <Dashboard />
               <p>Dashboard</p>
             </ItemNavLink>
-            {dataPermissions?.user.includes("list") && (
-            <ItemNavLink
-                to={pathRoutes.USERS.LIST}
-                className={({ isActive }) => (isActive ? "active" : "inactive")}
-              >
-                <User />
-                <p>Users</p>
-              </ItemNavLink>
-            )}
-            <ItemNavLink
-              to={pathRoutes.ROLES.LIST}
-              className={({ isActive }) => (isActive ? "active" : "inactive")}
-            >
-              <LocalPolice />
-              <p>Roles</p>
-            </ItemNavLink>
-            {dataPermissions?.project.includes("list") && (
-              <ItemNavLink
-                to={pathRoutes.PROJECTS.LIST}
-                className={({ isActive }) => (isActive ? "active" : "inactive")}
-              >
-                <FolderOpen />
-                <p>Projects</p>
-              </ItemNavLink>
-            )}
-            <ItemNavLink
-              to={pathRoutes.TASKS.LIST}
-              className={({ isActive }) => (isActive ? "active" : "inactive")}
-            >
-              <Task />
-              <p>Tasks</p>
-            </ItemNavLink>
-            <ItemNavLink
-              to={pathRoutes.CALENDAR.LIST}
-              className={({ isActive }) => (isActive ? "active" : "inactive")}
-            >
-              <Calendar />
-              <p>Calendar</p>
-            </ItemNavLink>
-            <ItemNavLink
-              to={pathRoutes.REPORTS.LIST}
-              className={({ isActive }) => (isActive ? "active" : "inactive")}
-            >
-              <BarChartFill />
-              <p>Reports</p>
-            </ItemNavLink>
+            {!!dataPermissions &&
+              !!dataPermissions.user &&
+              dataPermissions?.user.includes("list") && (
+                <ItemNavLink
+                  onClick={() =>
+                    dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.USERS))
+                  }
+                  to={pathRoutes.USERS.LIST}
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                >
+                  <User />
+                  <p>Users</p>
+                </ItemNavLink>
+              )}
+            {!!dataPermissions &&
+              !!dataPermissions.role &&
+              dataPermissions?.role.includes("list") && (
+                <ItemNavLink
+                  onClick={() =>
+                    dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.ROLES))
+                  }
+                  to={pathRoutes.ROLES.LIST}
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                >
+                  <LocalPolice />
+                  <p>Roles</p>
+                </ItemNavLink>
+              )}
+            {!!dataPermissions &&
+              !!dataPermissions.project &&
+              dataPermissions?.project.includes("list") && (
+                <ItemNavLink
+                  onClick={() =>
+                    dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.PROJECTS))
+                  }
+                  to={pathRoutes.PROJECTS.LIST}
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                >
+                  <FolderOpen />
+                  <p>Projects</p>
+                </ItemNavLink>
+              )}
+            {!!dataPermissions &&
+              !!dataPermissions.task &&
+              dataPermissions?.task.includes("list") && (
+                <ItemNavLink
+                  onClick={() =>
+                    dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.TASKS))
+                  }
+                  to={pathRoutes.TASKS.LIST}
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                >
+                  <Task />
+                  <p>Tasks</p>
+                </ItemNavLink>
+              )}
+            {!!dataPermissions &&
+              !!dataPermissions.calendar &&
+              dataPermissions?.calendar.includes("list") && (
+                <ItemNavLink
+                  onClick={() =>
+                    dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.CALENDAR))
+                  }
+                  to={pathRoutes.CALENDAR.LIST}
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                >
+                  <Calendar />
+                  <p>Calendar</p>
+                </ItemNavLink>
+              )}
+            {!!dataPermissions &&
+              !!dataPermissions.reports &&
+              dataPermissions?.reports.includes("list") && (
+                <ItemNavLink
+                  onClick={() =>
+                    dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.REPORTS))
+                  }
+                  to={pathRoutes.REPORTS.LIST}
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                >
+                  <BarChartFill />
+                  <p>Reports</p>
+                </ItemNavLink>
+              )}
           </ContainerMenu>
           <ContainerProfile>
             <ContainerAvatarSide>
-              <div>
+              <AvatarStyles>
                 {!!dataUser && !!dataUser?.picture ? (
                   <div>
                     <img src={dataUser?.picture} />
@@ -249,13 +306,13 @@ const DashboardLayout: React.FC = () => {
                   </div>
                 )}
                 <StatusOnline />
-              </div>
-              <div>
+              </AvatarStyles>
+              <DataUserStyles>
                 <p>
                   {dataUser?.firstName} {dataUser?.lastName}
                 </p>
                 <p>{!!dataRoles ? dataRoles[0] : ""}</p>
-              </div>
+              </DataUserStyles>
             </ContainerAvatarSide>
             <ContainerOptions>
               <ExitToApp onClick={handleLogout} />
@@ -265,17 +322,34 @@ const DashboardLayout: React.FC = () => {
       </ContainerSidebar>
       <ContainerOutlet>
         <div>
-          <ContainerBreadcrumb>Breadcrumb</ContainerBreadcrumb>
+          <ContainerTitleApp>
+            <h2>{titleApp}</h2>
+            <span>
+              Hello {(!!dataUser && dataUser?.firstName) || ""}, welcome back
+            </span>
+          </ContainerTitleApp>
           <ContainerDataProfile>
-            <div>
-              <ContainerUser>
-                <h4>Alvaro Chico</h4>
-                <span>Admin</span>
-              </ContainerUser>
-              <ContainerAvatar>
-                <div>AC</div>
-              </ContainerAvatar>
-            </div>
+            <ContainerAvatarSide>
+              <DataUserStyles>
+                <p>
+                  {dataUser?.firstName} {dataUser?.lastName}
+                </p>
+                <p>{!!dataRoles ? dataRoles[0] : ""}</p>
+              </DataUserStyles>
+              <AvatarStyles>
+                {!!dataUser && !!dataUser?.picture ? (
+                  <div>
+                    <img src={dataUser?.picture} />
+                  </div>
+                ) : (
+                  <div>
+                    {!!dataUser?.firstName ? dataUser?.firstName[0] : ""}
+                    {!!dataUser?.lastName ? dataUser?.lastName[0] : ""}
+                  </div>
+                )}
+                <StatusOnline />
+              </AvatarStyles>
+            </ContainerAvatarSide>
           </ContainerDataProfile>
         </div>
         <div>

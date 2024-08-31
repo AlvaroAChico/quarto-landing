@@ -3,8 +3,6 @@ import HeaderSection from "../../../../components/header-section/header-section"
 import {
   ContainerBodyCreate,
   ContainerButton,
-  ContainerDragAndDrop,
-  CustomWrapperInput,
   FormContainer,
 } from "./create-project.styles"
 import { useForm } from "react-hook-form"
@@ -21,13 +19,12 @@ import {
   CustomWrapperInputAvatar,
   CustomWrapperInputFiles,
   ErrorMessage,
+  selectStyles,
   WrapperInput,
 } from "../../../../config/theme/global-styles"
 import Input from "../../../../components/input/input"
 import { User } from "styled-icons/boxicons-solid"
 import Button from "../../../../components/button/button"
-import Cookies from "js-cookie"
-import { COOKIES_APP } from "../../../../constants/app"
 import { DataRoleResponse } from "../../../../core/models/interfaces/roles-model"
 import {
   CreateProjectForm,
@@ -38,7 +35,6 @@ import { FolderOpen } from "@styled-icons/fa-regular/FolderOpen"
 import { TextDescription } from "@styled-icons/fluentui-system-filled/TextDescription"
 import { Calendar } from "@styled-icons/bootstrap/Calendar"
 import { CalendarCancel } from "@styled-icons/fluentui-system-regular/CalendarCancel"
-import { Currency } from "@styled-icons/remix-fill/Currency"
 import { CurrencyDollar } from "@styled-icons/bootstrap/CurrencyDollar"
 import { Category } from "@styled-icons/boxicons-solid/Category"
 import { CardImage } from "@styled-icons/bootstrap/CardImage"
@@ -49,10 +45,13 @@ import { settingsApp } from "../../../../config/environment/settings"
 import useDataUser from "../../../../utils/use-data-user"
 import { formatToDMYHH } from "../../../../utils/date-util"
 import { Trash } from "@styled-icons/ionicons-solid/Trash"
+import { Files } from "@styled-icons/simple-icons/Files"
+import { ClientDTO } from "../../../../core/models/interfaces/client-model"
+import Select from "react-select"
 
 const CreateProject: React.FC = () => {
-  const [optionsRoles, setOptionsRoles] = React.useState<any>([])
-  const [selectedOptionRole, setSelectedOptionRole] = React.useState(null)
+  const [optionsClients, setOptionsClients] = React.useState<any>([])
+  const [selectedOptionClient, setSelectedOptionClient] = React.useState(null)
   const [startDate, setStartDate] = React.useState()
   const [dueDate, setDueDate] = React.useState()
   const [isSubmitUserCreate, setIsSubmitUserCreate] =
@@ -74,6 +73,7 @@ const CreateProject: React.FC = () => {
       clientId: "",
       categoryId: "",
       picture: "",
+      files: [],
     },
   })
 
@@ -84,9 +84,9 @@ const CreateProject: React.FC = () => {
     setValue,
   } = methods
 
-  const handleChangeOptionRole = (value: any) => {
-    // setValue("role", value.value)
-    setSelectedOptionRole(value)
+  const handleChangeOptionClient = (value: any) => {
+    setValue("clientId", value.value)
+    setSelectedOptionClient(value)
   }
 
   const handleSubmit = React.useCallback((data: any) => {
@@ -99,14 +99,12 @@ const CreateProject: React.FC = () => {
       formData.append("description", data.description)
       formData.append("start_date", formatToDMYHH(data.startDate))
       formData.append("due_date", formatToDMYHH(data.dueDate))
+      formData.append("client_id", data.clientId)
       if (!!data.currency) {
         formData.append("currency", data.currency)
       }
       if (!!data.price) {
         formData.append("price", data.price)
-      }
-      if (!!data.clientId) {
-        formData.append("client_id", data.clientId)
       }
       if (!!data.categoryId) {
         formData.append("category_id", data.categoryId)
@@ -114,13 +112,16 @@ const CreateProject: React.FC = () => {
       if (!!data.picture) {
         formData.append("picture", data.picture)
       }
+      if (!!data.files && listFiles.length > 0) {
+        formData.append("files", data.files)
+      }
 
       axios
         .post(`${settingsApp.api.base}/projects`, formData, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
-            ContentType: "application/json",
-            Accept: "application/json",
+            ContentType: "multipart/form-data",
+            Accept: "multipart/form-data",
           },
         })
         .then(response => {
@@ -129,7 +130,7 @@ const CreateProject: React.FC = () => {
             response.data as CreateUserResponseDTO
           if (!!data && !!data.message) {
             toast.success(data.message)
-            navigate(pathRoutes.USERS.LIST)
+            navigate(pathRoutes.PROJECTS.LIST)
           }
         })
         .catch(err => {
@@ -144,18 +145,17 @@ const CreateProject: React.FC = () => {
 
     if (!!storedToken) {
       axios
-        .get("http://localhost:3000/roles", {
+        .get(`${settingsApp.api.base}/clients`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
           },
         })
         .then(response => {
-          const listData: DataRoleResponse[] =
-            response.data as DataRoleResponse[]
-          setOptionsRoles(
-            listData.map(role => ({
-              value: "role",
-              label: role.name,
+          const listData: ClientDTO[] = response.data as ClientDTO[]
+          setOptionsClients(
+            listData.map(client => ({
+              value: client.id,
+              label: client.id,
             })),
           )
         })
@@ -214,38 +214,43 @@ const CreateProject: React.FC = () => {
     maxFiles: 1,
   })
 
-  // Many files
-  const [listFiles, setListFiles] = React.useState<any>()
-  const handleDeleteOneFile = () => {
-    // setValue("picture", "")
-    // setInfoPicture("")
+  const [listFiles, setListFiles] = React.useState<File[]>([]) // Inicializamos como un array vacío
+
+  const handleDeleteOneFile = (fileToDelete: File) => {
+    // Filtramos la lista para eliminar el archivo seleccionado
+    setListFiles(prevFiles => prevFiles.filter(file => file !== fileToDelete))
   }
 
   const onDropManyFiles = React.useCallback(
-    (acceptedFiles: any, rejectedFiles: any) => {
+    (acceptedFiles: File[], rejectedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
-        if (acceptedFiles.length > 1) {
-          toast.error("Solo se permite un archivo.")
-          return
-        }
-        const file = acceptedFiles[0]
-        setValue("picture", file)
+        const updatedFiles = [...listFiles]
+        acceptedFiles.forEach(file => {
+          // if (updatedFiles.length >= 5) {
+          //   toast.error("Se permite un máximo de 5 archivos.")
+          //   return
+          // }
+          updatedFiles.push(file)
 
-        const reader = new FileReader()
+          const reader = new FileReader()
 
-        reader.onabort = () => toast.error("File reading was aborted")
-        reader.onerror = () => toast.error("File reading has failed")
-        reader.onload = () => {
-          const binaryStr = reader.result
-          if (binaryStr instanceof ArrayBuffer) {
-            const blob = new Blob([binaryStr], { type: file.type })
-            const imageUrl = URL.createObjectURL(blob)
-            setInfoPicture(imageUrl)
-          } else {
-            toast.error("Error al leer el archivo.")
+          reader.onabort = () => toast.error("File reading was aborted")
+          reader.onerror = () => toast.error("File reading has failed")
+          reader.onload = () => {
+            const binaryStr = reader.result
+            if (binaryStr instanceof ArrayBuffer) {
+              const blob = new Blob([binaryStr], { type: file.type })
+              const imageUrl = URL.createObjectURL(blob)
+              // Aquí puedes hacer algo con imageUrl, como agregarlo a un estado de URLs
+            } else {
+              toast.error("Error al leer el archivo.")
+            }
           }
-        }
-        reader.readAsArrayBuffer(file)
+          reader.readAsArrayBuffer(file)
+        })
+
+        setValue("files", updatedFiles)
+        setListFiles(updatedFiles)
       }
 
       if (rejectedFiles.length > 0) {
@@ -255,14 +260,14 @@ const CreateProject: React.FC = () => {
         )
       }
     },
-    [],
+    [listFiles],
   )
 
   const {
     getRootProps: getRootPropsFiles,
     getInputProps: getInputPropsFiles,
     isDragActive: isDragActiveFiles,
-  } = useDropzone({ onDropManyFiles })
+  } = useDropzone({ onDrop: onDropManyFiles })
 
   return (
     <ContainerBodyCreate>
@@ -418,17 +423,19 @@ const CreateProject: React.FC = () => {
         </WrapperInput>
         <WrapperInput>
           <label htmlFor="client-create-project">Client</label>
-          <Input
+          <Select
             id="client-create-project"
-            placeholder="Enter client"
-            icon={User}
-            props={register("clientId")}
+            defaultValue={selectedOptionClient}
+            onChange={handleChangeOptionClient}
+            options={optionsClients}
+            isSearchable={true}
+            styles={selectStyles}
           />
           {!!(errors.clientId as any)?.message && (
             <ErrorMessage>{(errors.clientId as any)?.message}</ErrorMessage>
           )}
         </WrapperInput>
-        <WrapperInput>
+        {/* <WrapperInput>
           <label htmlFor="category-create-project">Category</label>
           <Input
             id="category-create-project"
@@ -439,22 +446,15 @@ const CreateProject: React.FC = () => {
           {!!(errors.categoryId as any)?.message && (
             <ErrorMessage>{(errors.categoryId as any)?.message}</ErrorMessage>
           )}
-        </WrapperInput>
+        </WrapperInput> */}
       </FormContainer>
       <CustomWrapperInputFiles>
-        <label htmlFor="picture-create-project">
-          Picture
-          {/* {!!namePathPicture && (
-              <>
-                : <span>{namePathPicture}</span>
-              </>
-            )} */}
-        </label>
+        <label htmlFor="picture-create-project">Files</label>
         <ContainerDragAndDropFiles
           {...getRootPropsFiles()}
           isDragActive={isDragActiveFiles}
         >
-          <CardImage />
+          <Files />
           <input {...getInputPropsFiles()} />
           {isDragActive ? (
             <p>Drop picture here</p>
@@ -465,6 +465,18 @@ const CreateProject: React.FC = () => {
         {!!(errors.picture as any)?.message && (
           <ErrorMessage>{(errors.picture as any)?.message}</ErrorMessage>
         )}
+        <div>{JSON.stringify(listFiles)}</div>
+        <div>
+          {listFiles.map(file => (
+            <div>
+              <p>{file.size}</p>
+              <p>{file.name}</p>
+              <p>{file.type}</p>
+              <p>{file.lastModified}</p>
+              <p>{file.webkitRelativePath}</p>
+            </div>
+          ))}
+        </div>
       </CustomWrapperInputFiles>
       <ContainerButton>
         <Button

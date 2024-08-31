@@ -14,7 +14,7 @@ export const ModalOverlay = styled.div`
   z-index: 10;
 `
 
-export const ModalContent = styled.div`
+export const ModalContent = styled.div<{ customStyles: string }>`
   background: white;
   padding: 40px;
   border-radius: 15px;
@@ -24,6 +24,8 @@ export const ModalContent = styled.div`
   padding-top: 40px;
   max-height: 85%;
   overflow: auto;
+
+  ${p => p.customStyles};
 `
 
 export const ContainerTitle = styled.div`

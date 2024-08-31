@@ -23,6 +23,11 @@ export const HeaderTask = styled.div`
   align-items: center;
   padding: 10px;
   height: 80px;
+
+  > button {
+    background: ${palette.primaryColor};
+    box-shadow: none;
+  }
 `
 
 // Título de la tarea

@@ -13,10 +13,12 @@ export const pathRoutes = {
     LIST: "/projects",
     CREATE: "/projects/create",
     DETAIL: {
-      LIST: "/projects/:id/detail",
-      OVERVIEW: "/projects/:id/detail/overview",
-      ACTIVITY: "/projects/:id/detail/activity",
-      TASKS: "/projects/:id/detail/tasks",
+      OVERVIEW: "/projects/:id/overview",
+      ACTIVITY: "/projects/:id/activity",
+      TASKS: "/projects/:id/tasks",
+      CONTRACTORS: "/projects/:id/contractors",
+      FILES: "/projects/:id/files",
+      SETTINGS: "/projects/:id/settings",
     },
   },
   TASKS: {

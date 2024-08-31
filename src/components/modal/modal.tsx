@@ -13,14 +13,21 @@ interface IOwnProps {
   title?: string
   onClose: () => void
   children: React.ReactNode
+  customStyles?: string
 }
 
-const Modal: React.FC<IOwnProps> = ({ isOpen, title, onClose, children }) => {
+const Modal: React.FC<IOwnProps> = ({
+  isOpen,
+  title,
+  onClose,
+  children,
+  customStyles = "",
+}) => {
   if (!isOpen) return null // Si el modal no está abierto, no renderizar nada
 
   return ReactDOM.createPortal(
     <ModalOverlay>
-      <ModalContent>
+      <ModalContent customStyles={customStyles}>
         <CloseButton onClick={onClose}>
           <Close />
         </CloseButton>

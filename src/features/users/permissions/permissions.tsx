@@ -53,10 +53,10 @@ const Permissions: React.FC = () => {
       <div>
         <ItemSidebar>
           <TitlePermissions>
-            <span>Ver</span>
-            <span>Crear</span>
-            <span>Editar</span>
-            <span>Eliminar</span>
+            <span>Read</span>
+            <span>Create</span>
+            <span>Edit</span>
+            <span>Delete</span>
           </TitlePermissions>
           {(userData?.permissions || []).map(permission => (
             <MainPermission>
@@ -123,7 +123,7 @@ const Permissions: React.FC = () => {
                   </ToggleContainer>
                 </ItemPermission>
                 <ItemPermission>
-                  {/* <span>Eliminar</span> */}
+                  {/* <span>Delete</span> */}
                   <ToggleContainer
                     isActive={permission.permissions.includes(
                       APP_PERMISSIONS.DELETE,

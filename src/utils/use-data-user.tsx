@@ -24,7 +24,7 @@ const useDataUser = () => {
   }
 
   const handleGetPermissions = (): FilterPermissionsDTO => {
-    const data = Cookies.get(COOKIES_APP.PERMISSIONS_APP)
+    const data = localStorage.getItem(COOKIES_APP.PERMISSIONS_APP)
     if (!!data && data != null && data != undefined) {
       const permissions: FilterPermissionsDTO = JSON.parse(
         data,
@@ -42,7 +42,8 @@ const useDataUser = () => {
     Cookies.remove(COOKIES_APP.USER_RES)
     Cookies.remove(COOKIES_APP.TOKEN_APP)
     Cookies.remove(COOKIES_APP.ROLES_APP)
-    Cookies.remove(COOKIES_APP.PERMISSIONS_APP)
+    localStorage.removeItem(COOKIES_APP.PERMISSIONS_APP)
+    // Cookies.remove(COOKIES_APP.PERMISSIONS_APP)
   }
 
   return {

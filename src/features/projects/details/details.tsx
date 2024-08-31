@@ -22,58 +22,128 @@ import {
   MenuItem,
   CalendarIcon,
   ClientNameProject,
-  ArrowDownIcon,
-  ButtonDown,
   ContainerOutletProjectDetails,
 } from "./details.styles"
+import { routeWithReplaceId } from "../../../utils/path-util"
+import { pathRoutes } from "../../../config/routes/path"
+import { ProjectDTO } from "../../../core/models/interfaces/project-model"
+import useDataUser from "../../../utils/use-data-user"
+import axios from "axios"
+import { settingsApp } from "../../../config/environment/settings"
+import { toast } from "sonner"
+import { formatToDDMonth } from "../../../utils/date-util"
+import Skeleton from "react-loading-skeleton"
 
 const Details: React.FC = () => {
-  const { id } = useParams<{ id: string }>()
-  const [isActive, setIsActive] = useState(false)
+  const [dataProject, setDataProject] = React.useState<ProjectDTO>()
+  const [isLoadingDataProject, setIsLoadingDataProject] =
+    React.useState<boolean>(false)
+  const { id: idProject } = useParams<{ id: string }>()
 
-  const handleToggle = () => {
-    setIsActive(prevState => !prevState)
-  }
+  const { handleGetToken } = useDataUser()
+
+  React.useEffect(() => {
+    fetchDataProjects()
+  }, [])
+
+  const fetchDataProjects = React.useCallback(() => {
+    setIsLoadingDataProject(true)
+    const storedToken = handleGetToken()
+    if (!!storedToken) {
+      axios
+        .get(`${settingsApp.api.base}/projects/${idProject}?include=tasks`, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        })
+        .then(response => {
+          console.log("Response => ", response.data)
+          const dataResponse: ProjectDTO = response.data as ProjectDTO
+          if (!!dataResponse) {
+            setDataProject(dataResponse)
+            // setStadisticts(dataResponse.stadistics)
+          }
+          setIsLoadingDataProject(false)
+        })
+        .catch(err => {
+          toast.error("Failed to fetch data")
+          setIsLoadingDataProject(false)
+        })
+    }
+  }, [])
 
   return (
     <DetailsContainer>
       <DataBlock>
-
         <LeftSideDataBlock>
-          <ImageContainer />
+          <ImageContainer>
+            <img src={!!dataProject ? dataProject?.picture : ""} />
+          </ImageContainer>
           <InfoBlock>
-         {/*Nombre del proyecto */}
+            {/*Nombre del proyecto */}
             <InfoBlockUp>
-              <NameProject>Construction of Central Park</NameProject>
+              <NameProject>
+                {!isLoadingDataProject ? (
+                  !!dataProject && dataProject?.name
+                ) : (
+                  <Skeleton count={1} height={40} />
+                )}
+              </NameProject>
             </InfoBlockUp>
-          {/*Datos como el cliente fecha y Contratista */}
+            {/*Datos como el cliente fecha y Contratista */}
             <InfoBlockDown>
               <InfoItem>
                 <Text>
-                  Cliente: <ClientNameProject>Zicia</ClientNameProject>
+                  Cliente:{" "}
+                  <ClientNameProject>
+                    {/* {!!dataProject && dataProject?.clientId} */}
+                    Zicia
+                  </ClientNameProject>
                 </Text>
               </InfoItem>
               <InfoItem>
                 <CalendarIcon />
-                <Text>23-Mar - 12 Apr</Text>
-                <ButtonDown>
+                <Text>
+                  {!isLoadingDataProject ? (
+                    <>
+                      {formatToDDMonth(
+                        !!dataProject ? dataProject?.startDate : "",
+                      )}{" "}
+                      -
+                      {formatToDDMonth(
+                        !!dataProject ? dataProject?.dueDate : "",
+                      )}
+                    </>
+                  ) : (
+                    <Skeleton count={1} height={20} />
+                  )}
+                </Text>
+                {/* <ButtonDown>
                   <ArrowDownIcon />
-                </ButtonDown>
+                </ButtonDown> */}
               </InfoItem>
               <InfoItem>
                 <Icon className="person-icon" />
-                <Text>Contractor 1</Text>
-                <ButtonDown>
+                <Text>
+                  {!isLoadingDataProject ? (
+                    <span>Contractor: {dataProject?.clientId}</span>
+                  ) : (
+                    <Skeleton count={1} height={20} />
+                  )}
+                </Text>
+                {/* <ButtonDown>
                   <ArrowDownIcon />
-                </ButtonDown>
+                </ButtonDown> */}
               </InfoItem>
             </InfoBlockDown>
           </InfoBlock>
         </LeftSideDataBlock>
 
-        <RightSideDataBlock>
+        {/*Falta hacer el bucle , de acuerdo a la cantidad de trabajadores */}
+        {/* <RightSideDataBlock>
           <Text>Contractor:</Text>
-          {/*Falta hacer el bucle , de acuerdo a la cantidad de trabajadores */}
           <ContractorSection>
             <IconWrapper>👤</IconWrapper>
             <IconWrapper>👤</IconWrapper>
@@ -84,20 +154,60 @@ const Details: React.FC = () => {
             </IconWrapper>
             <AddButton>+</AddButton>
           </ContractorSection>
-        </RightSideDataBlock>
-
+        </RightSideDataBlock> */}
       </DataBlock>
-          {/*Menu*/}
+      {/*Menu*/}
 
       <ProjectMenu>
-        <MenuItem to={`/projects/${id}/detail/overview`} end>
+        <MenuItem
+          to={routeWithReplaceId(
+            pathRoutes.PROJECTS.DETAIL.OVERVIEW,
+            `${idProject}`,
+          )}
+          end
+        >
           Overview
         </MenuItem>
-        <MenuItem to={`/projects/${id}/detail/activity`}>Activity</MenuItem>
-        <MenuItem to={`/projects/${id}/detail/tasks`}>Tasks</MenuItem>
-        <MenuItem to={`/projects/${id}/detail/contractor`}>Contractor</MenuItem>
-        <MenuItem to={`/projects/${id}/detail/file`}>File</MenuItem>
-        <MenuItem to={`/projects/${id}/detail/settings`}>Settings</MenuItem>
+        <MenuItem
+          to={routeWithReplaceId(
+            pathRoutes.PROJECTS.DETAIL.ACTIVITY,
+            `${idProject}`,
+          )}
+        >
+          Activity
+        </MenuItem>
+        <MenuItem
+          to={routeWithReplaceId(
+            pathRoutes.PROJECTS.DETAIL.TASKS,
+            `${idProject}`,
+          )}
+        >
+          Tasks
+        </MenuItem>
+        <MenuItem
+          to={routeWithReplaceId(
+            pathRoutes.PROJECTS.DETAIL.CONTRACTORS,
+            `${idProject}`,
+          )}
+        >
+          Contractor
+        </MenuItem>
+        <MenuItem
+          to={routeWithReplaceId(
+            pathRoutes.PROJECTS.DETAIL.FILES,
+            `${idProject}`,
+          )}
+        >
+          Files
+        </MenuItem>
+        {/* <MenuItem
+          to={routeWithReplaceId(
+            pathRoutes.PROJECTS.DETAIL.SETTINGS,
+            `${idProject}`,
+          )}
+        >
+          Settings
+        </MenuItem> */}
       </ProjectMenu>
 
       {/*Espacio para outlet y barra inferior*/}

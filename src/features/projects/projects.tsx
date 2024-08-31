@@ -44,6 +44,8 @@ import { settingsApp } from "../../config/environment/settings"
 import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
 import Skeleton from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
+import { routeWithReplaceId } from "../../utils/path-util"
+import { formatToDDMonth } from "../../utils/date-util"
 
 const Projects: React.FC = () => {
   const [listProjects, setListProjects] = React.useState<ProjectDTO[]>([])
@@ -105,7 +107,7 @@ const Projects: React.FC = () => {
     const storedToken = handleGetToken()
     if (!!storedToken) {
       axios
-        .get(`${settingsApp.api.base}/projects`, {
+        .get(`${settingsApp.api.base}/projects?include=tasks,client`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             "Content-Type": "application/json",
@@ -114,15 +116,10 @@ const Projects: React.FC = () => {
         })
         .then(response => {
           console.log("Response => ", response.data)
-          const dataResponse: ProjectResponseDTO =
-            response.data as ProjectResponseDTO
-          if (
-            !!dataResponse &&
-            !!dataResponse.stadistics &&
-            !!dataResponse.listProjects
-          ) {
-            setListProjects(dataResponse.listProjects)
-            setStadisticts(dataResponse.stadistics)
+          const dataResponse: ProjectDTO[] = response.data as ProjectDTO[]
+          if (!!dataResponse) {
+            setListProjects(dataResponse)
+            // setStadisticts(dataResponse.stadistics)
           }
           setIsLoadingListProjects(false)
         })
@@ -143,6 +140,9 @@ const Projects: React.FC = () => {
   const handleChangeOptionRole = (value: any) => {
     setSelectedOptionRole(value)
   }
+
+  const handleDblClickView = (projectId: string) =>
+    navigate(routeWithReplaceId(pathRoutes.PROJECTS.DETAIL.OVERVIEW, projectId))
 
   return (
     <SectionRoute>
@@ -216,7 +216,9 @@ const Projects: React.FC = () => {
           )}
         {!isLoadingListProjects &&
           !!listProjects &&
-          listProjects.length > 0 && (
+          listProjects.length > 0 &&
+          !!dataPermissions &&
+          dataPermissions.project.includes("list") && (
             <ContainerTable>
               <ContainerFilters>
                 <div>
@@ -254,7 +256,9 @@ const Projects: React.FC = () => {
                 </ContainerHead>
                 <ContainerBody>
                   {(listProjects || []).map(project => (
-                    <tr>
+                    <tr
+                      onDoubleClick={() => handleDblClickView(`${project.id}`)}
+                    >
                       <NameStylesTD>
                         <div>
                           <span>{project.name}</span>
@@ -265,7 +269,7 @@ const Projects: React.FC = () => {
                         <div>
                           <span>{project.progress} %</span>
                           <div></div>
-                          <span>{project.pending_task} tasks</span>
+                          <span>{project.tasks.length} tasks</span>
                         </div>
                       </ProgressStylesTD>
                       {/* <td>{project.contractors[0].fullName}</td> */}
@@ -274,12 +278,16 @@ const Projects: React.FC = () => {
                           <span>
                             <User />
                           </span>
-                          <span>{project.client.split(" ")[1]}</span>
+                          <span>{}</span>
+                          <span>
+                            {/* {project.clientId} */}
+                            Zicia
+                          </span>
                         </div>
                       </ClientStylesTD>
                       <DateStylesTD>
                         <div>
-                          <span>{formatDate(project.dueDate)}</span>
+                          <span>{formatToDDMonth(project.dueDate)}</span>
                         </div>
                       </DateStylesTD>
                       <ContainerActions>
@@ -293,16 +301,30 @@ const Projects: React.FC = () => {
                               tabIndex={0}
                               onBlur={handleCleanDropdown}
                             >
-                              <span
-                                onClick={handleEditProject(`${project.id}`)}
-                              >
-                                Editar
-                              </span>
-                              <span
-                                onClick={handleDeleteProject(`${project.id}`)}
-                              >
-                                Eliminar
-                              </span>
+                              {(
+                                dataPermissions ||
+                                ({
+                                  project: [],
+                                } as unknown as FilterPermissionsDTO)
+                              ).project.includes("update") && (
+                                <span
+                                  onClick={handleEditProject(`${project.id}`)}
+                                >
+                                  Edit
+                                </span>
+                              )}
+                              {(
+                                dataPermissions ||
+                                ({
+                                  project: [],
+                                } as unknown as FilterPermissionsDTO)
+                              ).project.includes("delete") && (
+                                <span
+                                  onClick={handleDeleteProject(`${project.id}`)}
+                                >
+                                  Delete
+                                </span>
+                              )}
                             </ContainerDropdown>
                           )}
                         </div>

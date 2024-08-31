@@ -21,7 +21,7 @@ import { toast } from "sonner"
 import Cookies from "js-cookie"
 import { pathRoutes } from "../../../config/routes/path"
 import Button from "../../../components/button/button"
-import { COOKIES_APP } from "../../../constants/app"
+import { ACTIONS_TITLE_APP, COOKIES_APP } from "../../../constants/app"
 import {
   FilterPermissionsDTO,
   SignInResponse,
@@ -32,9 +32,12 @@ import {
 } from "../../../core/models/schemas/signin-schema"
 import { ErrorMessage, WrapperInput } from "../../../config/theme/global-styles"
 import { settingsApp } from "../../../config/environment/settings"
+import { useAppDispatch } from "../../../app/hooks"
+import { updateActionTitleApp } from "../../../core/store/app-store/appSlice"
 
 const SignIn: React.FC = () => {
   const [isSubmitLogin, setIsSubmitLogin] = React.useState<boolean>(false)
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const methods = useForm<SignInForm>({
@@ -95,6 +98,9 @@ const SignIn: React.FC = () => {
           projectfile: [],
           setting: [],
           task: [],
+          calendar: [],
+          reports: [],
+          role: [],
         }
 
         data.permisos
@@ -110,12 +116,17 @@ const SignIn: React.FC = () => {
           })
 
         if (!!result) {
-          Cookies.set(
+          localStorage.setItem(
             COOKIES_APP.PERMISSIONS_APP,
             JSON.stringify(result),
-            expiration,
           )
+          // Cookies.set(
+          //   COOKIES_APP.PERMISSIONS_APP,
+          //   JSON.stringify(result),
+          //   expiration,
+          // )
         }
+        dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.DASHBOARD))
         navigate(pathRoutes.DASHBOARD)
       })
       .catch(err => {

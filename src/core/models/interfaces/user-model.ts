@@ -35,6 +35,16 @@ export interface UserDTO {
   isActive: boolean
   createdAt: string
   username: string
+  role: RoleDTO[]
+}
+
+export interface RoleDTO {
+  id: number
+  name: string
+  guardName: string
+  createdAt: string
+  updatedAt: string
+  permissions: PermissionDTO[]
 }
 
 export interface PermissionDTO {
@@ -84,4 +94,9 @@ export interface DeleteUserResponseDTO {
 
 export interface MessageResponsedDTO {
   message: string
+}
+
+export type Option = {
+  value: string
+  label: string
 }

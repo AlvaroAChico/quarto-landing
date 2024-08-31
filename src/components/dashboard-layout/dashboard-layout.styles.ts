@@ -37,7 +37,7 @@ export const ContainerOutlet = styled.div`
     background: #eff1f6;
     padding: 10px;
     display: flex;
-    height: 80px;
+    height: 90px;
     width: 100%;
   }
 
@@ -59,7 +59,7 @@ export const ContainerLogo = styled.div`
   align-items: center;
   padding: 10px 15px;
   display: flex;
-  height: 90px;
+  height: 120px;
 
   > div img {
     max-width: 50px;
@@ -145,8 +145,23 @@ export const ItemMenu = styled.div`
   }
 `
 
-export const ContainerBreadcrumb = styled.div`
+export const ContainerTitleApp = styled.div`
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding-left: 10px;
+  font-size: 20px;
+  display: flex;
   width: 50%;
+
+  > h2 {
+    font-weight: 900;
+  }
+
+  > span {
+    color: ${palette.grayColor};
+    font-size: 14px;
+  }
 `
 
 export const ContainerDataProfile = styled.div`
@@ -188,31 +203,30 @@ export const ContainerAvatarSide = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  padding-right: 10px;
+`
 
-  > div {
-    &:nth-child(1) {
-      position: relative;
+export const AvatarStyles = styled.div`
+  position: relative;
 
-      > div:nth-child(1) {
-        display: grid;
-        background: red;
-        place-items: center;
-        width: 45px;
-        height: 45px;
-        background: #7a86a1;
-        border-radius: 16px;
-      }
-    }
+  > div:nth-child(1) {
+    display: grid;
+    background: red;
+    place-items: center;
+    width: 45px;
+    height: 45px;
+    background: #7a86a1;
+    border-radius: 16px;
+  }
+`
 
-    &:nth-child(2) {
-      > p:nth-child(1) {
-        font-size: 14px;
-      }
-      > p:nth-child(2) {
-        font-size: 11px;
-        color: ${palette.primaryColor};
-      }
-    }
+export const DataUserStyles = styled.div`
+  > p:nth-child(1) {
+    font-size: 14px;
+  }
+  > p:nth-child(2) {
+    font-size: 11px;
+    color: ${palette.primaryColor};
   }
 `
 
