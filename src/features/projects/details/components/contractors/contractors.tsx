@@ -22,7 +22,7 @@ import {
   StatusPointTasks,
   ContainerTaskProgress,
   ContainerFilters,
-} from "./task.styles"
+} from "./contractors.styles"
 import {
   ProjectDTO,
   TaskDTO,
@@ -48,13 +48,16 @@ import { ContainerNameRoleTD } from "../../../../roles/roles.styles"
 import { Ellipsis } from "@styled-icons/fa-solid/Ellipsis"
 import { FilterPermissionsDTO } from "../../../../../core/models/interfaces/user-model"
 import Input from "../../../../../components/input/input"
-import { Search } from "styled-icons/bootstrap"
+import { Plus, Search } from "styled-icons/bootstrap"
 import Select from "react-select"
 import { monthsSelect } from "../../../../../constants/app"
 import Skeleton from "react-loading-skeleton"
+import { FileDTO } from "../../../../../core/models/interfaces/file-model"
+import Button from "../../../../../components/button/button"
+import { ContractorDTO } from "../../../../../core/models/interfaces/contractor-model"
 
-const DetailsTask: React.FC = () => {
-  const [dataProject, setDataProject] = React.useState<ProjectDTO>()
+const DetailContractors: React.FC = () => {
+  const [dataContractor, setDataContractor] = React.useState<ContractorDTO[]>()
   const [isOpenModalEdit, setIsOpenModalEdit] = React.useState<boolean>(false)
   const [isLoadingDataProject, setIsLoadingDataProject] =
     React.useState<boolean>(false)
@@ -84,7 +87,7 @@ const DetailsTask: React.FC = () => {
       //   )
       //   setIsOpenModalEdit(true)
     },
-    [dataProject],
+    [],
   )
 
   const handleDeleteTask = React.useCallback(
@@ -92,7 +95,7 @@ const DetailsTask: React.FC = () => {
       // setDataRoleDelete(listRoles.filter(role => `${role.id}` == roleId)[0])
       // setIsOpenModalDelete(true)
     },
-    [dataProject],
+    [],
   )
 
   const getCookiesDataPermission = React.useCallback(() => {
@@ -116,7 +119,7 @@ const DetailsTask: React.FC = () => {
     if (!!storedToken) {
       axios
         .get(
-          `${settingsApp.api.base}/projects?include=tasks&filter[id]=${idProject}`,
+          `${settingsApp.api.base}/contractors?include=user&filter[id]=${idProject}`,
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
@@ -126,9 +129,9 @@ const DetailsTask: React.FC = () => {
           },
         )
         .then(response => {
-          const dataResponse: ProjectDTO = response.data[0] as ProjectDTO
+          const dataResponse: ContractorDTO[] = response.data as ContractorDTO[]
           if (!!dataResponse) {
-            setDataProject(dataResponse)
+            setDataContractor(dataResponse)
             // setStadisticts(dataResponse.stadistics)
           }
           setIsLoadingDataProject(false)
@@ -152,64 +155,24 @@ const DetailsTask: React.FC = () => {
 
   const handleCleanDropdown = () => toggleDropdown("")
 
-  // Simulando una lista de tareas
-  const tasks = Array.from({ length: 10 }, (_, index) => ({
-    task: `Task ${index + 1}`,
-    category: "Category",
-    contractor: "Contractor",
-    status: "Status",
-    completion: "Completion",
-    dueDate: "DueDate",
-  }))
   return (
     <ContainerTasks>
       <HeaderTask>
-        <TaskTitle>Tasks</TaskTitle>
-        <NewTaskButton>
+        <TaskTitle>Contractors</TaskTitle>
+        {/* <NewTaskButton>
           <CalendarIconStyled size={20} />
-          <span>New Task</span>
-        </NewTaskButton>
+          <span>New File</span>
+        </NewTaskButton> */}
+        <Button text={"Asign"} onClick={() => console.log} IconLeft={Plus} />
       </HeaderTask>
 
-      {/* <ContainerFilterTask> */}
-      {/* <FilterRow> */}
-      {/* <FilterRowLeft>
-        <DateButton>
-          <CalendarIconStyled size={20} />
-          <span>Today</span>
-          <span>{today}</span>
-        </DateButton>
-      </FilterRowLeft>
-      <FilterRowRight> */}
-      {/* <FilterButton>
-              <SearchIconStyled size={20} />
-            </FilterButton> */}
-      {/* <FilterButton>
-              <span>Filter</span>
-              <ArrowDropDownIconStyled size={20} />
-            </FilterButton> */}
-      {/* <FilterButton>
-              <span>Month</span>
-              <ArrowDropDownIconStyled size={20} />
-            </FilterButton> */}
-      {/* <FilterButton>
-              <TrashIconStyled size={20} />
-            </FilterButton>
-            <FilterButton>
-              <DownloadIconStyled size={20} />
-            </FilterButton> */}
-      {/* </FilterRowRight> */}
-      {/* </FilterRow> */}
-      {/* <FilterContainer> */}
       {isLoadingDataProject && (
         <ContainerTable>
           <table>
             <ContainerHead>
               <tr>
-                <td>Task</td>
-                <td>Status</td>
-                <td>Progress</td>
-                <td>Due date</td>
+                <td>Name</td>
+                <td>Email</td>
                 <td></td>
               </tr>
             </ContainerHead>
@@ -224,34 +187,33 @@ const DetailsTask: React.FC = () => {
         </ContainerTable>
       )}
       {!isLoadingDataProject &&
-        !!dataProject &&
-        (dataProject?.tasks || []).length <= 0 && (
+        !!dataContractor &&
+        (dataContractor || []).length <= 0 && (
           <>
             <ContainerTable>
               <table>
                 <ContainerHead>
                   <tr>
-                    <td>Task</td>
-                    <td>Status</td>
-                    <td>Progress</td>
-                    <td>Due date</td>
+                    <td>Name</td>
+                    <td>Email</td>
+                    <td>CreatedAt</td>
                     <td></td>
                   </tr>
                 </ContainerHead>
               </table>
               <NotFoundStyles>
-                <span>No tasks found</span>
+                <span>No contractor found</span>
               </NotFoundStyles>
             </ContainerTable>
           </>
         )}
       {!isLoadingDataProject &&
-        !!dataProject &&
-        (dataProject?.tasks || []).length > 0 &&
+        !!dataContractor &&
+        (dataContractor || []).length > 0 &&
         !!dataPermissions &&
         dataPermissions.task.includes("list") && (
           <ContainerTable>
-            <ContainerFilters>
+            {/* <ContainerFilters>
               <div>
                 <WrapperInput>
                   <Input
@@ -274,47 +236,44 @@ const DetailsTask: React.FC = () => {
                   />
                 </div>
               </div>
-            </ContainerFilters>
+            </ContainerFilters> */}
             <table>
               <ContainerHead>
                 <tr>
-                  <td>Task</td>
-                  <td>Status</td>
-                  <td>Progress</td>
-                  <td>Due date</td>
+                  <td>Name</td>
+                  <td>Email</td>
+                  <td>CreatedAt</td>
                   <td></td>
                 </tr>
               </ContainerHead>
               <ContainerBody>
-                {(dataProject?.tasks || []).map(task => (
+                {(dataContractor || []).map(contractor => (
                   <tr>
                     <ContainerNameRoleTD>
                       <div>
-                        <span>{task.name}</span>
+                        <span>
+                          {contractor.user.firstName} {contractor.user.lastName}
+                        </span>
                       </div>
                     </ContainerNameRoleTD>
-                    <ContainerStatusTask>
-                      <div>
-                        <StatusPointTasks progress={task.progress} />
-                        <span>Pending</span>
-                      </div>
-                    </ContainerStatusTask>
-                    <ContainerTaskProgress progress={task.progress}>
-                      <div />
-                    </ContainerTaskProgress>
                     <ClasicStylesTD>
                       <div>
-                        <span>{formatToDDMonth(task.dueDate)}</span>
+                        <span>{contractor.user.email}</span>
+                      </div>
+                    </ClasicStylesTD>
+                    <ClasicStylesTD>
+                      <div>
+                        <span>{formatToDDMonth(contractor.createdAt)}</span>
                       </div>
                     </ClasicStylesTD>
                     <ContainerActions>
                       <div>
-                        <div onClick={() => toggleDropdown(`${task.id}`)}>
+                        <div onClick={() => toggleDropdown(`${contractor.id}`)}>
                           <Ellipsis />
                         </div>
-                        {dropdownVisible === `${task.id}` && (
+                        {dropdownVisible === `${contractor.id}` && (
                           <ContainerDropdown
-                            id={`dropdown_ov${task.id}`}
+                            id={`dropdown_ov${contractor.id}`}
                             tabIndex={0}
                             onBlur={handleCleanDropdown}
                           >
@@ -324,7 +283,9 @@ const DetailsTask: React.FC = () => {
                                 role: [],
                               } as unknown as FilterPermissionsDTO)
                             ).role.includes("update") && (
-                              <span onClick={handleEditTask(`${task.id}`)}>
+                              <span
+                                onClick={handleEditTask(`${contractor.id}`)}
+                              >
                                 Edit
                               </span>
                             )}
@@ -334,7 +295,9 @@ const DetailsTask: React.FC = () => {
                                 role: [],
                               } as unknown as FilterPermissionsDTO)
                             ).role.includes("delete") && (
-                              <span onClick={handleDeleteTask(`${task.id}`)}>
+                              <span
+                                onClick={handleDeleteTask(`${contractor.id}`)}
+                              >
                                 Delete
                               </span>
                             )}
@@ -353,4 +316,4 @@ const DetailsTask: React.FC = () => {
   )
 }
 
-export default DetailsTask
+export default DetailContractors

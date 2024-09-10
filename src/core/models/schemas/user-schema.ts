@@ -18,12 +18,13 @@ export const CreateUserSchema = object({
 })
 
 export const UpdateUserSchema = object({
+  id: string(),
   firstName: string(),
   lastName: string(),
-  email: string().matches(rgxEmail, "Enter a valid email"),
   contactNumber: string(),
   picture: mixed(),
   role: string(),
+  email: string(),
   password: string(),
 })
 

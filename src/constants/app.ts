@@ -26,6 +26,32 @@ export enum COOKIES_APP {
   PERMISSIONS_APP = "PERMISSIONS_APP",
 }
 
+export enum ACTIONS_TITLE_APP {
+  SIGN_IN = "Sign In",
+  DASHBOARD = "Dashboard",
+  USERS = "Users",
+  CREATE_USERS = "Create user",
+  ROLES = "Roles",
+  CREATE_ROLES = "Create role",
+  PROJECTS = "Projects",
+  CREATE_PROJECTS = "Create project",
+  OVERVIEW_PROJECTS = "Overview project",
+  ACTIVITY_PROJECTS = "Activity project",
+  TASKS_PROJECTS = "Tasks project",
+  CONTRACTOR_PROJECTS = "Contractor project",
+  FILE_PROJECTS = "Files project",
+  SETTINGS_PROJECTS = "Settings project",
+  TASKS = "Tasks",
+  CREATE_TASKS = "Create task",
+  CALENDAR = "Calendar",
+  REPORTS = "Reports",
+}
+
+export enum CURRENCY_APP {
+  USD = "USD",
+  PEN = "PEN",
+}
+
 export const months = [
   "Jan",
   "Feb",

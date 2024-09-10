@@ -1,0 +1,104 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Verificar el repositorio
+        uses: actions/checkout@v2
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.16.0'
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Construir la aplicación
+        run: npm run build
+
+      - name: Crear archivo SSH key
+        if: github.event_name == 'push'
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
+          chmod 600 key.pem
+
+      - name: Iniciar sesión en Docker
+        if: github.event_name == 'push'
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Construir y enviar imagen Docker
+        if: github.event_name == 'push'
+        run: |
+          docker build -t ocasystem/service-fe .
+          docker tag ocasystem/service-fe ocasystem/service-fe:latest
+          docker push ocasystem/service-fe:latest
+
+      - name: Conectarse a EC2
+        if: github.event_name == 'push'
+        run: |
+          ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            # Asegúrate de que Docker esté instalado
+            if ! command -v docker &> /dev/null; then
+              echo "Docker no está instalado. Instalando Docker..."
+              sudo apt-get update
+              sudo apt-get install -y docker.io
+              sudo systemctl start docker
+              sudo systemctl enable docker
+            fi
+
+            # Borrar contenedor existente si existe
+            CONTAINER_NAME="services-fe"
+            if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
+              echo "Deteniendo el contenedor existente..."
+              docker stop $CONTAINER_NAME
+              echo "Borrando el contenedor existente..."
+              docker rm $CONTAINER_NAME
+            fi
+
+            # Descargar la nueva imagen
+            echo "Descargando la imagen más reciente de Docker Hub..."
+            docker pull ocasystem/service-fe:latest
+
+            # Ejecutar la imagen desde Docker Hub
+            echo "Iniciando el contenedor con docker-compose..."
+            docker-compose -f develop.yml up -d
+
+            echo "La aplicación se está ejecutando."
+          EOF
+
+      - name: Enviar notificación a Slack
+        if: always()  # Siempre se ejecuta, independientemente del resultado
+        run: |
+          STATUS=${{ job.status }}
+          JOB_NAME=${{ job.name }}
+          COMMIT_AUTHOR=${{ github.actor }}
+          REPO_NAME=${{ github.repository }}
+          COMMIT_URL=${{ github.event.repository.html_url }}/commit/${{ github.sha }}
+          
+          if [[ "$STATUS" == "success" ]]; then
+            MESSAGE="✅ *El despliegue ha sido exitoso en el trabajo:* $JOB_NAME"
+            MESSAGE+="Repositorio: <$REPO_NAME|\`$REPO_NAME\`>\n"
+            MESSAGE+="Autor del commit: $COMMIT_AUTHOR"
+            MESSAGE+="Ver commit: <$COMMIT_URL|Ver detalle del commit>"
+          else
+            ERROR_LOG="Aquí va el log del error o la razón del fallo"  # Puedes personalizar este mensaje con detalles de error
+            MESSAGE="❌ *El despliegue ha fallado en el trabajo:* $JOB_NAME"
+            MESSAGE+="Repositorio: <$REPO_NAME|\`$REPO_NAME\`>\n"
+            MESSAGE+="Autor del commit: $COMMIT_AUTHOR"
+            MESSAGE+="Ver commit: <$COMMIT_URL|Ver detalle del commit>\n"
+            MESSAGE+="💡 *Detalles del error:* $ERROR_LOG"
+          fi
+
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"$MESSAGE\"}" ${{ secrets.SLACK_WEBHOOK_URL }}

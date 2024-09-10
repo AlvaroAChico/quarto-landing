@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "TST Admin - DEV",
-    "mocks": true,
+    "mocks": false,
     "local": "http://services-api-local.ocasystem.com:7003"
   },
   "api": {

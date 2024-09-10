@@ -8,9 +8,9 @@ import {
 } from "../../../../core/models/schemas/user-schema"
 import {
   CreateUserDTO,
+  Option,
   UserDTO,
 } from "../../../../core/models/interfaces/user-model"
-import { FormContainer } from "./modal-edit-user.styles"
 import {
   ContainerDragAndDropAvatar,
   ContainerImageAvatar,
@@ -20,7 +20,6 @@ import {
   WrapperInput,
 } from "../../../../config/theme/global-styles"
 import { User } from "styled-icons/boxicons-solid"
-import { palette } from "../../../../config/theme/theme"
 import Button from "../../../button/button"
 import Input from "../../../input/input"
 import Select from "react-select"
@@ -31,34 +30,40 @@ import useDataUser from "../../../../utils/use-data-user"
 import { Trash } from "@styled-icons/ionicons-solid/Trash"
 import { CardImage } from "@styled-icons/bootstrap/CardImage"
 import { useDropzone } from "react-dropzone"
+import { settingsApp } from "../../../../config/environment/settings"
+import { Password } from "@styled-icons/material-twotone/Password"
+import { EyeFill, EyeSlashFill } from "@styled-icons/bootstrap"
+import { FormContainer } from "./modal-edit-user.styles"
 
 interface IOwnProps {
   isOpen: boolean
   dataUserEdit: UserDTO
   handleClose: () => void
+  handleRefreshData: () => void
 }
 
 const ModalEditUser: React.FC<IOwnProps> = ({
   isOpen,
   dataUserEdit,
   handleClose,
+  handleRefreshData,
 }) => {
   const [optionsRoles, setOptionsRoles] = React.useState<any>([])
-  const [selectedOptionRole, setSelectedOptionRole] = React.useState(null)
+  const [selectedOptionRole, setSelectedOptionRole] =
+    React.useState<Option | null>(null)
   const [isSubmitUserUpdate, setIsSubmitUserUpdate] =
     React.useState<boolean>(false)
 
-  const { handleGetToken } = useDataUser()
-
+  const { handleGetToken, handleGetPermissions } = useDataUser()
   const methods = useForm<UpdateUserForm>({
     resolver: yupResolver(UpdateUserSchema),
     defaultValues: {
-      firstName: !!dataUserEdit ? dataUserEdit.firstName : "",
-      lastName: !!dataUserEdit ? dataUserEdit.lastName : "",
+      firstName: "",
+      lastName: "",
       contactNumber: "",
-      email: !!dataUserEdit ? dataUserEdit.email : "",
-      password: "",
+      email: "",
       role: "",
+      password: "",
     },
   })
 
@@ -74,34 +79,79 @@ const ModalEditUser: React.FC<IOwnProps> = ({
     setSelectedOptionRole(value)
   }
 
+  React.useEffect(() => {
+    if (!!dataUserEdit) {
+      setValue("id", `${dataUserEdit.id}`)
+      setValue("firstName", dataUserEdit.firstName)
+      setValue("lastName", dataUserEdit.lastName)
+      setValue("contactNumber", dataUserEdit.contactNumber)
+      setValue("role", dataUserEdit.role[0].name)
+      setValue("email", dataUserEdit.email)
+      setValue("picture", dataUserEdit.picture)
+    }
+  }, [dataUserEdit])
+
+  const hasParamsFormData = (formData: FormData): boolean => {
+    var nroValue = 0
+    for (const [key, value] of formData.entries()) {
+      if (value !== "" || value !== null || value !== undefined) {
+        nroValue++
+      }
+      console.log("Value FormData -> ", value)
+    }
+    return nroValue > 0
+  }
+
   const handleSubmit = React.useCallback((data: any) => {
     setIsSubmitUserUpdate(true)
-    axios
-      .post("http://localhost:3000/users/update", {
-        firstname: data.firstname,
-        lastname: data.lastname,
-        email: data.email,
-        password: data.password,
-      })
-      .then(response => {
-        setIsSubmitUserUpdate(false)
-        const data: CreateUserDTO = response.data as CreateUserDTO
-        // if (!!data && data == 200 && !!data.data) {
-        //   toast.success(data.message)
-        // }
-      })
-      .catch(err => {
-        setIsSubmitUserUpdate(false)
-        toast.error("Failed to authenticate")
-      })
+    const storedToken = handleGetToken()
+    if (!!storedToken) {
+      const formData = new FormData()
+      // formData.append("_method", "PATCH")
+      formData.append("first_name", data.firstName)
+      formData.append("last_name", data.lastName)
+      formData.append("contact_number", data.contactNumber)
+      formData.append("role", data.role)
+      formData.append("email", data.email)
+      if (!!data.password && data.password != "") {
+        formData.append("password", data.password)
+      }
+      if (infoPicture != "") {
+        formData.append("picture", data.picture)
+      }
+
+      axios
+        .patch(`${settingsApp.api.base}/users/${data.id}`, formData, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            ContentType: "application/json",
+            Accept: "application/json",
+          },
+        })
+        .then(response => {
+          setIsSubmitUserUpdate(false)
+          console.log("Response data -> ", response.data)
+          const data: UserDTO = response.data as UserDTO
+          if (!!data && !!data.id) {
+            toast.success("User successfully updated")
+            handleRefreshData()
+            handleClose()
+          }
+        })
+        .catch(err => {
+          setIsSubmitUserUpdate(false)
+          toast.error("Failed to authenticate")
+        })
+    }
   }, [])
 
   React.useEffect(() => {
     const storedToken = handleGetToken()
+    const dataPermissions = handleGetPermissions()
 
     if (!!storedToken) {
       axios
-        .get("http://localhost:3000/roles", {
+        .get(`${settingsApp.api.base}/roles`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
           },
@@ -109,31 +159,32 @@ const ModalEditUser: React.FC<IOwnProps> = ({
         .then(response => {
           const listData: DataRoleResponse[] =
             response.data as DataRoleResponse[]
-          setOptionsRoles(
-            listData.map(role => ({
-              value: role.name,
-              label: role.name,
-            })),
-          )
+          const listRoles = (listData || []).map(data => {
+            if (
+              data.name == "client" &&
+              !dataPermissions.client.includes("create")
+            ) {
+              return
+            }
+            if (
+              data.name == "contractor" &&
+              !dataPermissions.contractor.includes("create")
+            ) {
+              return
+            }
+
+            return {
+              value: data.name,
+              label: data.name,
+            }
+          })
+          setOptionsRoles(listRoles.filter(role => !!role))
         })
         .catch(err => {
           toast.error("Failed to fetch data")
         })
     }
   }, [])
-
-  React.useEffect(() => {
-    if (!!dataUserEdit) {
-      setValue("firstName", dataUserEdit.firstName)
-      setValue("lastName", dataUserEdit.lastName)
-      setValue("email", dataUserEdit.email)
-      // setValue("role", dataUserEdit.role)
-      // setSelectedOptionRole({
-      //   value: dataUserEdit.role.uuid,
-      //   label: dataUserEdit.role.name,
-      // })
-    }
-  }, [dataUserEdit])
 
   const [infoPicture, setInfoPicture] = React.useState<any>()
   const handleDeletePictureUser = () => {
@@ -187,7 +238,6 @@ const ModalEditUser: React.FC<IOwnProps> = ({
     <Modal isOpen={isOpen} onClose={handleClose} title="Edit User">
       <FormContainer>
         <CustomWrapperInputAvatar>
-          <label htmlFor="picture-create-project">Picture</label>
           <div>
             {!!infoPicture ? (
               <ContainerImageAvatar>
@@ -240,15 +290,31 @@ const ModalEditUser: React.FC<IOwnProps> = ({
           )}
         </WrapperInput>
         <WrapperInput>
-          <label htmlFor="email-create-user">Email</label>
+          <label htmlFor="contactnumber-create-user">Contact Number</label>
           <Input
-            id="email-create-user"
-            placeholder="Enter email"
+            id="contactnumber-create-user"
+            placeholder="Enter contact number"
             icon={User}
-            props={register("email")}
+            type="number"
+            props={register("contactNumber")}
           />
-          {!!(errors.email as any)?.message && (
-            <ErrorMessage>{(errors.email as any)?.message}</ErrorMessage>
+          {!!(errors.contactNumber as any)?.message && (
+            <ErrorMessage>
+              {(errors.contactNumber as any)?.message}
+            </ErrorMessage>
+          )}
+        </WrapperInput>
+        <WrapperInput>
+          <label htmlFor="password-create-user">Password</label>
+          <Input
+            placeholder="Password"
+            icon={Password}
+            type="password"
+            toggleIcon={{ Show: EyeFill, Hide: EyeSlashFill }}
+            props={register("password")}
+          />
+          {!!(errors.password as any)?.message && (
+            <ErrorMessage>{(errors.password as any)?.message}</ErrorMessage>
           )}
         </WrapperInput>
         <WrapperInput>
@@ -266,7 +332,7 @@ const ModalEditUser: React.FC<IOwnProps> = ({
         </WrapperInput>
         <Button
           onClick={submitWrapper(handleSubmit)}
-          text="Create User"
+          text="Update User"
           isLoading={isSubmitUserUpdate}
         />
       </FormContainer>

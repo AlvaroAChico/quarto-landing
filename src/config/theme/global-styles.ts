@@ -343,12 +343,16 @@ export const ContainerDragAndDropFiles = styled.div<{ isDragActive: boolean }>`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  border-radius: 50%;
+  border-radius: 20px;
   padding: 4px 14px;
   display: flex;
-  height: 160px;
-  width: 160px;
+  height: 100px;
   gap: 10px;
+
+  > svg {
+    widt: 100%;
+    max-width: 20px;
+  }
 
   > p {
     color: ${palette.grayColor};

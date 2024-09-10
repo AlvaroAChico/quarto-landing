@@ -32,13 +32,22 @@ export const DataBlock = styled.div`
 
 export const ImageContainer = styled.div`
   width: 80px;
-  height: 70px;
+  height: 80px;
   min-width: 80px;
   border-radius: 20px;
-  background-color: #e0e0e0; /* Fondo gris claro como placeholder */
+  background-color: #e0e0e0;
   display: flex;
   align-items: center;
   justify-content: center;
+  object-fit: cover;
+
+  > img {
+    border-radius: 25px;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border: none;
+  }
 `
 
 export const LeftSideDataBlock = styled.div`
@@ -73,13 +82,15 @@ export const InfoBlockDown = styled.div`
   display: flex;
   gap: 2%;
   min-width: 600px;
-  max-gap: 25px;
+  gap: 25px;
 `
 export const InfoItem = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 5px;
   color: #7a86a1;
+  width: 100%;
+
   .calendar-icon,
   .person-icon,
   .arrow-icon {
@@ -140,6 +151,7 @@ export const Text = styled.p`
   font-size: 15px;
   font-weight: bold;
   color: #7a86a1;
+  width: 100%;
 `
 
 export const ClientNameProject = styled.span`
@@ -154,12 +166,16 @@ export const ClientNameProject = styled.span`
 
 export const NameProject = styled.p`
   margin: 0;
-  font-size: 30px;
+  margin-right: 30px;
   font-weight: bold;
+  font-size: 30px;
+  width: 100%;
+
   .highlight {
     color: #007bff; /* Cambia el color según sea necesario */
   }
 `
+
 export const DetailsContainer = styled.div`
   width: 100%;
   display: block;

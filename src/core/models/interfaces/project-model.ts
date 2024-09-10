@@ -4,15 +4,55 @@ export interface ProjectResponseDTO {
 }
 
 export interface ProjectDTO {
+  id: number
+  code: string
+  uuid: string
+  name: string
+  picture: string
+  description: string
+  progress: number
+  currency: string
+  price: number
+  startDate: string
+  dueDate: string
+  endDate: string
+  clientId: number
+  categoryId: number
+  status: string
+  isActive: boolean
+  createdAt: string
+  tasks: TasksDTO[]
+  client: ClientDTO
+}
+
+export interface TasksDTO {
   id: 1
   name: string
-  status: string
+  description: string
+  priority: number
+  hours: number
+  price: string
+  currency: string
   progress: number
-  pending_task: number
+  startDate: string
   dueDate: string
-  client: string
-  tasks: TaskDTO[]
-  contractors: ContractorDTO[]
+  endDate: string
+  notes: string
+  projectId: number
+  categoryId: number
+  contractorId: number
+  dependencyTaskId: string
+  status: string
+  isActive: boolean
+  createdAt: string
+}
+
+export interface ClientDTO {
+  id: number
+  userId: number
+  status: string
+  isActive: boolean
+  createdAt: string
 }
 
 export interface ContractorDTO {
@@ -49,4 +89,3 @@ export interface CommentDTO {
   comment: string
   date: string
 }
-

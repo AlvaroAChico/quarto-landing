@@ -1,6 +1,6 @@
 import React from "react"
 import HeaderSection from "../../../../components/header-section/header-section"
-import {  FormContainer } from "./create-user.styles"
+import { FormContainer } from "./create-user.styles"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
@@ -10,15 +10,14 @@ import {
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import {
-  CreateUserResponseDTO,
-} from "../../../../core/models/interfaces/user-model"
+import { CreateUserResponseDTO } from "../../../../core/models/interfaces/user-model"
 import { pathRoutes } from "../../../../config/routes/path"
 import {
   ContainerDragAndDropAvatar,
   ContainerImageAvatar,
   CustomWrapperInputAvatar,
   ErrorMessage,
+  selectStyles,
   WrapperInput,
 } from "../../../../config/theme/global-styles"
 import Input from "../../../../components/input/input"
@@ -27,7 +26,6 @@ import { Password } from "@styled-icons/material-twotone/Password"
 import { EyeFill, EyeSlashFill } from "@styled-icons/bootstrap"
 import Button from "../../../../components/button/button"
 import { DataRoleResponse } from "../../../../core/models/interfaces/roles-model"
-import { palette } from "../../../../config/theme/theme"
 import Select from "react-select"
 import useDataUser from "../../../../utils/use-data-user"
 import { settingsApp } from "../../../../config/environment/settings"
@@ -42,7 +40,7 @@ const CreateUser: React.FC = () => {
     React.useState<boolean>(false)
   const navigate = useNavigate()
 
-  const { handleGetToken } = useDataUser()
+  const { handleGetToken, handleGetPermissions } = useDataUser()
 
   const methods = useForm<CreateUserForm>({
     resolver: yupResolver(CreateUserSchema),
@@ -106,6 +104,7 @@ const CreateUser: React.FC = () => {
 
   React.useEffect(() => {
     const storedToken = handleGetToken()
+    const dataPermissions = handleGetPermissions()
 
     if (!!storedToken) {
       axios
@@ -117,12 +116,26 @@ const CreateUser: React.FC = () => {
         .then(response => {
           const listData: DataRoleResponse[] =
             response.data as DataRoleResponse[]
-          setOptionsRoles(
-            listData.map(role => ({
-              value: role.name,
-              label: role.name,
-            })),
-          )
+          const listRoles = (listData || []).map(data => {
+            if (
+              data.name == "client" &&
+              !dataPermissions.client.includes("create")
+            ) {
+              return
+            }
+            if (
+              data.name == "contractor" &&
+              !dataPermissions.contractor.includes("create")
+            ) {
+              return
+            }
+
+            return {
+              value: data.name,
+              label: data.name,
+            }
+          })
+          setOptionsRoles(listRoles.filter(role => !!role))
         })
         .catch(err => {
           toast.error("Failed to fetch data")
@@ -135,7 +148,7 @@ const CreateUser: React.FC = () => {
     setValue("picture", "")
     setInfoPicture("")
   }
-  
+
   const onDrop = React.useCallback((acceptedFiles: any, rejectedFiles: any) => {
     if (acceptedFiles.length > 0) {
       if (acceptedFiles.length > 1) {
@@ -283,29 +296,7 @@ const CreateUser: React.FC = () => {
             onChange={handleChangeOptionRole}
             options={optionsRoles}
             isSearchable={false}
-            styles={{
-              control: (provided, state) => ({
-                ...provided,
-                borderColor: state.isFocused ? "#f59e36" : provided.borderColor,
-                boxShadow: state.isFocused
-                  ? "0 0 5px #f59e36"
-                  : provided.boxShadow,
-                "&:hover": {
-                  borderColor: state.isFocused ? "#f59e36" : "gray", // color al pasar el ratón
-                },
-              }),
-              option: (provided, state) => ({
-                ...provided,
-                backgroundColor: state.isFocused
-                  ? palette.primaryColor
-                  : "white",
-                color: state.isSelected ? "black" : "black",
-                "&:hover": {
-                  backgroundColor: palette.primaryColor,
-                  color: "white",
-                },
-              }),
-            }}
+            styles={selectStyles}
           />
           {!!(errors.role as any)?.message && (
             <ErrorMessage>{(errors.role as any)?.message}</ErrorMessage>

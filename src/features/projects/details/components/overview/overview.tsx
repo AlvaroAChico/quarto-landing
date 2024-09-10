@@ -17,8 +17,57 @@ import {
   CardSubTitle,
   ArrowContainer,
 } from "./overview.styles"
+import { useParams } from "react-router-dom"
+import { ProjectDTO } from "../../../../../core/models/interfaces/project-model"
+import useDataUser from "../../../../../utils/use-data-user"
+import axios from "axios"
+import { settingsApp } from "../../../../../config/environment/settings"
+import { toast } from "sonner"
+import { CURRENCY_APP } from "../../../../../constants/app"
+import Skeleton from "react-loading-skeleton"
 
 const DetailsOverview: React.FC = () => {
+  const [dataProject, setDataProject] = React.useState<ProjectDTO>()
+  const [isLoadingDataProject, setIsLoadingDataProject] =
+    React.useState<boolean>(false)
+  const { id: idProject } = useParams<{ id: string }>()
+
+  const { handleGetToken } = useDataUser()
+
+  React.useEffect(() => {
+    fetchDataProjects()
+  }, [])
+
+  const fetchDataProjects = React.useCallback(() => {
+    setIsLoadingDataProject(true)
+    const storedToken = handleGetToken()
+    if (!!storedToken) {
+      axios
+        .get(
+          `${settingsApp.api.base}/projects?include=tasks&filter[id]=${idProject}`,
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          },
+        )
+        .then(response => {
+          const dataResponse: ProjectDTO = response.data[0] as ProjectDTO
+          if (!!dataResponse) {
+            setDataProject(dataResponse)
+            // setStadisticts(dataResponse.stadistics)
+          }
+          setIsLoadingDataProject(false)
+        })
+        .catch(err => {
+          toast.error("Failed to fetch data")
+          setIsLoadingDataProject(false)
+        })
+    }
+  }, [])
+
   const createChartOptions = (percentage: number) => ({
     chart: {
       type: "radialBar",
@@ -105,21 +154,21 @@ const DetailsOverview: React.FC = () => {
 
   const lineChartSeries = [
     {
-      name: "Project A",
+      name: "Data A",
       data: [
-        4500, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000,
+        14000, 5000, 6000, 7000, 18000, 3000, 10000, 11000, 1500, 13000, 4500,
         15000,
       ],
     },
     {
-      name: "Project B",
+      name: "Data B",
       data: [
-        3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000,
+        1000, 12000, 8000, 8500, 10000, 4500, 9000, 9200, 4500, 12000, 10000,
         14000,
       ],
     },
     {
-      name: "Project C",
+      name: "Data C",
       data: [
         1500, 2500, 3500, 4500, 5500, 6500, 7500, 8500, 9500, 10500, 11500,
         12500,
@@ -130,53 +179,65 @@ const DetailsOverview: React.FC = () => {
   return (
     <Container>
       <CardsContainer>
-        <CardComponent>
-          <CardTitle>Progreso</CardTitle>
-          <CardInfo>
+        {!isLoadingDataProject ? (
+          <CardComponent>
+            <CardTitle>Progreso</CardTitle>
+            <CardInfo>
+              <ArrowContainer>
+                <ArrowIcon />
+              </ArrowContainer>
+              <CardText>{dataProject?.status}</CardText>
+            </CardInfo>
+            <CircularChartContainer>
+              <StyledApexCharts
+                options={createChartOptions(dataProject?.progress || 0)}
+                series={[dataProject?.progress || 0]}
+                type="radialBar"
+                height={150}
+              />
+              <PercentageText>{dataProject?.progress || 0}%</PercentageText>
+            </CircularChartContainer>
+          </CardComponent>
+        ) : (
+          <Skeleton count={1} height={200} width={240} borderRadius={10} />
+        )}
+        {!isLoadingDataProject ? (
+          <CardComponent>
+            <CardTitle>Tareas Hechas</CardTitle>
+            <CardSubTitle>
+              {
+                dataProject?.tasks.filter(task => task.status == "completed")
+                  .length
+              }
+            </CardSubTitle>
+
+            {/* <CardInfo>
             <ArrowContainer>
-              <ArrowIcon />
-            </ArrowContainer>
-            <CardText>+0.8%</CardText>
-          </CardInfo>
-          <CircularChartContainer>
-            <StyledApexCharts
-              options={createChartOptions(63)}
-              series={[63]}
-              type="radialBar"
-              height={150}
-            />
-            <PercentageText>63%</PercentageText>
-          </CircularChartContainer>
-        </CardComponent>
-
-        <CardComponent>
-          <CardTitle>Tareas Hechas</CardTitle>
-          <CardSubTitle>125</CardSubTitle>
-
-          <CardInfo>
-          <ArrowContainer>
-              <ArrowIcon />
-            </ArrowContainer>            <CardText>+1.2%</CardText>
-          </CardInfo>
-          <CircularChartContainer>
-            <StyledApexCharts
-              options={createChartOptions(75)}
-              series={[75]}
-              type="radialBar"
-              height={150}
-            />
-            <PercentageText>75%</PercentageText>
-          </CircularChartContainer>
-        </CardComponent>
-
-        <CardComponent>
+            <ArrowIcon />
+            </ArrowContainer>{" "}
+            <CardText>+1.2%</CardText>
+            </CardInfo> */}
+            <CircularChartContainer>
+              <StyledApexCharts
+                options={createChartOptions(dataProject?.progress || 0)}
+                series={[dataProject?.progress || 0]}
+                type="radialBar"
+                height={150}
+              />
+              <PercentageText>{dataProject?.progress || 0}%</PercentageText>
+            </CircularChartContainer>
+          </CardComponent>
+        ) : (
+          <Skeleton count={1} height={200} width={240} borderRadius={10} />
+        )}
+        {/* <CardComponent>
           <CardTitle>Objetivos</CardTitle>
           <CardSubTitle>36/100</CardSubTitle>
           <CardInfo>
           <ArrowContainer>
-              <ArrowIcon />
+          <ArrowIcon />
             </ArrowContainer>
-                        <CardText>+2.5%</CardText>
+            <CardText>+2.5%</CardText>
           </CardInfo>
           <CircularChartContainer>
             <StyledApexCharts
@@ -187,20 +248,28 @@ const DetailsOverview: React.FC = () => {
             />
             <PercentageText>45%</PercentageText>
           </CircularChartContainer>
-        </CardComponent>
+        </CardComponent> */}
       </CardsContainer>
-
       <CardContainerGraphic>
-        <CardGraphic>
-          <GraphicTitle>Project Budget</GraphicTitle>
-          <GraphicSubtitle>$120,430.00</GraphicSubtitle>
-          <StyledApexCharts
-            options={lineChartOptions}
-            series={lineChartSeries}
-            type="line"
-            height={250}
-          />
-        </CardGraphic>
+        {!isLoadingDataProject ? (
+          <CardGraphic>
+            <GraphicTitle>Additional Information</GraphicTitle>
+            <GraphicSubtitle>
+              {!!dataProject &&
+                dataProject.currency == CURRENCY_APP.USD &&
+                "$ "}
+              {!!dataProject && dataProject.price}
+            </GraphicSubtitle>
+            <StyledApexCharts
+              options={lineChartOptions}
+              series={lineChartSeries}
+              type="line"
+              height={250}
+            />
+          </CardGraphic>
+        ) : (
+          <Skeleton count={1} height={200} width={530} borderRadius={10} />
+        )}
       </CardContainerGraphic>
     </Container>
   )

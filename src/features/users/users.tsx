@@ -102,7 +102,7 @@ const Users: React.FC = () => {
     const storedToken = handleGetToken()
     if (storedToken) {
       axios
-        .get(`${settingsApp.api.base}/users`, {
+        .get(`${settingsApp.api.base}/users?include=role`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             ContentType: "application/json",
@@ -171,71 +171,80 @@ const Users: React.FC = () => {
           </NotFoundStyles>
         </ContainerTable>
       )}
-      {!isLoadingListUsers && !!listUsers && listUsers.length > 0 && (
-        <ContainerTable>
-          <table>
-            <ContainerHead>
-              <tr>
-                <td>Name</td>
-                <td>Email</td>
-                <td></td>
-              </tr>
-            </ContainerHead>
-            <ContainerBody>
-              {(listUsers || [])
-                .filter(user => user.isActive)
-                .map(user => (
-                  <tr>
-                    <ClasicStylesTD>
-                      <div>
-                        <span>{user.firstName}</span>
-                      </div>
-                    </ClasicStylesTD>
-                    <ClasicStylesTD>
-                      <div>
-                        <span>{user.email}</span>
-                      </div>
-                    </ClasicStylesTD>
-                    <ContainerActions>
-                      <div>
-                        <div onClick={() => toggleDropdown(`${user.id}`)}>
-                          <Ellipsis />
+      {!isLoadingListUsers &&
+        !!listUsers &&
+        listUsers.length > 0 &&
+        !!dataPermissions &&
+        dataPermissions.user.includes("list") && (
+          <ContainerTable>
+            <table>
+              <ContainerHead>
+                <tr>
+                  <td>Name</td>
+                  <td>Email</td>
+                  <td></td>
+                </tr>
+              </ContainerHead>
+              <ContainerBody>
+                {(listUsers || [])
+                  .filter(user => user.isActive)
+                  .map(user => (
+                    <tr>
+                      <ClasicStylesTD>
+                        <div>
+                          <span>{user.firstName}</span>
                         </div>
-                        {dropdownVisible === `${user.id}` && (
-                          <ContainerDropdown
-                            id={`dropdown_ov${user.id}`}
-                            tabIndex={0}
-                            onBlur={handleCleanDropdown}
-                          >
-                            {(
-                              dataPermissions ||
-                              ({ user: [] } as unknown as FilterPermissionsDTO)
-                            ).user.includes("update") && (
-                              <span onClick={handleEditUser(`${user.id}`)}>
-                                Editar
-                              </span>
-                            )}
-                            {(
-                              dataPermissions ||
-                              ({ user: [] } as unknown as FilterPermissionsDTO)
-                            ).user.includes("delete") && (
-                              <span onClick={handleDeleteUser(`${user.id}`)}>
-                                Eliminar
-                              </span>
-                            )}
-                          </ContainerDropdown>
-                        )}
-                      </div>
-                    </ContainerActions>
-                  </tr>
-                ))}
-            </ContainerBody>
-          </table>
-        </ContainerTable>
-      )}
+                      </ClasicStylesTD>
+                      <ClasicStylesTD>
+                        <div>
+                          <span>{user.email}</span>
+                        </div>
+                      </ClasicStylesTD>
+                      <ContainerActions>
+                        <div>
+                          <div onClick={() => toggleDropdown(`${user.id}`)}>
+                            <Ellipsis />
+                          </div>
+                          {dropdownVisible === `${user.id}` && (
+                            <ContainerDropdown
+                              id={`dropdown_ov${user.id}`}
+                              tabIndex={0}
+                              onBlur={handleCleanDropdown}
+                            >
+                              {(
+                                dataPermissions ||
+                                ({
+                                  user: [],
+                                } as unknown as FilterPermissionsDTO)
+                              ).user.includes("update") && (
+                                <span onClick={handleEditUser(`${user.id}`)}>
+                                  Edit
+                                </span>
+                              )}
+                              {(
+                                dataPermissions ||
+                                ({
+                                  user: [],
+                                } as unknown as FilterPermissionsDTO)
+                              ).user.includes("delete") && (
+                                <span onClick={handleDeleteUser(`${user.id}`)}>
+                                  Delete
+                                </span>
+                              )}
+                            </ContainerDropdown>
+                          )}
+                        </div>
+                      </ContainerActions>
+                    </tr>
+                  ))}
+              </ContainerBody>
+            </table>
+          </ContainerTable>
+        )}
       <ModalEditUser
         isOpen={isOpenModalEdit}
         handleClose={handleCloseModalEdit}
+        handleRefreshData={fetchListUsers}
         dataUserEdit={dataUserEdit!!}
       />
       <ModalDeleteUser

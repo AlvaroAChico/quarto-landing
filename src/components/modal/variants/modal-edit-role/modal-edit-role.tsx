@@ -1,55 +1,65 @@
 import React from "react"
-import {
-  ContainerRoles,
-  FormGroup,
-  Label,
-  ContainerAccordion,
-  ContainerTitle,
-  ContainerListSwitchs,
-  ContainerBodySwitch,
-} from "./create-role.styles"
-// Icons
-import { LocalPolice } from "@styled-icons/material/LocalPolice"
-// External Librarys
-import { Accordion } from "react-accordion-ts"
-import "react-accordion-ts/src/panel.css"
-import HeaderSection from "../../../../components/header-section/header-section"
-import Button from "../../../../components/button/button"
-import { settingsApp } from "../../../../config/environment/settings"
-import axios from "axios"
-import useDataUser from "../../../../utils/use-data-user"
-import { toast } from "sonner"
+import Modal from "../../modal"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
 import {
   FilterPermissionsDTO,
   PermissionDTO,
+  RoleDTO,
 } from "../../../../core/models/interfaces/user-model"
-import { PermissionCreateDTO } from "../../../../core/models/interfaces/permission-model"
-import Switch from "../../../../components/switch/switch"
+import {
+  ContainerAccordion,
+  ContainerBodySwitch,
+  ContainerListSwitchs,
+  ContainerTitle,
+  customStylesEdit,
+  FormContainer,
+  FormGroupStyles,
+  LabelStyles,
+} from "./modal-edit-role.styles"
 import {
   ErrorMessage,
   WrapperInput,
 } from "../../../../config/theme/global-styles"
-import Input from "../../../../components/input/input"
+import Button from "../../../button/button"
+import Input from "../../../input/input"
+import axios from "axios"
+import { toast } from "sonner"
+import useDataUser from "../../../../utils/use-data-user"
+import { settingsApp } from "../../../../config/environment/settings"
+import { LocalPolice } from "@styled-icons/material/LocalPolice"
 import {
-  CreateRoleForm,
-  CreateRoleSchema,
+  UpdateRoleForm,
+  UpdateRoleSchema,
 } from "../../../../core/models/schemas/role-schema"
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
+import { Accordion } from "react-accordion-ts"
 import { useNavigate } from "react-router-dom"
 import { pathRoutes } from "../../../../config/routes/path"
+import Switch from "../../../switch/switch"
+import { PermissionCreateDTO } from "../../../../core/models/interfaces/permission-model"
 
-const CreateRole: React.FC = () => {
+interface IOwnProps {
+  isOpen: boolean
+  dataRoleEdit: RoleDTO
+  handleClose: () => void
+  handleRefreshData: () => void
+}
+
+const ModalEditRole: React.FC<IOwnProps> = ({
+  isOpen,
+  dataRoleEdit,
+  handleClose,
+  handleRefreshData,
+}) => {
+  const [isSubmitRoleUpdate, setIsSubmitRoleUpdate] =
+    React.useState<boolean>(false)
   const [listPermissions, setListPermissions] =
     React.useState<PermissionCreateDTO[]>()
-  const [isSubmitRoleCreate, setIsSubmitRoleCreate] =
-    React.useState<boolean>(false)
   const navigate = useNavigate()
 
   const { handleGetToken } = useDataUser()
-
-  const methods = useForm<CreateRoleForm>({
-    resolver: yupResolver(CreateRoleSchema),
+  const methods = useForm<UpdateRoleForm>({
+    resolver: yupResolver(UpdateRoleSchema),
     defaultValues: {
       name: "",
       permissions: [],
@@ -63,13 +73,37 @@ const CreateRole: React.FC = () => {
     setValue,
   } = methods
 
+  React.useEffect(() => {
+    if (!!dataRoleEdit) {
+      setValue("id", `${dataRoleEdit.id}`)
+      setValue("name", dataRoleEdit.name)
+      const currentPermissions = dataRoleEdit.permissions.map(
+        permission => permission.name,
+      )
+      setValue("permissions", currentPermissions)
+      updateCurrentPermissions(currentPermissions)
+    }
+  }, [dataRoleEdit])
+
+  const updateCurrentPermissions = React.useCallback(
+    (permissions: string[]) => {
+      if (!!permissions) {
+        permissions.map(perm => {
+          const [permissionName, valueName] = perm.split("-")
+          changeStatusPermission(permissionName, valueName)
+        })
+      }
+    },
+    [dataRoleEdit],
+  )
+
   const handleSubmit = React.useCallback((data: any) => {
-    setIsSubmitRoleCreate(true)
+    setIsSubmitRoleUpdate(true)
     const storedToken = handleGetToken()
     if (!!storedToken) {
       axios
-        .post(
-          `${settingsApp.api.base}/roles`,
+        .patch(
+          `${settingsApp.api.base}/roles/${data.id}`,
           {
             name: data.name,
             permissions: data.permissions,
@@ -83,18 +117,18 @@ const CreateRole: React.FC = () => {
           },
         )
         .then(response => {
-          setIsSubmitRoleCreate(false)
-          // const data: CreateUserResponseDTO =
-          //   response.data as CreateUserResponseDTO
-          const data = response.data
-          if (!!data && !!data.message) {
-            toast.success(data.message)
+          setIsSubmitRoleUpdate(false)
+          const data: RoleDTO = response.data as RoleDTO
+          if (!!data && !!data.id) {
+            toast.success("Role updated successfully")
+            handleRefreshData()
+            handleClose()
             navigate(pathRoutes.ROLES.LIST)
           }
         })
         .catch(err => {
-          setIsSubmitRoleCreate(false)
-          toast.error("Failed to authenticate")
+          setIsSubmitRoleUpdate(false)
+          toast.error(err.response.data.message)
         })
     }
   }, [])
@@ -219,8 +253,8 @@ const CreateRole: React.FC = () => {
     }
   }, [listPermissions])
 
-  const items = [{ name: "List Permissions" }].map(({ name }): any => ({
-    open,
+  const items = [{ name: "List Permissions" }].map(({ name }) => ({
+    open: false,
     title: (
       <ContainerTitle>
         <span>{name}</span>
@@ -234,6 +268,7 @@ const CreateRole: React.FC = () => {
             <ContainerListSwitchs>
               {(permission.values || []).map(value => (
                 <Switch
+                  key={value.name}
                   isActive={value.isActive}
                   isEnabled={value.enabled}
                   onToggle={() =>
@@ -248,11 +283,18 @@ const CreateRole: React.FC = () => {
       </>
     ),
   }))
-
+  console.log("Data Role -> ", dataRoleEdit)
   return (
-    <div>
-      <HeaderSection title="Roles" subtitle="Create role" />
-      <ContainerRoles>
+    <Modal
+      isOpen={isOpen}
+      onClose={() => {
+        setListPermissions([])
+        handleClose()
+      }}
+      title="Edit Role"
+      customStyles={customStylesEdit}
+    >
+      <FormContainer>
         <WrapperInput>
           <label htmlFor="name-create-role">First Name</label>
           <Input
@@ -266,20 +308,20 @@ const CreateRole: React.FC = () => {
           )}
         </WrapperInput>
 
-        <FormGroup>
-          <Label htmlFor="roleName">List of Permission</Label>
+        <FormGroupStyles>
+          <LabelStyles htmlFor="roleName">List of Permission</LabelStyles>
           <ContainerAccordion>
             <Accordion items={items} duration={300} multiple={false} />
           </ContainerAccordion>
-        </FormGroup>
+        </FormGroupStyles>
         <Button
-          text="Create"
           onClick={submitWrapper(handleSubmit)}
-          isLoading={isSubmitRoleCreate}
+          text="Update Role"
+          isLoading={isSubmitRoleUpdate}
         />
-      </ContainerRoles>
-    </div>
+      </FormContainer>
+    </Modal>
   )
 }
 
-export default CreateRole
+export default ModalEditRole

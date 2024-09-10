@@ -2,7 +2,6 @@ import React from "react"
 import { createBrowserRouter } from "react-router-dom"
 import SignIn from "../../features/auth/sign-in/sign-in"
 import DashboardLayout from "../../components/dashboard-layout/dashboard-layout"
-import Permissions from "../../features/users/permissions/permissions"
 import Users from "../../features/users/users"
 import Dashboard from "../../features/dashboard/dashboard"
 import Details from "../../features/projects/details/details"
@@ -19,6 +18,8 @@ import CreateProject from "../../features/projects/functionalities/create-projec
 import DetailsOverview from "../../features/projects/details/components/overview/overview"
 import DetailsTask from "../../features/projects/details/components/task/task"
 import DetailsActivity from "../../features/projects/details/components/activity/activity"
+import DetailFiles from "../../features/projects/details/components/files/files"
+import DetailContractors from "../../features/projects/details/components/contractors/contractors"
 
 export const router = createBrowserRouter([
   {
@@ -70,7 +71,6 @@ export const router = createBrowserRouter([
             element: <CreateProject />,
           },
           {
-            path: pathRoutes.PROJECTS.DETAIL.LIST,
             element: <Details />,
             children: [
               {
@@ -88,15 +88,15 @@ export const router = createBrowserRouter([
                 element: <DetailsTask />,
               },
               {
-                path: "/projects/:id/detail/contractor",
-                element: <></>,
+                path: pathRoutes.PROJECTS.DETAIL.CONTRACTORS,
+                element: <DetailContractors />,
               },
               {
-                path: "/projects/:id/detail/file",
-                element: <></>,
+                path: pathRoutes.PROJECTS.DETAIL.FILES,
+                element: <DetailFiles />,
               },
               {
-                path: "/projects/:id/detail/settings",
+                path: "/projects/:id/settings",
                 element: <></>,
               },
             ],

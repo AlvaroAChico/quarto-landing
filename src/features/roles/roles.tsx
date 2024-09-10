@@ -28,14 +28,17 @@ import { ContainerNameRoleTD } from "./roles.styles"
 import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
 import Skeleton from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
+import ModalEditRole from "../../components/modal/variants/modal-edit-role/modal-edit-role"
 
 const Roles: React.FC = () => {
   const [listRoles, setListRoles] = React.useState<DataRoleResponse[]>([])
+  const [isOpenModalEdit, setIsOpenModalEdit] = React.useState<boolean>(false)
   const [isLoadingListRoles, setIsLoadingListRoles] =
     React.useState<boolean>(false)
   const [isOpenModalDelete, setIsOpenModalDelete] =
     React.useState<boolean>(false)
   const [dataRoleDelete, setDataRoleDelete] = React.useState<RoleDTO>()
+  const [dataRoleEdit, setDataRoleEdit] = React.useState<RoleDTO>()
   const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
     null,
   )
@@ -45,6 +48,7 @@ const Roles: React.FC = () => {
   const { handleGetToken, handleGetPermissions } = useDataUser()
   const navigate = useNavigate()
 
+  const handleCloseModalEdit = () => setIsOpenModalEdit(false)
   const handleCloseModalDelete = () => setIsOpenModalDelete(false)
 
   const getCookiesDataPermission = React.useCallback(() => {
@@ -70,8 +74,13 @@ const Roles: React.FC = () => {
 
   const handleCleanDropdown = () => toggleDropdown("")
 
-  const handleEditRole = (userId: string) => () =>
-    console.log(`EditRole /role/${userId}`)
+  const handleEditRole = React.useCallback(
+    (roleId: string) => () => {
+      setDataRoleEdit(listRoles.filter(role => `${role.id}` == roleId)[0])
+      setIsOpenModalEdit(true)
+    },
+    [listRoles],
+  )
 
   const handleDeleteRole = React.useCallback(
     (roleId: string) => () => {
@@ -90,7 +99,7 @@ const Roles: React.FC = () => {
     const storedToken = handleGetToken()
     if (storedToken) {
       axios
-        .get(`${settingsApp.api.base}/roles`, {
+        .get(`${settingsApp.api.base}/roles?include=permissions`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             "Content-Type": "application/json",
@@ -164,56 +173,80 @@ const Roles: React.FC = () => {
           </NotFoundStyles>
         </ContainerTable>
       )}
-      {!isLoadingListRoles && !!listRoles && listRoles.length > 0 && (
-        <ContainerTable>
-          <table>
-            <ContainerHead>
-              <tr>
-                <td>Name</td>
-                <td>CreatedAt</td>
-                <td></td>
-              </tr>
-            </ContainerHead>
-            <ContainerBody>
-              {(listRoles || []).map(role => (
+      {!isLoadingListRoles &&
+        !!listRoles &&
+        listRoles.length > 0 &&
+        !!dataPermissions &&
+        dataPermissions.role.includes("list") && (
+          <ContainerTable>
+            <table>
+              <ContainerHead>
                 <tr>
-                  <ContainerNameRoleTD>
-                    <div>
-                      <span>{role.name}</span>
-                    </div>
-                  </ContainerNameRoleTD>
-                  <ClasicStylesTD>
-                    <div>
-                      <span>{formatToDDMonth(role.createdAt)}</span>
-                    </div>
-                  </ClasicStylesTD>
-                  <ContainerActions>
-                    <div>
-                      <div onClick={() => toggleDropdown(`${role.id}`)}>
-                        <Ellipsis />
-                      </div>
-                      {dropdownVisible === `${role.id}` && (
-                        <ContainerDropdown
-                          id={`dropdown_ov${role.id}`}
-                          tabIndex={0}
-                          onBlur={handleCleanDropdown}
-                        >
-                          <span onClick={handleEditRole(`${role.id}`)}>
-                            Editar
-                          </span>
-                          <span onClick={handleDeleteRole(`${role.id}`)}>
-                            Eliminar
-                          </span>
-                        </ContainerDropdown>
-                      )}
-                    </div>
-                  </ContainerActions>
+                  <td>Name</td>
+                  <td>CreatedAt</td>
+                  <td></td>
                 </tr>
-              ))}
-            </ContainerBody>
-          </table>
-        </ContainerTable>
-      )}
+              </ContainerHead>
+              <ContainerBody>
+                {(listRoles || []).map(role => (
+                  <tr>
+                    <ContainerNameRoleTD>
+                      <div>
+                        <span>{role.name}</span>
+                      </div>
+                    </ContainerNameRoleTD>
+                    <ClasicStylesTD>
+                      <div>
+                        <span>{formatToDDMonth(role.createdAt)}</span>
+                      </div>
+                    </ClasicStylesTD>
+                    <ContainerActions>
+                      <div>
+                        <div onClick={() => toggleDropdown(`${role.id}`)}>
+                          <Ellipsis />
+                        </div>
+                        {dropdownVisible === `${role.id}` && (
+                          <ContainerDropdown
+                            id={`dropdown_ov${role.id}`}
+                            tabIndex={0}
+                            onBlur={handleCleanDropdown}
+                          >
+                            {(
+                              dataPermissions ||
+                              ({
+                                role: [],
+                              } as unknown as FilterPermissionsDTO)
+                            ).role.includes("update") && (
+                              <span onClick={handleEditRole(`${role.id}`)}>
+                                Edit
+                              </span>
+                            )}
+                            {(
+                              dataPermissions ||
+                              ({
+                                role: [],
+                              } as unknown as FilterPermissionsDTO)
+                            ).role.includes("delete") && (
+                              <span onClick={handleDeleteRole(`${role.id}`)}>
+                                Delete
+                              </span>
+                            )}
+                          </ContainerDropdown>
+                        )}
+                      </div>
+                    </ContainerActions>
+                  </tr>
+                ))}
+              </ContainerBody>
+            </table>
+          </ContainerTable>
+        )}
+      <ModalEditRole
+        isOpen={isOpenModalEdit}
+        handleClose={handleCloseModalEdit}
+        handleRefreshData={fetchListRole}
+        dataRoleEdit={dataRoleEdit!!}
+      />
       <ModalDeleteRole
         isOpen={isOpenModalDelete}
         handleClose={handleCloseModalDelete}
