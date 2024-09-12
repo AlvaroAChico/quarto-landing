@@ -261,8 +261,13 @@ const Projects: React.FC = () => {
                     >
                       <NameStylesTD>
                         <div>
-                          <span>{project.name}</span>
-                          <span>{project.status}</span>
+                          <span>
+                            <img src={project.picture} />
+                          </span>
+                          <div>
+                            <span>{project.name}</span>
+                            <span>{project.status}</span>
+                          </div>
                         </div>
                       </NameStylesTD>
                       <ProgressStylesTD progress={project.progress}>

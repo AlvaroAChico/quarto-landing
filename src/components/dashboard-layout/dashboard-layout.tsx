@@ -68,8 +68,8 @@ const DashboardLayout: React.FC = () => {
         const response = await axios
           .get(`${settingsApp.api.base}/auth/me`, {
             headers: {
-              Authorization: `Bearer ${JSON.parse(storedToken)}`,
-              "Content-Type": "application/json",
+              Authorization: `Bearer ${storedToken}`,
+              ContentType: "application/json",
               Accept: "application/json",
             },
           })
@@ -240,7 +240,7 @@ const DashboardLayout: React.FC = () => {
                   }
                 >
                   <FolderOpen />
-                  <p>Projects</p>
+                  <p>Residentials</p>
                 </ItemNavLink>
               )}
             {!!dataPermissions &&
@@ -256,7 +256,7 @@ const DashboardLayout: React.FC = () => {
                   }
                 >
                   <Task />
-                  <p>Tasks</p>
+                  <p>Services</p>
                 </ItemNavLink>
               )}
             {!!dataPermissions &&

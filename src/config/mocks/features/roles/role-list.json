@@ -1,20 +1,435 @@
 [
   {
     "id": 1,
-    "uuid": "fe504222-2014-42a8-ad88-4ea41b6623ee",
-    "name": "admin",
-    "isActive": true
+    "name": "super-admin",
+    "guardName": "sanctum",
+    "createdAt": "2024-08-30T08:00:04.000000Z",
+    "updatedAt": "2024-08-30T08:00:04.000000Z",
+    "permissions": []
   },
   {
     "id": 2,
-    "uuid": "fe504222-2014-42a8-ad88-4ea41b662001",
-    "name": "client",
-    "isActive": true
+    "name": "admin",
+    "guardName": "sanctum",
+    "createdAt": "2024-08-30T08:00:04.000000Z",
+    "updatedAt": "2024-08-30T08:00:04.000000Z",
+    "permissions": []
   },
   {
     "id": 3,
-    "uuid": "fe504222-2014-42a8-ad88-4ea41b662002",
-    "name": "visit",
-    "isActive": true
+    "name": "client",
+    "guardName": "sanctum",
+    "createdAt": "2024-08-30T08:00:04.000000Z",
+    "updatedAt": "2024-08-30T08:00:04.000000Z",
+    "permissions": []
+  },
+  {
+    "id": 4,
+    "name": "contractor",
+    "guardName": "sanctum",
+    "createdAt": "2024-08-30T08:00:04.000000Z",
+    "updatedAt": "2024-08-30T08:00:04.000000Z",
+    "permissions": []
+  },
+  {
+    "id": 5,
+    "name": "user",
+    "guardName": "sanctum",
+    "createdAt": "2024-08-30T08:00:04.000000Z",
+    "updatedAt": "2024-08-30T08:00:04.000000Z",
+    "permissions": [
+      {
+        "id": 1,
+        "name": "user-create",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:04.000000Z",
+        "updatedAt": "2024-08-30T08:00:04.000000Z",
+        "pivot": {
+          "roleId": 5,
+          "permissionId": 1
+        }
+      },
+      {
+        "id": 2,
+        "name": "user-list",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:04.000000Z",
+        "updatedAt": "2024-08-30T08:00:04.000000Z",
+        "pivot": {
+          "roleId": 5,
+          "permissionId": 2
+        }
+      },
+      {
+        "id": 4,
+        "name": "user-update",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:04.000000Z",
+        "updatedAt": "2024-08-30T08:00:04.000000Z",
+        "pivot": {
+          "roleId": 5,
+          "permissionId": 4
+        }
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "admin-full",
+    "guardName": "sanctum",
+    "createdAt": "2024-08-30T08:01:37.000000Z",
+    "updatedAt": "2024-08-30T08:01:37.000000Z",
+    "permissions": [
+      {
+        "id": 1,
+        "name": "user-create",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:04.000000Z",
+        "updatedAt": "2024-08-30T08:00:04.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 1
+        }
+      },
+      {
+        "id": 2,
+        "name": "user-list",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:04.000000Z",
+        "updatedAt": "2024-08-30T08:00:04.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 2
+        }
+      },
+      {
+        "id": 4,
+        "name": "user-update",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:04.000000Z",
+        "updatedAt": "2024-08-30T08:00:04.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 4
+        }
+      },
+      {
+        "id": 5,
+        "name": "user-delete",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:05.000000Z",
+        "updatedAt": "2024-08-30T08:00:05.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 5
+        }
+      },
+      {
+        "id": 10,
+        "name": "client-create",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:05.000000Z",
+        "updatedAt": "2024-08-30T08:00:05.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 10
+        }
+      },
+      {
+        "id": 11,
+        "name": "client-list",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:05.000000Z",
+        "updatedAt": "2024-08-30T08:00:05.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 11
+        }
+      },
+      {
+        "id": 20,
+        "name": "project-create",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:05.000000Z",
+        "updatedAt": "2024-08-30T08:00:05.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 20
+        }
+      },
+      {
+        "id": 21,
+        "name": "project-list",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:05.000000Z",
+        "updatedAt": "2024-08-30T08:00:05.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 21
+        }
+      },
+      {
+        "id": 22,
+        "name": "project-read-own",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:05.000000Z",
+        "updatedAt": "2024-08-30T08:00:05.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 22
+        }
+      },
+      {
+        "id": 23,
+        "name": "project-update",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:05.000000Z",
+        "updatedAt": "2024-08-30T08:00:05.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 23
+        }
+      },
+      {
+        "id": 24,
+        "name": "project-delete",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:05.000000Z",
+        "updatedAt": "2024-08-30T08:00:05.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 24
+        }
+      },
+      {
+        "id": 25,
+        "name": "projectfile-create",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:05.000000Z",
+        "updatedAt": "2024-08-30T08:00:05.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 25
+        }
+      },
+      {
+        "id": 26,
+        "name": "projectfile-list",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 26
+        }
+      },
+      {
+        "id": 27,
+        "name": "projectfile-read-own",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 27
+        }
+      },
+      {
+        "id": 28,
+        "name": "projectfile-update",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 28
+        }
+      },
+      {
+        "id": 29,
+        "name": "projectfile-delete",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 29
+        }
+      },
+      {
+        "id": 30,
+        "name": "setting-list",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 30
+        }
+      },
+      {
+        "id": 31,
+        "name": "setting-update",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 31
+        }
+      },
+      {
+        "id": 32,
+        "name": "task-create",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 32
+        }
+      },
+      {
+        "id": 33,
+        "name": "task-list",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 33
+        }
+      },
+      {
+        "id": 34,
+        "name": "task-read-own",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 34
+        }
+      },
+      {
+        "id": 35,
+        "name": "task-update",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 35
+        }
+      },
+      {
+        "id": 36,
+        "name": "task-delete",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 36
+        }
+      },
+      {
+        "id": 37,
+        "name": "role-create",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 37
+        }
+      },
+      {
+        "id": 38,
+        "name": "role-list",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 38
+        }
+      },
+      {
+        "id": 39,
+        "name": "role-read-own",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 39
+        }
+      },
+      {
+        "id": 40,
+        "name": "role-update",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 40
+        }
+      },
+      {
+        "id": 41,
+        "name": "role-delete",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 41
+        }
+      },
+      {
+        "id": 42,
+        "name": "calendar-list",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 42
+        }
+      },
+      {
+        "id": 43,
+        "name": "reports-list",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:06.000000Z",
+        "updatedAt": "2024-08-30T08:00:06.000000Z",
+        "pivot": {
+          "roleId": 6,
+          "permissionId": 43
+        }
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "invitado",
+    "guardName": "sanctum",
+    "createdAt": "2024-08-30T19:07:42.000000Z",
+    "updatedAt": "2024-08-30T19:07:42.000000Z",
+    "permissions": [
+      {
+        "id": 2,
+        "name": "user-list",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:04.000000Z",
+        "updatedAt": "2024-08-30T08:00:04.000000Z",
+        "pivot": {
+          "roleId": 9,
+          "permissionId": 2
+        }
+      }
+    ]
   }
 ]

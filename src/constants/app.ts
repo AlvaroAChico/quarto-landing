@@ -33,7 +33,7 @@ export enum ACTIONS_TITLE_APP {
   CREATE_USERS = "Create user",
   ROLES = "Roles",
   CREATE_ROLES = "Create role",
-  PROJECTS = "Projects",
+  PROJECTS = "Residentials",
   CREATE_PROJECTS = "Create project",
   OVERVIEW_PROJECTS = "Overview project",
   ACTIVITY_PROJECTS = "Activity project",

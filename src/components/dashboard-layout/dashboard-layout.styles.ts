@@ -217,6 +217,12 @@ export const AvatarStyles = styled.div`
     height: 45px;
     background: #7a86a1;
     border-radius: 16px;
+
+    > img {
+      width: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+    }
   }
 `
 
