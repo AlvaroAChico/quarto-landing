@@ -20,6 +20,7 @@ import DetailsTask from "../../features/projects/details/components/task/task"
 import DetailsActivity from "../../features/projects/details/components/activity/activity"
 import DetailFiles from "../../features/projects/details/components/files/files"
 import DetailContractors from "../../features/projects/details/components/contractors/contractors"
+import DetailsApartments from "../../features/projects/details/components/apartments/apartments"
 
 export const router = createBrowserRouter([
   {
@@ -79,10 +80,13 @@ export const router = createBrowserRouter([
                 index: true,
               },
               {
+                path: pathRoutes.PROJECTS.DETAIL.APARTMENTS,
+                element: <DetailsApartments />,
+              },
+              {
                 path: pathRoutes.PROJECTS.DETAIL.ACTIVITY,
                 element: <DetailsActivity />,
               },
-
               {
                 path: pathRoutes.PROJECTS.DETAIL.TASKS,
                 element: <DetailsTask />,

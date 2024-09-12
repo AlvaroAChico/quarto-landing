@@ -24,19 +24,37 @@ export const ContainerFilters = styled.div`
 
 export const NameStylesTD = styled.td`
   > div {
-    flex-direction: column;
+    flex-direction: row;
     display: flex;
-    gap: 2px;
+    gap: 10px;
 
     > span {
-      &:nth-child(1) {
-        font-size: 14px;
-        font-weight: 500;
+      > img {
+        border-radius: 16px;
+        width: 50px;
+        height: 50px;
       }
-      &:nth-child(2) {
-        color: ${palette.grayColor};
-        font-size: 12px;
-        font-weight: 200;
+    }
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 2px;
+
+      > span {
+        &:nth-child(2) {
+          color: ${palette.grayColor};
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        &:nth-child(2) {
+          color: ${palette.grayColor};
+          font-size: 12px;
+          font-weight: 200;
+        }
       }
     }
   }

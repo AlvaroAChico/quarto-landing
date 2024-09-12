@@ -1,102 +1,330 @@
-{
-  "stadistics": {
-    "projects": {
-      "total": 68,
-      "complete": 5,
-      "pending": 8,
-      "todo": 4
+[
+  {
+    "id": 1,
+    "code": "HAUQW123",
+    "uuid": "1bf02d64-08b0-428b-9a0b-a3ac6f48e10c",
+    "name": "Residential San Felipe",
+    "picture": "https://www.gjarquitectura.com/wp-content/uploads/2021/09/Asentia-Riviera-del-sol-Mijas-Diseno-Gonzalez-Jacobson-Arquitectura-1.jpg",
+    "description": "Desc Construction of central park",
+    "progress": 0,
+    "currency": "USD",
+    "price": 18000,
+    "startDate": "2024-09-01 00:00:00",
+    "dueDate": "2024-09-30 00:00:00",
+    "endDate": null,
+    "clientId": 1,
+    "categoryId": null,
+    "status": "to do",
+    "isActive": true,
+    "createdAt": "2024-08-30 08:06:09",
+    "tasks": [
+      {
+        "id": 1,
+        "name": "Cleaning finishing work",
+        "description": "Description Cleaning finishing work",
+        "priority": 1,
+        "hours": 5.5,
+        "price": null,
+        "currency": "USD",
+        "progress": 80,
+        "startDate": "2024-09-01 00:00:00",
+        "dueDate": "2024-09-03 00:00:00",
+        "endDate": null,
+        "notes": null,
+        "projectId": 1,
+        "categoryId": null,
+        "contractorId": 1,
+        "dependencyTaskId": null,
+        "status": "active",
+        "isActive": true,
+        "createdAt": "2024-08-30 08:10:44"
+      },
+      {
+        "id": 2,
+        "name": "Bathroom cleaning",
+        "description": "Description Bathroom cleaning",
+        "priority": 2,
+        "hours": 1.5,
+        "price": null,
+        "currency": "USD",
+        "progress": 45,
+        "startDate": "2024-09-01 00:00:00",
+        "dueDate": "2024-09-03 00:00:00",
+        "endDate": null,
+        "notes": null,
+        "projectId": 1,
+        "categoryId": null,
+        "contractorId": 1,
+        "dependencyTaskId": null,
+        "status": "active",
+        "isActive": true,
+        "createdAt": "2024-08-30 17:25:28"
+      }
+    ],
+    "client": {
+      "id": 1,
+      "userId": 5,
+      "status": "active",
+      "isActive": true,
+      "createdAt": "2024-08-30 08:03:45"
     },
-    "customers": {
-      "total": 6
-    },
-    "contractors": {
-      "total": 9
+    "apartments": [
+      {
+        "id": 1,
+        "code": "401",
+        "uuid": "1bf02d64-08b0-428b-9a0b-a3ac6f48e10c",
+        "name": "Apartment 401",
+        "picture": "https://nexoinmobiliario.pe/blog/wp-content/uploads/2022/06/destacada-identificar-departamentos-modernos-nexo-inmobiliario.jpg",
+        "description": "Apartment 401",
+        "progress": 0,
+        "currency": "USD",
+        "price": 18000,
+        "clientId": 1,
+        "status": "to do",
+        "isActive": true,
+        "createdAt": "2024-08-30 08:06:09",
+        "tasks_apart": [
+          {
+            "id": 1,
+            "service": "Clean",
+            "name": "Cleaning finishing work",
+            "description": "Description Cleaning finishing work",
+            "priority": 1,
+            "hours": 5.5,
+            "price": null,
+            "currency": "USD",
+            "progress": 80,
+            "startDate": "2024-09-01 00:00:00",
+            "dueDate": "2024-09-03 00:00:00",
+            "endDate": null,
+            "notes": null,
+            "projectId": 1,
+            "categoryId": null,
+            "contractorId": 1,
+            "dependencyTaskId": null,
+            "status": "active",
+            "isActive": true,
+            "createdAt": "2024-08-30 08:10:44"
+          },
+          {
+            "id": 2,
+            "service": "Paint",
+            "name": "Bathroom cleaning",
+            "description": "Description Bathroom cleaning",
+            "priority": 2,
+            "hours": 1.5,
+            "price": null,
+            "currency": "USD",
+            "progress": 45,
+            "startDate": "2024-09-01 00:00:00",
+            "dueDate": "2024-09-03 00:00:00",
+            "endDate": null,
+            "notes": null,
+            "projectId": 1,
+            "categoryId": null,
+            "contractorId": 1,
+            "dependencyTaskId": null,
+            "status": "active",
+            "isActive": true,
+            "createdAt": "2024-08-30 17:25:28"
+          },
+          {
+            "id": 3,
+            "service": "Resurfacing",
+            "name": "Bathroom cleaning",
+            "description": "Remodeling Bathroom",
+            "priority": 2,
+            "hours": 1.5,
+            "price": null,
+            "currency": "USD",
+            "progress": 45,
+            "startDate": "2024-09-01 00:00:00",
+            "dueDate": "2024-09-03 00:00:00",
+            "endDate": null,
+            "notes": null,
+            "projectId": 1,
+            "categoryId": null,
+            "contractorId": 1,
+            "dependencyTaskId": null,
+            "status": "active",
+            "isActive": true,
+            "createdAt": "2024-08-30 17:25:28"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "code": "AQWDF341",
+    "uuid": "2608e255-b754-404e-9b4f-4b888fbdc100",
+    "name": "Residential Jardines del Sol",
+    "picture": "https://www.lacayofiallos.com/imagenes/residenciales.jpg",
+    "description": "Desc Construction of secondary school",
+    "progress": 0,
+    "currency": "USD",
+    "price": 800000,
+    "startDate": "2024-09-01 00:00:00",
+    "dueDate": "2024-09-30 00:00:00",
+    "endDate": null,
+    "clientId": 1,
+    "categoryId": null,
+    "status": "to do",
+    "isActive": true,
+    "createdAt": "2024-08-30 12:47:19",
+    "tasks": [],
+    "client": {
+      "id": 1,
+      "userId": 5,
+      "status": "active",
+      "isActive": true,
+      "createdAt": "2024-08-30 08:03:45"
     }
   },
-  "listProjects": [
-    {
+  {
+    "id": 3,
+    "code": "UEYDGS625",
+    "uuid": "1dbdcbbc-a297-4aeb-8021-91b05287df90",
+    "name": "Residential Torres de la Ciudad",
+    "picture": "https://arriendo.com/co/blog/wp-content/uploads/2023/04/vivir-en%E2%80%93un-conjunto-residencial-scaled.jpg",
+    "description": "Desc House Remodeling",
+    "progress": 0,
+    "currency": "USD",
+    "price": 350000,
+    "startDate": "2024-09-01 00:00:00",
+    "dueDate": "2024-09-30 00:00:00",
+    "endDate": null,
+    "clientId": 1,
+    "categoryId": null,
+    "status": "to do",
+    "isActive": true,
+    "createdAt": "2024-08-30 16:34:49",
+    "tasks": [],
+    "client": {
       "id": 1,
-      "name": "Construction of central park",
-      "status": "Construction",
-      "progress": 100,
-      "pending_task": 12,
-      "dueDate": "02/08/2024",
-      "client": "Miguel Zicia",
-      "contractors": [
-        {
-          "id": 1,
-          "full_name": "Joe Doe",
-          "avatar": ""
-        },
-        {
-          "id": 2,
-          "full_name": "Juan Perez",
-          "avatar": ""
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "name": "Beach house remodeling",
-      "status": "Remodeling",
-      "progress": 35,
-      "pending_task": 8,
-      "dueDate": "02/08/2024",
-      "client": "Dante Smith",
-      "contractors": [
-        {
-          "id": 1,
-          "full_name": "Pedro Suarez",
-          "avatar": ""
-        },
-        {
-          "id": 2,
-          "full_name": "Peter Sanz",
-          "avatar": ""
-        },
-        {
-          "id": 3,
-          "full_name": "Joel Burga",
-          "avatar": ""
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "name": "House Remodeling",
-      "status": "Remodeling",
-      "progress": 70,
-      "pending_task": 12,
-      "dueDate": "02/08/2024",
-      "client": "Sonia Alayo",
-      "contractors": [
-        {
-          "id": 1,
-          "full_name": "Joe Doe",
-          "avatar": ""
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "name": "Construction of secondary school",
-      "status": "Construction",
-      "progress": 0,
-      "pending_task": 19,
-      "dueDate": "02/08/2024",
-      "client": "Leonel Zicia",
-      "contractors": [
-        {
-          "id": 1,
-          "full_name": "Pedro Paredes",
-          "avatar": ""
-        },
-        {
-          "id": 2,
-          "full_name": "Julio Araos",
-          "avatar": ""
-        }
-      ]
+      "userId": 5,
+      "status": "active",
+      "isActive": true,
+      "createdAt": "2024-08-30 08:03:45"
     }
-  ]
-}
+  },
+  {
+    "id": 4,
+    "code": "QYEDGR987",
+    "uuid": "b8ba73c8-2f59-4d56-8822-68f0ae2e0bd0",
+    "name": "Residential Los Pinos",
+    "picture": "https://images.adsttc.com/media/images/646e/88ad/42f1/0839/b6e5/f989/large_jpg/princeton-university-residential-colleges-tenberke_6.jpg",
+    "description": "Desc House 02 Remodeling",
+    "progress": 0,
+    "currency": "USD",
+    "price": 25000,
+    "startDate": "2024-09-01 00:00:00",
+    "dueDate": "2024-09-30 00:00:00",
+    "endDate": null,
+    "clientId": 1,
+    "categoryId": null,
+    "status": "to do",
+    "isActive": true,
+    "createdAt": "2024-08-30 18:02:40",
+    "tasks": [
+      {
+        "id": 3,
+        "name": "Bathroom cleaning",
+        "description": "Description Bathroom cleaning",
+        "priority": 2,
+        "hours": 1.5,
+        "price": null,
+        "currency": "USD",
+        "progress": 45,
+        "startDate": "2024-09-01 00:00:00",
+        "dueDate": "2024-09-03 00:00:00",
+        "endDate": null,
+        "notes": null,
+        "projectId": 4,
+        "categoryId": null,
+        "contractorId": 1,
+        "dependencyTaskId": null,
+        "status": "active",
+        "isActive": true,
+        "createdAt": "2024-08-30 18:03:20"
+      },
+      {
+        "id": 4,
+        "name": "Cleaning finishing work",
+        "description": "Description Cleaning finishing work",
+        "priority": 1,
+        "hours": 5.5,
+        "price": null,
+        "currency": "USD",
+        "progress": 80,
+        "startDate": "2024-09-01 00:00:00",
+        "dueDate": "2024-09-03 00:00:00",
+        "endDate": null,
+        "notes": null,
+        "projectId": 4,
+        "categoryId": null,
+        "contractorId": 1,
+        "dependencyTaskId": null,
+        "status": "active",
+        "isActive": true,
+        "createdAt": "2024-08-30 18:03:32"
+      }
+    ],
+    "client": {
+      "id": 1,
+      "userId": 5,
+      "status": "active",
+      "isActive": true,
+      "createdAt": "2024-08-30 08:03:45"
+    }
+  },
+  {
+    "id": 5,
+    "code": "UYETD654",
+    "uuid": "df4f626c-471e-41f4-bd33-fcf2e5e779a2",
+    "name": "Residential Lago Azul",
+    "picture": "https://www.hogares.cl/wp-content/uploads/2018/06/losandes00.jpg",
+    "description": "Description Remodeling House",
+    "progress": 0,
+    "currency": "USD",
+    "price": 45000,
+    "startDate": "2024-09-15 00:00:00",
+    "dueDate": "2024-11-30 00:00:00",
+    "endDate": null,
+    "clientId": 1,
+    "categoryId": null,
+    "status": "to do",
+    "isActive": true,
+    "createdAt": "2024-08-30 19:14:33",
+    "tasks": [
+      {
+        "id": 5,
+        "name": "Cleaning finishing work",
+        "description": "Description Cleaning finishing work",
+        "priority": 1,
+        "hours": 5.5,
+        "price": null,
+        "currency": "USD",
+        "progress": 80,
+        "startDate": "2024-09-01 00:00:00",
+        "dueDate": "2024-09-03 00:00:00",
+        "endDate": null,
+        "notes": null,
+        "projectId": 5,
+        "categoryId": null,
+        "contractorId": 1,
+        "dependencyTaskId": null,
+        "status": "active",
+        "isActive": true,
+        "createdAt": "2024-08-30 19:16:49"
+      }
+    ],
+    "client": {
+      "id": 1,
+      "userId": 5,
+      "status": "active",
+      "isActive": true,
+      "createdAt": "2024-08-30 08:03:45"
+    }
+  }
+]

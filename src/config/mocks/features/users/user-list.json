@@ -1,86 +1,191 @@
 [
   {
     "id": 1,
-    "firstName": "Alvaro",
-    "lastName": "Chico",
-    "email": "alvaro.achico@gmail.com",
+    "firstName": "Admin",
+    "lastName": null,
+    "picture": null,
+    "contactNumber": null,
+    "documentType": null,
+    "documentNumber": null,
+    "email": "admin@ocasystem.com",
+    "status": "active",
     "isActive": true,
-    "createdAt": "2024-08-08T12:24:25.190Z",
-    "updatedAt": "2024-08-08T12:24:25.190Z",
-    "role": {
-      "id": 1,
-      "uuid": "fe504222-2014-42a8-ad88-4ea41b6623ee",
-      "name": "admin"
-    }
+    "createdAt": "2024-08-30 08:00:04",
+    "username": "Admin",
+    "role": [
+      {
+        "id": 1,
+        "name": "super-admin",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:04.000000Z",
+        "updatedAt": "2024-08-30T08:00:04.000000Z",
+        "pivot": {
+          "modelId": 1,
+          "roleId": 1
+        }
+      }
+    ]
   },
   {
     "id": 2,
-    "firstName": "Pablo",
-    "lastName": "Mendoza",
-    "email": "andrec@gmail.com",
+    "firstName": "User",
+    "lastName": null,
+    "picture": null,
+    "contactNumber": null,
+    "documentType": null,
+    "documentNumber": null,
+    "email": "user@ocasystem.com",
+    "status": "active",
     "isActive": true,
-    "createdAt": "2024-08-08T12:24:25.190Z",
-    "updatedAt": "2024-08-08T12:24:25.190Z",
-    "role": {
-      "id": 1,
-      "uuid": "fe504222-2014-42a8-ad88-4ea41b6623ee",
-      "name": "admin"
-    }
+    "createdAt": "2024-08-30 08:00:06",
+    "username": "User",
+    "role": [
+      {
+        "id": 5,
+        "name": "user",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:04.000000Z",
+        "updatedAt": "2024-08-30T08:00:04.000000Z",
+        "pivot": {
+          "modelId": 2,
+          "roleId": 5
+        }
+      }
+    ]
   },
   {
     "id": 3,
-    "firstName": "Joe",
-    "lastName": "Doe",
-    "email": "joed@gmail.com",
+    "firstName": "Alvaro",
+    "lastName": "Chico",
+    "picture": "user-ojLieN.png",
+    "contactNumber": "912312312",
+    "documentType": null,
+    "documentNumber": null,
+    "email": "alvaro.achico@gmail.com",
+    "status": "active",
     "isActive": true,
-    "createdAt": "2024-08-08T12:24:25.190Z",
-    "updatedAt": "2024-08-08T12:24:25.190Z",
-    "role": {
-      "id": 2,
-      "uuid": "fe504222-2014-42a8-ad88-4ea41b662001",
-      "name": "client"
-    }
+    "createdAt": "2024-08-30 08:02:15",
+    "username": "Alvaro Chico",
+    "role": [
+      {
+        "id": 6,
+        "name": "admin-full",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:01:37.000000Z",
+        "updatedAt": "2024-08-30T08:01:37.000000Z",
+        "pivot": {
+          "modelId": 3,
+          "roleId": 6
+        }
+      }
+    ]
   },
   {
     "id": 4,
-    "firstName": "Juan",
-    "lastName": "Rodriguez",
-    "email": "juanr@gmail.com",
+    "firstName": "Pedro",
+    "lastName": "Perez",
+    "picture": "user-uZg3kM.png",
+    "contactNumber": "987654321",
+    "documentType": null,
+    "documentNumber": null,
+    "email": "pedrop@gmail.com",
+    "status": "active",
     "isActive": true,
-    "createdAt": "2024-08-08T12:24:25.190Z",
-    "updatedAt": "2024-08-08T12:24:25.190Z",
-    "role": {
-      "id": 2,
-      "uuid": "fe504222-2014-42a8-ad88-4ea41b6623ee",
-      "name": "client"
-    }
+    "createdAt": "2024-08-30 08:02:58",
+    "username": "Pedro Perez",
+    "role": [
+      {
+        "id": 4,
+        "name": "contractor",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:04.000000Z",
+        "updatedAt": "2024-08-30T08:00:04.000000Z",
+        "pivot": {
+          "modelId": 4,
+          "roleId": 4
+        }
+      }
+    ]
   },
   {
     "id": 5,
-    "firstName": "Alberto",
-    "lastName": "Gonzales",
-    "email": "alvaro.achico@gmail.com",
+    "firstName": "Santiago",
+    "lastName": "Valverde",
+    "picture": "user-e3t7U0.png",
+    "contactNumber": "987654321",
+    "documentType": null,
+    "documentNumber": null,
+    "email": "santiagov@gmail.com",
+    "status": "active",
     "isActive": true,
-    "createdAt": "2024-08-08T12:24:25.190Z",
-    "updatedAt": "2024-08-08T12:24:25.190Z",
-    "role": {
-      "id": 2,
-      "uuid": "fe504222-2014-42a8-ad88-4ea41b662001",
-      "name": "client"
-    }
+    "createdAt": "2024-08-30 08:03:44",
+    "username": "Santiago Valverde",
+    "role": [
+      {
+        "id": 3,
+        "name": "client",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:00:04.000000Z",
+        "updatedAt": "2024-08-30T08:00:04.000000Z",
+        "pivot": {
+          "modelId": 5,
+          "roleId": 3
+        }
+      }
+    ]
   },
   {
     "id": 6,
-    "firstName": "Pedro",
-    "lastName": "Villa",
-    "email": "pedrov@gmail.com",
+    "firstName": "Paolo",
+    "lastName": "Benites",
+    "picture": "user-xpa9m8.png",
+    "contactNumber": "912312312",
+    "documentType": null,
+    "documentNumber": null,
+    "email": "paolob@gmail.com",
+    "status": "active",
     "isActive": true,
-    "createdAt": "2024-08-08T12:24:25.190Z",
-    "updatedAt": "2024-08-08T12:24:25.190Z",
-    "role": {
-      "id": 3,
-      "uuid": "fe504222-2014-42a8-ad88-4ea41b662002",
-      "name": "visit"
-    }
+    "createdAt": "2024-08-30 12:53:38",
+    "username": "Paolo Benites",
+    "role": [
+      {
+        "id": 6,
+        "name": "admin-full",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T08:01:37.000000Z",
+        "updatedAt": "2024-08-30T08:01:37.000000Z",
+        "pivot": {
+          "modelId": 6,
+          "roleId": 6
+        }
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "firstName": "Andre",
+    "lastName": "Azabache",
+    "picture": "user-J7GIH6.png",
+    "contactNumber": "987654321",
+    "documentType": null,
+    "documentNumber": null,
+    "email": "andrea@gmail.com",
+    "status": "active",
+    "isActive": true,
+    "createdAt": "2024-08-30 19:08:21",
+    "username": "Andre Azabache",
+    "role": [
+      {
+        "id": 9,
+        "name": "invitado",
+        "guardName": "sanctum",
+        "createdAt": "2024-08-30T19:07:42.000000Z",
+        "updatedAt": "2024-08-30T19:07:42.000000Z",
+        "pivot": {
+          "modelId": 7,
+          "roleId": 9
+        }
+      }
+    ]
   }
 ]

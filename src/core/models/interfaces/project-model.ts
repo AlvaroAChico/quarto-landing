@@ -23,6 +23,47 @@ export interface ProjectDTO {
   createdAt: string
   tasks: TasksDTO[]
   client: ClientDTO
+  apartments: ApartmentDTO[]
+}
+
+export interface ApartmentDTO {
+  id: number
+  code: string
+  uuid: string
+  name: string
+  picture: string
+  description: string
+  progress: number
+  currency: string
+  price: number
+  clientId: 1
+  status: string
+  isActive: boolean
+  createdAt: string
+  tasks_apart: TaskApartmentDTO[]
+}
+
+export interface TaskApartmentDTO {
+  id: number
+  service: string
+  name: string
+  description: string
+  priority: number
+  hours: number
+  price: string
+  currency: string
+  progress: number
+  startDate: string
+  dueDate: string
+  endDate: string
+  notes: string
+  projectId: number
+  categoryId: string
+  contractorId: number
+  dependencyTaskId: string
+  status: boolean
+  isActive: boolean
+  createdAt: string
 }
 
 export interface TasksDTO {

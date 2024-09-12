@@ -170,6 +170,14 @@ const Details: React.FC = () => {
         </MenuItem>
         <MenuItem
           to={routeWithReplaceId(
+            pathRoutes.PROJECTS.DETAIL.APARTMENTS,
+            `${idProject}`,
+          )}
+        >
+          Apartments
+        </MenuItem>
+        <MenuItem
+          to={routeWithReplaceId(
             pathRoutes.PROJECTS.DETAIL.ACTIVITY,
             `${idProject}`,
           )}
