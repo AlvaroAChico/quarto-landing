@@ -31,5 +31,8 @@ export const pathRoutes = {
   },
   REPORTS: {
     LIST: "/reports",
+    LIST_PROJECTS: "/reports/project",
+    LIST_CUSTOMER: "/reports/customer",
+    LIST_CONTRACTORS: "/reports/contractor",
   },
 }

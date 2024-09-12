@@ -102,6 +102,20 @@ export interface ContractorDTO {
   avatar: string
 }
 
+export interface StadisticsDashboardDTO {
+  residentials: StadisticsPropertiesDashboardDTO
+  contractors: StadisticsPropertiesDashboardDTO
+  services: StadisticsPropertiesDashboardDTO
+}
+export interface StadisticsPropertiesDashboardDTO {
+  total?: number
+  active: number
+  inactive: number
+  onhold?: number
+  apartamentstotal?:number
+}
+
+
 export interface StadisticsDTO {
   projects: StadisticsPropertiesDTO
   customers: StadisticsPropertiesDTO

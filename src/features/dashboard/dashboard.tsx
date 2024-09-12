@@ -1,24 +1,94 @@
-import { ApexOptions } from "apexcharts"
-import React from "react"
+import React, { useState, useEffect } from "react"
 import ReactApexChart from "react-apexcharts"
+import {
+  ContainerDashboard,
+  ContainerDashboardBody,
+  ContainerDashboardHeader,
+} from "./dashboard.styles"
+import StadisticsCard from "./components/stadistics-card"
+import { StadisticsDashboardDTO, StadisticsPropertiesDashboardDTO } from "../../core/models/interfaces/project-model"
+import { ApexOptions } from "apexcharts"
+import axios from "axios"
+import { settingsApp } from "../../config/environment/settings"
+import { ServiceCreatedDTO } from "../../core/models/interfaces/services-model"
 
+// El componente Dashboard
 const Dashboard: React.FC = () => {
-  const state = {
-    series: [
-      {
-        name: "Net Profit",
-        data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
-      },
-      {
-        name: "Revenue",
-        data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
-      },
-      {
-        name: "Free Cash Flow",
-        data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
-      },
-    ],
+  const initialStadisticsProperties: StadisticsPropertiesDashboardDTO = {
+    total: 0,
+    onhold: 0,
+    active: 0,
+    inactive: 0,
   }
+
+  const [residentials, setResidentials] = useState<StadisticsPropertiesDashboardDTO>(
+    initialStadisticsProperties,
+  )
+  const [services, setServices] = useState<StadisticsPropertiesDashboardDTO>(
+    initialStadisticsProperties,
+  )
+  const [contractors, setContractors] = useState<StadisticsPropertiesDashboardDTO>(
+    initialStadisticsProperties,
+  )
+  
+  // Inicializar datos para el gráfico
+  const [chartSeries, setChartSeries] = useState<{ name: string; data: number[] }[]>([])
+  
+  useEffect(() => {
+    // Obtener datos de estadística
+    axios.get(`${settingsApp.api.base}/stadistics`)
+      .then(response => {
+        const data: StadisticsDashboardDTO = response.data
+        setResidentials(data.residentials)
+        setServices(data.services)
+        setContractors(data.contractors)
+
+        // Inicializar datos para los servicios
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        const initialData = months.map(() => 0)
+        const serviceCounts = {
+          clean: [...initialData],
+          paint: [...initialData],
+          miscellaneous: [...initialData],
+          resourfacing: [...initialData],
+        }
+
+        // Obtener servicios y contar por mes
+        axios.get(`${settingsApp.api.base}/services/`)
+          .then(response => {
+            const services: ServiceCreatedDTO[] = response.data
+            services.forEach(service => {
+              const monthIndex = new Date(service.createdAt).getMonth()
+              switch (service.serviceType.name) {
+                case "clean":
+                  serviceCounts.clean[monthIndex] += 1
+                  break
+                case "paint":
+                  serviceCounts.paint[monthIndex] += 1
+                  break
+                case "miscellaneous":
+                  serviceCounts.miscellaneous[monthIndex] += 1
+                  break
+                case "resourfacing":
+                  serviceCounts.resourfacing[monthIndex] += 1
+                  break
+                default:
+                  break
+              }
+            })
+            
+            setChartSeries([
+              { name: "Clean", data: serviceCounts.clean },
+              { name: "Paint", data: serviceCounts.paint },
+              { name: "Miscellaneous", data: serviceCounts.miscellaneous },
+              { name: "Resourfacing", data: serviceCounts.resourfacing },
+            ])
+          })
+          .catch(error => console.error("Error fetching services data:", error))
+      })
+      .catch(error => console.error("Error fetching statistics data:", error))
+  }, [])
+
   const options: ApexOptions = {
     chart: {
       type: "bar",
@@ -40,20 +110,18 @@ const Dashboard: React.FC = () => {
     },
     xaxis: {
       categories: [
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
       ],
     },
     yaxis: {
       title: {
-        text: "$ (thousands)",
+        text: "Number of Services",
+      },
+      tickAmount: 6,
+      min: 0,
+      max: 30,
+      labels: {
+        formatter: (value) => value.toString(),
       },
     },
     fill: {
@@ -62,24 +130,29 @@ const Dashboard: React.FC = () => {
     tooltip: {
       y: {
         formatter: function (val: any) {
-          return "$ " + val + " thousands"
+          return val
         },
       },
     },
   }
 
   return (
-    <div>
-      <div id="chart">
+    <ContainerDashboard>
+      <ContainerDashboardHeader>
+        <StadisticsCard data={residentials} name="Residentials" />
+        <StadisticsCard data={services} name="Customers" />
+        <StadisticsCard data={contractors} name="Contractors" />
+      </ContainerDashboardHeader>
+      <ContainerDashboardBody>
         <ReactApexChart
           options={options}
-          series={state.series}
+          series={chartSeries}
           type="bar"
           height={350}
+          width={1000}
         />
-      </div>
-      <div id="html-dist"></div>
-    </div>
+      </ContainerDashboardBody>
+    </ContainerDashboard>
   )
 }
 

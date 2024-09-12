@@ -1,6 +1,12 @@
 import styled from "styled-components"
 import { palette } from "../../config/theme/theme"
 import { NavLink } from "react-router-dom"
+import { CircleSmall } from "@styled-icons/fluentui-system-filled/CircleSmall"
+
+export const CircleSmallIcon = styled(CircleSmall)`
+  width: 100%;
+  max-width: 20px;
+`
 
 export const ContainerDashboardLayout = styled.div`
   height: 100vh;
@@ -141,6 +147,41 @@ export const ItemMenu = styled.div`
     svg {
       width: 100%;
       max-width: 20px;
+    }
+  }
+`
+
+export const SubMenu = styled.div<{ open: boolean }>`
+  display: ${({ open }: { open: boolean }) => (open ? "block" : "none")};
+  gap: 10px;
+  flex-direction: column;
+`
+
+export const SubMenuItem = styled(NavLink)`
+  text-decoration: none;
+  padding: 10px;
+  color: #7a86a1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+
+  span {
+    color: #7a86a1;
+  }
+
+  &:hover {
+    color: white;
+    span {
+      color: white;
+    }
+  }
+
+  &.active {
+    background: transparent !important;
+    color: white;
+    span {
+      color: ${palette.primaryColor};
     }
   }
 `
