@@ -1,0 +1,19 @@
+# Dockerfile.dev - para desarrollo
+FROM node:20.16.0 AS development
+
+# Establecemos el directorio de trabajo
+WORKDIR /app
+
+# Copiamos los archivos de proyecto (sin la carpeta node_modules)
+COPY package*.json ./
+
+# Instalamos las dependencias
+RUN npm install --force
+
+# Copiamos todo el código de la aplicación
+COPY . .
+
+# Exponemos el puerto de desarrollo
+EXPOSE 3000
+
+CMD ["npm", "start"]

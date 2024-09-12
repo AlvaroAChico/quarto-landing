@@ -23,7 +23,6 @@ import {
   WrapperInput,
 } from "../../../../config/theme/global-styles"
 import Input from "../../../../components/input/input"
-import { User } from "styled-icons/boxicons-solid"
 import Button from "../../../../components/button/button"
 import { DataRoleResponse } from "../../../../core/models/interfaces/roles-model"
 import {
@@ -52,7 +51,11 @@ import Select from "react-select"
 const CreateProject: React.FC = () => {
   const [optionsClients, setOptionsClients] = React.useState<any>([])
   const [selectedOptionClient, setSelectedOptionClient] = React.useState(null)
+<<<<<<< HEAD
   const [startDate, setStartDate] = React.useState()
+=======
+  const [startDate, setStartDate] = React.useState<any>()
+>>>>>>> d19d4d35556d712b6c4fde6e4dc30791afef3442
   const [dueDate, setDueDate] = React.useState()
   const [isSubmitUserCreate, setIsSubmitUserCreate] =
     React.useState<boolean>(false)
@@ -66,9 +69,9 @@ const CreateProject: React.FC = () => {
       code: "",
       name: "",
       description: "",
-      startDate: "",
-      dueDate: "",
       currency: "",
+      dueDate: "",
+      startDate: "",
       price: "",
       clientId: "",
       categoryId: "",
@@ -225,7 +228,11 @@ const CreateProject: React.FC = () => {
     (acceptedFiles: File[], rejectedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
         const updatedFiles = [...listFiles]
+<<<<<<< HEAD
         acceptedFiles.forEach(file => {
+=======
+        acceptedFiles.forEach((file: any) => {
+>>>>>>> d19d4d35556d712b6c4fde6e4dc30791afef3442
           // if (updatedFiles.length >= 5) {
           //   toast.error("Se permite un máximo de 5 archivos.")
           //   return
@@ -346,7 +353,7 @@ const CreateProject: React.FC = () => {
             selected={startDate}
             icon={<Calendar />}
             toggleCalendarOnIconClick
-            onChange={date => {
+            onChange={(date: any) => {
               setStartDate(date)
               setValue("startDate", date)
             }}
@@ -375,7 +382,7 @@ const CreateProject: React.FC = () => {
             selected={dueDate}
             icon={<CalendarCancel />}
             toggleCalendarOnIconClick
-            onChange={date => {
+            onChange={(date: any) => {
               setDueDate(date)
               setValue("dueDate", date)
             }}

@@ -219,7 +219,7 @@ const CreateRole: React.FC = () => {
     }
   }, [listPermissions])
 
-  const items = [{ name: "List Permissions" }].map(({ name }) => ({
+  const items = [{ name: "List Permissions" }].map(({ name }): any => ({
     open,
     title: (
       <ContainerTitle>

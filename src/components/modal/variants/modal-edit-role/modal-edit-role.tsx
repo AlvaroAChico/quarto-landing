@@ -254,7 +254,11 @@ const ModalEditRole: React.FC<IOwnProps> = ({
   }, [listPermissions])
 
   const items = [{ name: "List Permissions" }].map(({ name }) => ({
+<<<<<<< HEAD
     open,
+=======
+    open: false,
+>>>>>>> d19d4d35556d712b6c4fde6e4dc30791afef3442
     title: (
       <ContainerTitle>
         <span>{name}</span>
@@ -268,6 +272,10 @@ const ModalEditRole: React.FC<IOwnProps> = ({
             <ContainerListSwitchs>
               {(permission.values || []).map(value => (
                 <Switch
+<<<<<<< HEAD
+=======
+                  key={value.name}
+>>>>>>> d19d4d35556d712b6c4fde6e4dc30791afef3442
                   isActive={value.isActive}
                   isEnabled={value.enabled}
                   onToggle={() =>

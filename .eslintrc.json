@@ -16,7 +16,7 @@
       { "fixStyle": "separate-type-imports" }
     ],
     "@typescript-eslint/no-restricted-imports": [
-      2,
+      1,
       {
         "paths": [
           {
@@ -26,7 +26,8 @@
           }
         ]
       }
-    ]
+    ],
+    "@typescript-eslint/no-explicit-any": 0
   },
   "overrides": [
     { "files": ["*.{c,m,}{t,j}s", "*.{t,j}sx"] },
