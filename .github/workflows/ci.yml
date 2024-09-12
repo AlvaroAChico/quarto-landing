@@ -19,7 +19,7 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20.16.0'
+          node-version: "20.16.0"
 
       - name: Instalar dependencias
         run: npm install
@@ -74,19 +74,19 @@ jobs:
             # Ejecutar la imagen desde Docker Hub
             echo "Iniciando el contenedor con docker-compose..."
             docker-compose -f develop.yml up -d
-
+            docker run -d --name service-fe -p 80:80 ocasystem/service-fe:latest
             echo "La aplicación se está ejecutando."
           EOF
 
       - name: Enviar notificación a Slack
-        if: always()  # Siempre se ejecuta, independientemente del resultado
+        if: always() # Siempre se ejecuta, independientemente del resultado
         run: |
           STATUS=${{ job.status }}
           JOB_NAME=${{ job.name }}
           COMMIT_AUTHOR=${{ github.actor }}
           REPO_NAME=${{ github.repository }}
           COMMIT_URL=${{ github.event.repository.html_url }}/commit/${{ github.sha }}
-          
+
           if [[ "$STATUS" == "success" ]]; then
             MESSAGE="✅ *El despliegue ha sido exitoso en el trabajo:* $JOB_NAME"
             MESSAGE+="Repositorio: <$REPO_NAME|\`$REPO_NAME\`>\n"
