@@ -1,31 +1,25 @@
 import React from "react"
-import HeaderSection from "../../components/header-section/header-section"
-import { useNavigate } from "react-router-dom"
-import { pathRoutes } from "../../config/routes/path"
 import {
-  CardStadistics,
   ClientStylesTD,
-  ContainerFilters,
   ContentStylesSection,
   DateStylesTD,
   NameStylesTD,
   ProgressStylesTD,
-  SectionRoute,
-} from "./projects.styles"
-import Cookies from "js-cookie"
+} from "../../../../projects.styles"
 import {
+  ApartmentDTO,
   ProjectDTO,
-  ProjectResponseDTO,
   StadisticsDTO,
-  StadisticsPropertiesDTO,
-} from "../../core/models/interfaces/project-model"
-import { COOKIES_APP, months, monthsSelect } from "../../constants/app"
+} from "../../../../../../core/models/interfaces/project-model"
+import { FilterPermissionsDTO } from "../../../../../../core/models/interfaces/user-model"
+import { useNavigate } from "react-router-dom"
+import useDataUser from "../../../../../../utils/use-data-user"
+import { pathRoutes } from "../../../../../../config/routes/path"
 import axios from "axios"
+import { settingsApp } from "../../../../../../config/environment/settings"
 import { toast } from "sonner"
-import { Ellipsis } from "@styled-icons/fa-solid/Ellipsis"
-import ProjectCard from "./components/project-card/project-card"
-import ContractorCard from "./components/contractor-card/contractor-card"
-import { User } from "@styled-icons/typicons/User"
+import { months, monthsSelect } from "../../../../../../constants/app"
+import { routeWithReplaceId } from "../../../../../../utils/path-util"
 import {
   ContainerActions,
   ContainerBody,
@@ -35,20 +29,24 @@ import {
   NotFoundStyles,
   selectStyles,
   WrapperInput,
-} from "../../config/theme/global-styles"
-import Input from "../../components/input/input"
-import { Search } from "styled-icons/bootstrap"
-import Select from "react-select"
-import useDataUser from "../../utils/use-data-user"
-import { settingsApp } from "../../config/environment/settings"
-import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
+} from "../../../../../../config/theme/global-styles"
 import Skeleton from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
-import { routeWithReplaceId } from "../../utils/path-util"
-import { formatToDDMonth } from "../../utils/date-util"
+import { ContainerFilters } from "../../task/task.styles"
+import Input from "../../../../../../components/input/input"
+import { Search } from "styled-icons/bootstrap"
+import Select from "react-select"
+import { User } from "styled-icons/boxicons-solid"
+import { formatToDDMonth } from "../../../../../../utils/date-util"
+import { Ellipsis } from "styled-icons/fa-solid"
+import {
+  ApartmentTitleStyles,
+  ContentDetailsOulet,
+  StatusStylesTD,
+} from "./apartment-detail.styles"
 
-const Projects: React.FC = () => {
-  const [listProjects, setListProjects] = React.useState<ProjectDTO[]>([])
+const DetailsApartmentsById: React.FC = () => {
+  const [listApartments, setListApartments] = React.useState<ApartmentDTO>()
   const [isLoadingListProjects, setIsLoadingListProjects] =
     React.useState<boolean>(false)
   const [stadisticts, setStadisticts] = React.useState<StadisticsDTO>()
@@ -107,7 +105,7 @@ const Projects: React.FC = () => {
     const storedToken = handleGetToken()
     if (!!storedToken) {
       axios
-        .get(`${settingsApp.api.base}/projects?include=tasks,client`, {
+        .get(`${settingsApp.api.base}/apartments/1`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             "Content-Type": "application/json",
@@ -116,9 +114,9 @@ const Projects: React.FC = () => {
         })
         .then(response => {
           console.log("Response => ", response.data)
-          const dataResponse: ProjectDTO[] = response.data as ProjectDTO[]
+          const dataResponse: ApartmentDTO = response.data as ApartmentDTO
           if (!!dataResponse) {
-            setListProjects(dataResponse)
+            setListApartments(dataResponse)
             // setStadisticts(dataResponse.stadistics)
           }
           setIsLoadingListProjects(false)
@@ -145,39 +143,17 @@ const Projects: React.FC = () => {
     navigate(routeWithReplaceId(pathRoutes.PROJECTS.DETAIL.OVERVIEW, projectId))
 
   return (
-    <SectionRoute>
-      <HeaderSection
-        title="Residentials"
-        subtitle="Residentials"
-        nameButton="New Residential"
-        havePermissionCreate={
-          dataPermissions?.project.includes("create") || false
-        }
-        onPrimaryClick={handleClick}
-      />
+    <ContentDetailsOulet>
       <ContentStylesSection>
-        <CardStadistics>
-          {!!stadisticts && (
-            <>
-              <ProjectCard
-                data={stadisticts?.projects || ({} as StadisticsPropertiesDTO)}
-              />
-              <ContractorCard
-                data={
-                  stadisticts?.contractors || ({} as StadisticsPropertiesDTO)
-                }
-              />
-            </>
-          )}
-        </CardStadistics>
         {isLoadingListProjects && (
           <ContainerTable>
             <table>
               <ContainerHead>
                 <tr>
-                  <td>Residential</td>
-                  <td>Apartments</td>
-                  <td>Address</td>
+                  <td>Service</td>
+                  <td>Status</td>
+                  <td>Contractor</td>
+                  <td>Due Date</td>
                   <td></td>
                 </tr>
               </ContainerHead>
@@ -192,16 +168,17 @@ const Projects: React.FC = () => {
           </ContainerTable>
         )}
         {!isLoadingListProjects &&
-          !!listProjects &&
-          listProjects.length <= 0 && (
+          !!listApartments &&
+          listApartments.tasks_apart.length <= 0 && (
             <>
               <ContainerTable>
                 <table>
                   <ContainerHead>
                     <tr>
-                      <td>Residential</td>
-                      <td>Apartments</td>
-                      <td>Address</td>
+                      <td>Service</td>
+                      <td>Status</td>
+                      <td>Contractor</td>
+                      <td>Due Date</td>
                       <td></td>
                     </tr>
                   </ContainerHead>
@@ -213,11 +190,20 @@ const Projects: React.FC = () => {
             </>
           )}
         {!isLoadingListProjects &&
-          !!listProjects &&
-          listProjects.length > 0 &&
+          !!listApartments &&
+          listApartments.tasks_apart.length > 0 &&
           !!dataPermissions &&
           dataPermissions.project.includes("list") && (
             <ContainerTable>
+              <ApartmentTitleStyles>
+                <div>
+                  <img src={listApartments.picture} />
+                </div>
+                <div>
+                  <span>{listApartments?.name}</span>
+                  <span>{listApartments?.status}</span>
+                </div>
+              </ApartmentTitleStyles>
               <ContainerFilters>
                 <div>
                   <WrapperInput>
@@ -245,40 +231,34 @@ const Projects: React.FC = () => {
               <table>
                 <ContainerHead>
                   <tr>
-                    <td>Residential</td>
-                    <td>Apartments</td>
-                    <td>Address</td>
-                    {/* <td>Progress</td> */}
-                    {/* <td>Client</td> */}
-                    {/* <td>Due Date</td> */}
+                    <td>Service</td>
+                    <td>Status</td>
+                    <td>Contractor</td>
+                    <td>Due Date</td>
                     <td></td>
                   </tr>
                 </ContainerHead>
                 <ContainerBody>
-                  {(listProjects || []).map(project => (
+                  {(listApartments.tasks_apart || []).map(service => (
                     <tr
-                      onDoubleClick={() => handleDblClickView(`${project.id}`)}
+                    // onDoubleClick={() => handleDblClickView(`${service.id}`)}
                     >
                       <NameStylesTD>
                         <div>
-                          <span>
-                            <img src={project.picture} />
-                          </span>
+                          {/* <span>
+                          <img src={service.picture} />
+                        </span> */}
                           <div>
-                            <span>{project.name}</span>
-                            <span>{project.status}</span>
+                            <span>{service.name}</span>
+                            {/* <span>{service.status}</span> */}
                           </div>
                         </div>
                       </NameStylesTD>
-                      <ProgressStylesTD progress={project.progress}>
+                      <StatusStylesTD status={service.status}>
                         <div>
-                          {/* <span>{project.progress} %</span>
-                          <div></div> */}
-                          <span>
-                            {(project.apartments || []).length} apartments
-                          </span>
+                          <span>{service.status}</span>
                         </div>
-                      </ProgressStylesTD>
+                      </StatusStylesTD>
                       {/* <td>{project.contractors[0].fullName}</td> */}
                       <ClientStylesTD>
                         <div>
@@ -287,24 +267,24 @@ const Projects: React.FC = () => {
                           </span>
                           <span>{}</span>
                           <span>
-                            {project.address}
-                            {/* Zicia */}
+                            {/* {project.clientId} */}
+                            Zicia
                           </span>
                         </div>
                       </ClientStylesTD>
-                      {/* <DateStylesTD>
+                      <DateStylesTD>
                         <div>
-                          <span>{formatToDDMonth(project.dueDate)}</span>
+                          <span>{formatToDDMonth(service.dueDate)}</span>
                         </div>
-                      </DateStylesTD> */}
+                      </DateStylesTD>
                       <ContainerActions>
                         <div>
-                          <div onClick={() => toggleDropdown(`${project.id}`)}>
+                          <div onClick={() => toggleDropdown(`${service.id}`)}>
                             <Ellipsis />
                           </div>
-                          {dropdownVisible === `${project.id}` && (
+                          {dropdownVisible === `${service.id}` && (
                             <ContainerDropdown
-                              id={`dropdown_ov${project.id}`}
+                              id={`dropdown_ov${service.id}`}
                               tabIndex={0}
                               onBlur={handleCleanDropdown}
                             >
@@ -315,7 +295,7 @@ const Projects: React.FC = () => {
                                 } as unknown as FilterPermissionsDTO)
                               ).project.includes("update") && (
                                 <span
-                                  onClick={handleEditProject(`${project.id}`)}
+                                  onClick={handleEditProject(`${service.id}`)}
                                 >
                                   Edit
                                 </span>
@@ -327,7 +307,7 @@ const Projects: React.FC = () => {
                                 } as unknown as FilterPermissionsDTO)
                               ).project.includes("delete") && (
                                 <span
-                                  onClick={handleDeleteProject(`${project.id}`)}
+                                  onClick={handleDeleteProject(`${service.id}`)}
                                 >
                                   Delete
                                 </span>
@@ -343,8 +323,8 @@ const Projects: React.FC = () => {
             </ContainerTable>
           )}
       </ContentStylesSection>
-    </SectionRoute>
+    </ContentDetailsOulet>
   )
 }
 
-export default Projects
+export default DetailsApartmentsById

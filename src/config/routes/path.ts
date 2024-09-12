@@ -15,6 +15,7 @@ export const pathRoutes = {
     DETAIL: {
       OVERVIEW: "/projects/:id/overview",
       APARTMENTS: "/projects/:id/apartments",
+      APARTMENTS_DETAIL: "/projects/:id/apartments/:apartmentId",
       ACTIVITY: "/projects/:id/activity",
       TASKS: "/projects/:id/tasks",
       CONTRACTORS: "/projects/:id/contractors",

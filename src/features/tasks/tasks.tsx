@@ -2,16 +2,36 @@ import React from "react"
 import HeaderSection from "../../components/header-section/header-section"
 import { pathRoutes } from "../../config/routes/path"
 import { useNavigate } from "react-router-dom"
+import { ServiceDTO } from "../../core/models/interfaces/roles-model"
+import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
+import useDataUser from "../../utils/use-data-user"
+import axios from "axios"
+import { settingsApp } from "../../config/environment/settings"
+import { toast } from "sonner"
+import {
+  ClasicStylesTD,
+  ContainerActions,
+  ContainerBody,
+  ContainerDropdown,
+  ContainerHead,
+  ContainerTable,
+  NotFoundStyles,
+} from "../../config/theme/global-styles"
+import Skeleton from "react-loading-skeleton"
+import "react-loading-skeleton/dist/skeleton.css"
+import { ContainerNameRoleTD } from "../roles/roles.styles"
+import { formatToDDMonth } from "../../utils/date-util"
+import { Ellipsis } from "styled-icons/fa-solid"
 
 const Tasks: React.FC = () => {
-  const [listServices, setListServices] = React.useState<DataRoleResponse[]>([])
+  const [listServices, setListServices] = React.useState<ServiceDTO[]>([])
   const [isOpenModalEdit, setIsOpenModalEdit] = React.useState<boolean>(false)
   const [isLoadingListServices, setIsLoadingListServices] =
     React.useState<boolean>(false)
   const [isOpenModalDelete, setIsOpenModalDelete] =
     React.useState<boolean>(false)
-  const [dataRoleDelete, setDataRoleDelete] = React.useState<RoleDTO>()
-  const [dataRoleEdit, setDataRoleEdit] = React.useState<RoleDTO>()
+  const [dataRoleDelete, setDataRoleDelete] = React.useState<ServiceDTO>()
+  const [dataRoleEdit, setDataRoleEdit] = React.useState<ServiceDTO>()
   const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
     null,
   )
@@ -49,18 +69,22 @@ const Tasks: React.FC = () => {
 
   const handleEditRole = React.useCallback(
     (roleId: string) => () => {
-      setDataRoleEdit(listRoles.filter(role => `${role.id}` == roleId)[0])
+      setDataRoleEdit(
+        listServices.filter(service => `${service.id}` == roleId)[0],
+      )
       setIsOpenModalEdit(true)
     },
-    [listRoles],
+    [listServices],
   )
 
   const handleDeleteRole = React.useCallback(
     (roleId: string) => () => {
-      setDataRoleDelete(listRoles.filter(role => `${role.id}` == roleId)[0])
+      setDataRoleDelete(
+        listServices.filter(service => `${service.id}` == roleId)[0],
+      )
       setIsOpenModalDelete(true)
     },
-    [listRoles],
+    [listServices],
   )
 
   const handleClick = React.useCallback(() => {
@@ -68,11 +92,11 @@ const Tasks: React.FC = () => {
   }, [])
 
   const fetchListRole = React.useCallback(() => {
-    setIsLoadingListRoles(true)
+    setIsLoadingListServices(true)
     const storedToken = handleGetToken()
     if (storedToken) {
       axios
-        .get(`${settingsApp.api.base}/roles?include=permissions`, {
+        .get(`${settingsApp.api.base}/services`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             "Content-Type": "application/json",
@@ -80,14 +104,13 @@ const Tasks: React.FC = () => {
           },
         })
         .then(response => {
-          const listData: DataRoleResponse[] =
-            response.data as DataRoleResponse[]
-          setListRoles(listData)
-          setIsLoadingListRoles(false)
+          const listData: ServiceDTO[] = response.data as ServiceDTO[]
+          setListServices(listData)
+          setIsLoadingListServices(false)
         })
         .catch(err => {
           toast.error("Failed to fetch data")
-          setIsLoadingListRoles(false)
+          setIsLoadingListServices(false)
         })
     }
   }, [handleGetToken])
@@ -104,18 +127,19 @@ const Tasks: React.FC = () => {
   return (
     <div>
       <HeaderSection
-        title="Tasks"
-        subtitle="List of tasks"
+        title="Services"
+        subtitle="List of services"
         nameButton="Create"
+        havePermissionCreate={true}
         onPrimaryClick={handleClick}
       />
-      {isLoadingListRoles && (
+      {isLoadingListServices && (
         <ContainerTable>
           <table>
             <ContainerHead>
               <tr>
                 <td>Name</td>
-                <td>Email</td>
+                <td>CreatedAt</td>
                 <td></td>
               </tr>
             </ContainerHead>
@@ -129,7 +153,7 @@ const Tasks: React.FC = () => {
           </table>
         </ContainerTable>
       )}
-      {!isLoadingListRoles && !!listRoles && listRoles.length <= 0 && (
+      {!isLoadingListServices && !!listServices && listServices.length <= 0 && (
         <ContainerTable>
           <table>
             <ContainerHead>
@@ -145,9 +169,9 @@ const Tasks: React.FC = () => {
           </NotFoundStyles>
         </ContainerTable>
       )}
-      {!isLoadingListRoles &&
-        !!listRoles &&
-        listRoles.length > 0 &&
+      {!isLoadingListServices &&
+        !!listServices &&
+        listServices.length > 0 &&
         !!dataPermissions &&
         dataPermissions.role.includes("list") && (
           <ContainerTable>
@@ -160,7 +184,7 @@ const Tasks: React.FC = () => {
                 </tr>
               </ContainerHead>
               <ContainerBody>
-                {(listRoles || []).map(role => (
+                {(listServices || []).map(role => (
                   <tr>
                     <ContainerNameRoleTD>
                       <div>
@@ -213,7 +237,7 @@ const Tasks: React.FC = () => {
             </table>
           </ContainerTable>
         )}
-      <ModalEditRole
+      {/* <ModalEditRole
         isOpen={isOpenModalEdit}
         handleClose={handleCloseModalEdit}
         handleRefreshData={fetchListRole}
@@ -224,7 +248,7 @@ const Tasks: React.FC = () => {
         handleClose={handleCloseModalDelete}
         handleDeleteUser={handleDeleteUserModal}
         dataUserDelete={dataRoleDelete!!}
-      />
+      /> */}
     </div>
   )
 }
