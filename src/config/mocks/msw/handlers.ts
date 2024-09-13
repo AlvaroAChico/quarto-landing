@@ -14,7 +14,12 @@ import ProjectFileByIdJSON from "../features/project-files/project-file-id.json"
 import PermissionsListJSON from "../features/permissions/permission-list.json"
 import StadisticsJSON from "../features/projects/stadistics/stadistics.json"
 import ServiceDataJSON from "../features/services/service-data.json"
+<<<<<<< HEAD
 import CalendarInfoJSON from "../features/calendar/calendar-service.json"
+=======
+import ResidentialReportSON from "../features/report/residential-report.json"
+import ContractorReportSON from "../features/report/contractor-report.json"
+>>>>>>> ee4a77573f014d2be0bc2336ef8d824884028a00
 
 import meJSON from "../features/auth/me.json"
 import { settingsApp } from "../../environment/settings"
@@ -128,7 +133,20 @@ export const handlers = [
   http.get(`${settingsApp.api.base}/stadistics`, () => {
     return HttpResponse.json(StadisticsJSON)
   }),
-  http.get(`${settingsApp.api.base}/services/`, () => {
+  http.get(`${settingsApp.api.base}/services`, () => {
     return HttpResponse.json(ServiceDataJSON)
   }),
+<<<<<<< HEAD
+=======
+  // ******** REPORTS ********
+  http.get(`${settingsApp.api.base}/residentials/report`, () => {
+    return HttpResponse.json(ResidentialReportSON)
+  }),
+
+  http.get(`${settingsApp.api.base}/contractors/report`, () => {
+    return HttpResponse.json(ContractorReportSON)
+  }),
+
+
+>>>>>>> ee4a77573f014d2be0bc2336ef8d824884028a00
 ]

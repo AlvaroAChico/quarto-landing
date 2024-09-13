@@ -1,0 +1,109 @@
+[
+    {
+      "id": 1,
+      "name": "Greenwood Apartments",
+      "numberapartaments": 50,
+      "numberservices": 120,
+      "numberservicescompleted": 100
+    },
+    {
+      "id": 2,
+      "name": "Sunset Villas",
+      "numberapartaments": 30,
+      "numberservices": 75,
+      "numberservicescompleted": 65
+    },
+    {
+      "id": 3,
+      "name": "Mountain View",
+      "numberapartaments": 40,
+      "numberservices": 90,
+      "numberservicescompleted": 80
+    },
+    {
+      "id": 4,
+      "name": "Riverdale Complex",
+      "numberapartaments": 60,
+      "numberservices": 150,
+      "numberservicescompleted": 140
+    },
+    {
+      "id": 5,
+      "name": "Lakeside Residences",
+      "numberapartaments": 20,
+      "numberservices": 40,
+      "numberservicescompleted": 35
+    },
+    {
+      "id": 6,
+      "name": "Seaside Heights",
+      "numberapartaments": 55,
+      "numberservices": 130,
+      "numberservicescompleted": 110
+    },
+    {
+      "id": 7,
+      "name": "Woodland Estates",
+      "numberapartaments": 35,
+      "numberservices": 85,
+      "numberservicescompleted": 70
+    },
+
+    {
+      "id": 8,
+      "name": "Parkview Apartments",
+      "numberapartaments": 45,
+      "numberservices": 105,
+      "numberservicescompleted": 95
+    },
+    {
+      "id": 9,
+      "name": "Eastside Towers",
+      "numberapartaments": 25,
+      "numberservices": 60,
+      "numberservicescompleted": 55
+    },
+    {
+      "id": 10,
+      "name": "Westfield Place",
+      "numberapartaments": 50,
+      "numberservices": 120,
+      "numberservicescompleted": 100
+    },
+    {
+      "id": 11,
+      "name": "Skyline Residences",
+      "numberapartaments": 70,
+      "numberservices": 180,
+      "numberservicescompleted": 160
+    },
+    {
+      "id": 12,
+      "name": "Central Park",
+      "numberapartaments": 28,
+      "numberservices": 65,
+      "numberservicescompleted": 60
+    },
+    {
+      "id": 13,
+      "name": "Northgate Complex",
+      "numberapartaments": 65,
+      "numberservices": 150,
+      "numberservicescompleted": 140
+    },
+    {
+      "id": 14,
+      "name": "Riverwalk Apartments",
+      "numberapartaments": 38,
+      "numberservices": 90,
+      "numberservicescompleted": 80
+    },
+    {
+      "id": 15,
+      "name": "Greenfield Estates",
+      "numberapartaments": 33,
+      "numberservices": 85,
+      "numberservicescompleted": 75
+    }
+  ]
+  

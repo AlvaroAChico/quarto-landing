@@ -130,7 +130,6 @@ export const ContainerTable = styled.div`
   background: white;
   padding: 30px;
   width: 100%;
-
   > table {
     border-collapse: collapse;
     width: 100%;
@@ -159,6 +158,7 @@ export const ContainerBody = styled.tbody`
 
   > tr {
     transition: 0.5s;
+    width: 100%;
 
     > td {
       padding: 15px;
