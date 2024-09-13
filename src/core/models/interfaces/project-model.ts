@@ -153,3 +153,12 @@ export interface ResidentialReportDTO {
   numberservicescompleted: number
 
 }
+
+export interface ContractorReportDTO {
+  id: number
+  name: string
+  activeServices: number
+  inactiveServices: number
+  assignedApartments: number
+  status:string
+}

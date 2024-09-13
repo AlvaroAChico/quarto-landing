@@ -10,7 +10,8 @@ import ProjectFileByIdJSON from "../features/project-files/project-file-id.json"
 import PermissionsListJSON from "../features/permissions/permission-list.json"
 import StadisticsJSON from "../features/projects/stadistics/stadistics.json"
 import ServiceDataJSON from "../features/services/service-data.json"
-import ResidentialReportSON from "../features/projects/residential-report.json"
+import ResidentialReportSON from "../features/report/residential-report.json"
+import ContractorReportSON from "../features/report/contractor-report.json"
 
 import meJSON from "../features/auth/me.json"
 import { settingsApp } from "../../environment/settings"
@@ -110,8 +111,14 @@ export const handlers = [
   http.get(`${settingsApp.api.base}/services`, () => {
     return HttpResponse.json(ServiceDataJSON)
   }),
-  // ******** RESIDENTIAL ********
-  http.get(`${settingsApp.api.base}/residential/report`, () => {
+  // ******** REPORTS ********
+  http.get(`${settingsApp.api.base}/residentials/report`, () => {
     return HttpResponse.json(ResidentialReportSON)
   }),
+
+  http.get(`${settingsApp.api.base}/contractors/report`, () => {
+    return HttpResponse.json(ContractorReportSON)
+  }),
+
+
 ]

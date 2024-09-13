@@ -307,19 +307,40 @@ const DashboardLayout: React.FC = () => {
                 </ItemNavLink>
               )}
             <SubMenu open={isReportsOpen}>
-              <SubMenuItem to={pathRoutes.REPORTS.LIST_RESIDENTIAL}>
+              <SubMenuItem
+                onClick={() =>
+                  dispatch(
+                    updateActionTitleApp(ACTIONS_TITLE_APP.REPORT_RESIDENTIAL),
+                  )
+                }
+                to={pathRoutes.REPORTS.LIST_RESIDENTIAL}
+              >
                 <span>
                   <CircleSmallIcon />
                 </span>
                 <p>Residential report </p>
               </SubMenuItem>
-              <SubMenuItem to={pathRoutes.REPORTS.LIST_CUSTOMER}>
+              <SubMenuItem
+                to={pathRoutes.REPORTS.LIST_CUSTOMER}
+                onClick={() =>
+                  dispatch(
+                    updateActionTitleApp(ACTIONS_TITLE_APP.REPORT_CUSTOMERS),
+                  )
+                }
+              >
                 <span>
                   <CircleSmallIcon />
                 </span>
                 <p>Customers Report</p>
               </SubMenuItem>
-              <SubMenuItem to={pathRoutes.REPORTS.LIST_CONTRACTORS}>
+              <SubMenuItem
+                to={pathRoutes.REPORTS.LIST_CONTRACTORS}
+                onClick={() =>
+                  dispatch(
+                    updateActionTitleApp(ACTIONS_TITLE_APP.REPORT_CONTRACTORS),
+                  )
+                }
+              >
                 <span>
                   <CircleSmallIcon />
                 </span>

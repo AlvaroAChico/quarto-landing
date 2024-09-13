@@ -29,6 +29,8 @@ const ResidentialReport: React.FC = () => {
   const navigate = useNavigate()
   const [residentials, setResidentials] = useState<ResidentialReportDTO[]>([])
   const [loading, setLoading] = useState<boolean>(true)
+  const [totalRecords, setTotalRecords] = useState<number>(0)
+  const [totalApartments, setTotalApartments] = useState<number>(0)
 
   const handleClick = () => {
     navigate(pathRoutes.PROJECTS.CREATE)
@@ -38,9 +40,17 @@ const ResidentialReport: React.FC = () => {
     const fetchResidentials = async () => {
       try {
         const response = await axios.get<ResidentialReportDTO[]>(
-          `${settingsApp.api.base}/residential/report`,
+          `${settingsApp.api.base}/residentials/report`,
         )
-        setResidentials(response.data)
+        const data = response.data
+        setResidentials(data)
+        setTotalRecords(data.length)
+        setTotalApartments(
+          data.reduce(
+            (sum, residential) => sum + residential.numberapartaments,
+            0,
+          ),
+        )
         setLoading(false)
       } catch (error) {
         console.error("Error fetching data:", error)
@@ -54,8 +64,15 @@ const ResidentialReport: React.FC = () => {
   return (
     <ContainerResidentialReport>
       <ContainerResidentialReportHeader>
-        <CardInfoReport></CardInfoReport>
-        <CardInfoReport></CardInfoReport>
+        <CardInfoReport>
+          <h1> {totalRecords}</h1>
+          <span>Residentials</span>
+
+        </CardInfoReport>
+        <CardInfoReport>
+        <h1> {totalApartments}</h1>
+        <span>Apartaments</span>
+        </CardInfoReport>
       </ContainerResidentialReportHeader>
       <ContainerResidentialReportBody>
         <ContainerFilterBody>
@@ -83,30 +100,30 @@ const ResidentialReport: React.FC = () => {
                   <td width={300}>Nombre</td>
                   <td>Cantidad de Apartamentos</td>
                   <td>Cantidad de Servicios Activos</td>
-                  <td> Cantidad de Servicios completados</td>
+                  <td>Cantidad de Servicios completados</td>
                   <td></td>
                 </tr>
               </ContainerHead>
-              </table>
+            </table>
 
-              <ContainerBodyScrool>
-                {loading ? (
-                  <tr>
-                    <td colSpan={4}>
-                      <Skeleton count={5} />
-                    </td>
-                  </tr>
-                ) : (
-                  residentials.map(residential => (
-                    <div className="tr" key={residential.id}>
-                      <span >{residential.name}</span>
-                      <span>{residential.numberapartaments}</span>
-                      <span>{residential.numberservices}</span>
-                      <span>{residential.numberservicescompleted}</span>
-                    </div>
-                  ))
-                )}
-              </ContainerBodyScrool>
+            <ContainerBodyScrool>
+              {loading ? (
+                <tr>
+                  <td colSpan={5}>
+                    <Skeleton count={5} />
+                  </td>
+                </tr>
+              ) : (
+                residentials.map(residential => (
+                  <div className="tr" key={residential.id}>
+                    <span>{residential.name}</span>
+                    <span>{residential.numberapartaments}</span>
+                    <span>{residential.numberservices}</span>
+                    <span>{residential.numberservicescompleted}</span>
+                  </div>
+                ))
+              )}
+            </ContainerBodyScrool>
           </ContainerTable>
         </ContainerFilterBody>
       </ContainerResidentialReportBody>

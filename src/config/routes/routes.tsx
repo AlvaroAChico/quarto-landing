@@ -12,7 +12,6 @@ import CreateUser from "../../features/users/functionalities/create-user/create-
 import { pathRoutes } from "./path"
 import Tasks from "../../features/tasks/tasks"
 import CreateTask from "../../features/tasks/functionalities/create-task/create-task"
-import Reports from "../../features/reports/contractor-report/contractor-reports"
 import Calendar from "../../features/calendar/calendar"
 import CreateProject from "../../features/projects/functionalities/create-project/create-project"
 import DetailsOverview from "../../features/projects/details/components/overview/overview"
@@ -132,8 +131,8 @@ export const router = createBrowserRouter([
       },
       {
         path: pathRoutes.REPORTS.LIST_CUSTOMER,
-        element: <Reports />,
-      },  
+        element: <></>,
+      },
       {
         path: pathRoutes.REPORTS.LIST_CONTRACTORS,
         element: <ContractorReport />,
