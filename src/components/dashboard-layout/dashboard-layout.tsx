@@ -295,7 +295,7 @@ const DashboardLayout: React.FC = () => {
                     handleReportsClick()
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.REPORTS))
                   }}
-                  to={pathRoutes.REPORTS.LIST_PROJECTS}
+                  to={pathRoutes.REPORTS.LIST_RESIDENTIAL}
                   className={({ isActive }) =>
                     isActive || location.pathname.startsWith("/reports")
                       ? "active"
@@ -307,11 +307,11 @@ const DashboardLayout: React.FC = () => {
                 </ItemNavLink>
               )}
             <SubMenu open={isReportsOpen}>
-              <SubMenuItem to={pathRoutes.REPORTS.LIST_PROJECTS}>
+              <SubMenuItem to={pathRoutes.REPORTS.LIST_RESIDENTIAL}>
                 <span>
                   <CircleSmallIcon />
                 </span>
-                <p>Projects report </p>
+                <p>Residential report </p>
               </SubMenuItem>
               <SubMenuItem to={pathRoutes.REPORTS.LIST_CUSTOMER}>
                 <span>

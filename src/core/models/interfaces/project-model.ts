@@ -144,3 +144,12 @@ export interface CommentDTO {
   comment: string
   date: string
 }
+
+export interface ResidentialReportDTO {
+  id: number
+  name: string
+  numberapartaments: number
+  numberservices: number
+  numberservicescompleted: number
+
+}

@@ -1,9 +1,9 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import { pathRoutes } from "../../config/routes/path"
-import HeaderSection from "../../components/header-section/header-section"
+import { pathRoutes } from "../../../config/routes/path"
+import HeaderSection from "../../../components/header-section/header-section"
 
-const Reports: React.FC = () => {
+const ContractorReport: React.FC = () => {
   const navigate = useNavigate()
 
   const handleClick = () => {
@@ -17,4 +17,4 @@ const Reports: React.FC = () => {
   )
 }
 
-export default Reports
+export default ContractorReport
