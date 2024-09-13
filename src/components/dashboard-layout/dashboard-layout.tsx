@@ -295,7 +295,7 @@ const DashboardLayout: React.FC = () => {
                     handleReportsClick()
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.REPORTS))
                   }}
-                  to={pathRoutes.REPORTS.LIST_PROJECTS}
+                  to={pathRoutes.REPORTS.LIST_RESIDENTIAL}
                   className={({ isActive }) =>
                     isActive || location.pathname.startsWith("/reports")
                       ? "active"
@@ -307,19 +307,40 @@ const DashboardLayout: React.FC = () => {
                 </ItemNavLink>
               )}
             <SubMenu open={isReportsOpen}>
-              <SubMenuItem to={pathRoutes.REPORTS.LIST_PROJECTS}>
+              <SubMenuItem
+                onClick={() =>
+                  dispatch(
+                    updateActionTitleApp(ACTIONS_TITLE_APP.REPORT_RESIDENTIAL),
+                  )
+                }
+                to={pathRoutes.REPORTS.LIST_RESIDENTIAL}
+              >
                 <span>
                   <CircleSmallIcon />
                 </span>
-                <p>Projects report </p>
+                <p>Residential report </p>
               </SubMenuItem>
-              <SubMenuItem to={pathRoutes.REPORTS.LIST_CUSTOMER}>
+              <SubMenuItem
+                to={pathRoutes.REPORTS.LIST_CUSTOMER}
+                onClick={() =>
+                  dispatch(
+                    updateActionTitleApp(ACTIONS_TITLE_APP.REPORT_CUSTOMERS),
+                  )
+                }
+              >
                 <span>
                   <CircleSmallIcon />
                 </span>
                 <p>Customers Report</p>
               </SubMenuItem>
-              <SubMenuItem to={pathRoutes.REPORTS.LIST_CONTRACTORS}>
+              <SubMenuItem
+                to={pathRoutes.REPORTS.LIST_CONTRACTORS}
+                onClick={() =>
+                  dispatch(
+                    updateActionTitleApp(ACTIONS_TITLE_APP.REPORT_CONTRACTORS),
+                  )
+                }
+              >
                 <span>
                   <CircleSmallIcon />
                 </span>

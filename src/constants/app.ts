@@ -45,6 +45,9 @@ export enum ACTIONS_TITLE_APP {
   CREATE_TASKS = "Create task",
   CALENDAR = "Calendar",
   REPORTS = "Reports",
+  REPORT_CONTRACTORS = "Contractors Report",
+  REPORT_RESIDENTIAL = "Residential Report",
+  REPORT_CUSTOMERS = "Customers Report",
 }
 
 export enum CURRENCY_APP {
