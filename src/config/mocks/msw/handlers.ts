@@ -14,6 +14,7 @@ import ProjectFileByIdJSON from "../features/project-files/project-file-id.json"
 import PermissionsListJSON from "../features/permissions/permission-list.json"
 import StadisticsJSON from "../features/projects/stadistics/stadistics.json"
 import ServiceDataJSON from "../features/services/service-data.json"
+import CalendarInfoJSON from "../features/calendar/calendar-service.json"
 
 import meJSON from "../features/auth/me.json"
 import { settingsApp } from "../../environment/settings"
@@ -118,6 +119,11 @@ export const handlers = [
     return HttpResponse.json(ProjectsListJSON)
   }),
 
+  // ******** CALENDAR ********
+  http.get(`${settingsApp.api.base}/service/day`, () => {
+    return HttpResponse.json(CalendarInfoJSON)
+  }),
+
   // ******** STADISTICS ********
   http.get(`${settingsApp.api.base}/stadistics`, () => {
     return HttpResponse.json(StadisticsJSON)
@@ -125,5 +131,4 @@ export const handlers = [
   http.get(`${settingsApp.api.base}/services/`, () => {
     return HttpResponse.json(ServiceDataJSON)
   }),
-
 ]

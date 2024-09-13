@@ -25,12 +25,19 @@ export interface ServiceTypeDTO {
 }
 
 export interface ServiceCreatedDTO {
-  id: number;
-  name: string;
-  guardName: string;
-  createdAt: string;
-  updatedAt: string;
-  price: number;
-  duration: number; 
-  serviceType: ServiceTypeDTO;
+  id: number
+  name: string
+  guardName: string
+  createdAt: string
+  updatedAt: string
+  price: number
+  duration: number
+  serviceType: ServiceTypeDTO
+}
+
+export enum EServiceName {
+  CLEAN = "CLEAN",
+  PAINT = "PAINT",
+  MISCELLANEOUS = "MISCELLANEOUS",
+  RESURFACING = "RESURFACING",
 }

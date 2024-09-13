@@ -32,3 +32,26 @@ export const formatToDMYHH = (dateString: string) => {
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 }
+
+export const compareEqualsDate = (date1: string, date2: string) => {
+  const splitDate1 = date1.split("/")
+  const splitDate2 = date2.split("/")
+
+  const fechaObj1 = new Date(
+    parseInt(splitDate1[2]), // Año
+    parseInt(splitDate1[1]) - 1, // Mes (0-11)
+    parseInt(splitDate1[0]), // Día
+  )
+
+  const fechaObj2 = new Date(
+    parseInt(splitDate2[2]), // Año
+    parseInt(splitDate2[1]) - 1, // Mes (0-11)
+    parseInt(splitDate2[0]), // Día
+  )
+
+  return (
+    fechaObj1.getFullYear() === fechaObj2.getFullYear() &&
+    fechaObj1.getMonth() === fechaObj2.getMonth() &&
+    fechaObj1.getDate() === fechaObj2.getDate()
+  )
+}

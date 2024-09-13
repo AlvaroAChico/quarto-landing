@@ -111,6 +111,12 @@ export const WrapperInput = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  > label {
+    color: black;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
 `
 
 export const ErrorMessage = styled.span`
@@ -258,7 +264,10 @@ export const CustomWrapperInputAvatar = styled(WrapperInput)`
 
 export const CustomWrapperInputFiles = styled(WrapperInput)`
   margin: auto;
-  max-width: 800px;
+  width: 100%;
+  // max-width: 800px;
+  border-bottom: 1px #e0e0e0 solid;
+  color: ${palette.grayColor};
 
   > div {
     display: flex;
@@ -282,7 +291,7 @@ export const ContainerImageAvatar = styled.div`
   > img {
     border: 2px solid ${palette.grayColor};
     place-items: center;
-    border-radius: 50%;
+    border-radius: 20px;
     object-fit: cover;
     display: grid;
     height: 160px;
@@ -296,7 +305,7 @@ export const ContainerImageAvatar = styled.div`
     background: ${palette.errorColor};
     place-items: center;
     position: absolute;
-    border-radius: 50%;
+    border-radius: 20px;
     cursor: pointer;
     display: grid;
     padding: 8px;
@@ -319,7 +328,7 @@ export const ContainerDragAndDropAvatar = styled.div<{ isDragActive: boolean }>`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  border-radius: 50%;
+  border-radius: 20px;
   padding: 4px 14px;
   display: flex;
   height: 160px;

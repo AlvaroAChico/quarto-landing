@@ -11,7 +11,7 @@ import {
   ItemStepper,
   ResidentialFormStyles,
   SteppersStyles,
-} from "./create-project.styles"
+} from "./create-apartment.styles"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import axios from "axios"
@@ -62,8 +62,13 @@ import {
   CreateApartmentForm,
   CreateApartmentSchema,
 } from "../../../../core/models/schemas/apartment-schema"
+import {
+  CreateServiceForm,
+  CreateServiceSchema,
+} from "../../../../core/models/schemas/service-schema"
+import Textarea from "../../../../components/textarea/textarea"
 
-const CreateProject: React.FC = () => {
+const CreateApartment: React.FC = () => {
   const [optionsClients, setOptionsClients] = React.useState<any>([])
   const [stepActive, setStepActive] = React.useState<number>(1)
   const [selectedOptionClient, setSelectedOptionClient] = React.useState(null)
@@ -75,13 +80,12 @@ const CreateProject: React.FC = () => {
 
   const { handleGetToken } = useDataUser()
 
-  const methods = useForm<CreateResidentialForm>({
-    resolver: yupResolver(CreateResidentialSchema),
+  const methods = useForm<CreateApartmentForm>({
+    resolver: yupResolver(CreateApartmentSchema),
     defaultValues: {
       picture: "",
-      name: "",
+      code: "",
       description: "",
-      address: "",
       manager: "",
       phoneManager: "",
     },
@@ -94,23 +98,24 @@ const CreateProject: React.FC = () => {
     setValue,
   } = methods
 
-  const methodsApart = useForm<CreateApartmentForm>({
-    resolver: yupResolver(CreateApartmentSchema),
+  const methodsServ = useForm<CreateServiceForm>({
+    resolver: yupResolver(CreateServiceSchema),
     defaultValues: {
-      code: "",
-      picture: "",
-      description: "",
-      manager: "",
-      phoneManager: "",
+      apartmentId: "",
+      serviceId: "",
+      contractorId: "",
+      date: "",
+      notes: "",
+      files: [],
     },
   })
 
   const {
-    handleSubmit: submitWrapperApart,
-    formState: { errors: errorsApart },
-    register: registerApart,
-    setValue: setValueApart,
-  } = methodsApart
+    handleSubmit: submitWrapperServ,
+    formState: { errors: errorsServ },
+    register: registerServ,
+    setValue: setValueServ,
+  } = methodsServ
 
   const handleChangeOptionClient = (value: any) => {
     // setValue("clientId", value.value)
@@ -309,28 +314,25 @@ const CreateProject: React.FC = () => {
             <span>Details</span>
             <span />
           </ItemStepper>
-          <ItemStepper isActive={false}>
-            <span />
-          </ItemStepper>
           {/* <ItemStepper isActive={stepActive == 2}>
             <div>
               <span onClick={() => setStepActive(2)}>2</span>
             </div>
             <span>Apartments</span>
             <span />
-          </ItemStepper>
-          <ItemStepper isActive={stepActive == 3}>
+          </ItemStepper> */}
+          <ItemStepper isActive={stepActive == 2}>
             <div>
-              <span onClick={() => setStepActive(3)}>3</span>
+              <span onClick={() => setStepActive(2)}>2</span>
             </div>
             <span>Services</span>
-          </ItemStepper> */}
+          </ItemStepper>
         </SteppersStyles>
         {stepActive == 1 && (
           <ResidentialFormStyles>
             <ContainerUpInputs>
               <CustomWrapperInputAvatar>
-                <label htmlFor="picture-create-project">Residential Logo</label>
+                <label htmlFor="picture-create-project">Apartment Logo</label>
                 <div>
                   {!!infoPicture ? (
                     <ContainerImageAvatar>
@@ -362,23 +364,23 @@ const CreateProject: React.FC = () => {
               </CustomWrapperInputAvatar>
               <ContainerResFormStyles>
                 <WrapperInput>
-                  <label htmlFor="name-create-project">Name</label>
+                  <label htmlFor="code-create-apartment">Code</label>
                   <Input
-                    id="name-create-project"
+                    id="code-create-apartment"
                     placeholder="Enter name"
                     icon={FolderOpen}
-                    props={register("name")}
+                    props={register("code")}
                   />
-                  {!!(errors.name as any)?.message && (
-                    <ErrorMessage>{(errors.name as any)?.message}</ErrorMessage>
+                  {!!(errors.code as any)?.message && (
+                    <ErrorMessage>{(errors.code as any)?.message}</ErrorMessage>
                   )}
                 </WrapperInput>
                 <WrapperInput>
-                  <label htmlFor="description-create-project">
+                  <label htmlFor="description-create-apartment">
                     Description
                   </label>
                   <Input
-                    id="description-create-project"
+                    id="description-create-apartment"
                     placeholder="Enter description"
                     icon={TextDescription}
                     props={register("description")}
@@ -393,23 +395,9 @@ const CreateProject: React.FC = () => {
             </ContainerUpInputs>
             <ContainerDownInputs>
               <WrapperInput>
-                <label htmlFor="address-create-project">Address</label>
+                <label htmlFor="manager-create-apartment">Manager</label>
                 <Input
-                  id="address-create-project"
-                  placeholder="Enter address"
-                  icon={FolderOpen}
-                  props={register("address")}
-                />
-                {!!(errors.address as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.address as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="manager-create-project">Manager</label>
-                <Input
-                  id="manager-create-project"
+                  id="manager-create-apartment"
                   placeholder="Enter manager"
                   icon={FolderOpen}
                   props={register("manager")}
@@ -456,63 +444,69 @@ const CreateProject: React.FC = () => {
         {stepActive == 2 && (
           <ResidentialFormStyles>
             <ContainerUpInputs>
-              <CustomWrapperInputAvatar>
-                <label htmlFor="picture-create-project">Apartment Logo</label>
-                <div>
-                  {!!infoPicture ? (
-                    <ContainerImageAvatar>
-                      <img src={infoPicture} />
-                      <div onClick={handleDeletePictureUser}>
-                        <Trash />
-                      </div>
-                    </ContainerImageAvatar>
-                  ) : (
-                    <ContainerDragAndDropAvatar
-                      {...getRootProps()}
-                      isDragActive={isDragActive}
-                    >
-                      <CardImage />
-                      <input {...getInputProps()} />
-                      {isDragActive ? (
-                        <p>Drop picture here</p>
-                      ) : (
-                        <p>Drag or click to upload an image</p>
-                      )}
-                    </ContainerDragAndDropAvatar>
-                  )}
-                </div>
-                {!!(errors.picture as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.picture as any)?.message}
-                  </ErrorMessage>
-                )}
-              </CustomWrapperInputAvatar>
               <ContainerResFormStyles>
                 <WrapperInput>
-                  <label htmlFor="code-create-apart">Code</label>
-                  <Input
-                    id="code-create-apart"
-                    placeholder="Enter code"
-                    icon={FolderOpen}
-                    props={registerApart("code")}
+                  <label htmlFor="service-create-apartment">Service</label>
+                  <Select
+                    id="service-create-apartment"
+                    defaultValue={selectedOptionClient}
+                    onChange={handleChangeOptionClient}
+                    options={optionsClients}
+                    isSearchable={true}
+                    styles={selectStyles}
                   />
-                  {!!(errorsApart.code as any)?.message && (
+                  {!!(errorsServ.serviceId as any)?.message && (
                     <ErrorMessage>
-                      {(errorsApart.code as any)?.message}
+                      {(errorsServ.serviceId as any)?.message}
                     </ErrorMessage>
                   )}
                 </WrapperInput>
                 <WrapperInput>
-                  <label htmlFor="description-create-Apart">Description</label>
-                  <Input
-                    id="description-create-Apart"
-                    placeholder="Enter description"
-                    icon={TextDescription}
-                    props={registerApart("description")}
+                  <label htmlFor="contractor-create-apartment">
+                    Contractor
+                  </label>
+                  <Select
+                    id="contractor-create-apartment"
+                    defaultValue={selectedOptionClient}
+                    onChange={handleChangeOptionClient}
+                    options={optionsClients}
+                    isSearchable={true}
+                    styles={selectStyles}
                   />
-                  {!!(errorsApart.description as any)?.message && (
+                  {!!(errorsServ.contractorId as any)?.message && (
                     <ErrorMessage>
-                      {(errorsApart.description as any)?.message}
+                      {(errorsServ.contractorId as any)?.message}
+                    </ErrorMessage>
+                  )}
+                </WrapperInput>
+                <WrapperInput>
+                  <label htmlFor="date-create-apartment">Date</label>
+                  <DatePicker
+                    id="date-create-apartment"
+                    showIcon
+                    selected={startDate}
+                    icon={<Calendar />}
+                    toggleCalendarOnIconClick
+                    onChange={(date: any) => {
+                      setStartDate(date)
+                      setValueServ("date", date)
+                    }}
+                    placeholderText="Enter date"
+                    popperClassName="some-custom-class"
+                    popperPlacement="top-end"
+                    popperModifiers={[
+                      {
+                        name: "myModifier",
+                        fn(state) {
+                          // Do something with the state
+                          return state
+                        },
+                      },
+                    ]}
+                  />
+                  {!!(errorsServ.date as any)?.message && (
+                    <ErrorMessage>
+                      {(errorsServ.date as any)?.message}
                     </ErrorMessage>
                   )}
                 </WrapperInput>
@@ -520,63 +514,52 @@ const CreateProject: React.FC = () => {
             </ContainerUpInputs>
             <ContainerDownInputs>
               <WrapperInput>
-                <label htmlFor="address-create-project">Address</label>
-                <Input
-                  id="address-create-project"
-                  placeholder="Enter address"
+                <label htmlFor="service-create-service">Service</label>
+                <Textarea
+                  id="service-create-service"
+                  placeholder="Enter notes"
                   icon={FolderOpen}
-                  props={register("address")}
+                  {...registerServ("notes")}
                 />
-                {!!(errors.address as any)?.message && (
+                {!!(errorsServ.notes as any)?.message && (
                   <ErrorMessage>
-                    {(errors.address as any)?.message}
+                    {(errorsServ.notes as any)?.message}
                   </ErrorMessage>
                 )}
               </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="manager-create-Apart">Manager</label>
-                <Input
-                  id="manager-create-Apart"
-                  placeholder="Enter manager"
-                  icon={FolderOpen}
-                  props={register("manager")}
-                />
-                {!!(errorsApart.manager as any)?.message && (
+              <CustomWrapperInputFiles>
+                <label htmlFor="picture-create-project">Files</label>
+                <ContainerDragAndDropFiles
+                  {...getRootPropsFiles()}
+                  isDragActive={isDragActiveFiles}
+                >
+                  <Files />
+                  <input {...getInputPropsFiles()} />
+                  {isDragActive ? (
+                    <p>Drop picture here</p>
+                  ) : (
+                    <p>Drag or click this container to upload an image</p>
+                  )}
+                </ContainerDragAndDropFiles>
+                {!!(errors.picture as any)?.message && (
                   <ErrorMessage>
-                    {(errorsApart.manager as any)?.message}
+                    {(errors.picture as any)?.message}
                   </ErrorMessage>
                 )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="phone-manager-create-project">
-                  Phone Manager
-                </label>
-                <Input
-                  id="phone-manager-create-project"
-                  placeholder="Enter phone manager"
-                  icon={FolderOpen}
-                  props={register("phoneManager")}
-                />
-                {!!(errors.phoneManager as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.phoneManager as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
-              {/* <WrapperInput>
-              <label htmlFor="client-create-project">Client</label>
-              <Select
-                id="client-create-project"
-                defaultValue={selectedOptionClient}
-                onChange={handleChangeOptionClient}
-                options={optionsClients}
-                isSearchable={true}
-                styles={selectStyles}
-              />
-              {!!(errors.clientId as any)?.message && (
-                <ErrorMessage>{(errors.clientId as any)?.message}</ErrorMessage>
-              )}
-            </WrapperInput> */}
+                <div>{JSON.stringify(listFiles)}</div>
+                <div>
+                  {listFiles.length > 0 &&
+                    (listFiles || []).map(file => (
+                      <div>
+                        <p>{file.size}</p>
+                        <p>{file.name}</p>
+                        <p>{file.type}</p>
+                        <p>{file.lastModified}</p>
+                        <p>{file.webkitRelativePath}</p>
+                      </div>
+                    ))}
+                </div>
+              </CustomWrapperInputFiles>
             </ContainerDownInputs>
           </ResidentialFormStyles>
         )}
@@ -593,4 +576,4 @@ const CreateProject: React.FC = () => {
   )
 }
 
-export default CreateProject
+export default CreateApartment

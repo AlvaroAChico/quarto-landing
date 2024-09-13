@@ -26,7 +26,10 @@ import {
 } from "./details.styles"
 import { routeWithReplaceId } from "../../../utils/path-util"
 import { pathRoutes } from "../../../config/routes/path"
-import { ProjectDTO } from "../../../core/models/interfaces/project-model"
+import {
+  ApartmentDTO,
+  ProjectDTO,
+} from "../../../core/models/interfaces/project-model"
 import useDataUser from "../../../utils/use-data-user"
 import axios from "axios"
 import { settingsApp } from "../../../config/environment/settings"
@@ -34,8 +37,8 @@ import { toast } from "sonner"
 import { formatToDDMonth } from "../../../utils/date-util"
 import Skeleton from "react-loading-skeleton"
 
-const Details: React.FC = () => {
-  const [dataProject, setDataProject] = React.useState<ProjectDTO>()
+const HeaderDetailApart: React.FC = () => {
+  const [dataProject, setDataProject] = React.useState<ApartmentDTO>()
   const [isLoadingDataProject, setIsLoadingDataProject] =
     React.useState<boolean>(false)
   const { id: idProject } = useParams<{ id: string }>()
@@ -51,7 +54,7 @@ const Details: React.FC = () => {
     const storedToken = handleGetToken()
     if (!!storedToken) {
       axios
-        .get(`${settingsApp.api.base}/projects/${idProject}?include=tasks`, {
+        .get(`${settingsApp.api.base}/apartment/${idProject}`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             "Content-Type": "application/json",
@@ -59,8 +62,8 @@ const Details: React.FC = () => {
           },
         })
         .then(response => {
-          console.log("Response => ", response.data)
-          const dataResponse: ProjectDTO = response.data as ProjectDTO
+          console.log("Response 01 => ", response.data)
+          const dataResponse: ApartmentDTO = response.data as ApartmentDTO
           if (!!dataResponse) {
             setDataProject(dataResponse)
             // setStadisticts(dataResponse.stadistics)
@@ -104,7 +107,7 @@ const Details: React.FC = () => {
                 </Text>
               </InfoItem>
               <InfoItem>
-                <CalendarIcon />
+                {/* <CalendarIcon />
                 <Text>
                   {!isLoadingDataProject ? (
                     <>
@@ -119,12 +122,12 @@ const Details: React.FC = () => {
                   ) : (
                     <Skeleton count={1} height={20} />
                   )}
-                </Text>
+                </Text> */}
                 {/* <ButtonDown>
                   <ArrowDownIcon />
                 </ButtonDown> */}
               </InfoItem>
-              <InfoItem>
+              {/* <InfoItem>
                 <Icon className="person-icon" />
                 <Text>
                   {!isLoadingDataProject ? (
@@ -132,11 +135,11 @@ const Details: React.FC = () => {
                   ) : (
                     <Skeleton count={1} height={20} />
                   )}
-                </Text>
-                {/* <ButtonDown>
+                </Text> */}
+              {/* <ButtonDown>
                   <ArrowDownIcon />
                 </ButtonDown> */}
-              </InfoItem>
+              {/* </InfoItem> */}
             </InfoBlockDown>
           </InfoBlock>
         </LeftSideDataBlock>
@@ -159,7 +162,7 @@ const Details: React.FC = () => {
       {/*Menu*/}
 
       <ProjectMenu>
-        <MenuItem
+        {/* <MenuItem
           to={routeWithReplaceId(
             pathRoutes.PROJECTS.DETAIL.OVERVIEW,
             `${idProject}`,
@@ -167,39 +170,39 @@ const Details: React.FC = () => {
           end
         >
           Overview
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem
           to={routeWithReplaceId(
-            pathRoutes.PROJECTS.DETAIL.APARTMENTS,
+            pathRoutes.APARTMENTS.DETAIL.SERVICES,
             `${idProject}`,
           )}
         >
-          Apartments
+          Services
         </MenuItem>
-        <MenuItem
+        {/* <MenuItem
           to={routeWithReplaceId(
             pathRoutes.PROJECTS.DETAIL.ACTIVITY,
             `${idProject}`,
           )}
         >
           Activity
-        </MenuItem>
-        <MenuItem
+        </MenuItem> */}
+        {/* <MenuItem
           to={routeWithReplaceId(
             pathRoutes.PROJECTS.DETAIL.TASKS,
             `${idProject}`,
           )}
         >
           Tasks
-        </MenuItem>
-        {/* <MenuItem
+        </MenuItem> */}
+        <MenuItem
           to={routeWithReplaceId(
             pathRoutes.PROJECTS.DETAIL.CONTRACTORS,
             `${idProject}`,
           )}
         >
           Contractor
-        </MenuItem> */}
+        </MenuItem>
         <MenuItem
           to={routeWithReplaceId(
             pathRoutes.PROJECTS.DETAIL.FILES,
@@ -229,4 +232,4 @@ const Details: React.FC = () => {
   )
 }
 
-export default Details
+export default HeaderDetailApart

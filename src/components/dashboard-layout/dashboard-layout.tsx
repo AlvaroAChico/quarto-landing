@@ -240,6 +240,22 @@ const DashboardLayout: React.FC = () => {
                 </ItemNavLink>
               )}
             {!!dataPermissions &&
+              !!dataPermissions.task &&
+              dataPermissions?.task.includes("list") && (
+                <ItemNavLink
+                  onClick={() =>
+                    dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.TASKS))
+                  }
+                  to={pathRoutes.TASKS.LIST}
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                >
+                  <Task />
+                  <p>Services</p>
+                </ItemNavLink>
+              )}
+            {!!dataPermissions &&
               !!dataPermissions.project &&
               dataPermissions?.project.includes("list") && (
                 <ItemNavLink
@@ -256,19 +272,19 @@ const DashboardLayout: React.FC = () => {
                 </ItemNavLink>
               )}
             {!!dataPermissions &&
-              !!dataPermissions.task &&
-              dataPermissions?.task.includes("list") && (
+              !!dataPermissions.project &&
+              dataPermissions?.project.includes("list") && (
                 <ItemNavLink
                   onClick={() =>
-                    dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.TASKS))
+                    dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.APARTMENTS))
                   }
-                  to={pathRoutes.TASKS.LIST}
+                  to={pathRoutes.APARTMENTS.LIST}
                   className={({ isActive }) =>
                     isActive ? "active" : "inactive"
                   }
                 >
-                  <Task />
-                  <p>Services</p>
+                  <FolderOpen />
+                  <p>Apartments</p>
                 </ItemNavLink>
               )}
             {!!dataPermissions &&

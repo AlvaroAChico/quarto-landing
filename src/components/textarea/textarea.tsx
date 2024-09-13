@@ -1,24 +1,24 @@
 import React, { useState } from "react"
-import { InputWrapper, StyledInput, IconContainer } from "./input.styles"
+import { InputWrapper, StyledInput, IconContainer } from "./textarea.styles"
 
 interface InputProps {
   id?: string
   icon?: any
   type?: string
-  toggleIcon?: any
   placeholder?: string
   customStyles?: string
   props?: any
+  rows?: number
 }
 
-const Input: React.FC<InputProps> = ({
+const Textarea: React.FC<InputProps> = ({
   id = "",
   placeholder = "",
   icon: Icon,
   type = "text",
-  toggleIcon: ToggleIcon,
   customStyles = "",
   props,
+  rows = 5,
 }) => {
   const [showPassword, setShowPassword] = useState(false)
   const handleTogglePasswordVisibility = () => setShowPassword(!showPassword)
@@ -34,19 +34,11 @@ const Input: React.FC<InputProps> = ({
         id={id}
         type={showPassword ? "text" : type}
         placeholder={placeholder}
+        rows={rows}
         {...props}
       />
-      {type === "password" && ToggleIcon && (
-        <IconContainer onClick={handleTogglePasswordVisibility}>
-          {showPassword ? (
-            <ToggleIcon.Hide size="20" />
-          ) : (
-            <ToggleIcon.Show size="20" />
-          )}
-        </IconContainer>
-      )}
     </InputWrapper>
   )
 }
 
-export default Input
+export default Textarea

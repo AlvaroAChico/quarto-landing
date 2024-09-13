@@ -11,6 +11,7 @@ interface ButtonProps {
   isLoading?: boolean
   IconLeft?: any
   IconRight?: any
+  customStyles?: any
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -21,6 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   isLoading = false,
   IconLeft,
   IconRight,
+  customStyles,
 }) => {
   const handleClick = React.useCallback(() => {
     if (!isLoading) {
@@ -29,7 +31,12 @@ const Button: React.FC<ButtonProps> = ({
   }, [isLoading])
 
   return (
-    <StyledButton onClick={handleClick} type={type} className={className}>
+    <StyledButton
+      onClick={handleClick}
+      type={type}
+      className={className}
+      customStyles={customStyles}
+    >
       {!!IconLeft && <IconLeft />}
       {isLoading ? <LoaderStyles /> : <>{text}</>}
       {!!IconRight && <IconRight />}

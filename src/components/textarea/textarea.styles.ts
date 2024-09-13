@@ -4,10 +4,10 @@ import { palette } from "../../config/theme/theme"
 
 export const InputWrapper = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   border: 1px solid #ebebeb; // Color del borde
   border-radius: 10px; // Radio del borde
-  padding: 4px 14px;
+  padding: 14px;
   width: 100%;
 
   &:focus-within {
@@ -19,13 +19,13 @@ export const InputWrapper = styled.div`
     max-width: 200px;
   }
 `
-export const StyledInput = styled.input`
-  border: none;
-  outline: none;
-  flex: 1;
-  padding: 8px;
-  font-size: 15px;
+export const StyledInput = styled.textarea`
   color: ${palette.grayColor};
+  font-size: 15px;
+  resize: none;
+  outline: none;
+  border: none;
+  flex: 1;
 
   &::placeholder {
     color: ${palette.grayColor};

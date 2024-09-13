@@ -2,7 +2,7 @@
 import styled, { keyframes } from "styled-components"
 import { breakpoints } from "../../constants/breakpoints"
 
-export const StyledButton = styled.button`
+export const StyledButton = styled.button<{ customStyles: string }>`
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 1) -40%,
@@ -32,6 +32,8 @@ export const StyledButton = styled.button`
     min-width: 150px;
     margin: auto;
   }
+
+  ${p => p.customStyles};
 `
 const rotation = keyframes`
   0% {

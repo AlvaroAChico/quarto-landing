@@ -84,16 +84,13 @@ export const ContainerUpInputs = styled.div`
 
 export const ContainerDownInputs = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: Column;
   flex-wrap: wrap;
   gap: 20px;
 
   > div {
-    &:nth-child(1) {
-      width: 100%;
-    }
-    &:nth-child(2),
-    &:nth-child(3) {
+    &:nth-child(1),
+    &:nth-child(2) {
       width: 50%s;
     }
   }

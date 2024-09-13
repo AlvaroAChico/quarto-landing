@@ -35,7 +35,7 @@ import {
 } from "../../../../../config/theme/global-styles"
 import Skeleton from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
-import { ContainerFilters } from "../task/task.styles"
+import { ContainerFilters } from "../../../../apartments/details/components/task/task.styles"
 import Input from "../../../../../components/input/input"
 import { Search } from "styled-icons/bootstrap"
 import Select from "react-select"

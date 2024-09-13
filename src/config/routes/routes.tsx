@@ -20,8 +20,14 @@ import DetailsTask from "../../features/projects/details/components/task/task"
 import DetailsActivity from "../../features/projects/details/components/activity/activity"
 import DetailFiles from "../../features/projects/details/components/files/files"
 import DetailContractors from "../../features/projects/details/components/contractors/contractors"
-import DetailsApartments from "../../features/projects/details/components/apartments/apartments"
 import DetailsApartmentsById from "../../features/projects/details/components/apartments/details/apartments_detail"
+import Apartments from "../../features/apartments/apartments"
+import OverviewApartment from "../../features/apartments/details/components/overview/overview-apartment"
+import ApartmentDetails from "../../features/apartments/details/header-detail-apart"
+import HeaderDetailApart from "../../features/apartments/details/header-detail-apart"
+import DetailsApartments from "../../features/projects/details/components/apartments/apartments"
+import ServicesApartment from "../../features/apartments/details/components/apartments/services-apartment"
+import CreateApartment from "../../features/apartments/functionalities/create-project/create-apartment"
 
 export const router = createBrowserRouter([
   {
@@ -113,6 +119,62 @@ export const router = createBrowserRouter([
         ],
       },
       {
+        path: pathRoutes.APARTMENTS.LIST,
+        children: [
+          {
+            path: pathRoutes.APARTMENTS.LIST,
+            element: <Apartments />,
+          },
+          {
+            path: pathRoutes.APARTMENTS.CREATE,
+            element: <CreateApartment />,
+          },
+          {
+            element: <HeaderDetailApart />,
+            children: [
+              {
+                path: pathRoutes.APARTMENTS.DETAIL.OVERVIEW,
+                element: <OverviewApartment />,
+                index: true,
+              },
+              {
+                path: pathRoutes.APARTMENTS.DETAIL.SERVICES,
+                element: <ServicesApartment />,
+                index: true,
+              },
+              {
+                path: pathRoutes.APARTMENTS.DETAIL.APARTMENTS,
+                element: <ApartmentDetails />,
+              },
+              {
+                path: pathRoutes.APARTMENTS.DETAIL.APARTMENTS_DETAIL,
+                element: <DetailsApartmentsById />,
+              },
+              {
+                path: pathRoutes.APARTMENTS.DETAIL.ACTIVITY,
+                element: <DetailsActivity />,
+              },
+              {
+                path: pathRoutes.APARTMENTS.DETAIL.TASKS,
+                element: <DetailsTask />,
+              },
+              {
+                path: pathRoutes.APARTMENTS.DETAIL.CONTRACTORS,
+                element: <DetailContractors />,
+              },
+              {
+                path: pathRoutes.APARTMENTS.DETAIL.FILES,
+                element: <DetailFiles />,
+              },
+              {
+                path: "/apartments/:id/settings",
+                element: <></>,
+              },
+            ],
+          },
+        ],
+      },
+      {
         path: pathRoutes.TASKS.LIST,
         children: [
           {
@@ -136,7 +198,8 @@ export const router = createBrowserRouter([
       {
         path: pathRoutes.REPORTS.LIST_CUSTOMER,
         element: <Reports />,
-      },{
+      },
+      {
         path: pathRoutes.REPORTS.LIST_CONTRACTORS,
         element: <Reports />,
       },

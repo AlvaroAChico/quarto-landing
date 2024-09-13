@@ -23,6 +23,21 @@ export const pathRoutes = {
       SETTINGS: "/projects/:id/settings",
     },
   },
+  APARTMENTS: {
+    LIST: "/apartments",
+    CREATE: "/apartments/create",
+    DETAIL: {
+      OVERVIEW: "/apartments/:id/overview",
+      SERVICES: "/apartments/:id/services",
+      APARTMENTS: "/apartments/:id/apartments",
+      APARTMENTS_DETAIL: "/apartments/:id/apartments/:apartmentId",
+      ACTIVITY: "/apartments/:id/activity",
+      TASKS: "/apartments/:id/tasks",
+      CONTRACTORS: "/apartments/:id/contractors",
+      FILES: "/apartments/:id/files",
+      SETTINGS: "/apartments/:id/settings",
+    },
+  },
   TASKS: {
     LIST: "/tasks",
     CREATE: "/tasks/create",
