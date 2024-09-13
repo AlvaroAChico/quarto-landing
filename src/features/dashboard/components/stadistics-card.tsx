@@ -1,21 +1,40 @@
 import React from "react"
-import { StadisticsPropertiesDTO } from "../../../../core/models/interfaces/project-model"
 import {
   ContainerCard,
   ContainerChart,
   ContainerDataStats,
   ContainerHeadTitle,
-} from "./project-card.styles"
+} from "./stadistics-card.styles"
 import ReactApexChart from "react-apexcharts"
 import { ApexOptions } from "apexcharts"
+import { StadisticsPropertiesDashboardDTO } from "../../../core/models/interfaces/project-model"
 
 interface IOwnProps {
-  data: StadisticsPropertiesDTO
-  name:string
+  data: StadisticsPropertiesDashboardDTO
+  name: string
 }
 
-const ProjectCard: React.FC<IOwnProps> = ({ data , name }) => {
-  const series = [data.complete, data.pending, data.todo]
+const StadisticsCard: React.FC<IOwnProps> = ({ data, name }) => {
+  const series = []
+  const labels = []
+  var apartament = ""
+  if (data.active > 0) {
+    series.push(data.active)
+    labels.push(`Active ${data.active}`)
+  }
+
+  if (data.inactive > 0) {
+    series.push(data.inactive)
+    labels.push(`Inactive ${data.inactive}`)
+  }
+
+  if (data.onhold !== undefined && data.onhold > 0) {
+    series.push(data.onhold)
+    labels.push(`On Hold ${data.onhold}`)
+  }
+
+
+
   const options: ApexOptions = {
     chart: {
       width: 280,
@@ -43,11 +62,7 @@ const ProjectCard: React.FC<IOwnProps> = ({ data , name }) => {
       height: 100,
     },
     colors: ["#FA620C", "#F9B035", "#D8DBE4"],
-    labels: [
-      `Complete ${data.complete}`,
-      `Pending ${data.pending}`,
-      `To do ${data.todo}`,
-    ],
+    labels: labels,
   }
 
   return (
@@ -71,4 +86,4 @@ const ProjectCard: React.FC<IOwnProps> = ({ data , name }) => {
   )
 }
 
-export default ProjectCard
+export default StadisticsCard

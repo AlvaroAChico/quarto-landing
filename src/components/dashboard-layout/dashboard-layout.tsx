@@ -18,6 +18,9 @@ import {
   ItemMenu,
   ItemNavLink,
   StatusOnline,
+  SubMenu,
+  SubMenuItem,
+  CircleSmallIcon,
 } from "./dashboard-layout.styles"
 import ImgLogo from "../../assets/img/logo.webp"
 // Icons
@@ -59,6 +62,12 @@ const DashboardLayout: React.FC = () => {
     useDataUser()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+
+  const [isReportsOpen, setIsReportsOpen] = React.useState(false)
+
+  const handleReportsClick = () => {
+    setIsReportsOpen(!isReportsOpen)
+  }
 
   const refreshDataMe = async () => {
     const storedToken = handleGetToken()
@@ -190,6 +199,9 @@ const DashboardLayout: React.FC = () => {
           <ContainerMenu>
             <ItemNavLink
               to={pathRoutes.DASHBOARD}
+              onClick={() =>
+                dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.DASHBOARD))
+              }
               className={({ isActive }) => (isActive ? "active" : "inactive")}
             >
               <Dashboard />
@@ -279,18 +291,41 @@ const DashboardLayout: React.FC = () => {
               !!dataPermissions.reports &&
               dataPermissions?.reports.includes("list") && (
                 <ItemNavLink
-                  onClick={() =>
+                  onClick={() => {
+                    handleReportsClick()
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.REPORTS))
-                  }
-                  to={pathRoutes.REPORTS.LIST}
+                  }}
+                  to={pathRoutes.REPORTS.LIST_PROJECTS}
                   className={({ isActive }) =>
-                    isActive ? "active" : "inactive"
+                    isActive || location.pathname.startsWith("/reports")
+                      ? "active"
+                      : "inactive"
                   }
                 >
                   <BarChartFill />
                   <p>Reports</p>
                 </ItemNavLink>
               )}
+            <SubMenu open={isReportsOpen}>
+              <SubMenuItem to={pathRoutes.REPORTS.LIST_PROJECTS}>
+                <span>
+                  <CircleSmallIcon />
+                </span>
+                <p>Projects report </p>
+              </SubMenuItem>
+              <SubMenuItem to={pathRoutes.REPORTS.LIST_CUSTOMER}>
+                <span>
+                  <CircleSmallIcon />
+                </span>
+                <p>Customers Report</p>
+              </SubMenuItem>
+              <SubMenuItem to={pathRoutes.REPORTS.LIST_CONTRACTORS}>
+                <span>
+                  <CircleSmallIcon />
+                </span>
+                <p>Contractors Report</p>
+              </SubMenuItem>
+            </SubMenu>
           </ContainerMenu>
           <ContainerProfile>
             <ContainerAvatarSide>

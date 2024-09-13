@@ -15,3 +15,22 @@ export interface ServiceDTO {
   createdAt: string
   updatedAt: string
 }
+
+export interface ServiceTypeDTO {
+  id: number
+  name: string
+  guardName: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface ServiceCreatedDTO {
+  id: number;
+  name: string;
+  guardName: string;
+  createdAt: string;
+  updatedAt: string;
+  price: number;
+  duration: number; 
+  serviceType: ServiceTypeDTO;
+}

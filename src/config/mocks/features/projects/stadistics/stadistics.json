@@ -1,0 +1,19 @@
+{
+  "residentials": {
+    "total": 30,
+    "active": 80,
+    "inactive": 40,
+    "apartamentstotal": 120
+  },
+  "contractors": {
+    "total": 80,
+    "active": 55,
+    "inactive": 25
+  },
+  "services": {
+    "total": 55,
+    "active": 30,
+    "inactive": 15,
+    "onhold": 10
+  }
+}

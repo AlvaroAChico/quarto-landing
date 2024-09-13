@@ -221,7 +221,7 @@ const CreateProject: React.FC = () => {
   }
 
   const onDropManyFiles = React.useCallback(
-    (acceptedFiles: any, rejectedFiles: any) => {
+    (acceptedFiles: File[], rejectedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
         const updatedFiles = [...listFiles]
         acceptedFiles.forEach((file: any) => {

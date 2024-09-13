@@ -161,6 +161,7 @@ const Projects: React.FC = () => {
             <>
               <ProjectCard
                 data={stadisticts?.projects || ({} as StadisticsPropertiesDTO)}
+                name="Projects"
               />
               <ContractorCard
                 data={

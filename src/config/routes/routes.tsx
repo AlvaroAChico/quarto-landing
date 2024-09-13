@@ -130,7 +130,14 @@ export const router = createBrowserRouter([
         element: <Calendar />,
       },
       {
-        path: pathRoutes.REPORTS.LIST,
+        path: pathRoutes.REPORTS.LIST_PROJECTS,
+        element: <Reports />,
+      },
+      {
+        path: pathRoutes.REPORTS.LIST_CUSTOMER,
+        element: <Reports />,
+      },{
+        path: pathRoutes.REPORTS.LIST_CONTRACTORS,
         element: <Reports />,
       },
     ],
