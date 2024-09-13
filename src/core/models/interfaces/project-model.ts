@@ -24,6 +24,7 @@ export interface ProjectDTO {
   tasks: TasksDTO[]
   client: ClientDTO
   apartments: ApartmentDTO[]
+  address: string
 }
 
 export interface ApartmentDTO {
@@ -61,7 +62,7 @@ export interface TaskApartmentDTO {
   categoryId: string
   contractorId: number
   dependencyTaskId: string
-  status: boolean
+  status: string
   isActive: boolean
   createdAt: string
 }

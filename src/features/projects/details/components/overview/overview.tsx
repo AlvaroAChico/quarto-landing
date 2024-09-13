@@ -108,31 +108,40 @@ const DetailsOverview: React.FC = () => {
 
   const lineChartOptions = {
     chart: {
-      type: "line",
-      zoom: {
-        enabled: false,
+      type: "bar",
+      height: 350,
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: "55%",
       },
     },
     dataLabels: {
       enabled: false,
     },
     stroke: {
-      curve: "smooth",
+      show: true,
+      width: 2,
+      colors: ["transparent"],
     },
     xaxis: {
       categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
+        "401",
+        "402",
+        "403",
+        "404",
+        "405",
+        "406",
+        "407",
+        "408",
+        "409",
+        "410",
+        "411",
+        "412",
+        "413",
+        "414",
+        "415",
       ],
       title: {
         text: "Month",
@@ -140,39 +149,34 @@ const DetailsOverview: React.FC = () => {
     },
     yaxis: {
       title: {
-        text: "Amount ($)",
-      },
-      labels: {
-        formatter: (value: number) => `$${value}`,
+        text: "$ (thousands)",
       },
     },
-    legend: {
-      position: "top",
+    fill: {
+      opacity: 1,
     },
-    colors: ["#ff6600", "#00aaff", "#77ff00"],
+    tooltip: {
+      y: {
+        formatter: function (val: any) {
+          return "$ " + val + " thousands"
+        },
+      },
+    },
+    colors: ["#ff6600", "#0066ff", "#77ff00"],
   }
 
   const lineChartSeries = [
     {
-      name: "Data A",
-      data: [
-        14000, 5000, 6000, 7000, 18000, 3000, 10000, 11000, 1500, 13000, 4500,
-        15000,
-      ],
+      name: "Pending",
+      data: [2, 1, 3, 4, 4, 0, 0, 0, 1, 1, 2, 2, 4, 0, 1],
     },
     {
-      name: "Data B",
-      data: [
-        1000, 12000, 8000, 8500, 10000, 4500, 9000, 9200, 4500, 12000, 10000,
-        14000,
-      ],
+      name: "In progress",
+      data: [1, 1, 0, 0, 0, 1, 2, 1, 0, 0, 2, 2, 0, 1, 1],
     },
     {
-      name: "Data C",
-      data: [
-        1500, 2500, 3500, 4500, 5500, 6500, 7500, 8500, 9500, 10500, 11500,
-        12500,
-      ],
+      name: "Completed",
+      data: [1, 2, 1, 0, 0, 1, 2, 1, 0, 0, 0, 0, 0, 1, 1],
     },
   ]
 
@@ -181,21 +185,21 @@ const DetailsOverview: React.FC = () => {
       <CardsContainer>
         {!isLoadingDataProject ? (
           <CardComponent>
-            <CardTitle>Progreso</CardTitle>
+            <CardTitle>Progress Services</CardTitle>
             <CardInfo>
               <ArrowContainer>
                 <ArrowIcon />
               </ArrowContainer>
-              <CardText>{dataProject?.status}</CardText>
+              <CardText>{dataProject?.apartments.length}</CardText>
             </CardInfo>
             <CircularChartContainer>
               <StyledApexCharts
-                options={createChartOptions(dataProject?.progress || 0)}
-                series={[dataProject?.progress || 0]}
+                options={createChartOptions(dataProject?.progress || 35)}
+                series={[dataProject?.progress || 48]}
                 type="radialBar"
                 height={150}
               />
-              <PercentageText>{dataProject?.progress || 0}%</PercentageText>
+              <PercentageText>{dataProject?.progress || 48}%</PercentageText>
             </CircularChartContainer>
           </CardComponent>
         ) : (
@@ -203,12 +207,13 @@ const DetailsOverview: React.FC = () => {
         )}
         {!isLoadingDataProject ? (
           <CardComponent>
-            <CardTitle>Tareas Hechas</CardTitle>
+            <CardTitle>Pending Services</CardTitle>
             <CardSubTitle>
-              {
+              {/* {
                 dataProject?.tasks.filter(task => task.status == "completed")
                   .length
-              }
+              } */}
+              23
             </CardSubTitle>
 
             {/* <CardInfo>
@@ -219,12 +224,12 @@ const DetailsOverview: React.FC = () => {
             </CardInfo> */}
             <CircularChartContainer>
               <StyledApexCharts
-                options={createChartOptions(dataProject?.progress || 0)}
-                series={[dataProject?.progress || 0]}
+                options={createChartOptions(dataProject?.progress || 20)}
+                series={[dataProject?.progress || 20]}
                 type="radialBar"
                 height={150}
               />
-              <PercentageText>{dataProject?.progress || 0}%</PercentageText>
+              <PercentageText>{dataProject?.progress || 20}%</PercentageText>
             </CircularChartContainer>
           </CardComponent>
         ) : (
@@ -255,15 +260,15 @@ const DetailsOverview: React.FC = () => {
           <CardGraphic>
             <GraphicTitle>Additional Information</GraphicTitle>
             <GraphicSubtitle>
-              {!!dataProject &&
+              {/* {!!dataProject &&
                 dataProject.currency == CURRENCY_APP.USD &&
                 "$ "}
-              {!!dataProject && dataProject.price}
+              {!!dataProject && dataProject.price} */}
             </GraphicSubtitle>
             <StyledApexCharts
               options={lineChartOptions}
               series={lineChartSeries}
-              type="line"
+              type="bar"
               height={250}
             />
           </CardGraphic>

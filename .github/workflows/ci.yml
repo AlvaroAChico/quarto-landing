@@ -86,6 +86,8 @@ jobs:
           COMMIT_AUTHOR=${{ github.actor }}
           REPO_NAME=${{ github.repository }}
           COMMIT_URL=${{ github.event.repository.html_url }}/commit/${{ github.sha }}
+          DEPLOY_OUTPUT=$(your_deploy_command 2>&1)
+          DEPLOY_STATUS=$?
 
           if [[ "$STATUS" == "success" ]]; then
             MESSAGE="✅ *El despliegue ha sido exitoso en el trabajo:* $JOB_NAME"
@@ -93,12 +95,12 @@ jobs:
             MESSAGE+="Autor del commit: $COMMIT_AUTHOR"
             MESSAGE+="Ver commit: <$COMMIT_URL|Ver detalle del commit>"
           else
-            ERROR_LOG="Aquí va el log del error o la razón del fallo"  # Puedes personalizar este mensaje con detalles de error
+            ERROR_LOG="Aquí va el log del error o la razón del fallo"
             MESSAGE="❌ *El despliegue ha fallado en el trabajo:* $JOB_NAME"
             MESSAGE+="Repositorio: <$REPO_NAME|\`$REPO_NAME\`>\n"
             MESSAGE+="Autor del commit: $COMMIT_AUTHOR"
             MESSAGE+="Ver commit: <$COMMIT_URL|Ver detalle del commit>\n"
-            MESSAGE+="💡 *Detalles del error:* $ERROR_LOG"
+            MESSAGE+="💡 *Detalles del error:* $DEPLOY_OUTPUT"
           fi
 
           curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"$MESSAGE\"}" ${{ secrets.SLACK_WEBHOOK_URL }}

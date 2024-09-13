@@ -31,6 +31,7 @@ export const NameStylesTD = styled.td`
     > span {
       > img {
         border-radius: 16px;
+        object-fit: cover;
         width: 50px;
         height: 50px;
       }

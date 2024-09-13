@@ -4,8 +4,12 @@ import UserListJSON from "../features/users/user-list.json"
 import UserCreateJSON from "../features/users/user-create.json"
 import UserDeleteJSON from "../features/users/user-delete.json"
 import RolesListJSON from "../features/roles/role-list.json"
+import ServicesListJSON from "../features/services/service-list.json"
 import ProjectsListJSON from "../features/projects/project-list.json"
 import ProjectFilterIdJSON from "../features/projects/project-filter-id.json"
+import ProjectIdJSON from "../features/projects/project-id.json"
+import ApartmentsIdJSON from "../features/apartments/apartment-id.json"
+import ApartmentsDetailIdJSON from "../features/apartments/apartment-detail-id.json"
 import ProjectFileByIdJSON from "../features/project-files/project-file-id.json"
 import PermissionsListJSON from "../features/permissions/permission-list.json"
 import StadisticsJSON from "../features/projects/stadistics/stadistics.json"
@@ -66,6 +70,10 @@ export const handlers = [
   http.delete(`${settingsApp.api.base}/roles/1`, () => {
     return HttpResponse.json(RolesListJSON)
   }),
+  // ******** SERVICES ********
+  http.get(`${settingsApp.api.base}/services`, () => {
+    return HttpResponse.json(ServicesListJSON)
+  }),
   // ******** PROJECTS ********
   http.get(`${settingsApp.api.base}/projects`, () => {
     return HttpResponse.json(ProjectsListJSON)
@@ -77,7 +85,7 @@ export const handlers = [
     return HttpResponse.json(ProjectsListJSON)
   }),
   http.get(`${settingsApp.api.base}/projects/1?include=tasks`, () => {
-    return HttpResponse.json(ProjectsListJSON)
+    return HttpResponse.json(ProjectIdJSON)
   }),
   http.get(`${settingsApp.api.base}/project-files?filter[id]=1`, () => {
     return HttpResponse.json(ProjectFileByIdJSON)
@@ -88,6 +96,14 @@ export const handlers = [
       return HttpResponse.json(ProjectFilterIdJSON)
     },
   ),
+  // ******** RESIDENTIALS ********
+  http.get(`${settingsApp.api.base}/residentials/1`, () => {
+    return HttpResponse.json(ApartmentsIdJSON)
+  }),
+  // ******** APARTMENTS ********
+  http.get(`${settingsApp.api.base}/apartments/1`, () => {
+    return HttpResponse.json(ApartmentsDetailIdJSON)
+  }),
   // ******** PERMISSIONS ********
   http.get(`${settingsApp.api.base}/permissions`, () => {
     return HttpResponse.json(PermissionsListJSON)

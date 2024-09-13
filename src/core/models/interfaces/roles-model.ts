@@ -22,3 +22,9 @@ export interface RoleOptionType {
   value: string
   label: string
 }
+
+export interface ServiceDTO {
+  id: number
+  name: string
+  createdAt: string
+}

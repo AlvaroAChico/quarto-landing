@@ -22,6 +22,8 @@ import DetailContractors from "../../features/projects/details/components/contra
 import DetailsApartments from "../../features/projects/details/components/apartments/apartments"
 import ContractorReport from "../../features/reports/contractor-report/contractor-reports"
 import ResidentialReport from "../../features/reports/residential-report/residential-report"
+import DetailsApartmentsById from "../../features/projects/details/components/apartments/details/apartments_detail"
+
 
 export const router = createBrowserRouter([
   {
@@ -83,6 +85,10 @@ export const router = createBrowserRouter([
               {
                 path: pathRoutes.PROJECTS.DETAIL.APARTMENTS,
                 element: <DetailsApartments />,
+              },
+              {
+                path: pathRoutes.PROJECTS.DETAIL.APARTMENTS_DETAIL,
+                element: <DetailsApartmentsById />,
               },
               {
                 path: pathRoutes.PROJECTS.DETAIL.ACTIVITY,
