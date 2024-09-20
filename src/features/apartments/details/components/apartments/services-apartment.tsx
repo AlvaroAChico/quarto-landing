@@ -8,17 +8,17 @@ import {
 } from "../../../apartments.styles"
 import {
   ApartmentDTO,
-  ProjectDTO,
+  PropertyDTO,
   StadisticsDTO,
-} from "../../../../../core/models/interfaces/project-model"
+} from "../../../../../core/models/interfaces/property-model"
 import { FilterPermissionsDTO } from "../../../../../core/models/interfaces/user-model"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import useDataUser from "../../../../../utils/use-data-user"
 import { pathRoutes } from "../../../../../config/routes/path"
 import axios from "axios"
 import { settingsApp } from "../../../../../config/environment/settings"
 import { toast } from "sonner"
-import { months, monthsSelect } from "../../../../../constants/app"
+import { APP_MENU, months, monthsSelect } from "../../../../../constants/app"
 import { routeWithReplaceId } from "../../../../../utils/path-util"
 import {
   ContainerActions,
@@ -58,6 +58,7 @@ const ServicesApartment: React.FC = () => {
   )
   const [dataPermissions, setDataPermissions] =
     React.useState<FilterPermissionsDTO>()
+  const { id: idApartment } = useParams<{ id: string }>()
   const navigate = useNavigate()
 
   const { handleGetToken, handleGetPermissions } = useDataUser()
@@ -96,7 +97,7 @@ const ServicesApartment: React.FC = () => {
   }
 
   const handleClick = React.useCallback(() => {
-    navigate(pathRoutes.PROJECTS.CREATE)
+    navigate(pathRoutes.APARTMENTS.CREATE)
   }, [])
 
   React.useEffect(() => {
@@ -108,7 +109,7 @@ const ServicesApartment: React.FC = () => {
     const storedToken = handleGetToken()
     if (!!storedToken) {
       axios
-        .get(`${settingsApp.api.base}/apartments/1`, {
+        .get(`${settingsApp.api.base}/apartments/${idApartment}`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             "Content-Type": "application/json",
@@ -116,7 +117,7 @@ const ServicesApartment: React.FC = () => {
           },
         })
         .then(response => {
-          console.log("Response => ", response.data)
+          console.log("Response Apartment => ", response.data)
           const dataResponse: ApartmentDTO = response.data as ApartmentDTO
           if (!!dataResponse) {
             setListApartments(dataResponse)
@@ -143,7 +144,9 @@ const ServicesApartment: React.FC = () => {
   }
 
   const handleDblClickView = (projectId: string) =>
-    navigate(routeWithReplaceId(pathRoutes.PROJECTS.DETAIL.OVERVIEW, projectId))
+    navigate(
+      routeWithReplaceId(pathRoutes.APARTMENTS.DETAIL.OVERVIEW, projectId),
+    )
 
   return (
     <ContentDetailsOulet>
@@ -172,7 +175,7 @@ const ServicesApartment: React.FC = () => {
         )}
         {!isLoadingListProjects &&
           !!listApartments &&
-          listApartments.tasks_apart.length <= 0 && (
+          listApartments.works.length <= 0 && (
             <>
               <ContainerTable>
                 <table>
@@ -194,24 +197,21 @@ const ServicesApartment: React.FC = () => {
           )}
         {!isLoadingListProjects &&
           !!listApartments &&
-          listApartments.tasks_apart.length > 0 &&
+          listApartments.works.length > 0 &&
           !!dataPermissions &&
-          dataPermissions.project.includes("list") && (
+          dataPermissions.apartment.includes(APP_MENU.LIST) && (
             <ContainerTable>
-              <HeaderDetailStyles>
-                <ApartmentTitleStyles>
-                  {/* <div>
+              {/* <HeaderDetailStyles> */}
+              {/* <ApartmentTitleStyles> */}
+              {/* <div>
                     <img src={listApartments.picture} />
                   </div>
                   <div>
                     <span>{listApartments?.name}</span>
-                    <span>{listApartments?.status}</span>
+                    <span>{listApartments?.status</span>
                   </div> */}
-                </ApartmentTitleStyles>
-                <ButtonsStyles>
-                  <Button onClick={() => console.log} text="New Service" />
-                </ButtonsStyles>
-              </HeaderDetailStyles>
+              {/* </ApartmentTitleStyles> */}
+              {/* </HeaderDetailStyles> */}
               <ContainerFilters>
                 <div>
                   <WrapperInput>
@@ -247,7 +247,7 @@ const ServicesApartment: React.FC = () => {
                   </tr>
                 </ContainerHead>
                 <ContainerBody>
-                  {(listApartments.tasks_apart || []).map(service => (
+                  {(listApartments.works || []).map(service => (
                     <tr
                     // onDoubleClick={() => handleDblClickView(`${service.id}`)}
                     >
@@ -257,14 +257,14 @@ const ServicesApartment: React.FC = () => {
                           <img src={service.picture} />
                         </span> */}
                           <div>
-                            <span>{service.name}</span>
+                            <span>{service.serviceId}</span>
                             {/* <span>{service.status}</span> */}
                           </div>
                         </div>
                       </NameStylesTD>
-                      <StatusStylesTD status={service.status}>
+                      <StatusStylesTD status={service.statusId ? "" : ""}>
                         <div>
-                          <span>{service.status}</span>
+                          <span>{service.statusId}</span>
                         </div>
                       </StatusStylesTD>
                       {/* <td>{project.contractors[0].fullName}</td> */}
@@ -282,7 +282,7 @@ const ServicesApartment: React.FC = () => {
                       </ClientStylesTD>
                       <DateStylesTD>
                         <div>
-                          <span>{formatToDDMonth(service.dueDate)}</span>
+                          <span>{formatToDDMonth(service.startDate)}</span>
                         </div>
                       </DateStylesTD>
                       <ContainerActions>
@@ -301,7 +301,7 @@ const ServicesApartment: React.FC = () => {
                                 ({
                                   project: [],
                                 } as unknown as FilterPermissionsDTO)
-                              ).project.includes("update") && (
+                              ).apartment.includes(APP_MENU.UPDATE) && (
                                 <span
                                   onClick={handleEditProject(`${service.id}`)}
                                 >
@@ -313,7 +313,7 @@ const ServicesApartment: React.FC = () => {
                                 ({
                                   project: [],
                                 } as unknown as FilterPermissionsDTO)
-                              ).project.includes("delete") && (
+                              ).apartment.includes(APP_MENU.DELETE) && (
                                 <span
                                   onClick={handleDeleteProject(`${service.id}`)}
                                 >

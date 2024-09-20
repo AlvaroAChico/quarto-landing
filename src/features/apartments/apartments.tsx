@@ -14,12 +14,18 @@ import {
 } from "./apartments.styles"
 import Cookies from "js-cookie"
 import {
-  ProjectDTO,
-  ProjectResponseDTO,
+  ApartmentDTO,
+  PropertyDTO,
+  PropertyResponseDTO,
   StadisticsDTO,
   StadisticsPropertiesDTO,
-} from "../../core/models/interfaces/project-model"
-import { COOKIES_APP, months, monthsSelect } from "../../constants/app"
+} from "../../core/models/interfaces/property-model"
+import {
+  APP_MENU,
+  COOKIES_APP,
+  months,
+  monthsSelect,
+} from "../../constants/app"
 import axios from "axios"
 import { toast } from "sonner"
 import { Ellipsis } from "@styled-icons/fa-solid/Ellipsis"
@@ -46,20 +52,26 @@ import Skeleton from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
 import { routeWithReplaceId } from "../../utils/path-util"
 import { formatToDDMonth } from "../../utils/date-util"
+import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
 
 const Apartments: React.FC = () => {
-  const [listProjects, setListProjects] = React.useState<ProjectDTO[]>([])
+  const [listProjects, setListProjects] = React.useState<PropertyDTO[]>([])
   const [isLoadingListProjects, setIsLoadingListProjects] =
     React.useState<boolean>(false)
   const [stadisticts, setStadisticts] = React.useState<StadisticsDTO>()
   const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
     null,
   )
+  const [dataDelete, setDataDelete] = React.useState<ApartmentDTO>()
+  const [isOpenModalDelete, setIsOpenModalDelete] =
+    React.useState<boolean>(false)
   const [dataPermissions, setDataPermissions] =
     React.useState<FilterPermissionsDTO>()
   const navigate = useNavigate()
 
   const { handleGetToken, handleGetPermissions } = useDataUser()
+
+  const handleCloseModalDelete = () => setIsOpenModalDelete(false)
 
   const getCookiesDataPermission = React.useCallback(() => {
     const data = handleGetPermissions()
@@ -91,7 +103,15 @@ const Apartments: React.FC = () => {
 
   const handleDeleteProject = (projectId: string) => () => {
     handleCleanDropdown()
-    console.log("Delete project -> ", projectId)
+    for (const property of listProjects) {
+      const foundApartment = property.apartments.find(
+        apartment => `${apartment.id}` === projectId,
+      )
+      if (foundApartment) {
+        setDataDelete(foundApartment)
+      }
+    }
+    setIsOpenModalDelete(true)
   }
 
   const handleClick = React.useCallback(() => {
@@ -107,7 +127,7 @@ const Apartments: React.FC = () => {
     const storedToken = handleGetToken()
     if (!!storedToken) {
       axios
-        .get(`${settingsApp.api.base}/projects?include=tasks,client`, {
+        .get(`${settingsApp.api.base}/residentials?include=apartments`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             "Content-Type": "application/json",
@@ -116,7 +136,7 @@ const Apartments: React.FC = () => {
         })
         .then(response => {
           console.log("Response => ", response.data)
-          const dataResponse: ProjectDTO[] = response.data as ProjectDTO[]
+          const dataResponse: PropertyDTO[] = response.data as PropertyDTO[]
           if (!!dataResponse) {
             setListProjects(dataResponse)
             // setStadisticts(dataResponse.stadistics)
@@ -153,7 +173,7 @@ const Apartments: React.FC = () => {
         subtitle="Apartments"
         nameButton="New Apartment"
         havePermissionCreate={
-          dataPermissions?.project.includes("create") || false
+          dataPermissions?.property.includes(APP_MENU.CREATE) || false
         }
         onPrimaryClick={handleClick}
       />
@@ -219,7 +239,7 @@ const Apartments: React.FC = () => {
           !!listProjects &&
           listProjects.length > 0 &&
           !!dataPermissions &&
-          dataPermissions.project.includes("list") && (
+          dataPermissions.property.includes(APP_MENU.LIST) && (
             <ContainerTable>
               <ContainerFilters>
                 <div>
@@ -228,7 +248,7 @@ const Apartments: React.FC = () => {
                       id="email-create-user"
                       placeholder="Search"
                       icon={Search}
-                      props={undefined} // props={register("email")}
+                      register={undefined} // props={register("email")}
                     />
                   </WrapperInput>
                 </div>
@@ -256,7 +276,7 @@ const Apartments: React.FC = () => {
                 </ContainerHead>
                 <ContainerBody>
                   {(listProjects || []).map(resi =>
-                    resi.apartments.map(apart => (
+                    resi.apartments.map((apart: any) => (
                       <tr
                         onDoubleClick={() => handleDblClickView(`${apart.id}`)}
                       >
@@ -267,7 +287,7 @@ const Apartments: React.FC = () => {
                             </span>
                             <div>
                               <span>{apart.name}</span>
-                              <span>{apart.status}</span>
+                              {/* <span>{apart.floorNumber}</span> */}
                             </div>
                           </div>
                         </NameStylesTD>
@@ -298,7 +318,7 @@ const Apartments: React.FC = () => {
                                   ({
                                     project: [],
                                   } as unknown as FilterPermissionsDTO)
-                                ).project.includes("update") && (
+                                ).property.includes(APP_MENU.UPDATE) && (
                                   <span
                                     onClick={handleEditProject(`${apart.id}`)}
                                   >
@@ -310,7 +330,7 @@ const Apartments: React.FC = () => {
                                   ({
                                     project: [],
                                   } as unknown as FilterPermissionsDTO)
-                                ).project.includes("delete") && (
+                                ).property.includes(APP_MENU.DELETE) && (
                                   <span
                                     onClick={handleDeleteProject(`${apart.id}`)}
                                   >
@@ -329,6 +349,15 @@ const Apartments: React.FC = () => {
             </ContainerTable>
           )}
       </ContentStylesSection>
+      <ModalDeleteGeneral
+        isOpen={isOpenModalDelete}
+        dataAPI="apartments"
+        dataLabel="apartment"
+        dataId={dataDelete?.id || ""}
+        dataName={dataDelete?.name || ""}
+        handleClose={handleCloseModalDelete}
+        handleRefresh={fetchDataProjects}
+      />
     </SectionRoute>
   )
 }

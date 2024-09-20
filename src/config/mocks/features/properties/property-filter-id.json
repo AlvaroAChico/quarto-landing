@@ -1,0 +1,69 @@
+[
+  {
+    "id": 1,
+    "code": "HAUQW123",
+    "uuid": "1bf02d64-08b0-428b-9a0b-a3ac6f48e10c",
+    "name": "Construction of central park",
+    "picture": null,
+    "description": "Desc Construction of central park",
+    "progress": 0,
+    "currency": "USD",
+    "price": 18000,
+    "startDate": "2024-09-01 00:00:00",
+    "dueDate": "2024-09-30 00:00:00",
+    "endDate": null,
+    "clientId": 1,
+    "categoryId": null,
+    "status": "to do",
+    "isActive": true,
+    "createdAt": "2024-08-30 08:06:09",
+    "management_company": {
+      "manager_name": "John Doe",
+      "manager_phone": "+1234567890"
+    },
+    "tasks": [
+      {
+        "id": 1,
+        "name": "Cleaning finishing work",
+        "description": "Description Cleaning finishing work",
+        "priority": 1,
+        "hours": 5.5,
+        "price": null,
+        "currency": "USD",
+        "progress": 80,
+        "startDate": "2024-09-01 00:00:00",
+        "dueDate": "2024-09-03 00:00:00",
+        "endDate": null,
+        "notes": null,
+        "projectId": 1,
+        "categoryId": null,
+        "contractorId": 1,
+        "dependencyTaskId": null,
+        "status": "active",
+        "isActive": true,
+        "createdAt": "2024-08-30 08:10:44"
+      },
+      {
+        "id": 2,
+        "name": "Bathroom cleaning",
+        "description": "Description Bathroom cleaning",
+        "priority": 2,
+        "hours": 1.5,
+        "price": null,
+        "currency": "USD",
+        "progress": 45,
+        "startDate": "2024-09-01 00:00:00",
+        "dueDate": "2024-09-03 00:00:00",
+        "endDate": null,
+        "notes": null,
+        "projectId": 1,
+        "categoryId": null,
+        "contractorId": 1,
+        "dependencyTaskId": null,
+        "status": "active",
+        "isActive": true,
+        "createdAt": "2024-08-30 17:25:28"
+      }
+    ]
+  }
+]

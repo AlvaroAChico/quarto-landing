@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Sunnyvale Property Management",
+    "email_1": "contact@sunnyvaleproperties.com",
+    "email_2": "info@sunnyvaleproperties.com",
+    "email_3": "support@sunnyvaleproperties.com",
+    "manager_name": "John Doe",
+    "manager_phone": "+1-555-123-4567",
+    "assitant_manager_name": "Jane Smith",
+    "assitant_manager_phone": "+1-555-987-6543",
+    "maintenance_name": "QuickFix Maintenance",
+    "maintenance_phone": "+1-555-111-2222"
+  },
+  {
+    "name": "Green Oasis Realty",
+    "email_1": "hello@greenoasisrealty.com",
+    "email_2": "support@greenoasisrealty.com",
+    "email_3": "info@greenoasisrealty.com",
+    "manager_name": "Alice Johnson",
+    "manager_phone": "+1-555-234-5678",
+    "assitant_manager_name": "Bob Brown",
+    "assitant_manager_phone": "+1-555-876-5432",
+    "maintenance_name": "Rapid Repair Services",
+    "maintenance_phone": "+1-555-333-4444"
+  },
+  {
+    "name": "Luxury Living Properties",
+    "email_1": "admin@luxuryliving.com",
+    "email_2": "contact@luxuryliving.com",
+    "email_3": "inquiries@luxuryliving.com",
+    "manager_name": "Michael Carter",
+    "manager_phone": "+1-555-345-6789",
+    "assitant_manager_name": "Sarah Connor",
+    "assitant_manager_phone": "+1-555-765-4321",
+    "maintenance_name": "Property Fixers",
+    "maintenance_phone": "+1-555-444-5555"
+  },
+  {
+    "name": "Urban Nest Management",
+    "email_1": "info@urbannest.com",
+    "email_2": "support@urbannest.com",
+    "email_3": "contact@urbannest.com",
+    "manager_name": "Emily Davis",
+    "manager_phone": "+1-555-456-7890",
+    "assitant_manager_name": "Andrew Lee",
+    "assitant_manager_phone": "+1-555-654-3210",
+    "maintenance_name": "Home Repair Experts",
+    "maintenance_phone": "+1-555-222-3333"
+  }
+]

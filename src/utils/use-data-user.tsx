@@ -5,14 +5,16 @@ import { FilterPermissionsDTO } from "../core/models/interfaces/user-model"
 
 const useDataUser = () => {
   const keysPermissions: (keyof FilterPermissionsDTO)[] = [
+    "dashboard",
     "user",
-    "category",
-    "client",
-    "contractor",
-    "project",
-    "projectfile",
-    "setting",
-    "task",
+    "role",
+    "service",
+    "management_company",
+    "property",
+    "apartment",
+    "assignment",
+    "calendar",
+    "reports",
   ]
 
   const handleGetToken = (): string => {
@@ -43,7 +45,17 @@ const useDataUser = () => {
     Cookies.remove(COOKIES_APP.TOKEN_APP)
     Cookies.remove(COOKIES_APP.ROLES_APP)
     localStorage.removeItem(COOKIES_APP.PERMISSIONS_APP)
-    // Cookies.remove(COOKIES_APP.PERMISSIONS_APP)
+    localStorage.setItem(COOKIES_APP.PERMISSIONS_APP, "_@")
+    localStorage.clear()
+    sessionStorage.clear()
+
+    if ("caches" in window) {
+      caches.keys().then(cacheNames => {
+        cacheNames.forEach(cacheName => {
+          caches.delete(cacheName)
+        })
+      })
+    }
   }
 
   return {

@@ -75,7 +75,7 @@ export const ContainerResFormStyles = styled.div`
 
 export const ContainerUpInputs = styled.div`
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: row;
   display: flex;
   gap: 20px;

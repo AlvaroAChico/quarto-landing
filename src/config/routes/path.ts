@@ -9,18 +9,26 @@ export const pathRoutes = {
     LIST: "/roles",
     CREATE: "/roles/create",
   },
-  PROJECTS: {
-    LIST: "/projects",
-    CREATE: "/projects/create",
+  SERVICES: {
+    LIST: "/services",
+    CREATE: "/services/create",
+  },
+  MANAGEMENT_COMPANY: {
+    LIST: "/management-company",
+    CREATE: "/management-company/create",
+  },
+  PROPERTIES: {
+    LIST: "/properties",
+    CREATE: "/properties/create",
     DETAIL: {
-      OVERVIEW: "/projects/:id/overview",
-      APARTMENTS: "/projects/:id/apartments",
-      APARTMENTS_DETAIL: "/projects/:id/apartments/:apartmentId",
-      ACTIVITY: "/projects/:id/activity",
-      TASKS: "/projects/:id/tasks",
-      CONTRACTORS: "/projects/:id/contractors",
-      FILES: "/projects/:id/files",
-      SETTINGS: "/projects/:id/settings",
+      OVERVIEW: "/properties/:id/overview",
+      APARTMENTS: "/properties/:id/apartments",
+      APARTMENTS_DETAIL: "/properties/:id/apartments/:apartmentId",
+      ACTIVITY: "/properties/:id/activity",
+      TASKS: "/properties/:id/tasks",
+      CONTRACTORS: "/properties/:id/contractors",
+      FILES: "/properties/:id/files",
+      SETTINGS: "/properties/:id/settings",
     },
   },
   APARTMENTS: {
@@ -38,9 +46,8 @@ export const pathRoutes = {
       SETTINGS: "/apartments/:id/settings",
     },
   },
-  TASKS: {
-    LIST: "/tasks",
-    CREATE: "/tasks/create",
+  ASSIGNMENTS: {
+    LIST: "/assignments",
   },
   CALENDAR: {
     LIST: "/calendar",

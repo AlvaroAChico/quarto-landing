@@ -57,7 +57,7 @@ import Select from "react-select"
 import {
   CreateResidentialForm,
   CreateResidentialSchema,
-} from "../../../../core/models/schemas/residential-schema"
+} from "../../../../core/models/schemas/property-schema"
 import {
   CreateApartmentForm,
   CreateApartmentSchema,
@@ -67,9 +67,11 @@ import {
   CreateServiceSchema,
 } from "../../../../core/models/schemas/service-schema"
 import Textarea from "../../../../components/textarea/textarea"
+import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
+import { PropertyDTO } from "../../../../core/models/interfaces/property-model"
 
 const CreateApartment: React.FC = () => {
-  const [optionsClients, setOptionsClients] = React.useState<any>([])
+  const [optionsProperties, setOptionsProperties] = React.useState<any>([])
   const [stepActive, setStepActive] = React.useState<number>(1)
   const [selectedOptionClient, setSelectedOptionClient] = React.useState(null)
   const [startDate, setStartDate] = React.useState<any>()
@@ -85,9 +87,10 @@ const CreateApartment: React.FC = () => {
     defaultValues: {
       picture: "",
       code: "",
+      name: "",
       description: "",
-      manager: "",
-      phoneManager: "",
+      floorNumber: "",
+      residentialId: "",
     },
   })
 
@@ -101,12 +104,12 @@ const CreateApartment: React.FC = () => {
   const methodsServ = useForm<CreateServiceForm>({
     resolver: yupResolver(CreateServiceSchema),
     defaultValues: {
-      apartmentId: "",
-      serviceId: "",
-      contractorId: "",
-      date: "",
-      notes: "",
-      files: [],
+      picture: "",
+      code: "",
+      name: "",
+      description: "",
+      floorNumber: "",
+      residentialId: "",
     },
   })
 
@@ -120,6 +123,7 @@ const CreateApartment: React.FC = () => {
   const handleChangeOptionClient = (value: any) => {
     // setValue("clientId", value.value)
     setSelectedOptionClient(value)
+    setValue("residentialId", value.value)
   }
 
   const handleSubmit = React.useCallback((data: any) => {
@@ -130,27 +134,14 @@ const CreateApartment: React.FC = () => {
       formData.append("code", data.code)
       formData.append("name", data.name)
       formData.append("description", data.description)
-      formData.append("start_date", formatToDMYHH(data.startDate))
-      formData.append("due_date", formatToDMYHH(data.dueDate))
-      formData.append("client_id", data.clientId)
-      if (!!data.currency) {
-        formData.append("currency", data.currency)
-      }
-      if (!!data.price) {
-        formData.append("price", data.price)
-      }
-      if (!!data.categoryId) {
-        formData.append("category_id", data.categoryId)
-      }
+      formData.append("floor_number", data.floorNumber)
+      formData.append("residential_id", data.residentialId)
       if (!!data.picture) {
         formData.append("picture", data.picture)
       }
-      if (!!data.files && listFiles.length > 0) {
-        formData.append("files", data.files)
-      }
 
       axios
-        .post(`${settingsApp.api.base}/projects`, formData, {
+        .post(`${settingsApp.api.base}/apartments`, formData, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             ContentType: "multipart/form-data",
@@ -159,11 +150,10 @@ const CreateApartment: React.FC = () => {
         })
         .then(response => {
           setIsSubmitUserCreate(false)
-          const data: CreateUserResponseDTO =
-            response.data as CreateUserResponseDTO
+          const data: MessageResponsedDTO = response.data as MessageResponsedDTO
           if (!!data && !!data.message) {
             toast.success(data.message)
-            navigate(pathRoutes.PROJECTS.LIST)
+            navigate(pathRoutes.APARTMENTS.LIST)
           }
         })
         .catch(err => {
@@ -178,17 +168,17 @@ const CreateApartment: React.FC = () => {
 
     if (!!storedToken) {
       axios
-        .get(`${settingsApp.api.base}/clients`, {
+        .get(`${settingsApp.api.base}/residentials`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
           },
         })
         .then(response => {
-          const listData: ClientDTO[] = response.data as ClientDTO[]
-          setOptionsClients(
+          const listData: PropertyDTO[] = response.data as PropertyDTO[]
+          setOptionsProperties(
             listData.map(client => ({
               value: client.id,
-              label: client.id,
+              label: client.name,
             })),
           )
         })
@@ -314,6 +304,9 @@ const CreateApartment: React.FC = () => {
             <span>Details</span>
             <span />
           </ItemStepper>
+          <ItemStepper isActive={stepActive == 2}>
+            <span />
+          </ItemStepper>
           {/* <ItemStepper isActive={stepActive == 2}>
             <div>
               <span onClick={() => setStepActive(2)}>2</span>
@@ -321,12 +314,12 @@ const CreateApartment: React.FC = () => {
             <span>Apartments</span>
             <span />
           </ItemStepper> */}
-          <ItemStepper isActive={stepActive == 2}>
+          {/* <ItemStepper isActive={stepActive == 2}>
             <div>
               <span onClick={() => setStepActive(2)}>2</span>
             </div>
             <span>Services</span>
-          </ItemStepper>
+          </ItemStepper> */}
         </SteppersStyles>
         {stepActive == 1 && (
           <ResidentialFormStyles>
@@ -367,9 +360,21 @@ const CreateApartment: React.FC = () => {
                   <label htmlFor="code-create-apartment">Code</label>
                   <Input
                     id="code-create-apartment"
+                    placeholder="Enter code"
+                    icon={FolderOpen}
+                    register={register("code")}
+                  />
+                  {!!(errors.code as any)?.message && (
+                    <ErrorMessage>{(errors.code as any)?.message}</ErrorMessage>
+                  )}
+                </WrapperInput>
+                <WrapperInput>
+                  <label htmlFor="name-create-apartment">Name</label>
+                  <Input
+                    id="name-create-apartment"
                     placeholder="Enter name"
                     icon={FolderOpen}
-                    props={register("code")}
+                    register={register("name")}
                   />
                   {!!(errors.code as any)?.message && (
                     <ErrorMessage>{(errors.code as any)?.message}</ErrorMessage>
@@ -379,11 +384,11 @@ const CreateApartment: React.FC = () => {
                   <label htmlFor="description-create-apartment">
                     Description
                   </label>
-                  <Input
+                  <Textarea
                     id="description-create-apartment"
                     placeholder="Enter description"
                     icon={TextDescription}
-                    props={register("description")}
+                    register={register("description")}
                   />
                   {!!(errors.description as any)?.message && (
                     <ErrorMessage>
@@ -395,55 +400,43 @@ const CreateApartment: React.FC = () => {
             </ContainerUpInputs>
             <ContainerDownInputs>
               <WrapperInput>
-                <label htmlFor="manager-create-apartment">Manager</label>
+                <label htmlFor="floornumber-create-apartment">
+                  Floor number
+                </label>
                 <Input
-                  id="manager-create-apartment"
-                  placeholder="Enter manager"
+                  id="floornumber-create-apartment"
+                  placeholder="Enter floor number"
                   icon={FolderOpen}
-                  props={register("manager")}
+                  register={register("floorNumber")}
                 />
-                {!!(errors.manager as any)?.message && (
+                {!!(errors.floorNumber as any)?.message && (
                   <ErrorMessage>
-                    {(errors.manager as any)?.message}
+                    {(errors.floorNumber as any)?.message}
                   </ErrorMessage>
                 )}
               </WrapperInput>
               <WrapperInput>
-                <label htmlFor="phone-manager-create-project">
-                  Phone Manager
-                </label>
-                <Input
-                  id="phone-manager-create-project"
-                  placeholder="Enter phone manager"
-                  icon={FolderOpen}
-                  props={register("phoneManager")}
+                <label htmlFor="property-create-project">Property</label>
+                <Select
+                  id="property-create-project"
+                  defaultValue={selectedOptionClient}
+                  onChange={handleChangeOptionClient}
+                  options={optionsProperties}
+                  isSearchable={true}
+                  styles={selectStyles}
                 />
-                {!!(errors.phoneManager as any)?.message && (
+                {!!(errors.residentialId as any)?.message && (
                   <ErrorMessage>
-                    {(errors.phoneManager as any)?.message}
+                    {(errors.residentialId as any)?.message}
                   </ErrorMessage>
                 )}
               </WrapperInput>
-              {/* <WrapperInput>
-              <label htmlFor="client-create-project">Client</label>
-              <Select
-                id="client-create-project"
-                defaultValue={selectedOptionClient}
-                onChange={handleChangeOptionClient}
-                options={optionsClients}
-                isSearchable={true}
-                styles={selectStyles}
-              />
-              {!!(errors.clientId as any)?.message && (
-                <ErrorMessage>{(errors.clientId as any)?.message}</ErrorMessage>
-              )}
-            </WrapperInput> */}
             </ContainerDownInputs>
           </ResidentialFormStyles>
         )}
         {stepActive == 2 && (
           <ResidentialFormStyles>
-            <ContainerUpInputs>
+            {/* <ContainerUpInputs>
               <ContainerResFormStyles>
                 <WrapperInput>
                   <label htmlFor="service-create-apartment">Service</label>
@@ -510,16 +503,16 @@ const CreateApartment: React.FC = () => {
                     </ErrorMessage>
                   )}
                 </WrapperInput>
-              </ContainerResFormStyles>
-            </ContainerUpInputs>
-            <ContainerDownInputs>
+              </ContainerResFormStyles> 
+            </ContainerUpInputs> */}
+            {/* <ContainerDownInputs>
               <WrapperInput>
                 <label htmlFor="service-create-service">Service</label>
                 <Textarea
                   id="service-create-service"
                   placeholder="Enter notes"
                   icon={FolderOpen}
-                  {...registerServ("notes")}
+                  register={registerServ("notes")}
                 />
                 {!!(errorsServ.notes as any)?.message && (
                   <ErrorMessage>
@@ -560,14 +553,14 @@ const CreateApartment: React.FC = () => {
                     ))}
                 </div>
               </CustomWrapperInputFiles>
-            </ContainerDownInputs>
+            </ContainerDownInputs> */}
           </ResidentialFormStyles>
         )}
         {/* {stepActive == 3 && <>A</>} */}
         <ContainerButton>
           <Button
             onClick={submitWrapper(handleSubmit)}
-            text="Next"
+            text="Create"
             isLoading={isSubmitUserCreate}
           />
         </ContainerButton>

@@ -1,11 +1,12 @@
-import { array, InferType, mixed, object, string } from "yup"
+import { InferType, object, string } from "yup"
 
 export const CreateApartmentSchema = object({
   picture: string(),
   code: string().required("Enter a code"),
+  name: string().required("Enter a name service"),
   description: string().required("Enter a description"),
-  manager: string().required("Enter a manager"),
-  phoneManager: string().required("Enter a phone manager"),
+  floorNumber: string().required("Enter a name floorNumber"),
+  residentialId: string().required("Enter a residential"),
 })
 
 export type CreateApartmentForm = InferType<typeof CreateApartmentSchema>

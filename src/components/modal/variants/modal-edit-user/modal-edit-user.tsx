@@ -159,25 +159,10 @@ const ModalEditUser: React.FC<IOwnProps> = ({
         .then(response => {
           const listData: DataRoleResponse[] =
             response.data as DataRoleResponse[]
-          const listRoles = (listData || []).map(data => {
-            if (
-              data.name == "client" &&
-              !dataPermissions.client.includes("create")
-            ) {
-              return
-            }
-            if (
-              data.name == "contractor" &&
-              !dataPermissions.contractor.includes("create")
-            ) {
-              return
-            }
-
-            return {
-              value: data.name,
-              label: data.name,
-            }
-          })
+          const listRoles = (listData || []).map(data => ({
+            value: data.name,
+            label: data.name,
+          }))
           setOptionsRoles(listRoles.filter(role => !!role))
         })
         .catch(err => {
@@ -271,7 +256,7 @@ const ModalEditUser: React.FC<IOwnProps> = ({
             id="firstname-create-user"
             placeholder="Enter firstname"
             icon={User}
-            props={register("firstName")}
+            register={register("firstName")}
           />
           {!!(errors.firstName as any)?.message && (
             <ErrorMessage>{(errors.firstName as any)?.message}</ErrorMessage>
@@ -283,7 +268,7 @@ const ModalEditUser: React.FC<IOwnProps> = ({
             id="lastname-create-user"
             placeholder="Enter lastname"
             icon={User}
-            props={register("lastName")}
+            register={register("lastName")}
           />
           {!!(errors.lastName as any)?.message && (
             <ErrorMessage>{(errors.lastName as any)?.message}</ErrorMessage>
@@ -296,7 +281,7 @@ const ModalEditUser: React.FC<IOwnProps> = ({
             placeholder="Enter contact number"
             icon={User}
             type="number"
-            props={register("contactNumber")}
+            register={register("contactNumber")}
           />
           {!!(errors.contactNumber as any)?.message && (
             <ErrorMessage>
@@ -311,7 +296,7 @@ const ModalEditUser: React.FC<IOwnProps> = ({
             icon={Password}
             type="password"
             toggleIcon={{ Show: EyeFill, Hide: EyeSlashFill }}
-            props={register("password")}
+            register={register("password")}
           />
           {!!(errors.password as any)?.message && (
             <ErrorMessage>{(errors.password as any)?.message}</ErrorMessage>

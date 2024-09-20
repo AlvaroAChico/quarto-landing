@@ -27,6 +27,7 @@ import { settingsApp } from "../../config/environment/settings"
 import useDataUser from "../../utils/use-data-user"
 import Skeleton from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
+import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
 
 const Users: React.FC = () => {
   const [listUsers, setListUsers] = React.useState<UserDTO[]>([])
@@ -247,11 +248,14 @@ const Users: React.FC = () => {
         handleRefreshData={fetchListUsers}
         dataUserEdit={dataUserEdit!!}
       />
-      <ModalDeleteUser
+      <ModalDeleteGeneral
         isOpen={isOpenModalDelete}
+        dataAPI="roles"
+        dataLabel="role"
+        dataId={dataUserDelete?.id || ""}
+        dataName={dataUserDelete?.firstName || ""}
         handleClose={handleCloseModalDelete}
-        handleDeleteUser={handleDeleteUserModal}
-        dataUserDelete={dataUserDelete!!}
+        handleRefresh={fetchListUsers}
       />
     </div>
   )

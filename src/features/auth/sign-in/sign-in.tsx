@@ -23,6 +23,7 @@ import { pathRoutes } from "../../../config/routes/path"
 import Button from "../../../components/button/button"
 import { ACTIONS_TITLE_APP, COOKIES_APP } from "../../../constants/app"
 import {
+  emptyFilterPermissions,
   FilterPermissionsDTO,
   SignInResponse,
 } from "../../../core/models/interfaces/user-model"
@@ -34,6 +35,7 @@ import { ErrorMessage, WrapperInput } from "../../../config/theme/global-styles"
 import { settingsApp } from "../../../config/environment/settings"
 import { useAppDispatch } from "../../../app/hooks"
 import { updateActionTitleApp } from "../../../core/store/app-store/appSlice"
+import useDataUser from "../../../utils/use-data-user"
 
 const SignIn: React.FC = () => {
   const [isSubmitLogin, setIsSubmitLogin] = React.useState<boolean>(false)
@@ -52,88 +54,87 @@ const SignIn: React.FC = () => {
     handleSubmit: submitWrapper,
     formState: { errors },
     register,
+    getValues,
   } = methods
 
-  const handleSubmit = React.useCallback((data: any) => {
-    setIsSubmitLogin(true)
-    axios
-      .post(
-        `${settingsApp.api.base}/auth/login`,
-        {
-          email: data.email,
-          password: data.password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
+  const { clearAllDataAPP } = useDataUser()
+
+  const handleSubmit = React.useCallback(
+    (data: any) => {
+      setIsSubmitLogin(true)
+      axios
+        .post(
+          `${settingsApp.api.base}/auth/login`,
+          {
+            email: data.email,
+            password: data.password,
           },
-        },
-      )
-      .then(response => {
-        setIsSubmitLogin(false)
-        // Expiración expresada en dias
-        const data: SignInResponse = response.data as SignInResponse
-        const expiration = {
-          expires: 7,
-        }
-        Cookies.set(COOKIES_APP.USER_RES, JSON.stringify(data["0"]), expiration)
-        Cookies.set(
-          COOKIES_APP.TOKEN_APP,
-          JSON.stringify(data.token),
-          expiration,
+          {
+            headers: {
+              ContentType: "application/json",
+              Accept: "application/json",
+              CacheControl: "no-cache",
+              Pragma: "no-cache",
+              Expires: "0",
+            },
+          },
         )
-        Cookies.set(
-          COOKIES_APP.ROLES_APP,
-          JSON.stringify(data.roles),
-          expiration,
-        )
-        // Filter data permissions
-        const result: FilterPermissionsDTO = {
-          user: [],
-          category: [],
-          client: [],
-          contractor: [],
-          project: [],
-          projectfile: [],
-          setting: [],
-          task: [],
-          calendar: [],
-          reports: [],
-          role: [],
-        }
-
-        data.permisos
-          .map(permission => permission.name)
-          .forEach(permission => {
-            const parts = permission.split("-")
-            const type = parts[0]
-
-            if (type in result) {
-              const action = parts.slice(1).join("-")
-              result[type as keyof FilterPermissionsDTO].push(action)
-            }
-          })
-
-        if (!!result) {
-          localStorage.setItem(
-            COOKIES_APP.PERMISSIONS_APP,
-            JSON.stringify(result),
+        .then(response => {
+          setIsSubmitLogin(false)
+          // Expiración expresada en dias
+          clearAllDataAPP()
+          localStorage.setItem(COOKIES_APP.PERMISSIONS_APP, "_@")
+          const data: SignInResponse = response.data as SignInResponse
+          const expiration = {
+            expires: 7,
+          }
+          Cookies.set(
+            COOKIES_APP.USER_RES,
+            JSON.stringify(data["0"]),
+            expiration,
           )
-          // Cookies.set(
-          //   COOKIES_APP.PERMISSIONS_APP,
-          //   JSON.stringify(result),
-          //   expiration,
-          // )
-        }
-        dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.DASHBOARD))
-        navigate(pathRoutes.DASHBOARD)
-      })
-      .catch(err => {
-        setIsSubmitLogin(false)
-        // toast.error(err.response.data.message)
-      })
-  }, [])
+          Cookies.set(
+            COOKIES_APP.TOKEN_APP,
+            JSON.stringify(data.token),
+            expiration,
+          )
+          Cookies.set(
+            COOKIES_APP.ROLES_APP,
+            JSON.stringify(data.roles),
+            expiration,
+          )
+          // Filter data permissions
+          const result: FilterPermissionsDTO = {
+            ...emptyFilterPermissions,
+          }
+          data.permisos
+            .map(permission => permission.name)
+            .forEach(permission => {
+              const parts = permission.split("-")
+              const type = parts[0]
+
+              if (type in result) {
+                const action = parts.slice(1).join("-")
+                result[type as keyof FilterPermissionsDTO].push(action)
+              }
+            })
+
+          if (!!result) {
+            localStorage.setItem(
+              COOKIES_APP.PERMISSIONS_APP,
+              JSON.stringify(result),
+            )
+          }
+          dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.DASHBOARD))
+          navigate(pathRoutes.DASHBOARD)
+        })
+        .catch(err => {
+          setIsSubmitLogin(false)
+          toast.error(err.response.data.message)
+        })
+    },
+    [getValues],
+  )
 
   return (
     <ContainerSignIn>
@@ -156,7 +157,7 @@ const SignIn: React.FC = () => {
                 id="email-signin"
                 placeholder="Your Email"
                 icon={User}
-                props={register("email")}
+                register={register("email")}
               />
               {!!(errors.email as any)?.message && (
                 <ErrorMessage>{(errors.email as any)?.message}</ErrorMessage>
@@ -171,7 +172,7 @@ const SignIn: React.FC = () => {
                 icon={Password}
                 type="password"
                 toggleIcon={{ Show: EyeFill, Hide: EyeSlashFill }}
-                props={register("password")}
+                register={register("password")}
               />
               {!!(errors.password as any)?.message && (
                 <ErrorMessage>{(errors.password as any)?.message}</ErrorMessage>

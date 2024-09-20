@@ -4,31 +4,36 @@ import SignIn from "../../features/auth/sign-in/sign-in"
 import DashboardLayout from "../../components/dashboard-layout/dashboard-layout"
 import Users from "../../features/users/users"
 import Dashboard from "../../features/dashboard/dashboard"
-import Details from "../../features/projects/details/details"
 import CreateRole from "../../features/roles/funcionalities/create-role/create-role"
 import Roles from "../../features/roles/roles"
-import Projects from "../../features/projects/projects"
 import CreateUser from "../../features/users/functionalities/create-user/create-user"
 import { pathRoutes } from "./path"
-import Tasks from "../../features/tasks/tasks"
-import CreateTask from "../../features/tasks/functionalities/create-task/create-task"
+import Services from "../../features/services/services"
 import Calendar from "../../features/calendar/calendar"
-import CreateProject from "../../features/projects/functionalities/create-project/create-project"
-import DetailsOverview from "../../features/projects/details/components/overview/overview"
-import DetailsTask from "../../features/projects/details/components/task/task"
-import DetailsActivity from "../../features/projects/details/components/activity/activity"
-import DetailFiles from "../../features/projects/details/components/files/files"
-import DetailContractors from "../../features/projects/details/components/contractors/contractors"
-import DetailsApartments from "../../features/projects/details/components/apartments/apartments"
 import ContractorReport from "../../features/reports/contractor-report/contractor-reports"
-import ResidentialReport from "../../features/reports/residential-report/residential-report"
-import DetailsApartmentsById from "../../features/projects/details/components/apartments/details/apartments_detail"
+// PROPERTIES IMPORTS
+import Properties from "../../features/properties/properties"
+import PropertyDetailLayout from "../../features/properties/property-detail-layout/property-detail-layout"
+import DetailsApartmentsById from "../../features/properties/property-detail-layout/components/apartments/details/apartments_detail"
+import CreateProperty from "../../features/properties/functionalities/create-property/create-property"
+import DetailsOverview from "../../features/properties/property-detail-layout/components/overview/overview"
+import DetailsTask from "../../features/properties/property-detail-layout/components/task/task"
+import DetailContractors from "../../features/properties/property-detail-layout/components/contractors/contractors"
+import DetailsApartments from "../../features/properties/property-detail-layout/components/apartments/apartments"
+import DetailsActivity from "../../features/properties/property-detail-layout/components/activity/activity"
+import DetailFiles from "../../features/properties/property-detail-layout/components/files/files"
+import ResidentialReport from "../../features/reports/property-report/property-report"
+// APARTMENTS IMPORTS
 import Apartments from "../../features/apartments/apartments"
+import CreateApartment from "../../features/apartments/functionalities/create-project/create-apartment"
 import OverviewApartment from "../../features/apartments/details/components/overview/overview-apartment"
 import ApartmentDetails from "../../features/apartments/details/header-detail-apart"
 import HeaderDetailApart from "../../features/apartments/details/header-detail-apart"
 import ServicesApartment from "../../features/apartments/details/components/apartments/services-apartment"
-import CreateApartment from "../../features/apartments/functionalities/create-project/create-apartment"
+import Assignments from "../../features/assignments/assignments"
+import CreateService from "../../features/services/functionalities/create-service/create-service"
+import ManagementCompany from "../../features/management-company/management-company"
+import CreateManagementCompany from "../../features/management-company/funcionalities/create-management-company/create-management-company"
 
 export const router = createBrowserRouter([
   {
@@ -69,51 +74,35 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: pathRoutes.PROJECTS.LIST,
+        path: pathRoutes.PROPERTIES.LIST,
         children: [
           {
-            path: pathRoutes.PROJECTS.LIST,
-            element: <Projects />,
+            path: pathRoutes.PROPERTIES.LIST,
+            element: <Properties />,
           },
           {
-            path: pathRoutes.PROJECTS.CREATE,
-            element: <CreateProject />,
+            path: pathRoutes.PROPERTIES.CREATE,
+            element: <CreateProperty />,
           },
           {
-            element: <Details />,
+            element: <PropertyDetailLayout />,
             children: [
               {
-                path: pathRoutes.PROJECTS.DETAIL.OVERVIEW,
+                path: pathRoutes.PROPERTIES.DETAIL.OVERVIEW,
                 element: <DetailsOverview />,
                 index: true,
               },
               {
-                path: pathRoutes.PROJECTS.DETAIL.APARTMENTS,
+                path: pathRoutes.PROPERTIES.DETAIL.APARTMENTS,
                 element: <DetailsApartments />,
               },
               {
-                path: pathRoutes.PROJECTS.DETAIL.APARTMENTS_DETAIL,
+                path: pathRoutes.PROPERTIES.DETAIL.APARTMENTS_DETAIL,
                 element: <DetailsApartmentsById />,
               },
               {
-                path: pathRoutes.PROJECTS.DETAIL.ACTIVITY,
+                path: pathRoutes.PROPERTIES.DETAIL.ACTIVITY,
                 element: <DetailsActivity />,
-              },
-              {
-                path: pathRoutes.PROJECTS.DETAIL.TASKS,
-                element: <DetailsTask />,
-              },
-              {
-                path: pathRoutes.PROJECTS.DETAIL.CONTRACTORS,
-                element: <DetailContractors />,
-              },
-              {
-                path: pathRoutes.PROJECTS.DETAIL.FILES,
-                element: <DetailFiles />,
-              },
-              {
-                path: "/projects/:id/settings",
-                element: <></>,
               },
             ],
           },
@@ -134,11 +123,6 @@ export const router = createBrowserRouter([
             element: <HeaderDetailApart />,
             children: [
               {
-                path: pathRoutes.APARTMENTS.DETAIL.OVERVIEW,
-                element: <OverviewApartment />,
-                index: true,
-              },
-              {
                 path: pathRoutes.APARTMENTS.DETAIL.SERVICES,
                 element: <ServicesApartment />,
                 index: true,
@@ -155,36 +139,42 @@ export const router = createBrowserRouter([
                 path: pathRoutes.APARTMENTS.DETAIL.ACTIVITY,
                 element: <DetailsActivity />,
               },
-              {
-                path: pathRoutes.APARTMENTS.DETAIL.TASKS,
-                element: <DetailsTask />,
-              },
-              {
-                path: pathRoutes.APARTMENTS.DETAIL.CONTRACTORS,
-                element: <DetailContractors />,
-              },
-              {
-                path: pathRoutes.APARTMENTS.DETAIL.FILES,
-                element: <DetailFiles />,
-              },
-              {
-                path: "/apartments/:id/settings",
-                element: <></>,
-              },
             ],
           },
         ],
       },
       {
-        path: pathRoutes.TASKS.LIST,
+        path: pathRoutes.ASSIGNMENTS.LIST,
         children: [
           {
-            path: pathRoutes.TASKS.LIST,
-            element: <Tasks />,
+            path: pathRoutes.ASSIGNMENTS.LIST,
+            element: <Assignments />,
+          },
+        ],
+      },
+      {
+        path: pathRoutes.SERVICES.LIST,
+        children: [
+          {
+            path: pathRoutes.SERVICES.LIST,
+            element: <Services />,
           },
           {
-            path: pathRoutes.TASKS.CREATE,
-            element: <CreateTask />,
+            path: pathRoutes.SERVICES.CREATE,
+            element: <CreateService />,
+          },
+        ],
+      },
+      {
+        path: pathRoutes.MANAGEMENT_COMPANY.LIST,
+        children: [
+          {
+            path: pathRoutes.MANAGEMENT_COMPANY.LIST,
+            element: <ManagementCompany />,
+          },
+          {
+            path: pathRoutes.MANAGEMENT_COMPANY.CREATE,
+            element: <CreateManagementCompany />,
           },
         ],
       },
@@ -198,7 +188,7 @@ export const router = createBrowserRouter([
       },
       {
         path: pathRoutes.REPORTS.LIST_CUSTOMER,
-        element: <Reports />,
+        element: <></>,
       },
       {
         path: pathRoutes.REPORTS.LIST_CONTRACTORS,

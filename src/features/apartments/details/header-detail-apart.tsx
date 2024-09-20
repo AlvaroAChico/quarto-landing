@@ -28,14 +28,15 @@ import { routeWithReplaceId } from "../../../utils/path-util"
 import { pathRoutes } from "../../../config/routes/path"
 import {
   ApartmentDTO,
-  ProjectDTO,
-} from "../../../core/models/interfaces/project-model"
+  PropertyDTO,
+} from "../../../core/models/interfaces/property-model"
 import useDataUser from "../../../utils/use-data-user"
 import axios from "axios"
 import { settingsApp } from "../../../config/environment/settings"
 import { toast } from "sonner"
 import { formatToDDMonth } from "../../../utils/date-util"
 import Skeleton from "react-loading-skeleton"
+import Button from "../../../components/button/button"
 
 const HeaderDetailApart: React.FC = () => {
   const [dataProject, setDataProject] = React.useState<ApartmentDTO>()
@@ -54,7 +55,7 @@ const HeaderDetailApart: React.FC = () => {
     const storedToken = handleGetToken()
     if (!!storedToken) {
       axios
-        .get(`${settingsApp.api.base}/apartment/${idProject}`, {
+        .get(`${settingsApp.api.base}/apartments/${idProject}`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             "Content-Type": "application/json",
@@ -62,7 +63,6 @@ const HeaderDetailApart: React.FC = () => {
           },
         })
         .then(response => {
-          console.log("Response 01 => ", response.data)
           const dataResponse: ApartmentDTO = response.data as ApartmentDTO
           if (!!dataResponse) {
             setDataProject(dataResponse)
@@ -101,8 +101,7 @@ const HeaderDetailApart: React.FC = () => {
                 <Text>
                   Cliente:{" "}
                   <ClientNameProject>
-                    {/* {!!dataProject && dataProject?.clientId} */}
-                    Zicia
+                    {!!dataProject && dataProject?.code}
                   </ClientNameProject>
                 </Text>
               </InfoItem>
@@ -143,23 +142,11 @@ const HeaderDetailApart: React.FC = () => {
             </InfoBlockDown>
           </InfoBlock>
         </LeftSideDataBlock>
-
-        {/*Falta hacer el bucle , de acuerdo a la cantidad de trabajadores */}
-        {/* <RightSideDataBlock>
-          <Text>Contractor:</Text>
-          <ContractorSection>
-            <IconWrapper>👤</IconWrapper>
-            <IconWrapper>👤</IconWrapper>
-            <IconWrapper>👤</IconWrapper>
-            <IconWrapper>👤</IconWrapper>
-            <IconWrapper>
-              <AddButton>+2</AddButton>
-            </IconWrapper>
-            <AddButton>+</AddButton>
-          </ContractorSection>
-        </RightSideDataBlock> */}
+        <RightSideDataBlock>
+          <Button text="New Service" onClick={() => console.log} />
+        </RightSideDataBlock>
       </DataBlock>
-      {/*Menu*/}
+      {/* Menu */}
 
       <ProjectMenu>
         {/* <MenuItem
@@ -179,14 +166,14 @@ const HeaderDetailApart: React.FC = () => {
         >
           Services
         </MenuItem>
-        {/* <MenuItem
+        <MenuItem
           to={routeWithReplaceId(
-            pathRoutes.PROJECTS.DETAIL.ACTIVITY,
+            pathRoutes.APARTMENTS.DETAIL.ACTIVITY,
             `${idProject}`,
           )}
         >
           Activity
-        </MenuItem> */}
+        </MenuItem>
         {/* <MenuItem
           to={routeWithReplaceId(
             pathRoutes.PROJECTS.DETAIL.TASKS,
@@ -195,22 +182,22 @@ const HeaderDetailApart: React.FC = () => {
         >
           Tasks
         </MenuItem> */}
-        <MenuItem
+        {/* <MenuItem
           to={routeWithReplaceId(
-            pathRoutes.PROJECTS.DETAIL.CONTRACTORS,
+            pathRoutes.APARTMENTS.DETAIL.CONTRACTORS,
             `${idProject}`,
           )}
         >
           Contractor
-        </MenuItem>
-        <MenuItem
+        </MenuItem> */}
+        {/* <MenuItem
           to={routeWithReplaceId(
-            pathRoutes.PROJECTS.DETAIL.FILES,
+            pathRoutes.APARTMENTS.DETAIL.FILES,
             `${idProject}`,
           )}
         >
           Files
-        </MenuItem>
+        </MenuItem> */}
         {/* <MenuItem
           to={routeWithReplaceId(
             pathRoutes.PROJECTS.DETAIL.SETTINGS,

@@ -6,7 +6,10 @@ import {
   ContainerDashboardHeader,
 } from "./dashboard.styles"
 import StadisticsCard from "./components/stadistics-card"
-import { StadisticsDashboardDTO, StadisticsPropertiesDashboardDTO } from "../../core/models/interfaces/project-model"
+import {
+  StadisticsDashboardDTO,
+  StadisticsPropertiesDashboardDTO,
+} from "../../core/models/interfaces/property-model"
 import { ApexOptions } from "apexcharts"
 import axios from "axios"
 import { settingsApp } from "../../config/environment/settings"
@@ -21,22 +24,23 @@ const Dashboard: React.FC = () => {
     inactive: 0,
   }
 
-  const [residentials, setResidentials] = useState<StadisticsPropertiesDashboardDTO>(
-    initialStadisticsProperties,
-  )
+  const [residentials, setResidentials] =
+    useState<StadisticsPropertiesDashboardDTO>(initialStadisticsProperties)
   const [services, setServices] = useState<StadisticsPropertiesDashboardDTO>(
     initialStadisticsProperties,
   )
-  const [contractors, setContractors] = useState<StadisticsPropertiesDashboardDTO>(
-    initialStadisticsProperties,
-  )
-  
+  const [contractors, setContractors] =
+    useState<StadisticsPropertiesDashboardDTO>(initialStadisticsProperties)
+
   // Inicializar datos para el gráfico
-  const [chartSeries, setChartSeries] = useState<{ name: string; data: number[] }[]>([])
-  
+  const [chartSeries, setChartSeries] = useState<
+    { name: string; data: number[] }[]
+  >([])
+
   useEffect(() => {
     // Obtener datos de estadística
-    axios.get(`${settingsApp.api.base}/stadistics`)
+    axios
+      .get(`${settingsApp.api.base}/stadistics`)
       .then(response => {
         const data: StadisticsDashboardDTO = response.data
         setResidentials(data.residentials)
@@ -44,7 +48,20 @@ const Dashboard: React.FC = () => {
         setContractors(data.contractors)
 
         // Inicializar datos para los servicios
-        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        const months = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ]
         const initialData = months.map(() => 0)
         const serviceCounts = {
           clean: [...initialData],
@@ -54,7 +71,8 @@ const Dashboard: React.FC = () => {
         }
 
         // Obtener servicios y contar por mes
-        axios.get(`${settingsApp.api.base}/services/`)
+        axios
+          .get(`${settingsApp.api.base}/services/`)
           .then(response => {
             const services: ServiceCreatedDTO[] = response.data
             services.forEach(service => {
@@ -76,7 +94,7 @@ const Dashboard: React.FC = () => {
                   break
               }
             })
-            
+
             setChartSeries([
               { name: "Clean", data: serviceCounts.clean },
               { name: "Paint", data: serviceCounts.paint },
@@ -110,7 +128,18 @@ const Dashboard: React.FC = () => {
     },
     xaxis: {
       categories: [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
       ],
     },
     yaxis: {
@@ -121,7 +150,7 @@ const Dashboard: React.FC = () => {
       min: 0,
       max: 30,
       labels: {
-        formatter: (value) => value.toString(),
+        formatter: value => value.toString(),
       },
     },
     fill: {

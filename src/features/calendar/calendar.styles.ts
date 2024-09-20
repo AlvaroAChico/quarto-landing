@@ -86,25 +86,28 @@ export const ContainerListData = styled.div`
 `
 
 export const ItemGeneralInfo = styled.div<{ service: string }>`
+  justify-content: space-between;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
+  // align-items: center;
   border-radius: 16px;
   position: relative;
-  display: flex;
   padding: 10px 20px;
+  display: flex;
+  z-index: 0;
   gap: 15px;
 
   ${p =>
     p.service.toUpperCase() == EServiceName.CLEAN ? "background: #9fa5f7;" : ""}
   ${p =>
-    p.service.toUpperCase() == EServiceName.PAINT ? "background: #F58732;" : ""}
+    p.service.toUpperCase() == EServiceName.PAINT ? "background: #efb851;" : ""}
   ${p =>
     p.service.toUpperCase() == EServiceName.MISCELLANEOUS
       ? "background: #C0BDCC;"
       : ""}
   ${p =>
     p.service.toUpperCase() == EServiceName.RESURFACING
-      ? "background: #2BC149;"
+      ? "background: #66a3d9;"
       : ""}
 
   &:before {
@@ -115,9 +118,18 @@ export const ItemGeneralInfo = styled.div<{ service: string }>`
     color: #ffffff21;
     font-size: 35px;
     z-index: 1;
-    bottom: 0;
-    right: 0;
+    bottom: -6px;
+    right: 4px;
   }
+`
+
+export const InfoCardStyles = styled.div`
+  flex-direction: row;
+  align-items: center;
+  border-radius: 16px;
+  position: relative;
+  display: flex;
+  gap: 15px;
 
   > div {
     border-radius: 16px;
@@ -147,7 +159,7 @@ export const InfoTextStyles = styled.div`
 
       > span {
         &:nth-child(1) {
-          background: ${palette.infoColor};
+          background: #2d7c7d;
           border-radius: 20px;
           font-size: 8px;
           padding: 2px 10px;
@@ -181,5 +193,70 @@ export const InfoTextStyles = styled.div`
         }
       }
     }
+  }
+`
+
+export const ContainerFilter = styled.div`
+  margin-bottom: 10px;
+  padding: 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-item: center;
+  width: 100%;
+  gap: 15px;
+`
+
+export const ItemFilterCalendar = styled.div`
+  > div {
+    height: 100%;
+  }
+`
+
+export const ActionsItems = styled.div`
+  flex-direction: row;
+  display: flex;
+  gap: 10px;
+  height: 100%;
+`
+
+export const BtnActionStyles = styled.div`
+  border: 2px solid white;
+  justify-content: center;
+  border-radius: 15px;
+  align-items: center;
+  position: relative;
+  padding: 2px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  color: white;
+  z-index: 1;
+  gap: 4px;
+
+  > svg {
+    max-width: 20px;
+    width: 100%;
+  }
+`
+
+export const BtnApprovedStyles = styled(BtnActionStyles)`
+  background: ${palette.successColor};
+
+  &:hover {
+    background: ${palette.successColorHover};
+  }
+`
+export const BtnRejectedStyles = styled(BtnActionStyles)`
+  background: ${palette.errorColor};
+
+  &:hover {
+    background: ${palette.errorColorHover};
+  }
+`
+export const BtnCompletedStyles = styled(BtnActionStyles)`
+  background: ${palette.successColor};
+
+  &:hover {
+    background: ${palette.successColorHover};
   }
 `

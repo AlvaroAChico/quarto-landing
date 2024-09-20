@@ -12,7 +12,7 @@ import {
 } from "./contractor-report.styles"
 import axios from "axios"
 import { settingsApp } from "../../../config/environment/settings"
-import { ContractorReportDTO } from "../../../core/models/interfaces/project-model"
+import { ContractorReportDTO } from "../../../core/models/interfaces/property-model"
 import { WrapperInput } from "../../../config/theme/global-styles"
 import Input from "../../../components/input/input"
 import { Search } from "styled-icons/bootstrap"

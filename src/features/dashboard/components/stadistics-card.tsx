@@ -7,7 +7,7 @@ import {
 } from "./stadistics-card.styles"
 import ReactApexChart from "react-apexcharts"
 import { ApexOptions } from "apexcharts"
-import { StadisticsPropertiesDashboardDTO } from "../../../core/models/interfaces/project-model"
+import { StadisticsPropertiesDashboardDTO } from "../../../core/models/interfaces/property-model"
 
 interface IOwnProps {
   data: StadisticsPropertiesDashboardDTO
@@ -32,8 +32,6 @@ const StadisticsCard: React.FC<IOwnProps> = ({ data, name }) => {
     series.push(data.onhold)
     labels.push(`On Hold ${data.onhold}`)
   }
-
-
 
   const options: ApexOptions = {
     chart: {
@@ -78,7 +76,7 @@ const StadisticsCard: React.FC<IOwnProps> = ({ data, name }) => {
             options={options}
             series={series}
             type="donut"
-            width={260}
+            width={220}
           />
         </ContainerChart>
       </ContainerDataStats>

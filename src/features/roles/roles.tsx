@@ -29,6 +29,7 @@ import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
 import Skeleton from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
 import ModalEditRole from "../../components/modal/variants/modal-edit-role/modal-edit-role"
+import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
 
 const Roles: React.FC = () => {
   const [listRoles, setListRoles] = React.useState<DataRoleResponse[]>([])
@@ -133,7 +134,7 @@ const Roles: React.FC = () => {
       <HeaderSection
         title="Roles"
         subtitle="List of roles"
-        nameButton="Create"
+        nameButton="New Role"
         havePermissionCreate={dataPermissions?.user.includes("create") || false}
         onPrimaryClick={handleClick}
       />
@@ -247,11 +248,14 @@ const Roles: React.FC = () => {
         handleRefreshData={fetchListRole}
         dataRoleEdit={dataRoleEdit!!}
       />
-      <ModalDeleteRole
+      <ModalDeleteGeneral
         isOpen={isOpenModalDelete}
+        dataAPI="roles"
+        dataLabel="role"
+        dataId={dataRoleDelete?.id || ""}
+        dataName={dataRoleDelete?.name || ""}
         handleClose={handleCloseModalDelete}
-        handleDeleteUser={handleDeleteUserModal}
-        dataUserDelete={dataRoleDelete!!}
+        handleRefresh={fetchListRole}
       />
     </div>
   )

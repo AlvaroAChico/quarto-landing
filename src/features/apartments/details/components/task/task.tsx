@@ -24,9 +24,9 @@ import {
   ContainerFilters,
 } from "./task.styles"
 import {
-  ProjectDTO,
+  PropertyDTO,
   TaskDTO,
-} from "../../../../../core/models/interfaces/project-model"
+} from "../../../../../core/models/interfaces/property-model"
 import { useNavigate, useParams } from "react-router-dom"
 import useDataUser from "../../../../../utils/use-data-user"
 import { settingsApp } from "../../../../../config/environment/settings"
@@ -54,7 +54,7 @@ import { monthsSelect } from "../../../../../constants/app"
 import Skeleton from "react-loading-skeleton"
 
 const DetailsTask: React.FC = () => {
-  const [dataProject, setDataProject] = React.useState<ProjectDTO>()
+  const [dataProject, setDataProject] = React.useState<PropertyDTO>()
   const [isOpenModalEdit, setIsOpenModalEdit] = React.useState<boolean>(false)
   const [isLoadingDataProject, setIsLoadingDataProject] =
     React.useState<boolean>(false)
@@ -116,7 +116,7 @@ const DetailsTask: React.FC = () => {
     if (!!storedToken) {
       axios
         .get(
-          `${settingsApp.api.base}/projects?include=tasks&filter[id]=${idProject}`,
+          `${settingsApp.api.base}/properties?include=tasks&filter[id]=${idProject}`,
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
@@ -126,7 +126,7 @@ const DetailsTask: React.FC = () => {
           },
         )
         .then(response => {
-          const dataResponse: ProjectDTO = response.data[0] as ProjectDTO
+          const dataResponse: PropertyDTO = response.data[0] as PropertyDTO
           if (!!dataResponse) {
             setDataProject(dataResponse)
             // setStadisticts(dataResponse.stadistics)
@@ -286,7 +286,7 @@ const DetailsTask: React.FC = () => {
                 </tr>
               </ContainerHead>
               <ContainerBody>
-                {(dataProject?.tasks || []).map(task => (
+                {(dataProject?.tasks || []).map((task: any) => (
                   <tr>
                     <ContainerNameRoleTD>
                       <div>

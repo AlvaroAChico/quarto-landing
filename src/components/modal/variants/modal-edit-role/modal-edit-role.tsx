@@ -3,6 +3,7 @@ import Modal from "../../modal"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
+  emptyFilterPermissions,
   FilterPermissionsDTO,
   PermissionDTO,
   RoleDTO,
@@ -165,19 +166,7 @@ const ModalEditRole: React.FC<IOwnProps> = ({
 
               return acc
             },
-            {
-              user: [],
-              category: [],
-              client: [],
-              contractor: [],
-              project: [],
-              projectfile: [],
-              setting: [],
-              task: [],
-              calendar: [],
-              reports: [],
-              role: [],
-            },
+            { ...emptyFilterPermissions },
           )
           const objectPerm = transformPermissions(listPerm)
           setListPermissions(objectPerm)
@@ -301,7 +290,7 @@ const ModalEditRole: React.FC<IOwnProps> = ({
             id="name-create-role"
             placeholder="Enter name"
             icon={LocalPolice}
-            props={register("name")}
+            register={register("name")}
           />
           {!!(errors.name as any)?.message && (
             <ErrorMessage>{(errors.name as any)?.message}</ErrorMessage>

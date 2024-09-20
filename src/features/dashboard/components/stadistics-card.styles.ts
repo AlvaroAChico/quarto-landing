@@ -5,6 +5,8 @@ export const ContainerCard = styled.div`
   border-radius: 20px;
   background: white;
   padding: 20px 10px 20px 0;
+  min-width: 250px;
+  min-height: 150px;
 `
 
 export const ContainerHeadTitle = styled.div`
@@ -26,6 +28,4 @@ export const ContainerDataStats = styled.div`
   position: relative;
 `
 
-export const ContainerChart = styled.div`
-  
-`
+export const ContainerChart = styled.div``

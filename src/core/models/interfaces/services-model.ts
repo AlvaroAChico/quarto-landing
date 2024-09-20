@@ -14,6 +14,8 @@ export interface ServiceDTO {
   guardName: string
   createdAt: string
   updatedAt: string
+  status: string
+  isActive: boolean
 }
 
 export interface ServiceTypeDTO {

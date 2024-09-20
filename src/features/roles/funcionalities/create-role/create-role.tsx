@@ -20,6 +20,7 @@ import axios from "axios"
 import useDataUser from "../../../../utils/use-data-user"
 import { toast } from "sonner"
 import {
+  emptyFilterPermissions,
   FilterPermissionsDTO,
   PermissionDTO,
 } from "../../../../core/models/interfaces/user-model"
@@ -131,19 +132,7 @@ const CreateRole: React.FC = () => {
 
               return acc
             },
-            {
-              user: [],
-              category: [],
-              client: [],
-              contractor: [],
-              project: [],
-              projectfile: [],
-              setting: [],
-              task: [],
-              calendar: [],
-              reports: [],
-              role: [],
-            },
+            { ...emptyFilterPermissions },
           )
           const objectPerm = transformPermissions(listPerm)
           setListPermissions(objectPerm)
@@ -259,7 +248,7 @@ const CreateRole: React.FC = () => {
             id="name-create-role"
             placeholder="Enter name"
             icon={LocalPolice}
-            props={register("name")}
+            register={register("name")}
           />
           {!!(errors.name as any)?.message && (
             <ErrorMessage>{(errors.name as any)?.message}</ErrorMessage>

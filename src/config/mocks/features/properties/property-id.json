@@ -1,0 +1,26 @@
+{
+  "id": 1,
+  "code": "HAUQW123",
+  "uuid": "1bf02d64-08b0-428b-9a0b-a3ac6f48e10c",
+  "name": "Property San Felipe",
+  "picture": "https://www.gjarquitectura.com/wp-content/uploads/2021/09/Asentia-Riviera-del-sol-Mijas-Diseno-Gonzalez-Jacobson-Arquitectura-1.jpg",
+  "description": "Desc Construction of central park",
+  "progress": 0,
+  "currency": "USD",
+  "price": 18000,
+  "startDate": "2024-09-01 00:00:00",
+  "dueDate": "2024-09-30 00:00:00",
+  "endDate": null,
+  "clientId": 1,
+  "categoryId": null,
+  "status": "to do",
+  "isActive": true,
+  "createdAt": "2024-08-30 08:06:09",
+  "address": "5678 Sunny Meadow Lane, Apt 205 Springfield, IL 62704",
+  "latitude": "34.123456",
+  "longitude": "-118.123456",
+  "management_company": {
+    "manager_name": "John Doe",
+    "manager_phone": "+1234567890"
+  }
+}

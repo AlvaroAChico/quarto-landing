@@ -18,7 +18,7 @@ import {
   ArrowContainer,
 } from "./overview.styles"
 import { useParams } from "react-router-dom"
-import { ProjectDTO } from "../../../../../core/models/interfaces/project-model"
+import { PropertyDTO } from "../../../../../core/models/interfaces/property-model"
 import useDataUser from "../../../../../utils/use-data-user"
 import axios from "axios"
 import { settingsApp } from "../../../../../config/environment/settings"
@@ -27,7 +27,7 @@ import { CURRENCY_APP } from "../../../../../constants/app"
 import Skeleton from "react-loading-skeleton"
 
 const OverviewApartment: React.FC = () => {
-  const [dataProject, setDataProject] = React.useState<ProjectDTO>()
+  const [dataProject, setDataProject] = React.useState<PropertyDTO>()
   const [isLoadingDataProject, setIsLoadingDataProject] =
     React.useState<boolean>(false)
   const { id: idProject } = useParams<{ id: string }>()
@@ -44,7 +44,7 @@ const OverviewApartment: React.FC = () => {
     if (!!storedToken) {
       axios
         .get(
-          `${settingsApp.api.base}/projects?include=tasks&filter[id]=${idProject}`,
+          `${settingsApp.api.base}/properties?include=tasks&filter[id]=${idProject}`,
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
@@ -54,7 +54,7 @@ const OverviewApartment: React.FC = () => {
           },
         )
         .then(response => {
-          const dataResponse: ProjectDTO = response.data[0] as ProjectDTO
+          const dataResponse: PropertyDTO = response.data[0] as PropertyDTO
           if (!!dataResponse) {
             setDataProject(dataResponse)
             // setStadisticts(dataResponse.stadistics)

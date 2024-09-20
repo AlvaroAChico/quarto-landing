@@ -33,8 +33,9 @@ import { BarChartFill } from "@styled-icons/bootstrap/BarChartFill"
 import { Dashboard } from "@styled-icons/boxicons-solid/Dashboard"
 import { ExitToApp } from "@styled-icons/material-rounded/ExitToApp"
 import { pathRoutes } from "../../config/routes/path"
-import { ACTIONS_TITLE_APP, COOKIES_APP } from "../../constants/app"
+import { ACTIONS_TITLE_APP, APP_MENU, COOKIES_APP } from "../../constants/app"
 import {
+  emptyFilterPermissions,
   FilterPermissionsDTO,
   MeDTO,
   PermissionDTO,
@@ -100,19 +101,7 @@ const DashboardLayout: React.FC = () => {
                 expiration,
               )
               // Filter data permissions
-              const result: FilterPermissionsDTO = {
-                user: [],
-                category: [],
-                client: [],
-                contractor: [],
-                project: [],
-                projectfile: [],
-                setting: [],
-                task: [],
-                calendar: [],
-                reports: [],
-                role: [],
-              }
+              const result: FilterPermissionsDTO = { ...emptyFilterPermissions }
 
               permisos
                 .map(permission => permission.name)
@@ -197,19 +186,25 @@ const DashboardLayout: React.FC = () => {
             </div>
           </ContainerLogo>
           <ContainerMenu>
-            <ItemNavLink
-              to={pathRoutes.DASHBOARD}
-              onClick={() =>
-                dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.DASHBOARD))
-              }
-              className={({ isActive }) => (isActive ? "active" : "inactive")}
-            >
-              <Dashboard />
-              <p>Dashboard</p>
-            </ItemNavLink>
             {!!dataPermissions &&
               !!dataPermissions.user &&
-              dataPermissions?.user.includes("list") && (
+              dataPermissions?.dashboard.includes(APP_MENU.LIST) && (
+                <ItemNavLink
+                  to={pathRoutes.DASHBOARD}
+                  onClick={() =>
+                    dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.DASHBOARD))
+                  }
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                >
+                  <Dashboard />
+                  <p>Dashboard</p>
+                </ItemNavLink>
+              )}
+            {!!dataPermissions &&
+              !!dataPermissions.user &&
+              dataPermissions?.user.includes(APP_MENU.LIST) && (
                 <ItemNavLink
                   onClick={() =>
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.USERS))
@@ -225,7 +220,7 @@ const DashboardLayout: React.FC = () => {
               )}
             {!!dataPermissions &&
               !!dataPermissions.role &&
-              dataPermissions?.role.includes("list") && (
+              dataPermissions?.role.includes(APP_MENU.LIST) && (
                 <ItemNavLink
                   onClick={() =>
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.ROLES))
@@ -240,13 +235,13 @@ const DashboardLayout: React.FC = () => {
                 </ItemNavLink>
               )}
             {!!dataPermissions &&
-              !!dataPermissions.task &&
-              dataPermissions?.task.includes("list") && (
+              !!dataPermissions.service &&
+              dataPermissions?.service.includes(APP_MENU.LIST) && (
                 <ItemNavLink
                   onClick={() =>
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.TASKS))
                   }
-                  to={pathRoutes.TASKS.LIST}
+                  to={pathRoutes.SERVICES.LIST}
                   className={({ isActive }) =>
                     isActive ? "active" : "inactive"
                   }
@@ -256,24 +251,44 @@ const DashboardLayout: React.FC = () => {
                 </ItemNavLink>
               )}
             {!!dataPermissions &&
-              !!dataPermissions.project &&
-              dataPermissions?.project.includes("list") && (
+              !!dataPermissions.company &&
+              dataPermissions?.company.includes(APP_MENU.LIST) && (
+                <ItemNavLink
+                  onClick={() =>
+                    dispatch(
+                      updateActionTitleApp(
+                        ACTIONS_TITLE_APP.MANAGEMENT_COMPANY,
+                      ),
+                    )
+                  }
+                  to={pathRoutes.MANAGEMENT_COMPANY.LIST}
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                >
+                  <Task />
+                  <p>Management Company</p>
+                </ItemNavLink>
+              )}
+            {!!dataPermissions &&
+              !!dataPermissions.property &&
+              dataPermissions?.property.includes(APP_MENU.LIST) && (
                 <ItemNavLink
                   onClick={() =>
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.PROJECTS))
                   }
-                  to={pathRoutes.PROJECTS.LIST}
+                  to={pathRoutes.PROPERTIES.LIST}
                   className={({ isActive }) =>
                     isActive ? "active" : "inactive"
                   }
                 >
                   <FolderOpen />
-                  <p>Residentials</p>
+                  <p>Properties</p>
                 </ItemNavLink>
               )}
             {!!dataPermissions &&
-              !!dataPermissions.project &&
-              dataPermissions?.project.includes("list") && (
+              !!dataPermissions.apartment &&
+              dataPermissions?.apartment.includes(APP_MENU.LIST) && (
                 <ItemNavLink
                   onClick={() =>
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.APARTMENTS))
@@ -288,8 +303,24 @@ const DashboardLayout: React.FC = () => {
                 </ItemNavLink>
               )}
             {!!dataPermissions &&
+              !!dataPermissions.assignment &&
+              dataPermissions?.assignment.includes(APP_MENU.LIST) && (
+                <ItemNavLink
+                  onClick={() =>
+                    dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.APARTMENTS))
+                  }
+                  to={pathRoutes.ASSIGNMENTS.LIST}
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                >
+                  <FolderOpen />
+                  <p>Assignments</p>
+                </ItemNavLink>
+              )}
+            {!!dataPermissions &&
               !!dataPermissions.calendar &&
-              dataPermissions?.calendar.includes("list") && (
+              dataPermissions?.calendar.includes(APP_MENU.LIST) && (
                 <ItemNavLink
                   onClick={() =>
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.CALENDAR))
@@ -305,7 +336,7 @@ const DashboardLayout: React.FC = () => {
               )}
             {!!dataPermissions &&
               !!dataPermissions.reports &&
-              dataPermissions?.reports.includes("list") && (
+              dataPermissions?.reports.includes(APP_MENU.LIST) && (
                 <ItemNavLink
                   onClick={() => {
                     handleReportsClick()

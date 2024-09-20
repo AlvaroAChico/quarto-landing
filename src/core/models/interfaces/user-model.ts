@@ -62,17 +62,30 @@ export interface PivotDTO {
 }
 
 export interface FilterPermissionsDTO {
+  dashboard: string[]
   user: string[]
-  category: string[]
-  client: string[]
-  contractor: string[]
-  project: string[]
-  projectfile: string[]
-  setting: string[]
-  task: string[]
+  role: string[]
+  service: string[]
+  company: string[]
+  property: string[]
+  apartment: string[]
+  assignment: string[]
   calendar: string[]
   reports: string[]
-  role: string[]
+}
+
+export const emptyFilterPermissions = {
+  dashboard: [],
+  user: [],
+  work: [],
+  role: [],
+  service: [],
+  company: [],
+  property: [],
+  apartment: [],
+  assignment: [],
+  calendar: [],
+  reports: [],
 }
 
 export interface CreateUserDTO {

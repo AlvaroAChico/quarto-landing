@@ -385,6 +385,7 @@ export const selectStyles = {
     background: "white",
     borderRadius: 10,
     padding: "1px 4px",
+    height: "100%",
   }),
   option: (provided: any, state: any) => ({
     ...provided,

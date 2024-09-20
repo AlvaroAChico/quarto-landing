@@ -5,21 +5,19 @@ import UserCreateJSON from "../features/users/user-create.json"
 import UserDeleteJSON from "../features/users/user-delete.json"
 import RolesListJSON from "../features/roles/role-list.json"
 import ServicesListJSON from "../features/services/service-list.json"
-import ProjectsListJSON from "../features/projects/project-list.json"
-import ProjectFilterIdJSON from "../features/projects/project-filter-id.json"
-import ProjectIdJSON from "../features/projects/project-id.json"
+import PropertiesListJSON from "../features/properties/property-list.json"
+import ProjectFilterIdJSON from "../features/properties/property-filter-id.json"
+import ProjectIdJSON from "../features/properties/property-id.json"
 import ApartmentsIdJSON from "../features/apartments/apartment-id.json"
 import ApartmentsDetailIdJSON from "../features/apartments/apartment-detail-id.json"
 import ProjectFileByIdJSON from "../features/project-files/project-file-id.json"
 import PermissionsListJSON from "../features/permissions/permission-list.json"
-import StadisticsJSON from "../features/projects/stadistics/stadistics.json"
+import StadisticsJSON from "../features/properties/stadistics/stadistics.json"
 import ServiceDataJSON from "../features/services/service-data.json"
-<<<<<<< HEAD
 import CalendarInfoJSON from "../features/calendar/calendar-service.json"
-=======
-import ResidentialReportSON from "../features/report/residential-report.json"
+import ResidentialReportSON from "../features/report/property-report.json"
 import ContractorReportSON from "../features/report/contractor-report.json"
->>>>>>> ee4a77573f014d2be0bc2336ef8d824884028a00
+import AssigmentListJSON from "../features/asigments/asigments-list.json"
 
 import meJSON from "../features/auth/me.json"
 import { settingsApp } from "../../environment/settings"
@@ -78,30 +76,30 @@ export const handlers = [
   http.get(`${settingsApp.api.base}/services`, () => {
     return HttpResponse.json(ServicesListJSON)
   }),
-  // ******** PROJECTS ********
-  http.get(`${settingsApp.api.base}/projects`, () => {
-    return HttpResponse.json(ProjectsListJSON)
+  // ******** PROPERTIES ********
+  http.get(`${settingsApp.api.base}/properties`, () => {
+    return HttpResponse.json(PropertiesListJSON)
   }),
-  http.post(`${settingsApp.api.base}/projects`, () => {
-    return HttpResponse.json(ProjectsListJSON)
+  http.post(`${settingsApp.api.base}/properties`, () => {
+    return HttpResponse.json(PropertiesListJSON)
   }),
-  http.get(`${settingsApp.api.base}/projects?include=tasks,client`, () => {
-    return HttpResponse.json(ProjectsListJSON)
+  http.get(`${settingsApp.api.base}/properties?include=tasks,client`, () => {
+    return HttpResponse.json(PropertiesListJSON)
   }),
-  http.get(`${settingsApp.api.base}/projects/1?include=tasks`, () => {
+  http.get(`${settingsApp.api.base}/properties/1?include=tasks`, () => {
     return HttpResponse.json(ProjectIdJSON)
   }),
-  http.get(`${settingsApp.api.base}/project-files?filter[id]=1`, () => {
+  http.get(`${settingsApp.api.base}/property-files?filter[id]=1`, () => {
     return HttpResponse.json(ProjectFileByIdJSON)
   }),
   http.get(
-    `${settingsApp.api.base}/projects?include=tasks&filter[id]=1`,
+    `${settingsApp.api.base}/properties?include=tasks&filter[id]=1`,
     () => {
       return HttpResponse.json(ProjectFilterIdJSON)
     },
   ),
   // ******** RESIDENTIALS ********
-  http.get(`${settingsApp.api.base}/residentials/1`, () => {
+  http.get(`${settingsApp.api.base}/properties/1/apartments`, () => {
     return HttpResponse.json(ApartmentsIdJSON)
   }),
   // ******** APARTMENTS ********
@@ -116,12 +114,12 @@ export const handlers = [
   http.get(
     `${settingsApp.api.base}/contractors?include=user&filter[id]=1`,
     () => {
-      return HttpResponse.json(ProjectsListJSON)
+      return HttpResponse.json(PropertiesListJSON)
     },
   ),
   // ******** CLIENTS ********
   http.get(`${settingsApp.api.base}/clients`, () => {
-    return HttpResponse.json(ProjectsListJSON)
+    return HttpResponse.json(PropertiesListJSON)
   }),
 
   // ******** CALENDAR ********
@@ -136,17 +134,15 @@ export const handlers = [
   http.get(`${settingsApp.api.base}/services`, () => {
     return HttpResponse.json(ServiceDataJSON)
   }),
-<<<<<<< HEAD
-=======
   // ******** REPORTS ********
-  http.get(`${settingsApp.api.base}/residentials/report`, () => {
+  http.get(`${settingsApp.api.base}/property/report`, () => {
     return HttpResponse.json(ResidentialReportSON)
   }),
-
   http.get(`${settingsApp.api.base}/contractors/report`, () => {
     return HttpResponse.json(ContractorReportSON)
   }),
-
-
->>>>>>> ee4a77573f014d2be0bc2336ef8d824884028a00
+  // ******** ASSIGMENTS ********
+  http.get(`${settingsApp.api.base}/assigments`, () => {
+    return HttpResponse.json(AssigmentListJSON)
+  }),
 ]

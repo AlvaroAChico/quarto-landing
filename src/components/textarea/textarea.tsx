@@ -7,8 +7,9 @@ interface InputProps {
   type?: string
   placeholder?: string
   customStyles?: string
-  props?: any
   rows?: number
+  register?: any
+  [key: string]: any
 }
 
 const Textarea: React.FC<InputProps> = ({
@@ -17,8 +18,9 @@ const Textarea: React.FC<InputProps> = ({
   icon: Icon,
   type = "text",
   customStyles = "",
-  props,
   rows = 5,
+  register,
+  ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false)
   const handleTogglePasswordVisibility = () => setShowPassword(!showPassword)
@@ -35,6 +37,7 @@ const Textarea: React.FC<InputProps> = ({
         type={showPassword ? "text" : type}
         placeholder={placeholder}
         rows={rows}
+        {...register}
         {...props}
       />
     </InputWrapper>
