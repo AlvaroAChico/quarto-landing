@@ -249,7 +249,7 @@ const DetailsTask: React.FC = () => {
         !!dataProject &&
         (dataProject?.tasks || []).length > 0 &&
         !!dataPermissions &&
-        dataPermissions.task.includes("list") && (
+        dataPermissions.service.includes("list") && (
           <ContainerTable>
             <ContainerFilters>
               <div>

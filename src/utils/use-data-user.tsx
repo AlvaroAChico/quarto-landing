@@ -9,7 +9,7 @@ const useDataUser = () => {
     "user",
     "role",
     "service",
-    "management_company",
+    "company",
     "property",
     "apartment",
     "assignment",

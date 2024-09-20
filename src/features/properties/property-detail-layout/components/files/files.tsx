@@ -24,7 +24,7 @@ import {
   ContainerFilters,
 } from "./files.styles"
 import {
-  ProjectDTO,
+  PropertyDTO,
   TaskDTO,
 } from "../../../../../core/models/interfaces/property-model"
 import { useNavigate, useParams } from "react-router-dom"
@@ -207,7 +207,7 @@ const DetailFiles: React.FC = () => {
         !!dataFiles &&
         (dataFiles || []).length > 0 &&
         !!dataPermissions &&
-        dataPermissions.task.includes("list") && (
+        dataPermissions.service.includes("list") && (
           <ContainerTable>
             {/* <ContainerFilters>
               <div>

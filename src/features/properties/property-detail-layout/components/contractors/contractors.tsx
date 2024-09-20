@@ -24,7 +24,7 @@ import {
   ContainerFilters,
 } from "./contractors.styles"
 import {
-  ProjectDTO,
+  PropertyDTO,
   TaskDTO,
 } from "../../../../../core/models/interfaces/property-model"
 import { useNavigate, useParams } from "react-router-dom"
@@ -211,7 +211,7 @@ const DetailContractors: React.FC = () => {
         !!dataContractor &&
         (dataContractor || []).length > 0 &&
         !!dataPermissions &&
-        dataPermissions.task.includes("list") && (
+        dataPermissions.service.includes("list") && (
           <ContainerTable>
             {/* <ContainerFilters>
               <div>
