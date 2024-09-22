@@ -59,13 +59,7 @@ jobs:
             fi
 
             # Borrar contenedor existente si existe
-            CONTAINER_NAME="services-fe"
-            if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
-              echo "Deteniendo el contenedor existente..."
-              docker stop $CONTAINER_NAME
-              echo "Borrando el contenedor existente..."
-              docker rm $CONTAINER_NAME
-            fi
+            docker rmi -f $(docker images -aq)
 
             # Descargar la nueva imagen
             echo "Descargando la imagen más reciente de Docker Hub..."

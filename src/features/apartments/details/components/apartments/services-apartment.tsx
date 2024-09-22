@@ -175,7 +175,8 @@ const ServicesApartment: React.FC = () => {
         )}
         {!isLoadingListProjects &&
           !!listApartments &&
-          listApartments.works.length <= 0 && (
+          !!!!listApartments.works &&
+          (listApartments.works || []).length <= 0 && (
             <>
               <ContainerTable>
                 <table>
@@ -197,6 +198,7 @@ const ServicesApartment: React.FC = () => {
           )}
         {!isLoadingListProjects &&
           !!listApartments &&
+          !!listApartments.works &&
           listApartments.works.length > 0 &&
           !!dataPermissions &&
           dataPermissions.apartment.includes(APP_MENU.LIST) && (
