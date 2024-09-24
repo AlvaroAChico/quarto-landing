@@ -136,11 +136,11 @@ const DetailsApartments: React.FC = () => {
     setSelectedOptionRole(value)
   }
 
-  const handleDblClickView = (projectId: string) =>
+  const handleDblClickView = (apartmentId: string) =>
     navigate(
       routeWithCustomReplace(pathRoutes.PROPERTIES.DETAIL.APARTMENTS_DETAIL, [
-        ["id", projectId],
-        ["apartmentId", "1"],
+        ["id", idProperty!],
+        ["apartmentId", apartmentId],
       ]),
     )
 

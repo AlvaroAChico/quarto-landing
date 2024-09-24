@@ -37,12 +37,20 @@ import { toast } from "sonner"
 import { formatToDDMonth } from "../../../utils/date-util"
 import Skeleton from "react-loading-skeleton"
 import Button from "../../../components/button/button"
+import ModalAddService from "../../../components/modal/variants/modal-add-service/modal-add-service"
 
 const HeaderDetailApart: React.FC = () => {
   const [dataProject, setDataProject] = React.useState<ApartmentDTO>()
   const [isLoadingDataProject, setIsLoadingDataProject] =
     React.useState<boolean>(false)
-  const { id: idProject } = useParams<{ id: string }>()
+
+  const [isOpenModalAdd, setIsOpenModalAdd] = React.useState(false)
+
+  const handleOpenModalAdd = () => setIsOpenModalAdd(true)
+  const handleCloseModalAdd = () => setIsOpenModalAdd(false)
+  const handleAddServiceModal = () => setIsOpenModalAdd(false)
+
+  const { id: idApartment } = useParams<{ id: string }>()
 
   const { handleGetToken } = useDataUser()
 
@@ -50,12 +58,12 @@ const HeaderDetailApart: React.FC = () => {
     fetchDataProjects()
   }, [])
 
-  const fetchDataProjects = React.useCallback(() => {
+  const fetchDataProjects = () => {
     setIsLoadingDataProject(true)
     const storedToken = handleGetToken()
     if (!!storedToken) {
       axios
-        .get(`${settingsApp.api.base}/apartments/${idProject}`, {
+        .get(`${settingsApp.api.base}/apartments/${idApartment}`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             "Content-Type": "application/json",
@@ -63,9 +71,9 @@ const HeaderDetailApart: React.FC = () => {
           },
         })
         .then(response => {
-          const dataResponse: ApartmentDTO = response.data as ApartmentDTO
+          const dataResponse: ApartmentDTO[] = response.data as ApartmentDTO[]
           if (!!dataResponse) {
-            setDataProject(dataResponse)
+            setDataProject(dataResponse[0])
             // setStadisticts(dataResponse.stadistics)
           }
           setIsLoadingDataProject(false)
@@ -75,21 +83,21 @@ const HeaderDetailApart: React.FC = () => {
           setIsLoadingDataProject(false)
         })
     }
-  }, [])
+  }
 
   return (
     <DetailsContainer>
       <DataBlock>
         <LeftSideDataBlock>
           <ImageContainer>
-            <img src={!!dataProject ? dataProject?.picture : ""} />
+            <img src={!!dataProject ? dataProject.picture : ""} />
           </ImageContainer>
           <InfoBlock>
             {/*Nombre del proyecto */}
             <InfoBlockUp>
               <NameProject>
                 {!isLoadingDataProject ? (
-                  !!dataProject && dataProject?.name
+                  !!dataProject && dataProject.name
                 ) : (
                   <Skeleton count={1} height={40} />
                 )}
@@ -99,9 +107,9 @@ const HeaderDetailApart: React.FC = () => {
             <InfoBlockDown>
               <InfoItem>
                 <Text>
-                  Cliente:{" "}
+                  Detail:{" "}
                   <ClientNameProject>
-                    {!!dataProject && dataProject?.code}
+                    {!!dataProject && dataProject.code}
                   </ClientNameProject>
                 </Text>
               </InfoItem>
@@ -143,7 +151,7 @@ const HeaderDetailApart: React.FC = () => {
           </InfoBlock>
         </LeftSideDataBlock>
         <RightSideDataBlock>
-          <Button text="New Service" onClick={() => console.log} />
+          <Button text="New work" onClick={handleOpenModalAdd} />
         </RightSideDataBlock>
       </DataBlock>
       {/* Menu */}
@@ -161,7 +169,7 @@ const HeaderDetailApart: React.FC = () => {
         <MenuItem
           to={routeWithReplaceId(
             pathRoutes.APARTMENTS.DETAIL.SERVICES,
-            `${idProject}`,
+            `${idApartment}`,
           )}
         >
           Services
@@ -169,7 +177,7 @@ const HeaderDetailApart: React.FC = () => {
         <MenuItem
           to={routeWithReplaceId(
             pathRoutes.APARTMENTS.DETAIL.ACTIVITY,
-            `${idProject}`,
+            `${idApartment}`,
           )}
         >
           Activity
@@ -215,6 +223,11 @@ const HeaderDetailApart: React.FC = () => {
         </div>
         <div></div>
       </ContainerOutletProjectDetails>
+      <ModalAddService
+        isOpen={isOpenModalAdd}
+        handleClose={handleCloseModalAdd}
+        handleRefreshData={handleAddServiceModal}
+      />
     </DetailsContainer>
   )
 }

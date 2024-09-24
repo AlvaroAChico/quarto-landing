@@ -172,7 +172,7 @@ const Dashboard: React.FC = () => {
         <StadisticsCard data={services} name="Customers" />
         <StadisticsCard data={contractors} name="Contractors" />
       </ContainerDashboardHeader>
-      <ContainerDashboardBody>
+      {/* <ContainerDashboardBody>
         <ReactApexChart
           options={options}
           series={chartSeries}
@@ -180,7 +180,7 @@ const Dashboard: React.FC = () => {
           height={350}
           width={1000}
         />
-      </ContainerDashboardBody>
+      </ContainerDashboardBody> */}
     </ContainerDashboard>
   )
 }

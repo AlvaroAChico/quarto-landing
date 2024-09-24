@@ -22,7 +22,7 @@ const Assignments: React.FC = () => {
 
   const { handleGetToken } = useDataUser()
 
-  const fetchListAssigments = React.useCallback(() => {
+  const fetchListAssigments = () => {
     setIsLoadingAssigmentList(true)
     const storedToken = handleGetToken()
     if (storedToken) {
@@ -47,7 +47,7 @@ const Assignments: React.FC = () => {
           setIsLoadingAssigmentList(false)
         })
     }
-  }, [handleGetToken])
+  }
 
   React.useEffect(() => {
     fetchListAssigments()
@@ -63,12 +63,14 @@ const Assignments: React.FC = () => {
       <ContainerAssigment>
         <ContainerListAssigment>
           {!!assigmentsList &&
-            assigmentsList.map(assig => (
-              <ItemAssigment
-                assigment={assig}
-                onRefresh={fetchListAssigments}
-              />
-            ))}
+            assigmentsList
+              .filter(ass => ass.status.name.toLowerCase() == "pending")
+              .map(assig => (
+                <ItemAssigment
+                  assigment={assig}
+                  onRefresh={fetchListAssigments}
+                />
+              ))}
         </ContainerListAssigment>
       </ContainerAssigment>
     </SectionRoute>

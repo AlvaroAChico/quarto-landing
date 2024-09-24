@@ -5,6 +5,7 @@ export const CreateWorkSchema = object({
   serviceId: string().required("Enter a service"),
   contractorId: string().required("Enter a contractor"),
   date: string().required("Enter a date"),
+  notes: string(),
 })
 
 export type CreateWorkForm = InferType<typeof CreateWorkSchema>

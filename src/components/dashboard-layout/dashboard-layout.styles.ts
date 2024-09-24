@@ -75,10 +75,16 @@ export const ContainerLogo = styled.div`
 export const ContainerMenu = styled.div`
   flex-direction: column;
   padding: 10px 15px;
+  min-width: 250px;
   margin: 10px 0;
+  overflow: auto;
   display: flex;
   height: 100%;
   gap: 10px;
+
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
 
   > a {
     text-decoration: none;

@@ -1,19 +1,12 @@
 import React from "react"
 import HeaderSection from "../../components/header-section/header-section"
 import {
-  ActionsItems,
-  BtnApprovedStyles,
-  BtnCompletedStyles,
-  BtnRejectedStyles,
   ContainerCalendar,
   ContainerDaysStyles,
   ContainerFilter,
   ContainerListData,
-  InfoCardStyles,
-  InfoTextStyles,
   ItemDay,
   ItemFilterCalendar,
-  ItemGeneralInfo,
 } from "./calendar.styles"
 import { ArrowIosBackOutline } from "@styled-icons/evaicons-outline/ArrowIosBackOutline"
 import { ArrowIosForwardOutline } from "@styled-icons/evaicons-outline/ArrowIosForwardOutline"
@@ -29,12 +22,13 @@ import { selectStyles, WrapperInput } from "../../config/theme/global-styles"
 import { Calendar4 } from "@styled-icons/bootstrap/Calendar4"
 import Select from "react-select"
 import { EOptionsKey } from "../../constants/app"
-import { Check } from "@styled-icons/evil/Check"
-import { CloseCircle } from "@styled-icons/ionicons-outline/CloseCircle"
 import Input from "../../components/input/input"
 import { PropertyDTO } from "../../core/models/interfaces/property-model"
 import { UserDTO } from "../../core/models/interfaces/user-model"
 import { ServiceDTO } from "../../core/models/interfaces/services-model"
+import ModalAddService from "../../components/modal/variants/modal-add-service/modal-add-service"
+import Button from "../../components/button/button"
+import ItemCalendarInfo from "./functionalities/item-calendar-info"
 
 const Calendar: React.FC = () => {
   const [isLoadingFilterCalendar, setIsLoadingFilterCalendar] =
@@ -43,9 +37,6 @@ const Calendar: React.FC = () => {
   const [allDataCalendar, setAllDataCalendar] = React.useState<
     InfoCalendarDTO[]
   >([])
-  const [listProperties, setListProperties] = React.useState<PropertyDTO[]>([])
-  const [listContractors, setListContractors] = React.useState<UserDTO[]>([])
-  const [listServices, setListServices] = React.useState<ServiceDTO[]>([])
   const [daySelected, setDaySelected] = React.useState<any>(new Date())
   // Selected Property
   const [selectedOptionProperty, setSelectedOptionProperty] =
@@ -57,6 +48,12 @@ const Calendar: React.FC = () => {
   const [optionsProperty, setOptionsProperty] = React.useState<any>([])
   const [optionsContractors, setOptionsContractors] = React.useState<any>([])
   const [optionsServices, setOptionsServices] = React.useState<any>([])
+
+  const [isOpenModalAdd, setIsOpenModalAdd] = React.useState(false)
+
+  const handleOpenModalAdd = () => setIsOpenModalAdd(true)
+  const handleCloseModalAdd = () => setIsOpenModalAdd(false)
+  const handleAddServiceModal = () => setIsOpenModalAdd(false)
 
   const handleDayClick = (day: any) => {
     setDaySelected(day)
@@ -83,7 +80,7 @@ const Calendar: React.FC = () => {
 
   const { handleGetToken } = useDataUser()
 
-  const fetchListFilterCalendar = React.useCallback(() => {
+  const fetchListFilterCalendar = () => {
     setIsLoadingFilterCalendar(true)
     const storedToken = handleGetToken()
     if (storedToken) {
@@ -109,7 +106,7 @@ const Calendar: React.FC = () => {
           setIsLoadingFilterCalendar(false)
         })
     }
-  }, [handleGetToken])
+  }
 
   const fetchDateComboBox = React.useCallback(() => {
     // Fetch Properties
@@ -322,6 +319,9 @@ const Calendar: React.FC = () => {
               placeholder="Services"
             />
           </ItemFilterCalendar>
+          <ItemFilterCalendar>
+            <Button text="New work" onClick={handleOpenModalAdd} />
+          </ItemFilterCalendar>
         </ContainerFilter>
         <ContainerDaysStyles>
           <div>
@@ -357,52 +357,16 @@ const Calendar: React.FC = () => {
                 daySelected.toLocaleDateString(),
               )
             ) {
-              return (
-                <ItemGeneralInfo service={info.service.name}>
-                  <InfoCardStyles>
-                    <div>
-                      <img src={info.residential.picture} />
-                    </div>
-                    <InfoTextStyles>
-                      <div>
-                        <span>{info.residential.name}</span>
-                        <span>{info.apartment.name}</span>
-                      </div>
-                      <div>
-                        <span>
-                          {!!info &&
-                          !!info.contractor &&
-                          !!info.contractor.firstName &&
-                          !!info.contractor.lastName ? (
-                            <>{`${info.contractor.firstName} ${info.contractor.lastName}`}</>
-                          ) : (
-                            <>Sin Asignar</>
-                          )}
-                        </span>
-                        <span>{info.status.name}</span>
-                      </div>
-                    </InfoTextStyles>
-                  </InfoCardStyles>
-                  <ActionsItems>
-                    <BtnApprovedStyles>
-                      <Check />
-                      <span>Approved</span>
-                    </BtnApprovedStyles>
-                    <BtnRejectedStyles>
-                      <CloseCircle />
-                      <span>Rejected</span>
-                    </BtnRejectedStyles>
-                    <BtnCompletedStyles>
-                      <Check />
-                      <span>Completed</span>
-                    </BtnCompletedStyles>
-                  </ActionsItems>
-                </ItemGeneralInfo>
-              )
+              return <ItemCalendarInfo info={info} />
             }
           })}
         </ContainerListData>
       </ContainerCalendar>
+      <ModalAddService
+        isOpen={isOpenModalAdd}
+        handleClose={handleCloseModalAdd}
+        handleRefreshData={fetchListFilterCalendar}
+      />
     </div>
   )
 }

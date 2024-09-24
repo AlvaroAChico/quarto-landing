@@ -109,18 +109,21 @@ const ServicesApartment: React.FC = () => {
     const storedToken = handleGetToken()
     if (!!storedToken) {
       axios
-        .get(`${settingsApp.api.base}/apartments/${idApartment}`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
+        .get(
+          `${settingsApp.api.base}/apartments/${idApartment}?include=works`,
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
           },
-        })
+        )
         .then(response => {
           console.log("Response Apartment => ", response.data)
-          const dataResponse: ApartmentDTO = response.data as ApartmentDTO
+          const dataResponse: ApartmentDTO[] = response.data as ApartmentDTO[]
           if (!!dataResponse) {
-            setListApartments(dataResponse)
+            setListApartments(dataResponse[0])
             // setStadisticts(dataResponse.stadistics)
           }
           setIsLoadingListProjects(false)
@@ -276,10 +279,7 @@ const ServicesApartment: React.FC = () => {
                             <User />
                           </span>
                           <span>{}</span>
-                          <span>
-                            {/* {project.clientId} */}
-                            Zicia
-                          </span>
+                          <span>Zicia</span>
                         </div>
                       </ClientStylesTD>
                       <DateStylesTD>

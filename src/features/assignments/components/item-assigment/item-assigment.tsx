@@ -10,6 +10,11 @@ import {
 import { AssigmentDTO } from "../../../../core/models/interfaces/assigment-model"
 import { formatToDDMonth } from "../../../../utils/date-util"
 import { InfoCalendarDTO } from "../../../../core/models/interfaces/calendar-model"
+import useDataUser from "../../../../utils/use-data-user"
+import axios from "axios"
+import { settingsApp } from "../../../../config/environment/settings"
+import { toast } from "sonner"
+import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
 
 interface IOwnProps {
   assigment: InfoCalendarDTO
@@ -19,13 +24,47 @@ interface IOwnProps {
 const ItemAssigment: React.FC<IOwnProps> = ({ assigment, onRefresh }) => {
   const [isLoadingApproval, setIsLoadingApproval] = React.useState(false)
 
+  const { handleGetToken } = useDataUser()
+
+  const sendResponseAssigment = (accepted: boolean) => {
+    const storedToken = handleGetToken()
+    if (storedToken) {
+      axios
+        .post(
+          `${settingsApp.api.base}/works/${assigment.id}`,
+          {
+            type: "contractor",
+            status_id: accepted ? 3 : 4,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              ContentType: "application/json",
+              Accept: "application/json",
+            },
+          },
+        )
+        .then(response => {
+          const data: any = response.data
+          onRefresh()
+          toast.success("Job updated successfully")
+          setIsLoadingApproval(false)
+        })
+        .catch(err => {
+          toast.error(err.response.data.message)
+          onRefresh()
+          setIsLoadingApproval(false)
+        })
+    }
+  }
+
   const handleAccepted = () => {
     setIsLoadingApproval(true)
-    console.log("ID => ", assigment.id)
-    // onRefresh()
+    sendResponseAssigment(true)
   }
   const handleRejected = () => {
-    onRefresh()
+    setIsLoadingApproval(true)
+    sendResponseAssigment(false)
   }
 
   return (
@@ -36,7 +75,7 @@ const ItemAssigment: React.FC<IOwnProps> = ({ assigment, onRefresh }) => {
         </div>
         <div>
           <span>{formatToDDMonth(assigment.startDate)}</span>
-          <span>{assigment.service.name}</span>
+          <span>{assigment.status.name}</span>
           <span>
             {assigment.residential.name}, Apartment {assigment.apartment.code}
           </span>

@@ -45,10 +45,12 @@ import {
   CreateWorkSchema,
 } from "../../../../core/models/schemas/work-schema"
 import { formatToDDMMYYYY, formatToDMYHH } from "../../../../utils/date-util"
+import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
+import { PropertyDTO } from "../../../../core/models/interfaces/property-model"
 
 interface IOwnProps {
   isOpen: boolean
-  apartmentId: string
+  apartmentId?: string
   handleClose: () => void
   handleRefreshData: () => void
 }
@@ -59,10 +61,26 @@ const ModalAddService: React.FC<IOwnProps> = ({
   handleClose,
   handleRefreshData,
 }) => {
+  // Services
   const [optionsServices, setOptionsServices] = React.useState<any>([])
-  const [optionsContractors, setOptionsContractors] = React.useState<any>([])
-  const [selectedOptionRole, setSelectedOptionRole] =
-    React.useState<Option | null>(null)
+  const [selectedOptionServices, setSelectedOptionServices] =
+    React.useState<any>(null)
+  // Contractor
+  const [optionsContractors, setOptionsContractor] = React.useState<any>([])
+  const [selectedOptionContractor, setSelectedOptionContractor] =
+    React.useState<any>(null)
+  // Residential
+  const [optionsResidential, setOptionsResidential] = React.useState<any>([])
+  const [listCurrentProperty, setListCurrentProperty] = React.useState<
+    PropertyDTO[]
+  >([])
+  const [selectedOptionResidential, setSelectedOptionResidential] =
+    React.useState<any>(null)
+  // Apartment
+  const [optionsApartment, setOptionsApartment] = React.useState<any>([])
+  const [selectedOptionApartment, setSelectedOptionApartment] =
+    React.useState<any>(null)
+  // More states
   const [isSubmitUserUpdate, setIsSubmitUserUpdate] =
     React.useState<boolean>(false)
   const [daySelected, setDaySelected] = React.useState<any>(new Date())
@@ -75,6 +93,7 @@ const ModalAddService: React.FC<IOwnProps> = ({
       serviceId: "",
       contractorId: "",
       date: "",
+      notes: "",
     },
   })
 
@@ -87,17 +106,35 @@ const ModalAddService: React.FC<IOwnProps> = ({
 
   const handleChangeOptionService = (value: any) => {
     setValue("serviceId", value.value)
-    setSelectedOptionRole(value)
+    setSelectedOptionServices(value)
   }
 
   const handleChangeOptionContractor = (value: any) => {
     setValue("contractorId", value.value)
-    setSelectedOptionRole(value)
+    setSelectedOptionContractor(value)
+  }
+
+  const handleChangeOptionResidential = (value: any) => {
+    setSelectedOptionResidential(value)
+    const listApart = listCurrentProperty
+      .filter(prop => prop.id == value.value)
+      .flatMap(prop =>
+        (prop.apartments || []).map(ap => ({
+          value: ap.id,
+          label: ap.name,
+        })),
+      )
+
+    setOptionsApartment(listApart)
+  }
+
+  const handleChangeOptionApartment = (value: any) => {
+    setValue("apartmentId", value.value)
+    setSelectedOptionApartment(value)
   }
 
   React.useEffect(() => {
     if (!!apartmentId) {
-      console.log("apartmentId => ", apartmentId)
       setValue("apartmentId", apartmentId)
     }
   }, [apartmentId])
@@ -135,9 +172,9 @@ const ModalAddService: React.FC<IOwnProps> = ({
         .then(response => {
           setIsSubmitUserUpdate(false)
           console.log("Response data -> ", response.data)
-          const data: UserDTO = response.data as UserDTO
-          if (!!data && !!data.id) {
-            toast.success("User successfully updated")
+          const data: MessageResponsedDTO = response.data as MessageResponsedDTO
+          if (!!data && !!data.message) {
+            toast.success(data.message)
             handleRefreshData()
             handleClose()
           }
@@ -161,11 +198,11 @@ const ModalAddService: React.FC<IOwnProps> = ({
         })
         .then(response => {
           const listData: ServiceDTO[] = response.data as ServiceDTO[]
-          const listRoles = (listData || []).map(data => ({
+          const listServices = (listData || []).map(data => ({
             value: data.id,
             label: data.name,
           }))
-          setOptionsServices(listRoles.filter((role: any) => !!role))
+          setOptionsServices(listServices.filter((role: any) => !!role))
         })
 
       axios
@@ -176,20 +213,40 @@ const ModalAddService: React.FC<IOwnProps> = ({
         })
         .then(response => {
           const listData: UserDTO[] = response.data as UserDTO[]
-          const contractors = listData.filter(user =>
+          const contractors = (listData || []).filter(user =>
             user.role.some(ro => ro.name === "contractor"),
           )
-          const listRoles = (contractors || []).map(data => ({
+          const listContractors = (contractors || []).map(data => ({
             value: data.id,
             label: data.firstName,
           }))
-          setOptionsContractors(listRoles.filter((role: any) => !!role))
+          setOptionsContractor(listContractors.filter((cont: any) => !!cont))
+        })
+
+      axios
+        .get(`${settingsApp.api.base}/residentials?include=apartments`, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        })
+        .then(response => {
+          const dataResponse: PropertyDTO[] = response.data as PropertyDTO[]
+          if (!!dataResponse) {
+            const listResidentials = (dataResponse || []).map(data => ({
+              value: data.id,
+              label: data.name,
+            }))
+            setListCurrentProperty(dataResponse)
+            setOptionsResidential(listResidentials.filter((res: any) => !!res))
+          }
         })
     }
   }, [])
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} title="Edit User">
+    <Modal isOpen={isOpen} onClose={handleClose} title="Create Work">
       <FormContainer>
         <WrapperInput>
           <label htmlFor="firstname-create-user">Start date</label>
@@ -222,7 +279,7 @@ const ModalAddService: React.FC<IOwnProps> = ({
         <WrapperInput>
           <label htmlFor="password-create-user">Services</label>
           <Select
-            defaultValue={selectedOptionRole}
+            defaultValue={selectedOptionServices}
             onChange={handleChangeOptionService}
             options={optionsServices}
             isSearchable={false}
@@ -235,7 +292,7 @@ const ModalAddService: React.FC<IOwnProps> = ({
         <WrapperInput>
           <label htmlFor="password-create-user">Contractors</label>
           <Select
-            defaultValue={selectedOptionRole}
+            defaultValue={selectedOptionContractor}
             onChange={handleChangeOptionContractor}
             options={optionsContractors}
             isSearchable={false}
@@ -245,6 +302,40 @@ const ModalAddService: React.FC<IOwnProps> = ({
             <ErrorMessage>{(errors.contractorId as any)?.message}</ErrorMessage>
           )}
         </WrapperInput>
+        {(!apartmentId || apartmentId == "") && (
+          <>
+            <WrapperInput>
+              <label htmlFor="residential-create-user">Residentials</label>
+              <Select
+                defaultValue={selectedOptionResidential}
+                onChange={handleChangeOptionResidential}
+                options={optionsResidential}
+                isSearchable={false}
+                styles={selectStyles}
+              />
+              {!!(errors.contractorId as any)?.message && (
+                <ErrorMessage>
+                  {(errors.contractorId as any)?.message}
+                </ErrorMessage>
+              )}
+            </WrapperInput>
+            <WrapperInput>
+              <label htmlFor="apartment-create-user">Apartments</label>
+              <Select
+                defaultValue={selectedOptionApartment}
+                onChange={handleChangeOptionApartment}
+                options={optionsApartment}
+                isSearchable={false}
+                styles={selectStyles}
+              />
+              {!!(errors.contractorId as any)?.message && (
+                <ErrorMessage>
+                  {(errors.contractorId as any)?.message}
+                </ErrorMessage>
+              )}
+            </WrapperInput>
+          </>
+        )}
         <Button
           onClick={submitWrapper(handleSubmit)}
           text="Create Work"

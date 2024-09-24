@@ -51,7 +51,6 @@ import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
 import Skeleton from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
 import { routeWithReplaceId } from "../../utils/path-util"
-import { formatToDDMonth } from "../../utils/date-util"
 import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
 
 const Apartments: React.FC = () => {

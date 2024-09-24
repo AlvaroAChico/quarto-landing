@@ -107,13 +107,16 @@ const DetailsApartmentsById: React.FC = () => {
     const storedToken = handleGetToken()
     if (!!storedToken) {
       axios
-        .get(`${settingsApp.api.base}/apartments/1?include=works`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
+        .get(
+          `${settingsApp.api.base}/apartments/${apartmentId}?include=works`,
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
           },
-        })
+        )
         .then(response => {
           console.log("Response => ", response.data)
           const dataResponse: ApartmentDTO[] = response.data as ApartmentDTO[]
@@ -180,31 +183,7 @@ const DetailsApartmentsById: React.FC = () => {
           )}
           {!isLoadingListProjects &&
             !!listApartments &&
-            !!listApartments.works &&
-            listApartments.works.length <= 0 && (
-              <>
-                <ContainerTable>
-                  <table>
-                    <ContainerHead>
-                      <tr>
-                        <td>Service</td>
-                        <td>Status</td>
-                        <td>Contractor</td>
-                        <td>Due Date</td>
-                        <td></td>
-                      </tr>
-                    </ContainerHead>
-                  </table>
-                  <NotFoundStyles>
-                    <span>No projects found</span>
-                  </NotFoundStyles>
-                </ContainerTable>
-              </>
-            )}
-          {!isLoadingListProjects &&
-            !!listApartments &&
-            !!listApartments.works &&
-            listApartments.works.length > 0 && (
+            !!listApartments.works && (
               <ContainerTable>
                 <ApartmentTitleStyles>
                   <div>
@@ -386,6 +365,14 @@ const DetailsApartmentsById: React.FC = () => {
                     ))}
                   </ContainerBody>
                 </table>
+                {!isLoadingListProjects &&
+                  !!listApartments &&
+                  !!listApartments.works &&
+                  listApartments.works.length <= 0 && (
+                    <NotFoundStyles>
+                      <span>No works found</span>
+                    </NotFoundStyles>
+                  )}
               </ContainerTable>
             )}
         </ContentStylesSection>
