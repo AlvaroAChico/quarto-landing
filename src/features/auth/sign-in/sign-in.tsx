@@ -23,7 +23,6 @@ import { pathRoutes } from "../../../config/routes/path"
 import Button from "../../../components/button/button"
 import { ACTIONS_TITLE_APP, COOKIES_APP } from "../../../constants/app"
 import {
-  emptyFilterPermissions,
   FilterPermissionsDTO,
   SignInResponse,
 } from "../../../core/models/interfaces/user-model"
@@ -36,6 +35,10 @@ import { settingsApp } from "../../../config/environment/settings"
 import { useAppDispatch } from "../../../app/hooks"
 import { updateActionTitleApp } from "../../../core/store/app-store/appSlice"
 import useDataUser from "../../../utils/use-data-user"
+import {
+  createEmptyFilterPermissions,
+  saveJsonCookiesWithSplit,
+} from "../../../utils/cookie-util"
 
 const SignIn: React.FC = () => {
   const [isSubmitLogin, setIsSubmitLogin] = React.useState<boolean>(false)
@@ -54,87 +57,85 @@ const SignIn: React.FC = () => {
     handleSubmit: submitWrapper,
     formState: { errors },
     register,
-    getValues,
   } = methods
 
   const { clearAllDataAPP } = useDataUser()
 
-  const handleSubmit = React.useCallback(
-    (data: any) => {
-      setIsSubmitLogin(true)
-      axios
-        .post(
-          `${settingsApp.api.base}/auth/login`,
-          {
-            email: data.email,
-            password: data.password,
+  const handleSubmit = (data: any) => {
+    setIsSubmitLogin(true)
+    axios
+      .post(
+        `${settingsApp.api.base}/auth/login`,
+        {
+          email: data.email,
+          password: data.password,
+        },
+        {
+          headers: {
+            ContentType: "application/json",
+            Accept: "application/json",
+            CacheControl: "no-cache",
+            Pragma: "no-cache",
+            Expires: "0",
           },
-          {
-            headers: {
-              ContentType: "application/json",
-              Accept: "application/json",
-              CacheControl: "no-cache",
-              Pragma: "no-cache",
-              Expires: "0",
-            },
-          },
+        },
+      )
+      .then(response => {
+        setIsSubmitLogin(false)
+        // Expiración expresada en dias
+        clearAllDataAPP()
+        // localStorage.setItem(COOKIES_APP.PERMISSIONS_APP, "_@")
+        console.log("Response API => ", response)
+        const data: SignInResponse = response.data as SignInResponse
+        console.log("Response API data => ", data)
+        const expiration = {
+          expires: 7,
+        }
+        Cookies.set(COOKIES_APP.USER_RES, JSON.stringify(data["0"]), expiration)
+        Cookies.set(
+          COOKIES_APP.TOKEN_APP,
+          JSON.stringify(data.token),
+          expiration,
         )
-        .then(response => {
-          setIsSubmitLogin(false)
-          // Expiración expresada en dias
-          clearAllDataAPP()
-          localStorage.setItem(COOKIES_APP.PERMISSIONS_APP, "_@")
-          const data: SignInResponse = response.data as SignInResponse
-          const expiration = {
-            expires: 7,
-          }
-          Cookies.set(
-            COOKIES_APP.USER_RES,
-            JSON.stringify(data["0"]),
-            expiration,
-          )
-          Cookies.set(
-            COOKIES_APP.TOKEN_APP,
-            JSON.stringify(data.token),
-            expiration,
-          )
-          Cookies.set(
-            COOKIES_APP.ROLES_APP,
-            JSON.stringify(data.roles),
-            expiration,
-          )
-          // Filter data permissions
-          const result: FilterPermissionsDTO = {
-            ...emptyFilterPermissions,
-          }
-          data.permisos
-            .map(permission => permission.name)
-            .forEach(permission => {
-              const parts = permission.split("-")
-              const type = parts[0]
+        Cookies.set(
+          COOKIES_APP.ROLES_APP,
+          JSON.stringify(data.roles),
+          expiration,
+        )
+        // Filter data permissions
+        const result: FilterPermissionsDTO = createEmptyFilterPermissions()
+        console.log("Permissions Result => ", result)
+        console.log("Permissions => ", data.permisos)
+        data.permisos
+          .map(permission => permission.name)
+          .forEach(permission => {
+            const parts = permission.split("-")
+            const type = parts[0]
 
-              if (type in result) {
-                const action = parts.slice(1).join("-")
-                result[type as keyof FilterPermissionsDTO].push(action)
-              }
-            })
+            if (type in result) {
+              const action = parts.slice(1).join("-")
+              result[type as keyof FilterPermissionsDTO].push(action)
+            }
+          })
 
-          if (!!result) {
-            localStorage.setItem(
-              COOKIES_APP.PERMISSIONS_APP,
-              JSON.stringify(result),
-            )
-          }
-          dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.DASHBOARD))
+        if (!!result) {
+          console.log("result permissions => ", result)
+          saveJsonCookiesWithSplit(result)
+          // localStorage.setItem(
+          //   COOKIES_APP.PERMISSIONS_APP,
+          //   JSON.stringify(result),
+          // )
+        }
+        dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.DASHBOARD))
+        setTimeout(() => {
           navigate(pathRoutes.DASHBOARD)
-        })
-        .catch(err => {
-          setIsSubmitLogin(false)
-          toast.error(err.response.data.message)
-        })
-    },
-    [getValues],
-  )
+        }, 300)
+      })
+      .catch(err => {
+        setIsSubmitLogin(false)
+        toast.error(err.response.data.message)
+      })
+  }
 
   return (
     <ContainerSignIn>

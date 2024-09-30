@@ -52,6 +52,9 @@ export const pathRoutes = {
   CALENDAR: {
     LIST: "/calendar",
   },
+  DAILY_CALENDAR: {
+    LIST: "/daily-calendar",
+  },
   REPORTS: {
     LIST: "/reports",
     LIST_RESIDENTIAL: "/reports/residential",

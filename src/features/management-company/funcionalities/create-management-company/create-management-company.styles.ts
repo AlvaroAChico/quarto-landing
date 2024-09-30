@@ -1,169 +1,147 @@
 import styled from "styled-components"
+import { palette } from "../../../../config/theme/theme"
+import { WrapperInput } from "../../../../config/theme/global-styles"
 
-export const ContainerRoles = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 20px;
+export const FormContainer = styled.div`
+  grid-template-columns: repeat(2, 1fr);
+  width: fit-content;
+  min-width: 800px;
+  display: grid;
+  margin: auto;
+  gap: 15px;
+`
 
-  > div:nth-child(1) {
-    max-width: 600px;
-    margin: auto;
-    width: 100%;
+export const ContainerBodyCreate = styled.div``
 
-    > div {
-      max-width: 600px;
-      width: 100%;
+export const CustomWrapperInput = styled(WrapperInput)`
+  > label {
+    span {
+      color: ${palette.successColor};
+      margin-left: 10px;
+      font-weight: 900;
     }
   }
 `
-export const Title = styled.h2`
-  color: orange;
-  margin-bottom: 1.5rem;
-  align-self: flex-start;
-`
 
-export const FormGroup = styled.div`
-  width: 100%;
-  max-width: 600px;
-  margin-bottom: 1.5rem;
-  position: relative;
-`
-
-export const Label = styled.label`
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-  color: #333;
-`
-
-export const InputStyles = styled.input`
-  width: 100%;
-  padding: 0.5rem 0.5rem 0.5rem 2.5rem;
-  border: 1px solid #d9d9d9;
-  border-radius: 10px;
-  font-size: 1rem;
-  box-sizing: border-box;
-`
-
-export const InputIcon = styled.div`
-  position: absolute;
-  left: 0.75rem;
-  top: 70%;
-  transform: translateY(-50%);
-  color: black;
-`
-
-export const PermissionsContainer = styled.div`
-  width: 100%;
-  max-width: 600px;
-  border: 1px solid #ccc;
-
-  border-radius: 10px;
-  padding: 1rem;
-  background-color: white;
-  box-sizing: border-box;
-`
-
-export const PermissionRow = styled.div`
+export const ContainerButton = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
+  justify-content: flex-end;
 
-  &:last-child {
-    margin-bottom: 0;
-  }
-`
-
-export const IconContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 0.5rem;
-`
-
-export const PermissionItem = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 200px;
-  font-weight: bold;
-  color: #333;
-  padding: 0.5rem;
-  box-sizing: border-box;
-  border-radius: 8px;
-
-  &:hover {
-    background-color: #f7f7f7;
-  }
-`
-
-export const SectionIcon = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ff9800;
-  margin-right: 0.5rem;
-`
-
-export const PermissionName = styled.span`
-  margin-left: 0.5rem;
-`
-
-export const ContainerAccordion = styled.div`
-  max-width: 800px;
-  width: 100%;
-
-  > .accordion > .panel > .panel__head {
+  > button {
+    margin-top: 20px;
     width: 100%;
-    display: flex;
-    justify-content: left;
-    text-align: left;
-    outline: none;
+    max-width: 150px;
   }
 `
 
-export const ContainerTitle = styled.div`
-  width: 100%;
-  margin-bottom: 1rem;
+export const ContainerDragAndDrop = styled.div<{ isDragActive: boolean }>`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  cursor: pointer;
-  background-color: #fff;
-  font-weight: bold;
-  border: 1px solid #ebebeb;
+  border: 1px solid ${p => (p.isDragActive ? palette.successColor : "#ebebeb")};
   border-radius: 10px;
-  padding: 15px 20px;
+  padding: 4px 14px;
+  width: 100%;
+  max-width: 400px;
+  height: 47px;
+  gap: 15px;
+
+  > p {
+    color: ${palette.grayColor};
+    font-size: 14px;
+  }
+
+  &:focus-within {
+    border-color: #f59e36; // Color del borde cuando está enfocado
+    box-shadow: 0 0 8px rgba(245, 158, 54, 0.5); // Sombra cuando está enfocado
+  }
+
+  > svg {
+    width: 100%;
+    max-width: 20px;
+  }
+`
+
+export const ContainerStepperCreate = styled.div`
+  box-shadow: 8px 10px 30px 4px rgba(238, 236, 243, 1);
+  padding: 30px;
+  border-radius: 16px;
+`
+
+export const ResidentialFormStyles = styled.div``
+
+export const ContainerResFormStyles = styled.div`
   width: 100%;
 `
 
-export const ItemPermission = styled.div``
-
-export const ContainerSwitchs = styled.div`
-  display: flex;
+export const ContainerUpInputs = styled.div`
+  justify-content: flex-start;
+  align-items: flex-start;
   flex-direction: row;
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
 `
 
-export const ContainerListSwitchs = styled.div`
-  flex-direction: row;
+export const ContainerDownInputs = styled.div`
   display: flex;
-  gap: 10px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  > div {
+    width: 45%;
+  }
 `
 
-export const ContainerBodySwitch = styled.div`
-  justify-content: space-between;
+export const SteppersStyles = styled.div`
+  justify-content: flex-start;
   flex-direction: row;
+  align-items: center;
+  margin-bottom: 40px;
   display: flex;
-  gap: 10px;
+  width: 100%;
+  gap: 20px;
+`
+
+export const ItemStepper = styled.div<{ isActive: boolean }>`
+  flex-direction: row;
+  align-items: center;
+  display: flex;
+  width: 100%;
+  gap: 8px;
+
+  > div {
+    > span {
+      &:nth-child(1) {
+        color: ${p => (p.isActive ? "white" : "#7A86A1")};
+        background: ${p => (p.isActive ? palette.primaryColor : "white")};
+        border: 1px solid
+          ${p => (p.isActive ? palette.primaryColor : "#ebebeb")};
+        box-shadow: ${p =>
+          p.isActive ? "8px 10px 30px 4px rgba(238, 236, 243, 1)" : "none"};
+        border-radius: 10px;
+        place-items: center;
+        font-weight: 600;
+        cursor: pointer;
+        display: grid;
+        height: 40px;
+        width: 40px;
+      }
+    }
+  }
 
   > span {
-    text-transform: capitalize;
+    &:nth-child(2) {
+      color: ${p => (p.isActive ? palette.orangeColor : "#7A86A1")};
+    }
+    &:nth-child(3) {
+      background: #ebebeb;
+      width: 100%;
+      height: 2px;
+    }
+  }
+
+  &:last-child {
+    width: fit-content;
   }
 `

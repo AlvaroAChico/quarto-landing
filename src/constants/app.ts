@@ -81,6 +81,7 @@ export enum ACTIONS_TITLE_APP {
   TASKS = "Services",
   CREATE_TASKS = "Create task",
   CALENDAR = "Calendar",
+  DAILY_CALENDAR = "Daily Calendar",
   REPORTS = "Reports",
   REPORT_CONTRACTORS = "Contractors Report",
   REPORT_RESIDENTIAL = "Residential Report",

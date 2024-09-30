@@ -29,6 +29,9 @@ import { ServiceDTO } from "../../core/models/interfaces/services-model"
 import ModalAddService from "../../components/modal/variants/modal-add-service/modal-add-service"
 import Button from "../../components/button/button"
 import ItemCalendarInfo from "./functionalities/item-calendar-info"
+import Skeleton from "react-loading-skeleton"
+import "react-loading-skeleton/dist/skeleton.css"
+import { setErrResponse } from "../../utils/erros-util"
 
 const Calendar: React.FC = () => {
   const [isLoadingFilterCalendar, setIsLoadingFilterCalendar] =
@@ -102,7 +105,7 @@ const Calendar: React.FC = () => {
           setIsLoadingFilterCalendar(false)
         })
         .catch(err => {
-          toast.error("Failed to fetch data")
+          setErrResponse(err)
           setIsLoadingFilterCalendar(false)
         })
     }
@@ -130,7 +133,11 @@ const Calendar: React.FC = () => {
           setOptionsProperty(listProperties.filter(propertu => !!propertu))
         })
         .catch(err => {
-          toast.error("Failed to fetch data")
+          if (verifyErrResponse(err)) {
+            toast.error(err.response.data.message)
+          } else {
+            toast.error("Failed to fetch data")
+          }
         })
     }
     // Fetch Contractors
@@ -147,7 +154,7 @@ const Calendar: React.FC = () => {
           const listData: UserDTO[] = response.data as UserDTO[]
           // setListContractors(listData)
           const listUsers = (listData || []).map(user => {
-            if (user.role[0].name == "contractor") {
+            if (user.role[0].name.toLowerCase() == "contractor".toLowerCase()) {
               return {
                 value: user.id,
                 label: `${user.firstName} ${user.lastName}`,
@@ -157,7 +164,11 @@ const Calendar: React.FC = () => {
           setOptionsContractors(listUsers.filter(user => !!user))
         })
         .catch(err => {
-          toast.error("Failed to fetch data")
+          if (verifyErrResponse(err)) {
+            toast.error(err.response.data.message)
+          } else {
+            toast.error("Failed to fetch data")
+          }
         })
     }
     // Fetch Services
@@ -180,10 +191,20 @@ const Calendar: React.FC = () => {
           setOptionsServices(listServ.filter(servi => !!servi))
         })
         .catch(err => {
-          toast.error("Failed to fetch data")
+          if (verifyErrResponse(err)) {
+            toast.error(err.response.data.message)
+          } else {
+            toast.error("Failed to fetch data")
+          }
         })
     }
   }, [handleGetToken])
+
+  const verifyErrResponse = (err: any): boolean =>
+    !!err &&
+    !!err.response &&
+    !!err.response.data &&
+    !!err.response.data.message
 
   React.useEffect(() => {
     fetchDateComboBox()
@@ -360,6 +381,11 @@ const Calendar: React.FC = () => {
               return <ItemCalendarInfo info={info} />
             }
           })}
+          {isLoadingFilterCalendar && (
+            <>
+              <Skeleton count={5} height={80} />
+            </>
+          )}
         </ContainerListData>
       </ContainerCalendar>
       <ModalAddService

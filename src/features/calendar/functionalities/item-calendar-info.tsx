@@ -48,7 +48,9 @@ const ItemCalendarInfo: React.FC<IOwnProps> = ({ info }) => {
         .then(response => {
           const listData: UserDTO[] = response.data as UserDTO[]
           const contractors = (listData || []).filter(user =>
-            user.role.some(ro => ro.name === "contractor"),
+            user.role.some(
+              ro => ro.name.toLowerCase() === "contractor".toLowerCase(),
+            ),
           )
           const listContractors = (contractors || []).map(data => ({
             value: data.id,

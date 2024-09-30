@@ -24,6 +24,9 @@ export interface PropertyDTO {
   address: string
   latitude: string
   longitude: string
+  zipCode: string
+  phoneNumber: string
+  managementCompanyId: number
   client: ClientDTO
   managementCompany: ManagerCompanyDTO
   tasks: TasksDTO[]

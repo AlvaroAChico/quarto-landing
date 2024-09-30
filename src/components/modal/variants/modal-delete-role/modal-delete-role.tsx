@@ -1,6 +1,5 @@
 import React from "react"
 import Modal from "../../modal"
-import { MessageResponsedDTO } from "../../../../core/models/interfaces/user-model"
 import Button from "../../../button/button"
 import axios from "axios"
 import { toast } from "sonner"
@@ -8,6 +7,7 @@ import { ContainerModal } from "./modal-delete-role.styles"
 import { settingsApp } from "../../../../config/environment/settings"
 import useDataUser from "../../../../utils/use-data-user"
 import { RoleDTO } from "../../../../core/models/interfaces/roles-model"
+import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
 
 interface IOwnProps {
   isOpen: boolean

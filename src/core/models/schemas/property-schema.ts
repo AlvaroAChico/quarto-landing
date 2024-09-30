@@ -9,4 +9,14 @@ export const CreateResidentialSchema = object({
   managementCompanyId: string().required("Enter a manager company"),
 })
 
+export const UpdateResidentialSchema = object({
+  picture: string(),
+  name: string(),
+  description: string(),
+  address: string(),
+  phoneProperty: string(),
+  managementCompanyId: string(),
+})
+
+export type UpdateResidentialForm = InferType<typeof UpdateResidentialSchema>
 export type CreateResidentialForm = InferType<typeof CreateResidentialSchema>

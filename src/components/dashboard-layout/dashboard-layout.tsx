@@ -35,7 +35,6 @@ import { ExitToApp } from "@styled-icons/material-rounded/ExitToApp"
 import { pathRoutes } from "../../config/routes/path"
 import { ACTIONS_TITLE_APP, APP_MENU, COOKIES_APP } from "../../constants/app"
 import {
-  emptyFilterPermissions,
   FilterPermissionsDTO,
   MeDTO,
   PermissionDTO,
@@ -52,6 +51,10 @@ import {
   getActionTitleApp,
   updateActionTitleApp,
 } from "../../core/store/app-store/appSlice"
+import {
+  createEmptyFilterPermissions,
+  saveJsonCookiesWithSplit,
+} from "../../utils/cookie-util"
 
 const DashboardLayout: React.FC = () => {
   const [dataPermissions, setDataPermissions] =
@@ -101,7 +104,8 @@ const DashboardLayout: React.FC = () => {
                 expiration,
               )
               // Filter data permissions
-              const result: FilterPermissionsDTO = { ...emptyFilterPermissions }
+              const result: FilterPermissionsDTO =
+                createEmptyFilterPermissions()
 
               permisos
                 .map(permission => permission.name)
@@ -116,11 +120,12 @@ const DashboardLayout: React.FC = () => {
                 })
 
               if (!!result) {
-                Cookies.set(
-                  COOKIES_APP.PERMISSIONS_APP,
-                  JSON.stringify(result),
-                  expiration,
-                )
+                saveJsonCookiesWithSplit(result)
+                // Cookies.set(
+                //   COOKIES_APP.PERMISSIONS_APP,
+                //   JSON.stringify(result),
+                //   expiration,
+                // )
               }
             }
           })
@@ -188,7 +193,9 @@ const DashboardLayout: React.FC = () => {
           <ContainerMenu>
             {!!dataPermissions &&
               !!dataPermissions.user &&
-              dataPermissions?.dashboard.includes(APP_MENU.LIST) && (
+              Object.values(APP_MENU).some(permission =>
+                dataPermissions?.dashboard.includes(permission),
+              ) && (
                 <ItemNavLink
                   to={pathRoutes.DASHBOARD}
                   onClick={() =>
@@ -204,7 +211,9 @@ const DashboardLayout: React.FC = () => {
               )}
             {!!dataPermissions &&
               !!dataPermissions.user &&
-              dataPermissions?.user.includes(APP_MENU.LIST) && (
+              Object.values(APP_MENU).some(permission =>
+                dataPermissions?.user.includes(permission),
+              ) && (
                 <ItemNavLink
                   onClick={() =>
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.USERS))
@@ -220,7 +229,9 @@ const DashboardLayout: React.FC = () => {
               )}
             {!!dataPermissions &&
               !!dataPermissions.role &&
-              dataPermissions?.role.includes(APP_MENU.LIST) && (
+              Object.values(APP_MENU).some(permission =>
+                dataPermissions?.role.includes(permission),
+              ) && (
                 <ItemNavLink
                   onClick={() =>
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.ROLES))
@@ -236,7 +247,9 @@ const DashboardLayout: React.FC = () => {
               )}
             {!!dataPermissions &&
               !!dataPermissions.service &&
-              dataPermissions?.service.includes(APP_MENU.LIST) && (
+              Object.values(APP_MENU).some(permission =>
+                dataPermissions?.service.includes(permission),
+              ) && (
                 <ItemNavLink
                   onClick={() =>
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.TASKS))
@@ -252,7 +265,9 @@ const DashboardLayout: React.FC = () => {
               )}
             {!!dataPermissions &&
               !!dataPermissions.company &&
-              dataPermissions?.company.includes(APP_MENU.LIST) && (
+              Object.values(APP_MENU).some(permission =>
+                dataPermissions?.company.includes(permission),
+              ) && (
                 <ItemNavLink
                   onClick={() =>
                     dispatch(
@@ -272,7 +287,9 @@ const DashboardLayout: React.FC = () => {
               )}
             {!!dataPermissions &&
               !!dataPermissions.property &&
-              dataPermissions?.property.includes(APP_MENU.LIST) && (
+              Object.values(APP_MENU).some(permission =>
+                dataPermissions?.property.includes(permission),
+              ) && (
                 <ItemNavLink
                   onClick={() =>
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.PROJECTS))
@@ -288,7 +305,9 @@ const DashboardLayout: React.FC = () => {
               )}
             {!!dataPermissions &&
               !!dataPermissions.apartment &&
-              dataPermissions?.apartment.includes(APP_MENU.LIST) && (
+              Object.values(APP_MENU).some(permission =>
+                dataPermissions?.apartment.includes(permission),
+              ) && (
                 <ItemNavLink
                   onClick={() =>
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.APARTMENTS))
@@ -304,7 +323,9 @@ const DashboardLayout: React.FC = () => {
               )}
             {!!dataPermissions &&
               !!dataPermissions.assignment &&
-              dataPermissions?.assignment.includes(APP_MENU.LIST) && (
+              Object.values(APP_MENU).some(permission =>
+                dataPermissions?.assignment.includes(permission),
+              ) && (
                 <ItemNavLink
                   onClick={() =>
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.APARTMENTS))
@@ -320,7 +341,9 @@ const DashboardLayout: React.FC = () => {
               )}
             {!!dataPermissions &&
               !!dataPermissions.calendar &&
-              dataPermissions?.calendar.includes(APP_MENU.LIST) && (
+              Object.values(APP_MENU).some(permission =>
+                dataPermissions?.calendar.includes(permission),
+              ) && (
                 <ItemNavLink
                   onClick={() =>
                     dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.CALENDAR))
@@ -335,8 +358,30 @@ const DashboardLayout: React.FC = () => {
                 </ItemNavLink>
               )}
             {!!dataPermissions &&
+              !!dataPermissions.calendar &&
+              Object.values(APP_MENU).some(permission =>
+                dataPermissions?.calendar.includes(permission),
+              ) && (
+                <ItemNavLink
+                  onClick={() =>
+                    dispatch(
+                      updateActionTitleApp(ACTIONS_TITLE_APP.DAILY_CALENDAR),
+                    )
+                  }
+                  to={pathRoutes.DAILY_CALENDAR.LIST}
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                >
+                  <Calendar />
+                  <p>Daily Calendar</p>
+                </ItemNavLink>
+              )}
+            {!!dataPermissions &&
               !!dataPermissions.reports &&
-              dataPermissions?.reports.includes(APP_MENU.LIST) && (
+              Object.values(APP_MENU).some(permission =>
+                dataPermissions?.reports.includes(permission),
+              ) && (
                 <ItemNavLink
                   onClick={() => {
                     handleReportsClick()

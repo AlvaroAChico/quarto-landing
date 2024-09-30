@@ -2,6 +2,11 @@ import React from "react"
 import Cookies from "js-cookie"
 import { COOKIES_APP } from "../constants/app"
 import { FilterPermissionsDTO } from "../core/models/interfaces/user-model"
+import {
+  deleteCookiesWithPrefix,
+  getJsonFromCookies,
+  PREFIX_PERMISSION,
+} from "./cookie-util"
 
 const useDataUser = () => {
   const keysPermissions: (keyof FilterPermissionsDTO)[] = [
@@ -26,11 +31,11 @@ const useDataUser = () => {
   }
 
   const handleGetPermissions = (): FilterPermissionsDTO => {
-    const data = localStorage.getItem(COOKIES_APP.PERMISSIONS_APP)
+    // const data = localStorage.getItem(COOKIES_APP.PERMISSIONS_APP)
+    const data = getJsonFromCookies()
+    console.log("Cookies parse => ", data)
     if (!!data && data != null && data != undefined) {
-      const permissions: FilterPermissionsDTO = JSON.parse(
-        data,
-      ) as FilterPermissionsDTO
+      const permissions: FilterPermissionsDTO = data as FilterPermissionsDTO
       return permissions
     }
 
@@ -44,8 +49,9 @@ const useDataUser = () => {
     Cookies.remove(COOKIES_APP.USER_RES)
     Cookies.remove(COOKIES_APP.TOKEN_APP)
     Cookies.remove(COOKIES_APP.ROLES_APP)
-    localStorage.removeItem(COOKIES_APP.PERMISSIONS_APP)
-    localStorage.setItem(COOKIES_APP.PERMISSIONS_APP, "_@")
+    // localStorage.removeItem(COOKIES_APP.PERMISSIONS_APP)
+    // localStorage.setItem(COOKIES_APP.PERMISSIONS_APP, "_@")
+    deleteCookiesWithPrefix(PREFIX_PERMISSION)
     localStorage.clear()
     sessionStorage.clear()
 

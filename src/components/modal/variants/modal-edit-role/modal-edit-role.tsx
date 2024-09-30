@@ -3,7 +3,6 @@ import Modal from "../../modal"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
-  emptyFilterPermissions,
   FilterPermissionsDTO,
   PermissionDTO,
   RoleDTO,
@@ -38,6 +37,7 @@ import { useNavigate } from "react-router-dom"
 import { pathRoutes } from "../../../../config/routes/path"
 import Switch from "../../../switch/switch"
 import { PermissionCreateDTO } from "../../../../core/models/interfaces/permission-model"
+import { createEmptyFilterPermissions } from "../../../../utils/cookie-util"
 
 interface IOwnProps {
   isOpen: boolean
@@ -125,6 +125,7 @@ const ModalEditRole: React.FC<IOwnProps> = ({
             handleRefreshData()
             handleClose()
             navigate(pathRoutes.ROLES.LIST)
+            window.location.reload()
           }
         })
         .catch(err => {
@@ -166,7 +167,7 @@ const ModalEditRole: React.FC<IOwnProps> = ({
 
               return acc
             },
-            { ...emptyFilterPermissions },
+            createEmptyFilterPermissions(),
           )
           const objectPerm = transformPermissions(listPerm)
           setListPermissions(objectPerm)

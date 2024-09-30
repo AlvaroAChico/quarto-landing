@@ -52,9 +52,12 @@ import "react-loading-skeleton/dist/skeleton.css"
 import { routeWithReplaceId } from "../../utils/path-util"
 import { formatToDDMonth } from "../../utils/date-util"
 import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
+import ModalEditProperty from "../../components/modal/variants/modal-edit-property/modal-edit-property"
 
 const Properties: React.FC = () => {
   const [listProperties, setListProperties] = React.useState<PropertyDTO[]>([])
+  const [dataEdit, setDataEdit] = React.useState<PropertyDTO>()
+  const [isOpenModalEdit, setIsOpenModalEdit] = React.useState<boolean>(false)
   const [temporalListProperties, setTemporalListProperties] = React.useState<
     PropertyDTO[]
   >([])
@@ -71,6 +74,7 @@ const Properties: React.FC = () => {
   const [dataDelete, setDataDelete] = React.useState<PropertyDTO>()
   const navigate = useNavigate()
 
+  const handleCloseModalEdit = () => setIsOpenModalEdit(false)
   const handleCloseModalDelete = () => setIsOpenModalDelete(false)
 
   const { handleGetToken, handleGetPermissions } = useDataUser()
@@ -98,10 +102,14 @@ const Properties: React.FC = () => {
 
   const handleCleanDropdown = () => toggleDropdown("")
 
-  const handleEditProject = (projectId: string) => () => {
-    handleCleanDropdown()
-    console.log("Delete edit -> ", projectId)
-  }
+  const handleEditProject = React.useCallback(
+    (projectId: string) => () => {
+      handleCleanDropdown()
+      setDataEdit(listProperties.filter(prop => `${prop.id}` == projectId)[0])
+      setIsOpenModalEdit(true)
+    },
+    [listProperties],
+  )
 
   const handleDeleteProject = (projectId: string) => () => {
     handleCleanDropdown()
@@ -358,6 +366,12 @@ const Properties: React.FC = () => {
             </ContainerTable>
           )}
       </ContentStylesSection>
+      <ModalEditProperty
+        isOpen={isOpenModalEdit}
+        handleClose={handleCloseModalEdit}
+        handleRefreshData={fetchDataProperties}
+        dataEdit={dataEdit!!}
+      />
       <ModalDeleteGeneral
         isOpen={isOpenModalDelete}
         dataAPI="residentials"

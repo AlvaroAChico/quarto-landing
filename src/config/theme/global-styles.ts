@@ -116,6 +116,12 @@ export const WrapperInput = styled.div`
     color: black;
     font-weight: 600;
     font-size: 0.9rem;
+
+    > span {
+      padding: 10px;
+      color: ${palette.primaryColor};
+      font-weight: 400;
+    }
   }
 `
 

@@ -190,7 +190,7 @@ const Roles: React.FC = () => {
               </ContainerHead>
               <ContainerBody>
                 {(listRoles || []).map(role => (
-                  <tr>
+                  <tr key={role.id}>
                     <ContainerNameRoleTD>
                       <div>
                         <span>{role.name}</span>

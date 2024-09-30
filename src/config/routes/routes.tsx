@@ -34,6 +34,7 @@ import Assignments from "../../features/assignments/assignments"
 import CreateService from "../../features/services/functionalities/create-service/create-service"
 import ManagementCompany from "../../features/management-company/management-company"
 import CreateManagementCompany from "../../features/management-company/funcionalities/create-management-company/create-management-company"
+import DailyCalendar from "../../features/daily-calendar/daily-calendar"
 
 export const router = createBrowserRouter([
   {
@@ -181,6 +182,10 @@ export const router = createBrowserRouter([
       {
         path: pathRoutes.CALENDAR.LIST,
         element: <Calendar />,
+      },
+      {
+        path: pathRoutes.DAILY_CALENDAR.LIST,
+        element: <DailyCalendar />,
       },
       {
         path: pathRoutes.REPORTS.LIST_RESIDENTIAL,

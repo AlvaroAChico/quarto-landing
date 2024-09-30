@@ -1,59 +1,51 @@
 import React from "react"
-import {
-  ContainerRoles,
-  FormGroup,
-  Label,
-  ContainerAccordion,
-  ContainerTitle,
-  ContainerListSwitchs,
-  ContainerBodySwitch,
-} from "./create-management-company.styles"
-// Icons
-import { LocalPolice } from "@styled-icons/material/LocalPolice"
-// External Librarys
-import { Accordion } from "react-accordion-ts"
-import "react-accordion-ts/src/panel.css"
 import HeaderSection from "../../../../components/header-section/header-section"
-import Button from "../../../../components/button/button"
-import { settingsApp } from "../../../../config/environment/settings"
-import axios from "axios"
-import useDataUser from "../../../../utils/use-data-user"
-import { toast } from "sonner"
 import {
-  emptyFilterPermissions,
-  FilterPermissionsDTO,
-  PermissionDTO,
-} from "../../../../core/models/interfaces/user-model"
-import { PermissionCreateDTO } from "../../../../core/models/interfaces/permission-model"
-import Switch from "../../../../components/switch/switch"
+  ContainerButton,
+  ContainerDownInputs,
+  ContainerStepperCreate,
+  ItemStepper,
+  ResidentialFormStyles,
+  SteppersStyles,
+} from "./create-management-company.styles"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
+import { toast } from "sonner"
+import { CreateUserResponseDTO } from "../../../../core/models/interfaces/user-model"
+import { pathRoutes } from "../../../../config/routes/path"
 import {
   ErrorMessage,
   WrapperInput,
 } from "../../../../config/theme/global-styles"
 import Input from "../../../../components/input/input"
+import Button from "../../../../components/button/button"
+import { FolderOpen } from "@styled-icons/fa-regular/FolderOpen"
+import "react-datepicker/dist/react-datepicker.css"
+import { settingsApp } from "../../../../config/environment/settings"
+import useDataUser from "../../../../utils/use-data-user"
 import {
-  CreateRoleForm,
-  CreateRoleSchema,
-} from "../../../../core/models/schemas/role-schema"
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import { useNavigate } from "react-router-dom"
-import { pathRoutes } from "../../../../config/routes/path"
+  CreateCompanyForm,
+  CreateCompanySchema,
+} from "../../../../core/models/schemas/company-schema"
+import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
 
 const CreateManagementCompany: React.FC = () => {
-  const [listPermissions, setListPermissions] =
-    React.useState<PermissionCreateDTO[]>()
-  const [isSubmitRoleCreate, setIsSubmitRoleCreate] =
+  const [stepActive, setStepActive] = React.useState<number>(1)
+  const [isSubmitUserCreate, setIsSubmitUserCreate] =
     React.useState<boolean>(false)
   const navigate = useNavigate()
-
   const { handleGetToken } = useDataUser()
 
-  const methods = useForm<CreateRoleForm>({
-    resolver: yupResolver(CreateRoleSchema),
+  const methods = useForm<CreateCompanyForm>({
+    resolver: yupResolver(CreateCompanySchema),
     defaultValues: {
       name: "",
-      permissions: [],
+      managerName: "",
+      managerPhone: "",
+      assitantManagerName: "",
+      assitantManagerPhone: "",
     },
   })
 
@@ -65,211 +57,148 @@ const CreateManagementCompany: React.FC = () => {
   } = methods
 
   const handleSubmit = React.useCallback((data: any) => {
-    setIsSubmitRoleCreate(true)
+    setIsSubmitUserCreate(true)
     const storedToken = handleGetToken()
     if (!!storedToken) {
+      const formData = new FormData()
+      formData.append("name", data.name)
+      formData.append("manager_name", data.managerName)
+      formData.append("manager_phone", data.managerPhone)
+      formData.append("assitant_manager_name", data.assitantManagerName)
+      formData.append("assitant_manager_phone", data.assitantManagerPhone)
+
       axios
-        .post(
-          `${settingsApp.api.base}/roles`,
-          {
-            name: data.name,
-            permissions: data.permissions,
+        .post(`${settingsApp.api.base}/management_companies`, formData, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            ContentType: "multipart/form-data",
+            Accept: "multipart/form-data",
           },
-          {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-              ContentType: "application/json",
-              Accept: "application/json",
-            },
-          },
-        )
+        })
         .then(response => {
-          setIsSubmitRoleCreate(false)
-          // const data: CreateUserResponseDTO =
-          //   response.data as CreateUserResponseDTO
-          const data = response.data
+          setIsSubmitUserCreate(false)
+          const data: MessageResponsedDTO = response.data as MessageResponsedDTO
           if (!!data && !!data.message) {
             toast.success(data.message)
-            navigate(pathRoutes.ROLES.LIST)
+            navigate(pathRoutes.PROPERTIES.LIST)
           }
         })
         .catch(err => {
-          setIsSubmitRoleCreate(false)
+          setIsSubmitUserCreate(false)
+          console.log("err => ", err)
           toast.error("Failed to authenticate")
         })
     }
   }, [])
 
-  React.useEffect(() => {
-    const storedToken = handleGetToken()
-
-    if (!!storedToken) {
-      axios
-        .get(`${settingsApp.api.base}/permissions`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        })
-        .then(response => {
-          const permissions: PermissionDTO[] = response.data as PermissionDTO[]
-          type PermissionKeys = keyof FilterPermissionsDTO
-
-          const listPerm = permissions.reduce<FilterPermissionsDTO>(
-            (acc, permission) => {
-              const { name } = permission
-              const [key, ...actionParts] = name.split("-") as [
-                PermissionKeys,
-                ...string[],
-              ]
-
-              const action = actionParts.join("-")
-
-              if (!acc[key]) {
-                acc[key] = []
-              }
-
-              acc[key].push(action)
-
-              return acc
-            },
-            {
-              ...emptyFilterPermissions,
-            },
-          )
-          const objectPerm = transformPermissions(listPerm)
-          setListPermissions(objectPerm)
-        })
-        .catch(err => {
-          toast.error("Failed to fetch data")
-        })
-    }
-  }, [])
-
-  const transformPermissions = (
-    permissions:
-      | FilterPermissionsDTO
-      | { [s: string]: unknown }
-      | ArrayLike<unknown>,
-  ) => {
-    const possibleActions = ["create", "list", "read-own", "update", "delete"]
-
-    return Object.entries(permissions).map(([key, actions]) => {
-      return {
-        name: key,
-        values: possibleActions.map(action => ({
-          name: action,
-          isActive: false,
-          enabled: actions.includes(action),
-        })),
-      }
-    })
-  }
-
-  const changeStatusPermission = React.useCallback(
-    (category: string, permName: string) => {
-      if (!listPermissions) {
-        console.error("listPermissions is undefined")
-        return
-      }
-
-      const currentPermissionIndex = listPermissions.findIndex(
-        permission => permission.name === category,
-      )
-
-      if (currentPermissionIndex !== -1) {
-        const currentPermission = listPermissions[currentPermissionIndex]
-        const newPermission = { ...currentPermission }
-
-        const value = newPermission.values.find(
-          value => value.name === permName,
-        )
-        if (value) {
-          value.isActive = !value.isActive
-        }
-
-        const updatedPermissions = [
-          ...listPermissions.slice(0, currentPermissionIndex),
-          newPermission,
-          ...listPermissions.slice(currentPermissionIndex + 1),
-        ]
-
-        setListPermissions(updatedPermissions)
-      }
-    },
-    [listPermissions],
-  )
-
-  React.useEffect(() => {
-    if (!!listPermissions) {
-      const arrayPermissions: string[] = (listPermissions || []).flatMap(item =>
-        item.values
-          .filter(value => value.isActive)
-          .map(value => `${item.name}-${value.name}`),
-      )
-      setValue("permissions", arrayPermissions)
-    }
-  }, [listPermissions])
-
-  const items = [{ name: "List Permissions" }].map(({ name }): any => ({
-    open,
-    title: (
-      <ContainerTitle>
-        <span>{name}</span>
-      </ContainerTitle>
-    ),
-    content: (
-      <>
-        {(listPermissions || []).map(permission => (
-          <ContainerBodySwitch>
-            <span>{permission.name}</span>
-            <ContainerListSwitchs>
-              {(permission.values || []).map(value => (
-                <Switch
-                  isActive={value.isActive}
-                  isEnabled={value.enabled}
-                  onToggle={() =>
-                    changeStatusPermission(permission.name, value.name)
-                  }
-                  label={value.name}
-                />
-              ))}
-            </ContainerListSwitchs>
-          </ContainerBodySwitch>
-        ))}
-      </>
-    ),
-  }))
-
   return (
-    <div>
-      <HeaderSection title="Roles" subtitle="Create role" />
-      <ContainerRoles>
-        <WrapperInput>
-          <label htmlFor="name-create-role">First Name</label>
-          <Input
-            id="name-create-role"
-            placeholder="Enter name"
-            icon={LocalPolice}
-            register={register("name")}
+    <>
+      <HeaderSection
+        title="Management Company"
+        subtitle="Create Management Company"
+      />
+      <ContainerStepperCreate>
+        <SteppersStyles>
+          <ItemStepper isActive={stepActive == 1}>
+            <div>
+              <span onClick={() => setStepActive(1)}>1</span>
+            </div>
+            <span>Details</span>
+            <span />
+          </ItemStepper>
+          <ItemStepper isActive={false}>
+            <span />
+          </ItemStepper>
+        </SteppersStyles>
+        {stepActive == 1 && (
+          <ResidentialFormStyles>
+            <ContainerDownInputs>
+              <WrapperInput>
+                <label htmlFor="name-create-company">Name</label>
+                <Input
+                  id="name-create-company"
+                  placeholder="Enter name"
+                  icon={FolderOpen}
+                  register={register("name")}
+                />
+                {!!(errors.name as any)?.message && (
+                  <ErrorMessage>{(errors.name as any)?.message}</ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="managername-create-company">Manager Name</label>
+                <Input
+                  id="managername-create-company"
+                  placeholder="Enter address"
+                  icon={FolderOpen}
+                  register={register("managerName")}
+                />
+                {!!(errors.managerName as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.managerName as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="phone-manager-create-company">
+                  Phone Manager
+                </label>
+                <Input
+                  id="phone-manager-create-company"
+                  placeholder="Enter phone manager"
+                  icon={FolderOpen}
+                  register={register("managerPhone")}
+                />
+                {!!(errors.managerPhone as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.managerPhone as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="supervisorname-create-company">
+                  Supervisor Name
+                </label>
+                <Input
+                  id="supervisorname-create-company"
+                  placeholder="Enter Supervisor name"
+                  icon={FolderOpen}
+                  register={register("assitantManagerName")}
+                />
+                {!!(errors.assitantManagerName as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.assitantManagerName as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="phone-supervisor-create-company">
+                  Phone Supervisor
+                </label>
+                <Input
+                  id="phone-supervisor-create-company"
+                  placeholder="Enter phone supervisor"
+                  icon={FolderOpen}
+                  register={register("assitantManagerPhone")}
+                />
+                {!!(errors.assitantManagerPhone as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.assitantManagerPhone as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+            </ContainerDownInputs>
+          </ResidentialFormStyles>
+        )}
+        <ContainerButton>
+          <Button
+            onClick={submitWrapper(handleSubmit)}
+            text="Create"
+            isLoading={isSubmitUserCreate}
           />
-          {!!(errors.name as any)?.message && (
-            <ErrorMessage>{(errors.name as any)?.message}</ErrorMessage>
-          )}
-        </WrapperInput>
-
-        <FormGroup>
-          <Label htmlFor="roleName">List of Permission</Label>
-          <ContainerAccordion>
-            <Accordion items={items} duration={300} multiple={false} />
-          </ContainerAccordion>
-        </FormGroup>
-        <Button
-          text="Create"
-          onClick={submitWrapper(handleSubmit)}
-          isLoading={isSubmitRoleCreate}
-        />
-      </ContainerRoles>
-    </div>
+        </ContainerButton>
+      </ContainerStepperCreate>
+    </>
   )
 }
 

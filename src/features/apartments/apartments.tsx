@@ -52,9 +52,12 @@ import Skeleton from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
 import { routeWithReplaceId } from "../../utils/path-util"
 import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
+import ModalEditApartment from "../../components/modal/variants/modal-edit-apartment/modal-edit-apartment"
 
 const Apartments: React.FC = () => {
   const [listProjects, setListProjects] = React.useState<PropertyDTO[]>([])
+  const [dataEdit, setDataEdit] = React.useState<ApartmentDTO>()
+  const [isOpenModalEdit, setIsOpenModalEdit] = React.useState<boolean>(false)
   const [isLoadingListProjects, setIsLoadingListProjects] =
     React.useState<boolean>(false)
   const [stadisticts, setStadisticts] = React.useState<StadisticsDTO>()
@@ -70,6 +73,7 @@ const Apartments: React.FC = () => {
 
   const { handleGetToken, handleGetPermissions } = useDataUser()
 
+  const handleCloseModalEdit = () => setIsOpenModalEdit(false)
   const handleCloseModalDelete = () => setIsOpenModalDelete(false)
 
   const getCookiesDataPermission = React.useCallback(() => {
@@ -95,10 +99,21 @@ const Apartments: React.FC = () => {
 
   const handleCleanDropdown = () => toggleDropdown("")
 
-  const handleEditProject = (projectId: string) => () => {
-    handleCleanDropdown()
-    console.log("Delete edit -> ", projectId)
-  }
+  const handleEditProject = React.useCallback(
+    (projectId: string) => () => {
+      handleCleanDropdown()
+      for (const property of listProjects) {
+        const foundApartment = property.apartments.find(
+          apartment => `${apartment.id}` === projectId,
+        )
+        if (foundApartment) {
+          setDataEdit(foundApartment)
+        }
+      }
+      setIsOpenModalEdit(true)
+    },
+    [listProjects],
+  )
 
   const handleDeleteProject = (projectId: string) => () => {
     handleCleanDropdown()
@@ -348,6 +363,12 @@ const Apartments: React.FC = () => {
             </ContainerTable>
           )}
       </ContentStylesSection>
+      <ModalEditApartment
+        isOpen={isOpenModalEdit}
+        handleClose={handleCloseModalEdit}
+        handleRefreshData={fetchDataProjects}
+        dataEdit={dataEdit!!}
+      />
       <ModalDeleteGeneral
         isOpen={isOpenModalDelete}
         dataAPI="apartments"

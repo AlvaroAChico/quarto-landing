@@ -25,6 +25,7 @@ import "react-loading-skeleton/dist/skeleton.css"
 import ModalEditRole from "../../components/modal/variants/modal-edit-role/modal-edit-role"
 import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
 import { ManagementCompanyDTO } from "../../core/models/interfaces/management-company"
+import ModalEditCompany from "../../components/modal/variants/modal-edit-company/modal-edit-company"
 
 const ManagementCompany: React.FC = () => {
   const [listManagementCompany, setListManagementCompany] = React.useState<
@@ -259,6 +260,12 @@ const ManagementCompany: React.FC = () => {
         handleRefreshData={fetchListRole}
         dataRoleEdit={dataRoleEdit!!}
       />*/}
+      <ModalEditCompany
+        isOpen={isOpenModalEdit}
+        handleClose={handleCloseModalEdit}
+        handleRefreshData={fetchListRole}
+        dataEdit={dataRoleEdit!!}
+      />
       <ModalDeleteGeneral
         isOpen={isOpenModalDelete}
         dataAPI="managementCompany"

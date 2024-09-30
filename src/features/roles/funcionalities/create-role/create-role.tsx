@@ -20,7 +20,6 @@ import axios from "axios"
 import useDataUser from "../../../../utils/use-data-user"
 import { toast } from "sonner"
 import {
-  emptyFilterPermissions,
   FilterPermissionsDTO,
   PermissionDTO,
 } from "../../../../core/models/interfaces/user-model"
@@ -39,6 +38,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useNavigate } from "react-router-dom"
 import { pathRoutes } from "../../../../config/routes/path"
+import { createEmptyFilterPermissions } from "../../../../utils/cookie-util"
 
 const CreateRole: React.FC = () => {
   const [listPermissions, setListPermissions] =
@@ -132,7 +132,7 @@ const CreateRole: React.FC = () => {
 
               return acc
             },
-            { ...emptyFilterPermissions },
+            createEmptyFilterPermissions(),
           )
           const objectPerm = transformPermissions(listPerm)
           setListPermissions(objectPerm)

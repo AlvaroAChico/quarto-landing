@@ -74,19 +74,19 @@ export interface FilterPermissionsDTO {
   reports: string[]
 }
 
-export const emptyFilterPermissions = {
-  dashboard: [],
-  user: [],
-  work: [],
-  role: [],
-  service: [],
-  company: [],
-  property: [],
-  apartment: [],
-  assignment: [],
-  calendar: [],
-  reports: [],
-}
+// export const emptyFilterPermissions = {
+//   dashboard: [],
+//   user: [],
+//   work: [],
+//   role: [],
+//   service: [],
+//   company: [],
+//   property: [],
+//   apartment: [],
+//   assignment: [],
+//   calendar: [],
+//   reports: [],
+// }
 
 export interface CreateUserDTO {
   first_name: string
@@ -102,10 +102,6 @@ export interface CreateUserResponseDTO {
 }
 
 export interface DeleteUserResponseDTO {
-  message: string
-}
-
-export interface MessageResponsedDTO {
   message: string
 }
 

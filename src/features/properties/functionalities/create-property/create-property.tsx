@@ -68,7 +68,7 @@ import { ManagementCompanyDTO } from "../../../../core/models/interfaces/managem
 const CreateProperty: React.FC = () => {
   const [optionsCompany, setOptionsCompany] = React.useState<any>([])
   const [stepActive, setStepActive] = React.useState<number>(1)
-  const [selectedOptionClient, setSelectedOptionClient] = React.useState(null)
+const [selectedOptionClient, setSelectedOptionClient] = React.useState(null)
   const [startDate, setStartDate] = React.useState<any>()
   const [dueDate, setDueDate] = React.useState()
   const [isSubmitUserCreate, setIsSubmitUserCreate] =

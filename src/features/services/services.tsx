@@ -2,7 +2,6 @@ import React from "react"
 import HeaderSection from "../../components/header-section/header-section"
 import { pathRoutes } from "../../config/routes/path"
 import { useNavigate } from "react-router-dom"
-import { ServiceDTO } from "../../core/models/interfaces/roles-model"
 import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
 import useDataUser from "../../utils/use-data-user"
 import axios from "axios"
@@ -23,6 +22,8 @@ import { ContainerNameRoleTD } from "../roles/roles.styles"
 import { formatToDDMonth } from "../../utils/date-util"
 import { Ellipsis } from "styled-icons/fa-solid"
 import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
+import ModalEditService from "../../components/modal/variants/modal-edit-service/modal-edit-service"
+import { ServiceDTO } from "../../core/models/interfaces/services-model"
 
 const Services: React.FC = () => {
   const [listServices, setListServices] = React.useState<ServiceDTO[]>([])
@@ -235,18 +236,18 @@ const Services: React.FC = () => {
             </table>
           </ContainerTable>
         )}
-      {/* <ModalEditRole
-        isOpen={isOpenModalEdit}
-        handleClose={handleCloseModalEdit}
-        handleRefreshData={fetchListRole}
-        dataRoleEdit={dataRoleEdit!!}
-      />
-      <ModalDeleteRole
+      {/*<ModalDeleteRole
         isOpen={isOpenModalDelete}
         handleClose={handleCloseModalDelete}
         handleDeleteUser={handleDeleteUserModal}
         dataUserDelete={dataRoleDelete!!}
         /> */}
+      <ModalEditService
+        isOpen={isOpenModalEdit}
+        handleClose={handleCloseModalEdit}
+        handleRefreshData={fetchListRole}
+        dataEdit={dataRoleEdit!!}
+      />
       <ModalDeleteGeneral
         isOpen={isOpenModalDelete}
         dataAPI="services"

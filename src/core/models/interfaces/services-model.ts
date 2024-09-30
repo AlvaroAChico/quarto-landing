@@ -10,12 +10,11 @@ export interface DataServiceResponse {
 
 export interface ServiceDTO {
   id: number
+  code: string
   name: string
-  guardName: string
-  createdAt: string
-  updatedAt: string
   status: string
   isActive: boolean
+  createdAt: string
 }
 
 export interface ServiceTypeDTO {
@@ -42,4 +41,9 @@ export enum EServiceName {
   PAINT = "PAINT",
   MISCELLANEOUS = "MISCELLANEOUS",
   RESURFACING = "RESURFACING",
+}
+
+export interface ServiceUpdateDTO {
+  code: string
+  name: string
 }

@@ -69,6 +69,7 @@ import {
 import Textarea from "../../../../components/textarea/textarea"
 import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
 import { PropertyDTO } from "../../../../core/models/interfaces/property-model"
+import { setErrResponse } from "../../../../utils/erros-util"
 
 const CreateApartment: React.FC = () => {
   const [optionsProperties, setOptionsProperties] = React.useState<any>([])
@@ -101,8 +102,8 @@ const CreateApartment: React.FC = () => {
     setValue,
   } = methods
 
-  const methodsServ = useForm<CreateServiceForm>({
-    resolver: yupResolver(CreateServiceSchema),
+  const methodsServ = useForm<CreateApartmentForm>({
+    resolver: yupResolver(CreateApartmentSchema),
     defaultValues: {
       picture: "",
       code: "",
@@ -183,7 +184,7 @@ const CreateApartment: React.FC = () => {
           )
         })
         .catch(err => {
-          toast.error("Failed to fetch data")
+          setErrResponse(err)
         })
     }
   }, [])
