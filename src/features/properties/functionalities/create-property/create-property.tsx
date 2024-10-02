@@ -64,17 +64,34 @@ import {
 } from "../../../../core/models/schemas/apartment-schema"
 import Textarea from "../../../../components/textarea/textarea"
 import { ManagementCompanyDTO } from "../../../../core/models/interfaces/management-company"
+import { APP_MENU } from "../../../../constants/app"
 
 const CreateProperty: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (!!data && !data?.property.includes(APP_MENU.CREATE)) {
+      return
+    }
+  }, [])
+
   const [optionsCompany, setOptionsCompany] = React.useState<any>([])
   const [stepActive, setStepActive] = React.useState<number>(1)
-const [selectedOptionClient, setSelectedOptionClient] = React.useState(null)
+  const [selectedOptionClient, setSelectedOptionClient] = React.useState(null)
   const [startDate, setStartDate] = React.useState<any>()
   const [dueDate, setDueDate] = React.useState()
   const [isSubmitUserCreate, setIsSubmitUserCreate] =
     React.useState<boolean>(false)
-  const navigate = useNavigate()
-  const { handleGetToken } = useDataUser()
 
   const methods = useForm<CreateResidentialForm>({
     resolver: yupResolver(CreateResidentialSchema),

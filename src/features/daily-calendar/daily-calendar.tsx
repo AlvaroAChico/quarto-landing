@@ -4,52 +4,410 @@ import axios from "axios"
 import { settingsApp } from "../../config/environment/settings"
 import { InfoCalendarDTO } from "../../core/models/interfaces/calendar-model"
 import { setErrResponse } from "../../utils/erros-util"
+import { ServiceDTO } from "../../core/models/interfaces/roles-model"
+import { UserDTO } from "../../core/models/interfaces/user-model"
+import { PropertyDTO } from "../../core/models/interfaces/property-model"
+import ItemDailyCalendar from "./components/item-daily-calendar/item-daily-calendar"
+import { ArrowIosBackOutline } from "@styled-icons/evaicons-outline/ArrowIosBackOutline"
+import { ArrowIosForwardOutline } from "@styled-icons/evaicons-outline/ArrowIosForwardOutline"
+import {
+  BodyDailyCalendar,
+  ContainerDailyCalendar,
+  ContainerDailyStyles,
+  DataDailyCalendar,
+  FilterDailyCalendar,
+  HeaderDailyCalendar,
+  ItemDaily,
+  ItemFilterDC,
+} from "./daily-calendar.styles"
+import { compareEqualsDate, formatToDDMMYYYY } from "../../utils/date-util"
+import Button from "../../components/button/button"
+import ModalAddService from "../../components/modal/variants/modal-add-service/modal-add-service"
+import { Calendar4 } from "@styled-icons/bootstrap/Calendar4"
+import Select from "react-select"
+import Skeleton from "react-loading-skeleton"
+import "react-loading-skeleton/dist/skeleton.css"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
+import { selectStyles } from "../../config/theme/global-styles"
+import { APP_MENU, EOptionsKey } from "../../constants/app"
+import { pathRoutes } from "../../config/routes/path"
+import { useNavigate } from "react-router-dom"
 
 const DailyCalendar: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.calendar.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
+  const [isLoadingDataCalendar, setIsLoadingDataCalendar] =
+    React.useState<boolean>(false)
   const [infoCalendar, setInfoCalendar] = React.useState<InfoCalendarDTO[]>([])
   const [allDataCalendar, setAllDataCalendar] = React.useState<
     InfoCalendarDTO[]
   >([])
+  // Properties
+  const [optionsProperty, setOptionsProperty] = React.useState<any>([])
+  const [selectedOptionProperty, setSelectedOptionProperty] =
+    React.useState<any>(null)
+  // Contractors
+  const [optionsContractors, setOptionsContractors] = React.useState<any>([])
+  const [selectedOptionContractor, setSelectedOptionContractor] =
+    React.useState<any>(null)
+  // Services
+  const [optionsServices, setOptionsServices] = React.useState<any>([])
+  const [selectedOptionService, setSelectedOptionService] =
+    React.useState<any>(null)
+  const [daySelected, setDaySelected] = React.useState<any>(new Date())
 
-  const { handleGetToken } = useDataUser()
+  const [isOpenModalAdd, setIsOpenModalAdd] = React.useState(false)
 
-  const getDataCalendar = () => {
+  const handleOpenModalAdd = () => setIsOpenModalAdd(true)
+  const handleCloseModalAdd = () => setIsOpenModalAdd(false)
+
+  const handleChangeOptionProperty = (keyOption: EOptionsKey, value: any) => {
+    if (keyOption == EOptionsKey.PROPERTY_KEY) {
+      setSelectedOptionProperty(value)
+    }
+  }
+
+  const handleChangeOptionContractor = (keyOption: EOptionsKey, value: any) => {
+    if (keyOption == EOptionsKey.CONTRACTOR_KEY) {
+      setSelectedOptionContractor(value)
+    }
+  }
+
+  const handleChangeOptionService = (keyOption: EOptionsKey, value: any) => {
+    if (keyOption == EOptionsKey.SERVICE_KEY) {
+      setSelectedOptionService(value)
+    }
+  }
+
+  const handleDayClick = (day: any) => {
+    setDaySelected(day)
+  }
+
+  const handleNextDay = () => {
+    const nextDay = new Date(daySelected)
+    nextDay.setDate(daySelected.getDate() + 1)
+    setDaySelected(nextDay)
+  }
+
+  const handlePrevDay = () => {
+    const prevDay = new Date(daySelected)
+    prevDay.setDate(daySelected.getDate() - 1)
+    setDaySelected(prevDay)
+  }
+
+  const days = []
+  for (let i = -2; i <= 2; i++) {
+    const day = new Date(daySelected)
+    day.setDate(day.getDate() + i)
+    days.push(day)
+  }
+
+  const handleError = (err: any) => {
+    setErrResponse(err)
+  }
+
+  const fetchData = async (url: string) => {
     const storedToken = handleGetToken()
-    if (storedToken) {
-      axios
-        .get(
-          `${settingsApp.api.base}/works?include=apartment,residential,contractor,service,status`,
-          {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-              ContentType: "application/json",
-              Accept: "application/json",
-            },
-          },
-        )
-        .then(response => {
-          const listData: InfoCalendarDTO[] = response.data as InfoCalendarDTO[]
-          setInfoCalendar(listData)
-          setAllDataCalendar(listData)
+    if (!storedToken) {
+      throw new Error("No token found")
+    }
+
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      })
+      return response.data
+    } catch (err) {
+      handleError(err)
+      throw err
+    }
+  }
+
+  const getDataCalendar = async () => {
+    setIsLoadingDataCalendar(true)
+    try {
+      const data: InfoCalendarDTO[] = await fetchData(
+        `${settingsApp.api.base}/works?include=apartment,residential,contractor,service,status`,
+      )
+      setAllDataCalendar(data)
+      setInfoCalendar(data)
+    } finally {
+      setIsLoadingDataCalendar(false)
+    }
+  }
+
+  const fetchDataResidentials = async () => {
+    try {
+      const data: PropertyDTO[] = await fetchData(
+        `${settingsApp.api.base}/residentials`,
+      )
+      const listProperties = (data || []).map(property => ({
+        value: property.id,
+        label: property.name,
+      }))
+      setOptionsProperty(listProperties)
+    } catch (err) {
+      // Handle specific errors if needed
+      setErrResponse(err)
+    }
+  }
+
+  const fetchDataContractors = async () => {
+    try {
+      const data: UserDTO[] = await fetchData(
+        `${settingsApp.api.base}/users?include=role`,
+      )
+      const listUsers = (data || [])
+        .map(user => {
+          if (
+            user.role.length > 0 &&
+            user.role.some(role => role.name.toLowerCase() === "contractor")
+          ) {
+            return {
+              value: user.id,
+              label: `${user.firstName} ${user.lastName}`,
+            }
+          }
         })
-        .catch(err => {
-          setErrResponse(err)
-        })
+        .filter(us => us != undefined)
+      setOptionsContractors(listUsers)
+    } catch (err) {
+      // Handle specific errors if needed
+      setErrResponse(err)
+    }
+  }
+
+  const fetchDataServices = async () => {
+    try {
+      const data: ServiceDTO[] = await fetchData(
+        `${settingsApp.api.base}/services`,
+      )
+      const listServices = (data || []).map(servi => ({
+        value: servi.id,
+        label: servi.name,
+      }))
+      setOptionsServices(listServices)
+    } catch (err) {
+      // Handle specific errors if needed
+      setErrResponse(err)
     }
   }
 
   React.useEffect(() => {
-    getDataCalendar()
+    const fetchDataAsync = async () => {
+      await Promise.all([
+        getDataCalendar(),
+        fetchDataResidentials(),
+        fetchDataContractors(),
+        fetchDataServices(),
+      ])
+    }
+
+    fetchDataAsync()
   }, [])
 
+  const filterCalendarData = () => {
+    let newListCal = [...allDataCalendar]
+
+    // Filtrar por propiedad si está seleccionada
+    if (selectedOptionProperty) {
+      newListCal = newListCal.filter(
+        info => info.residential.id === selectedOptionProperty.value,
+      )
+    }
+
+    // Filtrar por contratista si está seleccionado
+    if (selectedOptionContractor) {
+      newListCal = newListCal.filter(
+        info =>
+          info.contractor &&
+          info.contractor.id === selectedOptionContractor.value,
+      )
+    }
+
+    // Filtrar por servicio si está seleccionado
+    if (selectedOptionService) {
+      newListCal = newListCal.filter(
+        info =>
+          info.service && info.service.name === selectedOptionService.label,
+      )
+    }
+
+    console.log("Filtered Calendar => ", newListCal)
+    setInfoCalendar(newListCal)
+  }
+
+  // Hook para ejecutar la función de filtrado cuando cambian las selecciones
+  React.useEffect(() => {
+    filterCalendarData()
+  }, [
+    selectedOptionProperty,
+    selectedOptionContractor,
+    selectedOptionService,
+    daySelected,
+  ])
+
   return (
-    <div>
-      {infoCalendar.map(cal => (
-        <p>
-          {cal.service.name} - {cal.apartment.name}
-        </p>
-      ))}
-    </div>
+    <>
+      <ContainerDailyCalendar>
+        <FilterDailyCalendar>
+          <ItemFilterDC>
+            <DatePicker
+              id="date-create-apartment"
+              showIcon
+              selected={daySelected}
+              icon={<Calendar4 />}
+              toggleCalendarOnIconClick
+              onChange={(date: any) => {
+                setDaySelected(date)
+              }}
+              placeholderText="Enter date"
+              popperClassName="some-custom-class"
+              popperPlacement="top-end"
+              popperModifiers={[
+                {
+                  name: "myModifier",
+                  fn(state) {
+                    return state
+                  },
+                },
+              ]}
+            />
+          </ItemFilterDC>
+          <ItemFilterDC>
+            {/* {optionsProperty.map((prop: any) => (
+              <p>Property: {prop.label}</p>
+            ))} */}
+            <Select
+              id="property-create-apartment"
+              defaultValue={selectedOptionProperty}
+              onChange={(value: any) =>
+                handleChangeOptionProperty(EOptionsKey.PROPERTY_KEY, value)
+              }
+              options={optionsProperty}
+              isSearchable={true}
+              styles={selectStyles}
+              placeholder="Properties"
+            />
+          </ItemFilterDC>
+          <ItemFilterDC>
+            {/* {optionsContractors.map((cont: any) => (
+              <p>Contract: {cont.label}</p>
+            ))} */}
+            <Select
+              id="contractor-create-apartment"
+              defaultValue={selectedOptionContractor}
+              onChange={(value: any) =>
+                handleChangeOptionContractor(EOptionsKey.CONTRACTOR_KEY, value)
+              }
+              options={optionsContractors}
+              isSearchable={true}
+              styles={selectStyles}
+              placeholder="Contractor"
+            />
+          </ItemFilterDC>
+          <ItemFilterDC>
+            {/* {optionsServices.map((serv: any) => (
+              <p>Service: {serv.label}</p>
+            ))} */}
+            <Select
+              id="service-create-apartment"
+              defaultValue={selectedOptionService}
+              onChange={(value: any) =>
+                handleChangeOptionService(EOptionsKey.SERVICE_KEY, value)
+              }
+              options={optionsServices}
+              isSearchable={true}
+              styles={selectStyles}
+              placeholder="Services"
+            />
+          </ItemFilterDC>
+          <ItemFilterDC>
+            <Button text="New work" onClick={handleOpenModalAdd} />
+          </ItemFilterDC>
+        </FilterDailyCalendar>
+        <DataDailyCalendar>
+          <HeaderDailyCalendar>
+            <ContainerDailyStyles>
+              <div>
+                <span>
+                  <ArrowIosBackOutline onClick={handlePrevDay} />
+                </span>
+              </div>
+              {days.map((day, index) => (
+                <ItemDaily
+                  isActiveDay={
+                    daySelected.toDateString() === day.toDateString()
+                  }
+                  key={index}
+                  onClick={() => handleDayClick(day)}
+                >
+                  <span>
+                    {day
+                      .toLocaleDateString("en-US", { weekday: "long" })
+                      .substring(0, 3)}
+                  </span>
+                  <span>{day.getDate()}</span>
+                </ItemDaily>
+              ))}
+              <div>
+                <span>
+                  <ArrowIosForwardOutline onClick={handleNextDay} />
+                </span>
+              </div>
+            </ContainerDailyStyles>
+          </HeaderDailyCalendar>
+          <BodyDailyCalendar>
+            {!isLoadingDataCalendar &&
+              (infoCalendar || []).map(info => {
+                if (
+                  compareEqualsDate(
+                    formatToDDMMYYYY(info.startDate),
+                    daySelected.toLocaleDateString(),
+                  )
+                ) {
+                  return <ItemDailyCalendar info={info} />
+                }
+              })}
+            {isLoadingDataCalendar && (
+              <>
+                <Skeleton count={5} height={60} />
+              </>
+            )}
+          </BodyDailyCalendar>
+        </DataDailyCalendar>
+      </ContainerDailyCalendar>
+      <ModalAddService
+        isOpen={isOpenModalAdd}
+        handleClose={handleCloseModalAdd}
+        handleRefreshData={getDataCalendar}
+      />
+    </>
   )
 }
 

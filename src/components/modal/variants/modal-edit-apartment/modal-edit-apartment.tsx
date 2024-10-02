@@ -121,7 +121,7 @@ const ModalEditApartment: React.FC<IOwnProps> = ({
               prop => prop.id == dataEdit.residentialId,
             )
             if (!!selectedData) {
-              setCurrentNameData(`${selectedData[0].id}`)
+              setCurrentNameData(`${selectedData[0].name}`)
             }
           }, 200)
         })

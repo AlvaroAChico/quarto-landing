@@ -21,7 +21,7 @@ import "react-datepicker/dist/react-datepicker.css"
 import { selectStyles, WrapperInput } from "../../config/theme/global-styles"
 import { Calendar4 } from "@styled-icons/bootstrap/Calendar4"
 import Select from "react-select"
-import { EOptionsKey } from "../../constants/app"
+import { APP_MENU, EOptionsKey } from "../../constants/app"
 import Input from "../../components/input/input"
 import { PropertyDTO } from "../../core/models/interfaces/property-model"
 import { UserDTO } from "../../core/models/interfaces/user-model"
@@ -32,8 +32,32 @@ import ItemCalendarInfo from "./functionalities/item-calendar-info"
 import Skeleton from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
 import { setErrResponse } from "../../utils/erros-util"
+import { pathRoutes } from "../../config/routes/path"
+import { useNavigate } from "react-router-dom"
 
 const Calendar: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.calendar.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
   const [isLoadingFilterCalendar, setIsLoadingFilterCalendar] =
     React.useState<boolean>(false)
   const [infoCalendar, setInfoCalendar] = React.useState<InfoCalendarDTO[]>([])
@@ -80,8 +104,6 @@ const Calendar: React.FC = () => {
     day.setDate(day.getDate() + i)
     days.push(day)
   }
-
-  const { handleGetToken } = useDataUser()
 
   const fetchListFilterCalendar = () => {
     setIsLoadingFilterCalendar(true)

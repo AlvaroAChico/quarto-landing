@@ -55,6 +55,29 @@ import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-gen
 import ModalEditApartment from "../../components/modal/variants/modal-edit-apartment/modal-edit-apartment"
 
 const Apartments: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.apartment.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
+
   const [listProjects, setListProjects] = React.useState<PropertyDTO[]>([])
   const [dataEdit, setDataEdit] = React.useState<ApartmentDTO>()
   const [isOpenModalEdit, setIsOpenModalEdit] = React.useState<boolean>(false)
@@ -69,9 +92,6 @@ const Apartments: React.FC = () => {
     React.useState<boolean>(false)
   const [dataPermissions, setDataPermissions] =
     React.useState<FilterPermissionsDTO>()
-  const navigate = useNavigate()
-
-  const { handleGetToken, handleGetPermissions } = useDataUser()
 
   const handleCloseModalEdit = () => setIsOpenModalEdit(false)
   const handleCloseModalDelete = () => setIsOpenModalDelete(false)

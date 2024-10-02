@@ -6,7 +6,7 @@ import Cookies from "js-cookie"
 import { toast } from "sonner"
 import HeaderSection from "../../components/header-section/header-section"
 import { pathRoutes } from "../../config/routes/path"
-import { COOKIES_APP } from "../../constants/app"
+import { APP_MENU, COOKIES_APP } from "../../constants/app"
 import {
   FilterPermissionsDTO,
   UserDTO,
@@ -28,8 +28,35 @@ import useDataUser from "../../utils/use-data-user"
 import Skeleton from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
 import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
+import ForbiddenAction from "../../components/forbidden-action/forbidden-action"
 
 const Users: React.FC = () => {
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    setDataPermissions(data)
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.user.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
+
   const [listUsers, setListUsers] = React.useState<UserDTO[]>([])
   const [isOpenModalEdit, setIsOpenModalEdit] = React.useState<boolean>(false)
   const [isLoadingListUsers, setIsLoadingListUsers] =
@@ -41,25 +68,9 @@ const Users: React.FC = () => {
   const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
     null,
   )
-  const [dataPermissions, setDataPermissions] =
-    React.useState<FilterPermissionsDTO>()
-  const navigate = useNavigate()
 
   const handleCloseModalEdit = () => setIsOpenModalEdit(false)
   const handleCloseModalDelete = () => setIsOpenModalDelete(false)
-
-  const { handleGetToken, handleGetPermissions } = useDataUser()
-
-  const getCookiesDataPermission = React.useCallback(() => {
-    const data = handleGetPermissions()
-    if (!!data) {
-      setDataPermissions(data)
-    }
-  }, [handleGetPermissions])
-
-  React.useEffect(() => {
-    getCookiesDataPermission()
-  }, [])
 
   const toggleDropdown = (projectId: string) => {
     setDropdownVisible(prev => (prev === projectId ? null : projectId))
@@ -99,9 +110,10 @@ const Users: React.FC = () => {
   }, [])
 
   const fetchListUsers = React.useCallback(() => {
-    setIsLoadingListUsers(true)
     const storedToken = handleGetToken()
-    if (storedToken) {
+    const data = handleGetPermissions()
+    if (storedToken && !!data?.user.includes(APP_MENU.LIST)) {
+      setIsLoadingListUsers(true)
       axios
         .get(`${settingsApp.api.base}/users?include=role`, {
           headers: {
@@ -120,7 +132,7 @@ const Users: React.FC = () => {
           setIsLoadingListUsers(false)
         })
     }
-  }, [handleGetToken])
+  }, [dataPermissions, handleGetToken])
 
   React.useEffect(() => {
     fetchListUsers()
@@ -132,7 +144,9 @@ const Users: React.FC = () => {
         title="Users"
         subtitle="List of users"
         nameButton="New User"
-        havePermissionCreate={dataPermissions?.user.includes("create") || false}
+        havePermissionCreate={
+          dataPermissions?.user.includes(APP_MENU.CREATE) || false
+        }
         onPrimaryClick={handleClick}
       />
 
@@ -156,27 +170,30 @@ const Users: React.FC = () => {
           </table>
         </ContainerTable>
       )}
-      {!isLoadingListUsers && !!listUsers && listUsers.length <= 0 && (
-        <ContainerTable>
-          <table>
-            <ContainerHead>
-              <tr>
-                <td>Name</td>
-                <td>Email</td>
-                <td></td>
-              </tr>
-            </ContainerHead>
-          </table>
-          <NotFoundStyles>
-            <span>No users found</span>
-          </NotFoundStyles>
-        </ContainerTable>
-      )}
+      {!isLoadingListUsers &&
+        !!listUsers &&
+        listUsers.length <= 0 &&
+        !!dataPermissions?.user.includes(APP_MENU.LIST) && (
+          <ContainerTable>
+            <table>
+              <ContainerHead>
+                <tr>
+                  <td>Name</td>
+                  <td>Email</td>
+                  <td></td>
+                </tr>
+              </ContainerHead>
+            </table>
+            <NotFoundStyles>
+              <span>No users found</span>
+            </NotFoundStyles>
+          </ContainerTable>
+        )}
       {!isLoadingListUsers &&
         !!listUsers &&
         listUsers.length > 0 &&
         !!dataPermissions &&
-        dataPermissions.user.includes("list") && (
+        dataPermissions.user.includes(APP_MENU.LIST) && (
           <ContainerTable>
             <table>
               <ContainerHead>
@@ -212,22 +229,16 @@ const Users: React.FC = () => {
                               tabIndex={0}
                               onBlur={handleCleanDropdown}
                             >
-                              {(
-                                dataPermissions ||
-                                ({
-                                  user: [],
-                                } as unknown as FilterPermissionsDTO)
-                              ).user.includes("update") && (
+                              {dataPermissions?.user.includes(
+                                APP_MENU.UPDATE,
+                              ) && (
                                 <span onClick={handleEditUser(`${user.id}`)}>
                                   Edit
                                 </span>
                               )}
-                              {(
-                                dataPermissions ||
-                                ({
-                                  user: [],
-                                } as unknown as FilterPermissionsDTO)
-                              ).user.includes("delete") && (
+                              {dataPermissions?.user.includes(
+                                APP_MENU.DELETE,
+                              ) && (
                                 <span onClick={handleDeleteUser(`${user.id}`)}>
                                   Delete
                                 </span>
@@ -242,6 +253,7 @@ const Users: React.FC = () => {
             </table>
           </ContainerTable>
         )}
+      {!dataPermissions?.user.includes(APP_MENU.LIST) && <ForbiddenAction />}
       <ModalEditUser
         isOpen={isOpenModalEdit}
         handleClose={handleCloseModalEdit}

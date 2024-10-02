@@ -33,7 +33,6 @@ const useDataUser = () => {
   const handleGetPermissions = (): FilterPermissionsDTO => {
     // const data = localStorage.getItem(COOKIES_APP.PERMISSIONS_APP)
     const data = getJsonFromCookies()
-    console.log("Cookies parse => ", data)
     if (!!data && data != null && data != undefined) {
       const permissions: FilterPermissionsDTO = data as FilterPermissionsDTO
       return permissions

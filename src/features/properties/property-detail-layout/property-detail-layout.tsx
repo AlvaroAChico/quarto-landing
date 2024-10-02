@@ -1,5 +1,5 @@
 import React from "react"
-import { Outlet, useParams } from "react-router-dom"
+import { Outlet, useNavigate, useParams } from "react-router-dom"
 import { useState } from "react"
 import {
   DataBlock,
@@ -34,14 +34,36 @@ import { settingsApp } from "../../../config/environment/settings"
 import { toast } from "sonner"
 import { formatToDDMonth } from "../../../utils/date-util"
 import Skeleton from "react-loading-skeleton"
+import { APP_MENU } from "../../../constants/app"
 
 const PropertyDetailLayout: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.property.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
+
   const [dataProperty, setDataProperty] = React.useState<PropertyDTO>()
   const [isLoadingDataProperty, setIsLoadingDataProperty] =
     React.useState<boolean>(false)
   const { id: idProperty } = useParams<{ id: string }>()
-
-  const { handleGetToken } = useDataUser()
 
   React.useEffect(() => {
     fetchDataProperties()

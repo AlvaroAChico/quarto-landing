@@ -70,8 +70,26 @@ import Textarea from "../../../../components/textarea/textarea"
 import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
 import { PropertyDTO } from "../../../../core/models/interfaces/property-model"
 import { setErrResponse } from "../../../../utils/erros-util"
+import { APP_MENU } from "../../../../constants/app"
 
 const CreateApartment: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (!!data && !data?.apartment.includes(APP_MENU.CREATE)) {
+      return
+    }
+  }, [])
   const [optionsProperties, setOptionsProperties] = React.useState<any>([])
   const [stepActive, setStepActive] = React.useState<number>(1)
   const [selectedOptionClient, setSelectedOptionClient] = React.useState(null)
@@ -79,9 +97,6 @@ const CreateApartment: React.FC = () => {
   const [dueDate, setDueDate] = React.useState()
   const [isSubmitUserCreate, setIsSubmitUserCreate] =
     React.useState<boolean>(false)
-  const navigate = useNavigate()
-
-  const { handleGetToken } = useDataUser()
 
   const methods = useForm<CreateApartmentForm>({
     resolver: yupResolver(CreateApartmentSchema),

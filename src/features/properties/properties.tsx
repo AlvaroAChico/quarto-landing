@@ -55,6 +55,29 @@ import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-gen
 import ModalEditProperty from "../../components/modal/variants/modal-edit-property/modal-edit-property"
 
 const Properties: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.role.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
+
   const [listProperties, setListProperties] = React.useState<PropertyDTO[]>([])
   const [dataEdit, setDataEdit] = React.useState<PropertyDTO>()
   const [isOpenModalEdit, setIsOpenModalEdit] = React.useState<boolean>(false)
@@ -72,12 +95,9 @@ const Properties: React.FC = () => {
   const [isOpenModalDelete, setIsOpenModalDelete] =
     React.useState<boolean>(false)
   const [dataDelete, setDataDelete] = React.useState<PropertyDTO>()
-  const navigate = useNavigate()
 
   const handleCloseModalEdit = () => setIsOpenModalEdit(false)
   const handleCloseModalDelete = () => setIsOpenModalDelete(false)
-
-  const { handleGetToken, handleGetPermissions } = useDataUser()
 
   const getCookiesDataPermission = React.useCallback(() => {
     const data = handleGetPermissions()

@@ -26,8 +26,35 @@ import ModalEditRole from "../../components/modal/variants/modal-edit-role/modal
 import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
 import { ManagementCompanyDTO } from "../../core/models/interfaces/management-company"
 import ModalEditCompany from "../../components/modal/variants/modal-edit-company/modal-edit-company"
+import { APP_MENU } from "../../constants/app"
+import ForbiddenAction from "../../components/forbidden-action/forbidden-action"
 
 const ManagementCompany: React.FC = () => {
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    setDataPermissions(data)
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.company.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
   const [listManagementCompany, setListManagementCompany] = React.useState<
     ManagementCompanyDTO[]
   >([])
@@ -41,11 +68,6 @@ const ManagementCompany: React.FC = () => {
   const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
     null,
   )
-  const [dataPermissions, setDataPermissions] =
-    React.useState<FilterPermissionsDTO>()
-
-  const { handleGetToken, handleGetPermissions } = useDataUser()
-  const navigate = useNavigate()
 
   const handleCloseModalEdit = () => setIsOpenModalEdit(false)
   const handleCloseModalDelete = () => setIsOpenModalDelete(false)
@@ -98,9 +120,10 @@ const ManagementCompany: React.FC = () => {
   }, [])
 
   const fetchListRole = React.useCallback(() => {
-    setIsLoadingListManagementCompany(true)
     const storedToken = handleGetToken()
-    if (storedToken) {
+    const data = handleGetPermissions()
+    if (storedToken && !!data?.company.includes(APP_MENU.LIST)) {
+      setIsLoadingListManagementCompany(true)
       axios
         .get(`${settingsApp.api.base}/management_companies`, {
           headers: {
@@ -120,7 +143,7 @@ const ManagementCompany: React.FC = () => {
           setIsLoadingListManagementCompany(false)
         })
     }
-  }, [handleGetToken])
+  }, [dataPermissions, handleGetToken])
 
   React.useEffect(() => {
     fetchListRole()
@@ -137,7 +160,9 @@ const ManagementCompany: React.FC = () => {
         title="Management Company"
         subtitle="List of management company"
         nameButton="New Management Company"
-        havePermissionCreate={dataPermissions?.user.includes("create") || false}
+        havePermissionCreate={
+          dataPermissions?.company.includes(APP_MENU.CREATE) || false
+        }
         onPrimaryClick={handleClick}
       />
       {isLoadingListManagementCompany && (
@@ -163,7 +188,8 @@ const ManagementCompany: React.FC = () => {
       )}
       {!isLoadingListManagementCompany &&
         !!listManagementCompany &&
-        listManagementCompany.length <= 0 && (
+        listManagementCompany.length <= 0 &&
+        !!dataPermissions?.company.includes(APP_MENU.LIST) && (
           <ContainerTable>
             <table>
               <ContainerHead>
@@ -184,7 +210,7 @@ const ManagementCompany: React.FC = () => {
         !!listManagementCompany &&
         listManagementCompany.length > 0 &&
         !!dataPermissions &&
-        dataPermissions.role.includes("list") && (
+        dataPermissions.role.includes(APP_MENU.LIST) && (
           <ContainerTable>
             <table>
               <ContainerHead>
@@ -224,22 +250,16 @@ const ManagementCompany: React.FC = () => {
                             tabIndex={0}
                             onBlur={handleCleanDropdown}
                           >
-                            {(
-                              dataPermissions ||
-                              ({
-                                role: [],
-                              } as unknown as FilterPermissionsDTO)
-                            ).role.includes("update") && (
+                            {dataPermissions?.company.includes(
+                              APP_MENU.UPDATE,
+                            ) && (
                               <span onClick={handleEditRole(`${role.id}`)}>
                                 Edit
                               </span>
                             )}
-                            {(
-                              dataPermissions ||
-                              ({
-                                role: [],
-                              } as unknown as FilterPermissionsDTO)
-                            ).role.includes("delete") && (
+                            {dataPermissions?.company.includes(
+                              APP_MENU.DELETE,
+                            ) && (
                               <span onClick={handleDeleteRole(`${role.id}`)}>
                                 Delete
                               </span>
@@ -260,6 +280,7 @@ const ManagementCompany: React.FC = () => {
         handleRefreshData={fetchListRole}
         dataRoleEdit={dataRoleEdit!!}
       />*/}
+      {!dataPermissions?.company.includes(APP_MENU.LIST) && <ForbiddenAction />}
       <ModalEditCompany
         isOpen={isOpenModalEdit}
         handleClose={handleCloseModalEdit}

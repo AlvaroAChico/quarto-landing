@@ -44,6 +44,29 @@ import { formatToDDMonth } from "../../../../../utils/date-util"
 import { Ellipsis } from "styled-icons/fa-solid"
 
 const DetailsApartments: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.property.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
+
   const [listApartments, setListApartments] = React.useState<PropertyDTO>()
   const [isLoadingListProjects, setIsLoadingListProjects] =
     React.useState<boolean>(false)
@@ -53,10 +76,7 @@ const DetailsApartments: React.FC = () => {
   )
   const [dataPermissions, setDataPermissions] =
     React.useState<FilterPermissionsDTO>()
-  const navigate = useNavigate()
   const { id: idProperty } = useParams<{ id: string }>()
-
-  const { handleGetToken, handleGetPermissions } = useDataUser()
 
   const getCookiesDataPermission = React.useCallback(() => {
     const data = handleGetPermissions()

@@ -18,7 +18,7 @@ export const ModalContent = styled.div<{ customStyles: string }>`
   background: white;
   padding: 40px;
   border-radius: 15px;
-  width: 400px;
+  width: 500px;
   z-index: 12;
   position: relative;
   padding-top: 40px;

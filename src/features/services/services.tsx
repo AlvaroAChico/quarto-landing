@@ -24,8 +24,34 @@ import { Ellipsis } from "styled-icons/fa-solid"
 import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
 import ModalEditService from "../../components/modal/variants/modal-edit-service/modal-edit-service"
 import { ServiceDTO } from "../../core/models/interfaces/services-model"
+import { APP_MENU } from "../../constants/app"
+import ForbiddenAction from "../../components/forbidden-action/forbidden-action"
 
 const Services: React.FC = () => {
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.service.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
   const [listServices, setListServices] = React.useState<ServiceDTO[]>([])
   const [isOpenModalEdit, setIsOpenModalEdit] = React.useState<boolean>(false)
   const [isLoadingListServices, setIsLoadingListServices] =
@@ -37,11 +63,6 @@ const Services: React.FC = () => {
   const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
     null,
   )
-  const [dataPermissions, setDataPermissions] =
-    React.useState<FilterPermissionsDTO>()
-
-  const { handleGetToken, handleGetPermissions } = useDataUser()
-  const navigate = useNavigate()
 
   const handleCloseModalEdit = () => setIsOpenModalEdit(false)
   const handleCloseModalDelete = () => setIsOpenModalDelete(false)
@@ -96,9 +117,10 @@ const Services: React.FC = () => {
   }, [])
 
   const fetchListRole = React.useCallback(() => {
-    setIsLoadingListServices(true)
     const storedToken = handleGetToken()
-    if (storedToken) {
+    const data = handleGetPermissions()
+    if (storedToken && !!data?.service.includes(APP_MENU.LIST)) {
+      setIsLoadingListServices(true)
       axios
         .get(`${settingsApp.api.base}/services`, {
           headers: {
@@ -117,7 +139,7 @@ const Services: React.FC = () => {
           setIsLoadingListServices(false)
         })
     }
-  }, [handleGetToken])
+  }, [dataPermissions, handleGetToken])
 
   React.useEffect(() => {
     fetchListRole()
@@ -128,8 +150,10 @@ const Services: React.FC = () => {
       <HeaderSection
         title="Services"
         subtitle="List of services"
-        nameButton="Create"
-        havePermissionCreate={true}
+        nameButton="New Service"
+        havePermissionCreate={
+          dataPermissions?.service.includes(APP_MENU.CREATE) || false
+        }
         onPrimaryClick={handleClick}
       />
       {isLoadingListServices && (
@@ -152,27 +176,30 @@ const Services: React.FC = () => {
           </table>
         </ContainerTable>
       )}
-      {!isLoadingListServices && !!listServices && listServices.length <= 0 && (
-        <ContainerTable>
-          <table>
-            <ContainerHead>
-              <tr>
-                <td>Name</td>
-                <td>Email</td>
-                <td></td>
-              </tr>
-            </ContainerHead>
-          </table>
-          <NotFoundStyles>
-            <span>No roles found</span>
-          </NotFoundStyles>
-        </ContainerTable>
-      )}
+      {!isLoadingListServices &&
+        !!listServices &&
+        listServices.length <= 0 &&
+        !!dataPermissions?.service.includes(APP_MENU.LIST) && (
+          <ContainerTable>
+            <table>
+              <ContainerHead>
+                <tr>
+                  <td>Name</td>
+                  <td>Email</td>
+                  <td></td>
+                </tr>
+              </ContainerHead>
+            </table>
+            <NotFoundStyles>
+              <span>No roles found</span>
+            </NotFoundStyles>
+          </ContainerTable>
+        )}
       {!isLoadingListServices &&
         !!listServices &&
         listServices.length > 0 &&
         !!dataPermissions &&
-        dataPermissions.role.includes("list") && (
+        dataPermissions.role.includes(APP_MENU.LIST) && (
           <ContainerTable>
             <table>
               <ContainerHead>
@@ -206,22 +233,16 @@ const Services: React.FC = () => {
                             tabIndex={0}
                             onBlur={handleCleanDropdown}
                           >
-                            {(
-                              dataPermissions ||
-                              ({
-                                role: [],
-                              } as unknown as FilterPermissionsDTO)
-                            ).role.includes("update") && (
+                            {dataPermissions?.service.includes(
+                              APP_MENU.UPDATE,
+                            ) && (
                               <span onClick={handleEditRole(`${role.id}`)}>
                                 Edit
                               </span>
                             )}
-                            {(
-                              dataPermissions ||
-                              ({
-                                role: [],
-                              } as unknown as FilterPermissionsDTO)
-                            ).role.includes("delete") && (
+                            {dataPermissions?.service.includes(
+                              APP_MENU.DELETE,
+                            ) && (
                               <span onClick={handleDeleteRole(`${role.id}`)}>
                                 Delete
                               </span>
@@ -242,6 +263,7 @@ const Services: React.FC = () => {
         handleDeleteUser={handleDeleteUserModal}
         dataUserDelete={dataRoleDelete!!}
         /> */}
+      {!dataPermissions?.service.includes(APP_MENU.LIST) && <ForbiddenAction />}
       <ModalEditService
         isOpen={isOpenModalEdit}
         handleClose={handleCloseModalEdit}

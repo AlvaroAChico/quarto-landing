@@ -17,22 +17,44 @@ import {
   CardSubTitle,
   ArrowContainer,
 } from "./overview.styles"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { PropertyDTO } from "../../../../../core/models/interfaces/property-model"
 import useDataUser from "../../../../../utils/use-data-user"
 import axios from "axios"
 import { settingsApp } from "../../../../../config/environment/settings"
 import { toast } from "sonner"
-import { CURRENCY_APP } from "../../../../../constants/app"
+import { APP_MENU, CURRENCY_APP } from "../../../../../constants/app"
 import Skeleton from "react-loading-skeleton"
+import { pathRoutes } from "../../../../../config/routes/path"
 
 const DetailsOverview: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.property.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
+
   const [dataProperty, setDataProperty] = React.useState<PropertyDTO>()
   const [isLoadingDataProperty, setIsLoadingDataProperty] =
     React.useState<boolean>(false)
   const { id: idProperty } = useParams<{ id: string }>()
-
-  const { handleGetToken } = useDataUser()
 
   React.useEffect(() => {
     fetchDataProperties()

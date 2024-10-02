@@ -48,6 +48,29 @@ import Button from "../../../../../../components/button/button"
 import ModalAddService from "../../../../../../components/modal/variants/modal-add-service/modal-add-service"
 
 const DetailsApartmentsById: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.property.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
+
   const [listApartments, setListApartments] = React.useState<ApartmentDTO>()
   const [isLoadingListProjects, setIsLoadingListProjects] =
     React.useState<boolean>(false)
@@ -57,10 +80,7 @@ const DetailsApartmentsById: React.FC = () => {
   )
   const [dataPermissions, setDataPermissions] =
     React.useState<FilterPermissionsDTO>()
-  const navigate = useNavigate()
   const { apartmentId } = useParams<{ apartmentId: string }>()
-
-  const { handleGetToken, handleGetPermissions } = useDataUser()
 
   const getCookiesDataPermission = React.useCallback(() => {
     const data = handleGetPermissions()

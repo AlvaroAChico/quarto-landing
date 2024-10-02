@@ -14,9 +14,31 @@ import { ApexOptions } from "apexcharts"
 import axios from "axios"
 import { settingsApp } from "../../config/environment/settings"
 import { ServiceCreatedDTO } from "../../core/models/interfaces/services-model"
+import useDataUser from "../../utils/use-data-user"
+import { APP_MENU } from "../../constants/app"
+import { useNavigate } from "react-router-dom"
+import { pathRoutes } from "../../config/routes/path"
 
 // El componente Dashboard
 const Dashboard: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (!!data && !data?.dashboard.includes(APP_MENU.LIST)) {
+      return
+    }
+  }, [])
+
   const initialStadisticsProperties: StadisticsPropertiesDashboardDTO = {
     total: 0,
     onhold: 0,

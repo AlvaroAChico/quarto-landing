@@ -12,15 +12,38 @@ import {
 } from "./assigments.styles"
 import ItemAssigment from "./components/item-assigment/item-assigment"
 import { InfoCalendarDTO } from "../../core/models/interfaces/calendar-model"
+import { APP_MENU } from "../../constants/app"
+import { pathRoutes } from "../../config/routes/path"
+import { useNavigate } from "react-router-dom"
 
 const Assignments: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.assignment.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
   const [isLoadingAssigmentList, setIsLoadingAssigmentList] =
     React.useState<boolean>(false)
   const [assigmentsList, setAssigmentsList] = React.useState<InfoCalendarDTO[]>(
     [],
   )
-
-  const { handleGetToken } = useDataUser()
 
   const fetchListAssigments = () => {
     setIsLoadingAssigmentList(true)

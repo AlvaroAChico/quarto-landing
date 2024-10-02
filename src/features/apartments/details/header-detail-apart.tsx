@@ -1,5 +1,5 @@
 import React from "react"
-import { Outlet, useParams } from "react-router-dom"
+import { Outlet, useNavigate, useParams } from "react-router-dom"
 import { useState } from "react"
 import {
   DataBlock,
@@ -38,8 +38,31 @@ import { formatToDDMonth } from "../../../utils/date-util"
 import Skeleton from "react-loading-skeleton"
 import Button from "../../../components/button/button"
 import ModalAddService from "../../../components/modal/variants/modal-add-service/modal-add-service"
+import { APP_MENU } from "../../../constants/app"
 
 const HeaderDetailApart: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.apartment.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
   const [dataProject, setDataProject] = React.useState<ApartmentDTO>()
   const [isLoadingDataProject, setIsLoadingDataProject] =
     React.useState<boolean>(false)
@@ -51,8 +74,6 @@ const HeaderDetailApart: React.FC = () => {
   const handleAddServiceModal = () => setIsOpenModalAdd(false)
 
   const { id: idApartment } = useParams<{ id: string }>()
-
-  const { handleGetToken } = useDataUser()
 
   React.useEffect(() => {
     fetchDataProjects()

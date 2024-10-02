@@ -39,15 +39,31 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { useNavigate } from "react-router-dom"
 import { pathRoutes } from "../../../../config/routes/path"
 import { createEmptyFilterPermissions } from "../../../../utils/cookie-util"
+import { APP_MENU } from "../../../../constants/app"
 
 const CreateRole: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (!!data && !data?.role.includes(APP_MENU.CREATE)) {
+      return
+    }
+  }, [])
+
   const [listPermissions, setListPermissions] =
     React.useState<PermissionCreateDTO[]>()
   const [isSubmitRoleCreate, setIsSubmitRoleCreate] =
     React.useState<boolean>(false)
-  const navigate = useNavigate()
-
-  const { handleGetToken } = useDataUser()
 
   const methods = useForm<CreateRoleForm>({
     resolver: yupResolver(CreateRoleSchema),

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
   FilterPermissionsDTO,
+  MeDTO,
   PermissionDTO,
   RoleDTO,
 } from "../../../../core/models/interfaces/user-model"
@@ -37,7 +38,12 @@ import { useNavigate } from "react-router-dom"
 import { pathRoutes } from "../../../../config/routes/path"
 import Switch from "../../../switch/switch"
 import { PermissionCreateDTO } from "../../../../core/models/interfaces/permission-model"
-import { createEmptyFilterPermissions } from "../../../../utils/cookie-util"
+import {
+  createEmptyFilterPermissions,
+  saveJsonCookiesWithSplit,
+} from "../../../../utils/cookie-util"
+import { COOKIES_APP } from "../../../../constants/app"
+import Cookies from "js-cookie"
 
 interface IOwnProps {
   isOpen: boolean
@@ -58,7 +64,7 @@ const ModalEditRole: React.FC<IOwnProps> = ({
     React.useState<PermissionCreateDTO[]>()
   const navigate = useNavigate()
 
-  const { handleGetToken } = useDataUser()
+  const { handleGetToken, clearAllDataAPP } = useDataUser()
   const methods = useForm<UpdateRoleForm>({
     resolver: yupResolver(UpdateRoleSchema),
     defaultValues: {
@@ -98,6 +104,62 @@ const ModalEditRole: React.FC<IOwnProps> = ({
     [dataRoleEdit],
   )
 
+  const updateDataRolePermissions = async () => {
+    const storedToken = handleGetToken()
+
+    if (!!storedToken) {
+      const response = await axios
+        .get(`${settingsApp.api.base}/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            ContentType: "application/json",
+            Accept: "application/json",
+          },
+        })
+        .then(response => {
+          const meData: MeDTO = response.data as MeDTO
+          if (!!meData && !!meData.id) {
+            const expiration = {
+              expires: 7,
+            }
+            const { roles, permisos, ...meUser } = meData
+            Cookies.set(
+              COOKIES_APP.USER_RES,
+              JSON.stringify(meUser),
+              expiration,
+            )
+            Cookies.set(
+              COOKIES_APP.ROLES_APP,
+              JSON.stringify(roles),
+              expiration,
+            )
+            // Filter data permissions
+            const result: FilterPermissionsDTO = createEmptyFilterPermissions()
+
+            permisos
+              .map(permission => permission.name)
+              .forEach(permission => {
+                const parts = permission.split("-")
+                const type = parts[0]
+
+                if (type in result) {
+                  const action = parts.slice(1).join("-")
+                  result[type as keyof FilterPermissionsDTO].push(action)
+                }
+              })
+
+            if (!!result) {
+              saveJsonCookiesWithSplit(result)
+            }
+          }
+          window.location.reload()
+        })
+    } else {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+  }
+
   const handleSubmit = React.useCallback((data: any) => {
     setIsSubmitRoleUpdate(true)
     const storedToken = handleGetToken()
@@ -124,8 +186,8 @@ const ModalEditRole: React.FC<IOwnProps> = ({
             toast.success("Role updated successfully")
             handleRefreshData()
             handleClose()
-            navigate(pathRoutes.ROLES.LIST)
-            window.location.reload()
+            // navigate(pathRoutes.ROLES.LIST)
+            updateDataRolePermissions()
           }
         })
         .catch(err => {
@@ -273,7 +335,7 @@ const ModalEditRole: React.FC<IOwnProps> = ({
       </>
     ),
   }))
-  console.log("Data Role -> ", dataRoleEdit)
+
   return (
     <Modal
       isOpen={isOpen}

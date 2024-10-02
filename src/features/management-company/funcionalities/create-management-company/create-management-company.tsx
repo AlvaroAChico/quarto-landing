@@ -30,13 +30,29 @@ import {
   CreateCompanySchema,
 } from "../../../../core/models/schemas/company-schema"
 import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
+import { APP_MENU } from "../../../../constants/app"
 
 const CreateManagementCompany: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (!!data && !data?.company.includes(APP_MENU.CREATE)) {
+      return
+    }
+  }, [])
   const [stepActive, setStepActive] = React.useState<number>(1)
   const [isSubmitUserCreate, setIsSubmitUserCreate] =
     React.useState<boolean>(false)
-  const navigate = useNavigate()
-  const { handleGetToken } = useDataUser()
 
   const methods = useForm<CreateCompanyForm>({
     resolver: yupResolver(CreateCompanySchema),

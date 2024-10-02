@@ -4,7 +4,7 @@ import HeaderSection from "../../components/header-section/header-section"
 import { pathRoutes } from "../../config/routes/path"
 import axios from "axios"
 import Cookies from "js-cookie"
-import { COOKIES_APP } from "../../constants/app"
+import { APP_MENU, COOKIES_APP } from "../../constants/app"
 import {
   DataRoleResponse,
   RoleDTO,
@@ -30,8 +30,35 @@ import Skeleton from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
 import ModalEditRole from "../../components/modal/variants/modal-edit-role/modal-edit-role"
 import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
+import ForbiddenAction from "../../components/forbidden-action/forbidden-action"
 
 const Roles: React.FC = () => {
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    setDataPermissions(data)
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.role.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
+
   const [listRoles, setListRoles] = React.useState<DataRoleResponse[]>([])
   const [isOpenModalEdit, setIsOpenModalEdit] = React.useState<boolean>(false)
   const [isLoadingListRoles, setIsLoadingListRoles] =
@@ -43,11 +70,6 @@ const Roles: React.FC = () => {
   const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
     null,
   )
-  const [dataPermissions, setDataPermissions] =
-    React.useState<FilterPermissionsDTO>()
-
-  const { handleGetToken, handleGetPermissions } = useDataUser()
-  const navigate = useNavigate()
 
   const handleCloseModalEdit = () => setIsOpenModalEdit(false)
   const handleCloseModalDelete = () => setIsOpenModalDelete(false)
@@ -96,9 +118,10 @@ const Roles: React.FC = () => {
   }, [])
 
   const fetchListRole = React.useCallback(() => {
-    setIsLoadingListRoles(true)
     const storedToken = handleGetToken()
-    if (storedToken) {
+    const data = handleGetPermissions()
+    if (storedToken && !!data?.role.includes(APP_MENU.LIST)) {
+      setIsLoadingListRoles(true)
       axios
         .get(`${settingsApp.api.base}/roles?include=permissions`, {
           headers: {
@@ -118,7 +141,7 @@ const Roles: React.FC = () => {
           setIsLoadingListRoles(false)
         })
     }
-  }, [handleGetToken])
+  }, [dataPermissions, handleGetToken])
 
   React.useEffect(() => {
     fetchListRole()
@@ -135,7 +158,9 @@ const Roles: React.FC = () => {
         title="Roles"
         subtitle="List of roles"
         nameButton="New Role"
-        havePermissionCreate={dataPermissions?.user.includes("create") || false}
+        havePermissionCreate={
+          dataPermissions?.role.includes(APP_MENU.CREATE) || false
+        }
         onPrimaryClick={handleClick}
       />
       {isLoadingListRoles && (
@@ -158,27 +183,30 @@ const Roles: React.FC = () => {
           </table>
         </ContainerTable>
       )}
-      {!isLoadingListRoles && !!listRoles && listRoles.length <= 0 && (
-        <ContainerTable>
-          <table>
-            <ContainerHead>
-              <tr>
-                <td>Name</td>
-                <td>Email</td>
-                <td></td>
-              </tr>
-            </ContainerHead>
-          </table>
-          <NotFoundStyles>
-            <span>No roles found</span>
-          </NotFoundStyles>
-        </ContainerTable>
-      )}
+      {!isLoadingListRoles &&
+        !!listRoles &&
+        listRoles.length <= 0 &&
+        !!dataPermissions?.role.includes(APP_MENU.LIST) && (
+          <ContainerTable>
+            <table>
+              <ContainerHead>
+                <tr>
+                  <td>Name</td>
+                  <td>Email</td>
+                  <td></td>
+                </tr>
+              </ContainerHead>
+            </table>
+            <NotFoundStyles>
+              <span>No roles found</span>
+            </NotFoundStyles>
+          </ContainerTable>
+        )}
       {!isLoadingListRoles &&
         !!listRoles &&
         listRoles.length > 0 &&
         !!dataPermissions &&
-        dataPermissions.role.includes("list") && (
+        dataPermissions.role.includes(APP_MENU.LIST) && (
           <ContainerTable>
             <table>
               <ContainerHead>
@@ -212,22 +240,16 @@ const Roles: React.FC = () => {
                             tabIndex={0}
                             onBlur={handleCleanDropdown}
                           >
-                            {(
-                              dataPermissions ||
-                              ({
-                                role: [],
-                              } as unknown as FilterPermissionsDTO)
-                            ).role.includes("update") && (
+                            {dataPermissions?.role.includes(
+                              APP_MENU.UPDATE,
+                            ) && (
                               <span onClick={handleEditRole(`${role.id}`)}>
                                 Edit
                               </span>
                             )}
-                            {(
-                              dataPermissions ||
-                              ({
-                                role: [],
-                              } as unknown as FilterPermissionsDTO)
-                            ).role.includes("delete") && (
+                            {dataPermissions?.role.includes(
+                              APP_MENU.DELETE,
+                            ) && (
                               <span onClick={handleDeleteRole(`${role.id}`)}>
                                 Delete
                               </span>
@@ -242,6 +264,7 @@ const Roles: React.FC = () => {
             </table>
           </ContainerTable>
         )}
+      {!dataPermissions?.role.includes(APP_MENU.LIST) && <ForbiddenAction />}
       <ModalEditRole
         isOpen={isOpenModalEdit}
         handleClose={handleCloseModalEdit}

@@ -22,13 +22,28 @@ import axios from "axios"
 import { settingsApp } from "../../../../config/environment/settings"
 import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
 import { toast } from "sonner"
+import { APP_MENU } from "../../../../constants/app"
 
 const CreateService: React.FC = () => {
-  const [isSubmitServiceCreate, setIsSubmitServiceCreate] =
-    React.useState<boolean>(false)
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
   const navigate = useNavigate()
 
-  const { handleGetToken, handleGetPermissions } = useDataUser()
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (!!data && !data?.apartment.includes(APP_MENU.CREATE)) {
+      return
+    }
+  }, [])
+  const [isSubmitServiceCreate, setIsSubmitServiceCreate] =
+    React.useState<boolean>(false)
 
   const methods = useForm<CreateServiceForm>({
     resolver: yupResolver(CreateServiceSchema),

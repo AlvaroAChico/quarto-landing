@@ -32,15 +32,31 @@ import { settingsApp } from "../../../../config/environment/settings"
 import { CardImage } from "@styled-icons/bootstrap/CardImage"
 import { Trash } from "@styled-icons/ionicons-solid/Trash"
 import { useDropzone } from "react-dropzone"
+import { APP_MENU } from "../../../../constants/app"
 
 const CreateUser: React.FC = () => {
+  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
+    useDataUser()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    if (!!data && !data?.user.includes(APP_MENU.CREATE)) {
+      return
+    }
+  }, [])
+
   const [optionsRoles, setOptionsRoles] = React.useState<any>([])
   const [selectedOptionRole, setSelectedOptionRole] = React.useState(null)
   const [isSubmitUserCreate, setIsSubmitUserCreate] =
     React.useState<boolean>(false)
-  const navigate = useNavigate()
-
-  const { handleGetToken, handleGetPermissions } = useDataUser()
 
   const methods = useForm<CreateUserForm>({
     resolver: yupResolver(CreateUserSchema),
