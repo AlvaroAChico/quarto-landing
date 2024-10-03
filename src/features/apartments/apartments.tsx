@@ -53,8 +53,11 @@ import "react-loading-skeleton/dist/skeleton.css"
 import { routeWithReplaceId } from "../../utils/path-util"
 import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
 import ModalEditApartment from "../../components/modal/variants/modal-edit-apartment/modal-edit-apartment"
+import ForbiddenAction from "../../components/forbidden-action/forbidden-action"
 
 const Apartments: React.FC = () => {
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
     useDataUser()
   const navigate = useNavigate()
@@ -68,6 +71,7 @@ const Apartments: React.FC = () => {
     }
     // Verify Permissions
     const data = handleGetPermissions()
+    setDataPermissions(data)
     if (
       !!data &&
       !Object.values(APP_MENU).some(permission =>
@@ -90,8 +94,6 @@ const Apartments: React.FC = () => {
   const [dataDelete, setDataDelete] = React.useState<ApartmentDTO>()
   const [isOpenModalDelete, setIsOpenModalDelete] =
     React.useState<boolean>(false)
-  const [dataPermissions, setDataPermissions] =
-    React.useState<FilterPermissionsDTO>()
 
   const handleCloseModalEdit = () => setIsOpenModalEdit(false)
   const handleCloseModalDelete = () => setIsOpenModalDelete(false)
@@ -157,9 +159,10 @@ const Apartments: React.FC = () => {
   }, [])
 
   const fetchDataProjects = React.useCallback(() => {
-    setIsLoadingListProjects(true)
     const storedToken = handleGetToken()
-    if (!!storedToken) {
+    const data = handleGetPermissions()
+    if (storedToken && !!data?.apartment.includes(APP_MENU.LIST)) {
+      setIsLoadingListProjects(true)
       axios
         .get(`${settingsApp.api.base}/residentials?include=apartments`, {
           headers: {
@@ -207,7 +210,7 @@ const Apartments: React.FC = () => {
         subtitle="Apartments"
         nameButton="New Apartment"
         havePermissionCreate={
-          dataPermissions?.property.includes(APP_MENU.CREATE) || false
+          dataPermissions?.apartment.includes(APP_MENU.CREATE) || false
         }
         onPrimaryClick={handleClick}
       />
@@ -250,7 +253,8 @@ const Apartments: React.FC = () => {
         )}
         {!isLoadingListProjects &&
           !!listProjects &&
-          listProjects.length <= 0 && (
+          listProjects.length <= 0 &&
+          !!dataPermissions?.apartment.includes(APP_MENU.LIST) && (
             <>
               <ContainerTable>
                 <table>
@@ -273,7 +277,7 @@ const Apartments: React.FC = () => {
           !!listProjects &&
           listProjects.length > 0 &&
           !!dataPermissions &&
-          dataPermissions.property.includes(APP_MENU.LIST) && (
+          dataPermissions.apartment.includes(APP_MENU.LIST) && (
             <ContainerTable>
               <ContainerFilters>
                 <div>
@@ -347,24 +351,18 @@ const Apartments: React.FC = () => {
                                 tabIndex={0}
                                 onBlur={handleCleanDropdown}
                               >
-                                {(
-                                  dataPermissions ||
-                                  ({
-                                    project: [],
-                                  } as unknown as FilterPermissionsDTO)
-                                ).property.includes(APP_MENU.UPDATE) && (
+                                {dataPermissions?.apartment.includes(
+                                  APP_MENU.UPDATE,
+                                ) && (
                                   <span
                                     onClick={handleEditProject(`${apart.id}`)}
                                   >
                                     Edit
                                   </span>
                                 )}
-                                {(
-                                  dataPermissions ||
-                                  ({
-                                    project: [],
-                                  } as unknown as FilterPermissionsDTO)
-                                ).property.includes(APP_MENU.DELETE) && (
+                                {dataPermissions?.apartment.includes(
+                                  APP_MENU.UPDATE,
+                                ) && (
                                   <span
                                     onClick={handleDeleteProject(`${apart.id}`)}
                                   >
@@ -383,6 +381,9 @@ const Apartments: React.FC = () => {
             </ContainerTable>
           )}
       </ContentStylesSection>
+      {!dataPermissions?.apartment.includes(APP_MENU.LIST) && (
+        <ForbiddenAction />
+      )}
       <ModalEditApartment
         isOpen={isOpenModalEdit}
         handleClose={handleCloseModalEdit}

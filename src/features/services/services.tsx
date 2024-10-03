@@ -43,6 +43,7 @@ const Services: React.FC = () => {
     }
     // Verify Permissions
     const data = handleGetPermissions()
+    setDataPermissions(data)
     if (
       !!data &&
       !Object.values(APP_MENU).some(permission =>

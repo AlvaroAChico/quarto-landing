@@ -3,37 +3,17 @@ import Modal from "../../modal"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
-  UpdateUserForm,
-  UpdateUserSchema,
-} from "../../../../core/models/schemas/user-schema"
-import {
-  CreateUserDTO,
-  Option,
-  UserDTO,
-} from "../../../../core/models/interfaces/user-model"
-import {
-  ContainerDragAndDropAvatar,
-  ContainerImageAvatar,
-  CustomWrapperInputAvatar,
   ErrorMessage,
-  selectStyles,
   WrapperInput,
 } from "../../../../config/theme/global-styles"
 import { User } from "styled-icons/boxicons-solid"
 import Button from "../../../button/button"
 import Input from "../../../input/input"
-import Select from "react-select"
 import axios from "axios"
 import { toast } from "sonner"
 import useDataUser from "../../../../utils/use-data-user"
 import { settingsApp } from "../../../../config/environment/settings"
 import { FormContainer } from "./modal-edit-company.styles"
-import {
-  UpdateServiceForm,
-  UpdateServiceSchema,
-} from "../../../../core/models/schemas/service-schema"
-import { ServiceDTO } from "../../../../core/models/interfaces/services-model"
-import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
 import { setErrResponse } from "../../../../utils/erros-util"
 import { ManagementCompanyDTO } from "../../../../core/models/interfaces/management-company"
 import {
@@ -57,10 +37,8 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
   handleRefreshData,
 }) => {
   const [isSubmitUpdate, setIsSubmitUpdate] = React.useState<boolean>(false)
-  const [initialData, setInitialData] =
-    React.useState<UpdateCompanyForm | null>(null)
 
-  const { handleGetToken, handleGetPermissions } = useDataUser()
+  const { handleGetToken } = useDataUser()
 
   const methods = useForm<UpdateCompanyForm>({
     resolver: yupResolver(UpdateCompanySchema),
@@ -77,60 +55,31 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
     handleSubmit: submitWrapper,
     formState: { errors },
     register,
-    setValue,
   } = methods
-
-  React.useEffect(() => {
-    if (!!dataEdit) {
-      setValue("name", `${dataEdit.name}`)
-      setValue("managerName", dataEdit.managerName)
-      setValue("managerPhone", dataEdit.managerPhone)
-      setValue("assitantManagerName", dataEdit.assitantManagerName)
-      setValue("assitantManagerPhone", dataEdit.assitantManagerPhone)
-      setInitialData({
-        name: dataEdit.name,
-        managerName: dataEdit.managerName,
-        managerPhone: dataEdit.managerPhone,
-        assitantManagerName: dataEdit.assitantManagerName,
-        assitantManagerPhone: dataEdit.assitantManagerPhone,
-      })
-    }
-  }, [dataEdit])
 
   const handleSubmit = React.useCallback(
     (data: any) => {
-      const changes: Partial<UpdateCompanyForm> = {}
-
-      // Compara cada campo con el valor inicial
-      if (data.name !== initialData?.name) {
-        changes.name = data.name
-      }
-      if (data.managerName !== initialData?.managerName) {
-        changes.managerName = data.managerName
-      }
-      if (data.managerPhone !== initialData?.managerPhone) {
-        changes.managerPhone = data.managerPhone
-      }
-      if (data.assitantManagerName !== initialData?.assitantManagerName) {
-        changes.assitantManagerName = data.assitantManagerName
-      }
-      if (data.assitantManagerPhone !== initialData?.assitantManagerPhone) {
-        changes.assitantManagerPhone = data.assitantManagerPhone
-      }
-
-      // Si no hay cambios, muestra un mensaje y retorna
-      if (Object.keys(changes).length === 0) {
-        toast.warning("No se realizaron cambios.")
-        return
-      }
-
-      setIsSubmitUpdate(true)
       const storedToken = handleGetToken()
       if (!!storedToken) {
+        setIsSubmitUpdate(true)
         const formData = new FormData()
-        Object.entries(changes).forEach(([key, value]) => {
-          formData.append(key as keyof UpdateCompanyForm, value as string)
-        })
+
+        for (const key in data) {
+          if (
+            data.hasOwnProperty(key) &&
+            data[key] !== undefined &&
+            data[key] !== null &&
+            data[key] !== ""
+          ) {
+            formData.append(key, data[key])
+          }
+        }
+
+        if (formData.entries().next().done) {
+          setIsSubmitUpdate(false)
+          toast.warning("No changes were made")
+          return
+        }
 
         axios
           .patch(
@@ -166,7 +115,9 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
     <Modal isOpen={isOpen} onClose={handleClose} title="Edit Company">
       <FormContainer>
         <WrapperInput>
-          <label htmlFor="name-update-edit">First Name</label>
+          <label htmlFor="name-update-edit">
+            Name: <span>{dataEdit?.name}</span>
+          </label>
           <Input
             id="name-update-edit"
             placeholder="Enter name"
@@ -178,7 +129,9 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
           )}
         </WrapperInput>
         <WrapperInput>
-          <label htmlFor="managername-create-company">Manager Name</label>
+          <label htmlFor="managername-create-company">
+            Manager Name: <span>{dataEdit?.managerName}</span>
+          </label>
           <Input
             id="managername-create-company"
             placeholder="Enter address"
@@ -190,7 +143,9 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
           )}
         </WrapperInput>
         <WrapperInput>
-          <label htmlFor="phone-manager-create-company">Phone Manager</label>
+          <label htmlFor="phone-manager-create-company">
+            Phone Manager: <span>{dataEdit?.managerPhone}</span>
+          </label>
           <Input
             id="phone-manager-create-company"
             placeholder="Enter phone manager"
@@ -202,7 +157,9 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
           )}
         </WrapperInput>
         <WrapperInput>
-          <label htmlFor="supervisorname-create-company">Supervisor Name</label>
+          <label htmlFor="supervisorname-create-company">
+            Supervisor Name: <span>{dataEdit?.assitantManagerName}</span>
+          </label>
           <Input
             id="supervisorname-create-company"
             placeholder="Enter Supervisor name"
@@ -217,7 +174,7 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
         </WrapperInput>
         <WrapperInput>
           <label htmlFor="phone-supervisor-create-company">
-            Phone Supervisor
+            Phone Supervisor: <span>{dataEdit?.assitantManagerPhone}</span>
           </label>
           <Input
             id="phone-supervisor-create-company"

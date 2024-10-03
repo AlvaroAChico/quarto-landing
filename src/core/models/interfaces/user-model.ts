@@ -72,6 +72,8 @@ export interface FilterPermissionsDTO {
   assignment: string[]
   calendar: string[]
   reports: string[]
+  work: string[]
+  quality: string[]
 }
 
 // export const emptyFilterPermissions = {

@@ -42,8 +42,11 @@ import Select from "react-select"
 import { User } from "styled-icons/boxicons-solid"
 import { formatToDDMonth } from "../../../../../utils/date-util"
 import { Ellipsis } from "styled-icons/fa-solid"
+import ForbiddenAction from "../../../../../components/forbidden-action/forbidden-action"
 
 const DetailsApartments: React.FC = () => {
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
     useDataUser()
   const navigate = useNavigate()
@@ -57,10 +60,11 @@ const DetailsApartments: React.FC = () => {
     }
     // Verify Permissions
     const data = handleGetPermissions()
+    setDataPermissions(data)
     if (
       !!data &&
       !Object.values(APP_MENU).some(permission =>
-        data?.property.includes(permission),
+        data?.apartment.includes(permission),
       )
     ) {
       return
@@ -74,8 +78,6 @@ const DetailsApartments: React.FC = () => {
   const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
     null,
   )
-  const [dataPermissions, setDataPermissions] =
-    React.useState<FilterPermissionsDTO>()
   const { id: idProperty } = useParams<{ id: string }>()
 
   const getCookiesDataPermission = React.useCallback(() => {
@@ -116,9 +118,10 @@ const DetailsApartments: React.FC = () => {
   }, [])
 
   const fetchDataProjects = React.useCallback(() => {
-    setIsLoadingListProjects(true)
     const storedToken = handleGetToken()
-    if (!!storedToken) {
+    const data = handleGetPermissions()
+    if (storedToken && !!data?.apartment.includes(APP_MENU.LIST)) {
+      setIsLoadingListProjects(true)
       axios
         .get(
           `${settingsApp.api.base}/residentials/${idProperty}?include=apartments`,
@@ -190,7 +193,8 @@ const DetailsApartments: React.FC = () => {
       )}
       {!isLoadingListProjects &&
         !!listApartments &&
-        listApartments.apartments.length <= 0 && (
+        listApartments.apartments.length <= 0 &&
+        !!dataPermissions?.apartment.includes(APP_MENU.LIST) && (
           <>
             <ContainerTable>
               <table>
@@ -214,7 +218,7 @@ const DetailsApartments: React.FC = () => {
         !!listApartments &&
         listApartments.apartments.length > 0 &&
         !!dataPermissions &&
-        dataPermissions.property.includes(APP_MENU.LIST) && (
+        dataPermissions.apartment.includes(APP_MENU.LIST) && (
           <ContainerTable>
             <ContainerFilters>
               <div>
@@ -302,24 +306,18 @@ const DetailsApartments: React.FC = () => {
                             tabIndex={0}
                             onBlur={handleCleanDropdown}
                           >
-                            {(
-                              dataPermissions ||
-                              ({
-                                project: [],
-                              } as unknown as FilterPermissionsDTO)
-                            ).property.includes(APP_MENU.UPDATE) && (
+                            {dataPermissions?.apartment.includes(
+                              APP_MENU.UPDATE,
+                            ) && (
                               <span
                                 onClick={handleEditProject(`${apartment.id}`)}
                               >
                                 Edit
                               </span>
                             )}
-                            {(
-                              dataPermissions ||
-                              ({
-                                project: [],
-                              } as unknown as FilterPermissionsDTO)
-                            ).property.includes(APP_MENU.DELETE) && (
+                            {dataPermissions?.apartment.includes(
+                              APP_MENU.DELETE,
+                            ) && (
                               <span
                                 onClick={handleDeleteProject(`${apartment.id}`)}
                               >
@@ -336,6 +334,9 @@ const DetailsApartments: React.FC = () => {
             </table>
           </ContainerTable>
         )}
+      {!dataPermissions?.apartment.includes(APP_MENU.LIST) && (
+        <ForbiddenAction />
+      )}
     </ContentStylesSection>
   )
 }

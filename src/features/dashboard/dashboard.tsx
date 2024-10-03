@@ -18,9 +18,12 @@ import useDataUser from "../../utils/use-data-user"
 import { APP_MENU } from "../../constants/app"
 import { useNavigate } from "react-router-dom"
 import { pathRoutes } from "../../config/routes/path"
+import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
 
 // El componente Dashboard
 const Dashboard: React.FC = () => {
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
     useDataUser()
   const navigate = useNavigate()
@@ -34,6 +37,7 @@ const Dashboard: React.FC = () => {
     }
     // Verify Permissions
     const data = handleGetPermissions()
+    setDataPermissions(data)
     if (!!data && !data?.dashboard.includes(APP_MENU.LIST)) {
       return
     }

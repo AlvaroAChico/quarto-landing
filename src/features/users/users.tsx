@@ -25,10 +25,10 @@ import {
 import { Ellipsis } from "@styled-icons/fa-solid/Ellipsis"
 import { settingsApp } from "../../config/environment/settings"
 import useDataUser from "../../utils/use-data-user"
-import Skeleton from "react-loading-skeleton"
-import "react-loading-skeleton/dist/skeleton.css"
 import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
 import ForbiddenAction from "../../components/forbidden-action/forbidden-action"
+import Skeleton from "react-loading-skeleton"
+import "react-loading-skeleton/dist/skeleton.css"
 
 const Users: React.FC = () => {
   const [dataPermissions, setDataPermissions] =

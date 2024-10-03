@@ -53,8 +53,11 @@ import { routeWithReplaceId } from "../../utils/path-util"
 import { formatToDDMonth } from "../../utils/date-util"
 import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
 import ModalEditProperty from "../../components/modal/variants/modal-edit-property/modal-edit-property"
+import ForbiddenAction from "../../components/forbidden-action/forbidden-action"
 
 const Properties: React.FC = () => {
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
     useDataUser()
   const navigate = useNavigate()
@@ -68,10 +71,11 @@ const Properties: React.FC = () => {
     }
     // Verify Permissions
     const data = handleGetPermissions()
+    setDataPermissions(data)
     if (
       !!data &&
       !Object.values(APP_MENU).some(permission =>
-        data?.role.includes(permission),
+        data?.property.includes(permission),
       )
     ) {
       return
@@ -90,8 +94,6 @@ const Properties: React.FC = () => {
   const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
     null,
   )
-  const [dataPermissions, setDataPermissions] =
-    React.useState<FilterPermissionsDTO>()
   const [isOpenModalDelete, setIsOpenModalDelete] =
     React.useState<boolean>(false)
   const [dataDelete, setDataDelete] = React.useState<PropertyDTO>()
@@ -146,9 +148,10 @@ const Properties: React.FC = () => {
   }, [])
 
   const fetchDataProperties = React.useCallback(() => {
-    setIsLoadingListProperties(true)
     const storedToken = handleGetToken()
-    if (!!storedToken) {
+    const data = handleGetPermissions()
+    if (storedToken && !!data?.property.includes(APP_MENU.LIST)) {
+      setIsLoadingListProperties(true)
       axios
         .get(`${settingsApp.api.base}/residentials?include=apartments`, {
           headers: {
@@ -240,6 +243,7 @@ const Properties: React.FC = () => {
         )}
         {!isLoadingListProperties &&
           !!listProperties &&
+          listProperties.length > 0 &&
           !!dataPermissions &&
           dataPermissions.property.includes(APP_MENU.LIST) && (
             <ContainerTable>
@@ -267,14 +271,14 @@ const Properties: React.FC = () => {
                 </div>
                 <div>
                   <div>
-                    <Select
+                    {/* <Select
                       defaultValue={selectedOptionRole}
                       onChange={handleChangeOptionRole}
                       options={monthsSelect}
                       isSearchable={false}
                       styles={selectStyles}
                       placeholder="Month"
-                    />
+                    /> */}
                   </div>
                 </div>
               </ContainerFilters>
@@ -344,24 +348,18 @@ const Properties: React.FC = () => {
                               tabIndex={0}
                               onBlur={handleCleanDropdown}
                             >
-                              {(
-                                dataPermissions ||
-                                ({
-                                  project: [],
-                                } as unknown as FilterPermissionsDTO)
-                              ).property.includes(APP_MENU.UPDATE) && (
+                              {dataPermissions?.property.includes(
+                                APP_MENU.UPDATE,
+                              ) && (
                                 <span
                                   onClick={handleEditProject(`${project.id}`)}
                                 >
                                   Edit
                                 </span>
                               )}
-                              {(
-                                dataPermissions ||
-                                ({
-                                  project: [],
-                                } as unknown as FilterPermissionsDTO)
-                              ).property.includes(APP_MENU.DELETE) && (
+                              {dataPermissions?.property.includes(
+                                APP_MENU.DELETE,
+                              ) && (
                                 <span
                                   onClick={handleDeleteProject(`${project.id}`)}
                                 >
@@ -378,7 +376,8 @@ const Properties: React.FC = () => {
               </table>
               {!isLoadingListProperties &&
                 !!listProperties &&
-                listProperties.length <= 0 && (
+                listProperties.length <= 0 &&
+                !!dataPermissions?.property.includes(APP_MENU.LIST) && (
                   <NotFoundStyles>
                     <span>No properties found</span>
                   </NotFoundStyles>
@@ -386,6 +385,9 @@ const Properties: React.FC = () => {
             </ContainerTable>
           )}
       </ContentStylesSection>
+      {!dataPermissions?.property.includes(APP_MENU.LIST) && (
+        <ForbiddenAction />
+      )}
       <ModalEditProperty
         isOpen={isOpenModalEdit}
         handleClose={handleCloseModalEdit}

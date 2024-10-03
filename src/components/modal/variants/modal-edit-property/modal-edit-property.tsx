@@ -130,9 +130,7 @@ const ModalEditProperty: React.FC<IOwnProps> = ({
       const storedToken = handleGetToken()
       if (!!storedToken) {
         const formData = new FormData()
-
-        console.log("Data => ", data)
-
+        
         for (const key in data) {
           if (
             data.hasOwnProperty(key) &&

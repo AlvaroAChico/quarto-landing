@@ -339,7 +339,7 @@ const DashboardLayout: React.FC = () => {
                   <p>Assignments</p>
                 </ItemNavLink>
               )}
-            {!!dataPermissions &&
+            {/* {!!dataPermissions &&
               !!dataPermissions.calendar &&
               Object.values(APP_MENU).some(permission =>
                 dataPermissions?.calendar.includes(permission),
@@ -356,7 +356,7 @@ const DashboardLayout: React.FC = () => {
                   <Calendar />
                   <p>Calendar</p>
                 </ItemNavLink>
-              )}
+              )} */}
             {!!dataPermissions &&
               !!dataPermissions.calendar &&
               Object.values(APP_MENU).some(permission =>

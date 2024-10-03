@@ -15,13 +15,19 @@ import axios from "axios"
 import { settingsApp } from "../../../../config/environment/settings"
 import { toast } from "sonner"
 import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
+import { FilterPermissionsDTO } from "../../../../core/models/interfaces/user-model"
 
 interface IOwnProps {
   assigment: InfoCalendarDTO
+  permissions: FilterPermissionsDTO
   onRefresh: () => void
 }
 
-const ItemAssigment: React.FC<IOwnProps> = ({ assigment, onRefresh }) => {
+const ItemAssigment: React.FC<IOwnProps> = ({
+  assigment,
+  permissions,
+  onRefresh,
+}) => {
   const [isLoadingApproval, setIsLoadingApproval] = React.useState(false)
 
   const { handleGetToken } = useDataUser()
@@ -83,6 +89,7 @@ const ItemAssigment: React.FC<IOwnProps> = ({ assigment, onRefresh }) => {
           <span>Notes: {assigment.customerNotes}</span>
         </div>
       </InfoAssig>
+      {/* {dataPermissions?..includes("update") && (} */}
       <ActionsAssig>
         <button onClick={handleAccepted} disabled={isLoadingApproval}>
           <Check2 />

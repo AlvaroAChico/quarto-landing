@@ -179,10 +179,10 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: pathRoutes.CALENDAR.LIST,
-        element: <Calendar />,
-      },
+      // {
+      //   path: pathRoutes.CALENDAR.LIST,
+      //   element: <Calendar />,
+      // },
       {
         path: pathRoutes.DAILY_CALENDAR.LIST,
         element: <DailyCalendar />,

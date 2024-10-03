@@ -46,8 +46,11 @@ import {
 } from "./apartment-detail.styles"
 import Button from "../../../../../../components/button/button"
 import ModalAddService from "../../../../../../components/modal/variants/modal-add-service/modal-add-service"
+import ForbiddenAction from "../../../../../../components/forbidden-action/forbidden-action"
 
 const DetailsApartmentsById: React.FC = () => {
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
     useDataUser()
   const navigate = useNavigate()
@@ -61,6 +64,7 @@ const DetailsApartmentsById: React.FC = () => {
     }
     // Verify Permissions
     const data = handleGetPermissions()
+    setDataPermissions(data)
     if (
       !!data &&
       !Object.values(APP_MENU).some(permission =>
@@ -78,8 +82,6 @@ const DetailsApartmentsById: React.FC = () => {
   const [dropdownVisible, setDropdownVisible] = React.useState<string | null>(
     null,
   )
-  const [dataPermissions, setDataPermissions] =
-    React.useState<FilterPermissionsDTO>()
   const { apartmentId } = useParams<{ apartmentId: string }>()
 
   const getCookiesDataPermission = React.useCallback(() => {
@@ -123,9 +125,10 @@ const DetailsApartmentsById: React.FC = () => {
   }, [])
 
   const fetchDataProjects = React.useCallback(() => {
-    setIsLoadingListProjects(true)
     const storedToken = handleGetToken()
-    if (!!storedToken) {
+    const data = handleGetPermissions()
+    if (storedToken && !!data?.work.includes(APP_MENU.LIST)) {
+      setIsLoadingListProjects(true)
       axios
         .get(
           `${settingsApp.api.base}/apartments/${apartmentId}?include=works`,
@@ -179,53 +182,34 @@ const DetailsApartmentsById: React.FC = () => {
     <>
       <ContentDetailsOulet>
         <ContentStylesSection>
-          {isLoadingListProjects && (
-            <ContainerTable>
-              <table>
-                <ContainerHead>
-                  <tr>
-                    <td>Service</td>
-                    <td>Status</td>
-                    <td>Contractor</td>
-                    <td>Due Date</td>
-                    <td></td>
-                  </tr>
-                </ContainerHead>
-                <ContainerBody>
-                  <tr>
-                    <td colSpan={5}>
-                      <Skeleton count={3} height={40} />
-                    </td>
-                  </tr>
-                </ContainerBody>
-              </table>
-            </ContainerTable>
-          )}
-          {!isLoadingListProjects &&
+          {/* {!isLoadingListProjects &&
             !!listApartments &&
-            !!listApartments.works && (
-              <ContainerTable>
-                <ApartmentTitleStyles>
-                  <div>
-                    <span>{listApartments?.name}</span>
-                  </div>
-                  <div>
-                    <Button text="New work" onClick={handleOpenModalAdd} />
-                  </div>
-                </ApartmentTitleStyles>
-                <ContainerFilters>
-                  <div>
-                    <WrapperInput>
-                      <Input
-                        id="email-create-user"
-                        placeholder="Search"
-                        icon={Search}
-                        props={undefined} // props={register("email")}
-                      />
-                    </WrapperInput>
-                  </div>
-                  <div>
-                    <div>
+            !!listApartments.works && ( */}
+          <ContainerTable>
+            <ApartmentTitleStyles>
+              <div>
+                <span>{listApartments?.name}</span>
+              </div>
+              <div>
+                <Button text="New work" onClick={handleOpenModalAdd} />
+              </div>
+            </ApartmentTitleStyles>
+            <ContainerFilters>
+              <div>
+                {(dataPermissions?.work.includes(APP_MENU.LIST) ||
+                  dataPermissions?.work.includes(APP_MENU.READ_OWN)) && (
+                  <WrapperInput>
+                    <Input
+                      id="email-create-user"
+                      placeholder="Search"
+                      icon={Search}
+                      props={undefined} // props={register("email")}
+                    />
+                  </WrapperInput>
+                )}
+              </div>
+              <div>
+                {/* <div>
                       <Select
                         defaultValue={selectedOptionRole}
                         onChange={handleChangeOptionRole}
@@ -234,167 +218,162 @@ const DetailsApartmentsById: React.FC = () => {
                         styles={selectStyles}
                         placeholder="Month"
                       />
-                    </div>
-                  </div>
-                </ContainerFilters>
-                <table>
-                  <ContainerHead>
-                    <tr>
-                      <td>Service</td>
-                      <td>Status</td>
-                      <td>Contractor</td>
-                      <td>Due Date</td>
-                      <td>Notes</td>
-                      <td></td>
-                    </tr>
-                  </ContainerHead>
-                  <ContainerBody>
-                    {(listApartments.works || []).map(work => (
-                      <tr
-                      // onDoubleClick={() => handleDblClickView(`${service.id}`)}
-                      >
-                        <NameStylesTD>
-                          <div>
-                            {/* <span>
-                          <img src={service.picture} />
-                        </span> */}
-                            <div>
-                              <span>
-                                {work.serviceId == 1
-                                  ? "Clean"
-                                  : work.serviceId == 2
-                                    ? "Paint"
-                                    : work.serviceId == 3
-                                      ? "Miscellaneus"
-                                      : "Resurfacing"}
-                              </span>
-                              {/* <span>{service.status}</span> */}
-                            </div>
-                          </div>
-                        </NameStylesTD>
-                        <StatusStylesTD
-                          status={
-                            work.statusId == 1 ? "Created" : "In progress"
-                          }
-                        >
-                          <div>
-                            <span>
-                              {work.statusId == 1 ? "Created" : "In progress"}
-                            </span>
-                          </div>
-                        </StatusStylesTD>
-                        {/* <td>{project.contractors[0].fullName}</td> */}
-                        <ClientStylesTD>
-                          <div>
-                            <span>
-                              <User />
-                            </span>
-                            <span>{}</span>
-                            <span>
-                              {/* {work.contractorId} */}
-                              Joe Doe
-                            </span>
-                          </div>
-                        </ClientStylesTD>
-                        <DateStylesTD>
-                          <div>
-                            <span>{formatToDDMonth(work.startDate)}</span>
-                          </div>
-                        </DateStylesTD>
-                        <ClientStylesTD>
-                          <div>
-                            <span>{work.customerNotes}</span>
-                          </div>
-                        </ClientStylesTD>
-                        <ContainerActions>
-                          <div>
-                            <div onClick={() => toggleDropdown(`${work.id}`)}>
-                              <Ellipsis />
-                            </div>
-                            {dropdownVisible === `${work.id}` && (
-                              <ContainerDropdown
-                                id={`dropdown_ov${work.id}`}
-                                tabIndex={0}
-                                onBlur={handleCleanDropdown}
-                              >
-                                {(
-                                  dataPermissions ||
-                                  ({
-                                    project: [],
-                                  } as unknown as FilterPermissionsDTO)
-                                ).property.includes(APP_MENU.UPDATE) && (
-                                  <span
-                                    onClick={handleEditProject(`${work.id}`)}
-                                  >
-                                    Completed
-                                  </span>
-                                )}
-                                {(
-                                  dataPermissions ||
-                                  ({
-                                    project: [],
-                                  } as unknown as FilterPermissionsDTO)
-                                ).property.includes(APP_MENU.UPDATE) && (
-                                  <span
-                                    onClick={handleEditProject(`${work.id}`)}
-                                  >
-                                    Approved
-                                  </span>
-                                )}
-                                {(
-                                  dataPermissions ||
-                                  ({
-                                    project: [],
-                                  } as unknown as FilterPermissionsDTO)
-                                ).property.includes(APP_MENU.UPDATE) && (
-                                  <span
-                                    onClick={handleEditProject(`${work.id}`)}
-                                  >
-                                    Rejected
-                                  </span>
-                                )}
-                                {(
-                                  dataPermissions ||
-                                  ({
-                                    project: [],
-                                  } as unknown as FilterPermissionsDTO)
-                                ).property.includes(APP_MENU.UPDATE) && (
-                                  <span
-                                    onClick={handleEditProject(`${work.id}`)}
-                                  >
-                                    Edit
-                                  </span>
-                                )}
-                                {(
-                                  dataPermissions ||
-                                  ({
-                                    project: [],
-                                  } as unknown as FilterPermissionsDTO)
-                                ).property.includes(APP_MENU.DELETE) && (
-                                  <span
-                                    onClick={handleDeleteProject(`${work.id}`)}
-                                  >
-                                    Delete
-                                  </span>
-                                )}
-                              </ContainerDropdown>
-                            )}
-                          </div>
-                        </ContainerActions>
-                      </tr>
-                    ))}
-                  </ContainerBody>
-                </table>
+                    </div> */}
+              </div>
+            </ContainerFilters>
+            <table>
+              {(dataPermissions?.work.includes(APP_MENU.LIST) ||
+                dataPermissions?.work.includes(APP_MENU.READ_OWN)) && (
+                <ContainerHead>
+                  <tr>
+                    <td>Service</td>
+                    <td>Status</td>
+                    <td>Contractor</td>
+                    <td>Due Date</td>
+                    <td>Notes</td>
+                    <td></td>
+                  </tr>
+                </ContainerHead>
+              )}
+              <ContainerBody>
+                {isLoadingListProjects && (
+                  <tr>
+                    <td colSpan={5}>
+                      <Skeleton count={3} height={40} />
+                    </td>
+                  </tr>
+                )}
                 {!isLoadingListProjects &&
                   !!listApartments &&
-                  !!listApartments.works &&
-                  listApartments.works.length <= 0 && (
-                    <NotFoundStyles>
-                      <span>No works found</span>
-                    </NotFoundStyles>
-                  )}
-              </ContainerTable>
-            )}
+                  listApartments.works.length > 0 &&
+                  !!dataPermissions &&
+                  (dataPermissions.apartment.includes(APP_MENU.LIST) ||
+                    dataPermissions.apartment.includes(APP_MENU.READ_OWN)) &&
+                  (listApartments.works || []).map(work => (
+                    <tr
+                    // onDoubleClick={() => handleDblClickView(`${service.id}`)}
+                    >
+                      <NameStylesTD>
+                        <div>
+                          {/* <span>
+                          <img src={service.picture} />
+                        </span> */}
+                          <div>
+                            <span>
+                              {work.serviceId == 1
+                                ? "Clean"
+                                : work.serviceId == 2
+                                  ? "Paint"
+                                  : work.serviceId == 3
+                                    ? "Miscellaneus"
+                                    : "Resurfacing"}
+                            </span>
+                            {/* <span>{service.status}</span> */}
+                          </div>
+                        </div>
+                      </NameStylesTD>
+                      <StatusStylesTD
+                        status={work.statusId == 1 ? "Created" : "In progress"}
+                      >
+                        <div>
+                          <span>
+                            {work.statusId == 1 ? "Created" : "In progress"}
+                          </span>
+                        </div>
+                      </StatusStylesTD>
+                      {/* <td>{project.contractors[0].fullName}</td> */}
+                      <ClientStylesTD>
+                        <div>
+                          <span>
+                            <User />
+                          </span>
+                          <span>{}</span>
+                          <span>
+                            {/* {work.contractorId} */}
+                            Joe Doe
+                          </span>
+                        </div>
+                      </ClientStylesTD>
+                      <DateStylesTD>
+                        <div>
+                          <span>{formatToDDMonth(work.startDate)}</span>
+                        </div>
+                      </DateStylesTD>
+                      <ClientStylesTD>
+                        <div>
+                          <span>{work.customerNotes}</span>
+                        </div>
+                      </ClientStylesTD>
+                      <ContainerActions>
+                        <div>
+                          <div onClick={() => toggleDropdown(`${work.id}`)}>
+                            <Ellipsis />
+                          </div>
+                          {dropdownVisible === `${work.id}` && (
+                            <ContainerDropdown
+                              id={`dropdown_ov${work.id}`}
+                              tabIndex={0}
+                              onBlur={handleCleanDropdown}
+                            >
+                              {dataPermissions?.assignment.includes(
+                                APP_MENU.UPDATE,
+                              ) && (
+                                <span onClick={handleEditProject(`${work.id}`)}>
+                                  Completed
+                                </span>
+                              )}
+                              {dataPermissions?.assignment.includes(
+                                APP_MENU.UPDATE,
+                              ) && (
+                                <span onClick={handleEditProject(`${work.id}`)}>
+                                  Approved
+                                </span>
+                              )}
+                              {dataPermissions?.assignment.includes(
+                                APP_MENU.UPDATE,
+                              ) && (
+                                <span onClick={handleEditProject(`${work.id}`)}>
+                                  Rejected
+                                </span>
+                              )}
+                              {dataPermissions?.work.includes(
+                                APP_MENU.UPDATE,
+                              ) && (
+                                <span onClick={handleEditProject(`${work.id}`)}>
+                                  Edit
+                                </span>
+                              )}
+                              {dataPermissions?.work.includes(
+                                APP_MENU.DELETE,
+                              ) && (
+                                <span
+                                  onClick={handleDeleteProject(`${work.id}`)}
+                                >
+                                  Delete
+                                </span>
+                              )}
+                            </ContainerDropdown>
+                          )}
+                        </div>
+                      </ContainerActions>
+                    </tr>
+                  ))}
+              </ContainerBody>
+            </table>
+            {!isLoadingListProjects &&
+              !!listApartments &&
+              !!listApartments.works &&
+              listApartments.works.length <= 0 && (
+                <NotFoundStyles>
+                  <span>No works found</span>
+                </NotFoundStyles>
+              )}
+            {!dataPermissions?.work.includes(APP_MENU.LIST) &&
+              !dataPermissions?.work.includes(APP_MENU.READ_OWN) && (
+                <ForbiddenAction />
+              )}
+          </ContainerTable>
+          {/* )} */}
         </ContentStylesSection>
       </ContentDetailsOulet>
       <ModalAddService

@@ -15,8 +15,15 @@ import { InfoCalendarDTO } from "../../core/models/interfaces/calendar-model"
 import { APP_MENU } from "../../constants/app"
 import { pathRoutes } from "../../config/routes/path"
 import { useNavigate } from "react-router-dom"
+import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
+import Skeleton from "react-loading-skeleton"
+import "react-loading-skeleton/dist/skeleton.css"
+import { NotFoundStyles } from "../../config/theme/global-styles"
+import ForbiddenAction from "../../components/forbidden-action/forbidden-action"
 
 const Assignments: React.FC = () => {
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
     useDataUser()
   const navigate = useNavigate()
@@ -30,6 +37,7 @@ const Assignments: React.FC = () => {
     }
     // Verify Permissions
     const data = handleGetPermissions()
+    setDataPermissions(data)
     if (
       !!data &&
       !Object.values(APP_MENU).some(permission =>
@@ -39,6 +47,7 @@ const Assignments: React.FC = () => {
       return
     }
   }, [])
+
   const [isLoadingAssigmentList, setIsLoadingAssigmentList] =
     React.useState<boolean>(false)
   const [assigmentsList, setAssigmentsList] = React.useState<InfoCalendarDTO[]>(
@@ -46,9 +55,14 @@ const Assignments: React.FC = () => {
   )
 
   const fetchListAssigments = () => {
-    setIsLoadingAssigmentList(true)
     const storedToken = handleGetToken()
-    if (storedToken) {
+    const data = handleGetPermissions()
+    if (
+      storedToken &&
+      (!!data?.assignment.includes(APP_MENU.LIST) ||
+        !!data?.assignment.includes(APP_MENU.READ_OWN))
+    ) {
+      setIsLoadingAssigmentList(true)
       axios
         .get(
           `${settingsApp.api.base}/works?include=apartment,residential,contractor,service,status`,
@@ -85,15 +99,33 @@ const Assignments: React.FC = () => {
       />
       <ContainerAssigment>
         <ContainerListAssigment>
-          {!!assigmentsList &&
+          {isLoadingAssigmentList && <Skeleton count={4} height={80} />}
+          {!isLoadingAssigmentList &&
+            !!assigmentsList &&
+            assigmentsList.filter(
+              ass => ass.status.name.toLowerCase() == "pending",
+            ).length <= 0 &&
+            (dataPermissions?.assignment.includes(APP_MENU.LIST) ||
+              dataPermissions?.assignment.includes(APP_MENU.READ_OWN)) && (
+              <NotFoundStyles>
+                <span>No assigments found</span>
+              </NotFoundStyles>
+            )}
+          {!isLoadingAssigmentList &&
+            !!assigmentsList &&
             assigmentsList
               .filter(ass => ass.status.name.toLowerCase() == "pending")
               .map(assig => (
                 <ItemAssigment
                   assigment={assig}
                   onRefresh={fetchListAssigments}
+                  permissions={dataPermissions || ({} as FilterPermissionsDTO)}
                 />
               ))}
+          {!dataPermissions?.assignment.includes(APP_MENU.LIST) &&
+            !dataPermissions?.assignment.includes(APP_MENU.READ_OWN) && (
+              <ForbiddenAction />
+            )}
         </ContainerListAssigment>
       </ContainerAssigment>
     </SectionRoute>

@@ -3,20 +3,7 @@ import Modal from "../../modal"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
-  UpdateUserForm,
-  UpdateUserSchema,
-} from "../../../../core/models/schemas/user-schema"
-import {
-  CreateUserDTO,
-  Option,
-  UserDTO,
-} from "../../../../core/models/interfaces/user-model"
-import {
-  ContainerDragAndDropAvatar,
-  ContainerImageAvatar,
-  CustomWrapperInputAvatar,
   ErrorMessage,
-  selectStyles,
   WrapperInput,
 } from "../../../../config/theme/global-styles"
 import { User } from "styled-icons/boxicons-solid"
@@ -50,8 +37,6 @@ const ModalEditService: React.FC<IOwnProps> = ({
   handleRefreshData,
 }) => {
   const [isSubmitUpdate, setIsSubmitUpdate] = React.useState<boolean>(false)
-  const [initialData, setInitialData] =
-    React.useState<UpdateServiceForm | null>(null)
 
   const { handleGetToken, handleGetPermissions } = useDataUser()
 
@@ -70,26 +55,29 @@ const ModalEditService: React.FC<IOwnProps> = ({
     setValue,
   } = methods
 
-  React.useEffect(() => {
-    if (!!dataEdit) {
-      setValue("code", `${dataEdit.code}`)
-      setValue("name", dataEdit.name)
-      setInitialData({ code: dataEdit.code, name: dataEdit.name })
-    }
-  }, [dataEdit])
-
   const handleSubmit = React.useCallback(
     (data: any) => {
-      if (JSON.stringify(data) === JSON.stringify(initialData)) {
-        toast.warning("No se realizaron cambios.")
-        return
-      }
-      setIsSubmitUpdate(true)
       const storedToken = handleGetToken()
       if (!!storedToken) {
+        setIsSubmitUpdate(true)
         const formData = new FormData()
-        formData.append("code", data.code)
-        formData.append("name", data.name)
+
+        for (const key in data) {
+          if (
+            data.hasOwnProperty(key) &&
+            data[key] !== undefined &&
+            data[key] !== null &&
+            data[key] !== ""
+          ) {
+            formData.append(key, data[key])
+          }
+        }
+
+        if (formData.entries().next().done) {
+          setIsSubmitUpdate(false)
+          toast.warning("No changes were made")
+          return
+        }
 
         axios
           .patch(`${settingsApp.api.base}/services/${dataEdit.id}`, formData, {
@@ -121,7 +109,9 @@ const ModalEditService: React.FC<IOwnProps> = ({
     <Modal isOpen={isOpen} onClose={handleClose} title="Edit Service">
       <FormContainer>
         <WrapperInput>
-          <label htmlFor="code-update-edit">First Name</label>
+          <label htmlFor="code-update-edit">
+            Code: <span>{dataEdit?.code}</span>
+          </label>
           <Input
             id="code-update-edit"
             placeholder="Enter code"
@@ -133,7 +123,9 @@ const ModalEditService: React.FC<IOwnProps> = ({
           )}
         </WrapperInput>
         <WrapperInput>
-          <label htmlFor="name-update-edit">Last Name</label>
+          <label htmlFor="name-update-edit">
+            Name: <span>{dataEdit?.name}</span>
+          </label>
           <Input
             id="name-update-edit"
             placeholder="Enter name"

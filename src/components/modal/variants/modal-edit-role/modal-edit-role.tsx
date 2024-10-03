@@ -91,18 +91,23 @@ const ModalEditRole: React.FC<IOwnProps> = ({
       updateCurrentPermissions(currentPermissions)
     }
   }, [dataRoleEdit])
-
-  const updateCurrentPermissions = React.useCallback(
-    (permissions: string[]) => {
-      if (!!permissions) {
-        permissions.map(perm => {
-          const [permissionName, valueName] = perm.split("-")
+  const updateCurrentPermissions = (permissions: string[]) => {
+    if (!!permissions) {
+      permissions.forEach(perm => {
+        const parts = perm.split("-")
+        if (parts.length === 2) {
+          const [permissionName, valueName] = parts
           changeStatusPermission(permissionName, valueName)
-        })
-      }
-    },
-    [dataRoleEdit],
-  )
+        } else if (parts.length === 3) {
+          const [permissionName, ...valueName] = parts
+          changeStatusPermission(
+            permissionName,
+            `${valueName[0]}-${valueName[1]}`,
+          )
+        }
+      })
+    }
+  }
 
   const updateDataRolePermissions = async () => {
     const storedToken = handleGetToken()
@@ -247,52 +252,49 @@ const ModalEditRole: React.FC<IOwnProps> = ({
       | ArrayLike<unknown>,
   ) => {
     const possibleActions = ["create", "list", "read-own", "update", "delete"]
-
     return Object.entries(permissions).map(([key, actions]) => {
-      return {
+      const dataRes = {
         name: key,
-        values: possibleActions.map(action => ({
-          name: action,
-          isActive: false,
-          enabled: actions.includes(action),
-        })),
+        values: possibleActions.map(action => {
+          return {
+            name: action,
+            isActive: false,
+            enabled: actions.includes(action),
+          }
+        }),
       }
+      return dataRes
     })
   }
 
-  const changeStatusPermission = React.useCallback(
-    (category: string, permName: string) => {
-      if (!listPermissions) {
-        console.error("listPermissions is undefined")
-        return
+  const changeStatusPermission = (category: string, permName: string) => {
+    if (!listPermissions) {
+      console.error("listPermissions is undefined")
+      return
+    }
+
+    const currentPermissionIndex = listPermissions.findIndex(
+      permission => permission.name === category,
+    )
+
+    if (currentPermissionIndex !== -1) {
+      const currentPermission = listPermissions[currentPermissionIndex]
+      const newPermission = { ...currentPermission }
+
+      const value = newPermission.values.find(value => value.name === permName)
+      if (value) {
+        value.isActive = !value.isActive
       }
 
-      const currentPermissionIndex = listPermissions.findIndex(
-        permission => permission.name === category,
-      )
+      const updatedPermissions = [
+        ...listPermissions.slice(0, currentPermissionIndex),
+        newPermission,
+        ...listPermissions.slice(currentPermissionIndex + 1),
+      ]
 
-      if (currentPermissionIndex !== -1) {
-        const currentPermission = listPermissions[currentPermissionIndex]
-        const newPermission = { ...currentPermission }
-
-        const value = newPermission.values.find(
-          value => value.name === permName,
-        )
-        if (value) {
-          value.isActive = !value.isActive
-        }
-
-        const updatedPermissions = [
-          ...listPermissions.slice(0, currentPermissionIndex),
-          newPermission,
-          ...listPermissions.slice(currentPermissionIndex + 1),
-        ]
-
-        setListPermissions(updatedPermissions)
-      }
-    },
-    [listPermissions],
-  )
+      setListPermissions(updatedPermissions)
+    }
+  }
 
   React.useEffect(() => {
     if (!!listPermissions) {
@@ -314,24 +316,26 @@ const ModalEditRole: React.FC<IOwnProps> = ({
     ),
     content: (
       <>
-        {(listPermissions || []).map(permission => (
-          <ContainerBodySwitch>
-            <span>{permission.name}</span>
-            <ContainerListSwitchs>
-              {(permission.values || []).map(value => (
-                <Switch
-                  key={value.name}
-                  isActive={value.isActive}
-                  isEnabled={value.enabled}
-                  onToggle={() =>
-                    changeStatusPermission(permission.name, value.name)
-                  }
-                  label={value.name}
-                />
-              ))}
-            </ContainerListSwitchs>
-          </ContainerBodySwitch>
-        ))}
+        {(listPermissions || []).map(permission => {
+          return (
+            <ContainerBodySwitch>
+              <span>{permission.name}</span>
+              <ContainerListSwitchs>
+                {(permission.values || []).map(value => (
+                  <Switch
+                    key={value.name}
+                    isActive={value.isActive}
+                    isEnabled={value.enabled}
+                    onToggle={() =>
+                      changeStatusPermission(permission.name, value.name)
+                    }
+                    label={value.name}
+                  />
+                ))}
+              </ContainerListSwitchs>
+            </ContainerBodySwitch>
+          )
+        })}
       </>
     ),
   }))

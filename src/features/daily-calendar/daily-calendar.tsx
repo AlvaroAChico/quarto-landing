@@ -5,7 +5,10 @@ import { settingsApp } from "../../config/environment/settings"
 import { InfoCalendarDTO } from "../../core/models/interfaces/calendar-model"
 import { setErrResponse } from "../../utils/erros-util"
 import { ServiceDTO } from "../../core/models/interfaces/roles-model"
-import { UserDTO } from "../../core/models/interfaces/user-model"
+import {
+  FilterPermissionsDTO,
+  UserDTO,
+} from "../../core/models/interfaces/user-model"
 import { PropertyDTO } from "../../core/models/interfaces/property-model"
 import ItemDailyCalendar from "./components/item-daily-calendar/item-daily-calendar"
 import { ArrowIosBackOutline } from "@styled-icons/evaicons-outline/ArrowIosBackOutline"
@@ -35,6 +38,8 @@ import { pathRoutes } from "../../config/routes/path"
 import { useNavigate } from "react-router-dom"
 
 const DailyCalendar: React.FC = () => {
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
     useDataUser()
   const navigate = useNavigate()
@@ -48,6 +53,7 @@ const DailyCalendar: React.FC = () => {
     }
     // Verify Permissions
     const data = handleGetPermissions()
+    setDataPermissions(data)
     if (
       !!data &&
       !Object.values(APP_MENU).some(permission =>
@@ -148,18 +154,24 @@ const DailyCalendar: React.FC = () => {
     }
   }
 
-  const getDataCalendar = async () => {
-    setIsLoadingDataCalendar(true)
-    try {
-      const data: InfoCalendarDTO[] = await fetchData(
-        `${settingsApp.api.base}/works?include=apartment,residential,contractor,service,status`,
-      )
-      setAllDataCalendar(data)
-      setInfoCalendar(data)
-    } finally {
-      setIsLoadingDataCalendar(false)
+  const getDataCalendar = React.useCallback(async () => {
+    const data = handleGetPermissions()
+    if (
+      data?.calendar.includes(APP_MENU.LIST) ||
+      data?.calendar.includes(APP_MENU.READ_OWN)
+    ) {
+      setIsLoadingDataCalendar(true)
+      try {
+        const data: InfoCalendarDTO[] = await fetchData(
+          `${settingsApp.api.base}/works?include=apartment,residential,contractor,service,status`,
+        )
+        setAllDataCalendar(data)
+        setInfoCalendar(data)
+      } finally {
+        setIsLoadingDataCalendar(false)
+      }
     }
-  }
+  }, [dataPermissions])
 
   const fetchDataResidentials = async () => {
     try {
@@ -348,7 +360,9 @@ const DailyCalendar: React.FC = () => {
             />
           </ItemFilterDC>
           <ItemFilterDC>
-            <Button text="New work" onClick={handleOpenModalAdd} />
+            {dataPermissions?.work.includes(APP_MENU.CREATE) && (
+              <Button text="New work" onClick={handleOpenModalAdd} />
+            )}
           </ItemFilterDC>
         </FilterDailyCalendar>
         <DataDailyCalendar>
@@ -384,6 +398,8 @@ const DailyCalendar: React.FC = () => {
           </HeaderDailyCalendar>
           <BodyDailyCalendar>
             {!isLoadingDataCalendar &&
+              (!!dataPermissions?.calendar.includes(APP_MENU.LIST) ||
+                !!dataPermissions?.calendar.includes(APP_MENU.READ_OWN)) &&
               (infoCalendar || []).map(info => {
                 if (
                   compareEqualsDate(
