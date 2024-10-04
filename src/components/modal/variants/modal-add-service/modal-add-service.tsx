@@ -13,8 +13,10 @@ import {
 } from "../../../../core/models/interfaces/user-model"
 import {
   ContainerDragAndDropAvatar,
+  ContainerDragAndDropFiles,
   ContainerImageAvatar,
   CustomWrapperInputAvatar,
+  CustomWrapperInputFiles,
   ErrorMessage,
   selectStyles,
   WrapperInput,
@@ -35,18 +37,24 @@ import { Calendar4 } from "@styled-icons/bootstrap/Calendar4"
 import { CardImage } from "@styled-icons/bootstrap/CardImage"
 import { useDropzone } from "react-dropzone"
 import { settingsApp } from "../../../../config/environment/settings"
-import { Password } from "@styled-icons/material-twotone/Password"
-import { EyeFill, EyeSlashFill } from "@styled-icons/bootstrap"
-import { FormContainer } from "./modal-add-service.styles"
+import {
+  ContainerListFiles,
+  ContainerUploadFiles,
+  FormContainer,
+} from "./modal-add-service.styles"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import {
   CreateWorkForm,
   CreateWorkSchema,
 } from "../../../../core/models/schemas/work-schema"
-import { formatToDDMMYYYY, formatToDMYHH } from "../../../../utils/date-util"
+import { formatToDMYHH } from "../../../../utils/date-util"
+import { TextDescription } from "@styled-icons/fluentui-system-filled/TextDescription"
 import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
 import { PropertyDTO } from "../../../../core/models/interfaces/property-model"
+import Textarea from "../../../textarea/textarea"
+import { Files } from "@styled-icons/simple-icons/Files"
+import CardFile from "./components/card-file/card-file"
 
 interface IOwnProps {
   isOpen: boolean
@@ -139,18 +147,8 @@ const ModalAddService: React.FC<IOwnProps> = ({
     }
   }, [apartmentId])
 
-  const hasParamsFormData = (formData: FormData): boolean => {
-    var nroValue = 0
-    for (const [key, value] of formData.entries()) {
-      if (value !== "" || value !== null || value !== undefined) {
-        nroValue++
-      }
-      console.log("Value FormData -> ", value)
-    }
-    return nroValue > 0
-  }
-
   const handleSubmit = React.useCallback((data: any) => {
+    console.log("Data -> ", data)
     setIsSubmitUserUpdate(true)
     const storedToken = handleGetToken()
     if (!!storedToken) {
@@ -160,6 +158,10 @@ const ModalAddService: React.FC<IOwnProps> = ({
       formData.append("service_id", data.serviceId)
       formData.append("contractor_id", data.contractorId)
       formData.append("start_date", formatToDMYHH(data.date))
+      formData.append("customer_notes", data.notes)
+      if (!!data && !!data.files && data.files.length > 0) {
+        formData.append("images[]", data.files)
+      }
 
       axios
         .post(`${settingsApp.api.base}/works`, formData, {
@@ -246,6 +248,65 @@ const ModalAddService: React.FC<IOwnProps> = ({
         })
     }
   }, [])
+
+  const [listFiles, setListFiles] = React.useState<File[]>([]) // Inicializamos como un array vacío
+
+  const onDrop = React.useCallback(
+    (acceptedFiles: any, rejectedFiles: any) => {
+      if (acceptedFiles.length > 0) {
+        const updatedFiles = [...listFiles]
+        acceptedFiles.forEach((file: any) => {
+          // if (updatedFiles.length >= 5) {
+          //   toast.error("Se permite un máximo de 5 archivos.")
+          //   return
+          // }
+          updatedFiles.push(file)
+
+          const reader = new FileReader()
+
+          reader.onabort = () => toast.error("File reading was aborted")
+          reader.onerror = () => toast.error("File reading has failed")
+          reader.onload = () => {
+            const binaryStr = reader.result
+            if (binaryStr instanceof ArrayBuffer) {
+              const blob = new Blob([binaryStr], { type: file.type })
+              const imageUrl = URL.createObjectURL(blob)
+              // Aquí puedes hacer algo con imageUrl, como agregarlo a un estado de URLs
+            } else {
+              toast.error("Error al leer el archivo.")
+            }
+          }
+          reader.readAsArrayBuffer(file)
+        })
+
+        setValue("files", updatedFiles)
+        setListFiles(updatedFiles)
+      }
+
+      if (rejectedFiles.length > 0) {
+        console.log("rejectedFiles -> ", rejectedFiles)
+        toast.error(
+          'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
+        )
+      }
+    },
+    [listFiles],
+  )
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+  })
+
+  const handleDeleteOneFile = React.useCallback(
+    (fileToDelete: File) => {
+      setListFiles(prevFiles => prevFiles.filter(file => file !== fileToDelete))
+    },
+    [listFiles],
+  )
+
+  React.useEffect(() => {
+    setValue("files", listFiles)
+  }, [listFiles])
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="Create Work">
@@ -338,6 +399,48 @@ const ModalAddService: React.FC<IOwnProps> = ({
             </WrapperInput>
           </>
         )}
+        <WrapperInput>
+          <label htmlFor="notes-create-work">Notes</label>
+          <Textarea
+            id="notes-create-work"
+            placeholder="Enter notes"
+            icon={TextDescription}
+            register={register("notes")}
+          />
+          {!!(errors.notes as any)?.message && (
+            <ErrorMessage>{(errors.notes as any)?.message}</ErrorMessage>
+          )}
+        </WrapperInput>
+        <ContainerUploadFiles>
+          <CustomWrapperInputFiles>
+            <label htmlFor="picture-create-project">Files</label>
+            <ContainerDragAndDropFiles
+              {...getRootProps()}
+              isDragActive={isDragActive}
+            >
+              <Files />
+              <input {...getInputProps()} />
+              {isDragActive ? (
+                <p>Drop picture here</p>
+              ) : (
+                <p>Drag or click this container to upload an image</p>
+              )}
+            </ContainerDragAndDropFiles>
+            {!!(errors.files as any)?.message && (
+              <ErrorMessage>{(errors.files as any)?.message}</ErrorMessage>
+            )}
+            {/* <div>{JSON.stringify(listFiles)}</div> */}
+            <ContainerListFiles>
+              {listFiles.length > 0 &&
+                (listFiles || []).map(file => (
+                  <CardFile
+                    file={file}
+                    onDeleteFile={() => handleDeleteOneFile(file)}
+                  />
+                ))}
+            </ContainerListFiles>
+          </CustomWrapperInputFiles>
+        </ContainerUploadFiles>
         <Button
           onClick={submitWrapper(handleSubmit)}
           text="Create Work"

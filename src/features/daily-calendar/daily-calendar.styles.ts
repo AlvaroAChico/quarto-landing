@@ -69,12 +69,12 @@ export const BodyDailyCalendar = styled.div`
   gap: 10px;
 `
 
-export const ItemDaily = styled.div<{ isActiveDay: boolean }>`
-  background: ${p => (p.isActiveDay ? palette.orangeColor : "white")};
+export const ItemDaily = styled.div<{ $isActiveDay: boolean }>`
+  background: ${p => (p.$isActiveDay ? palette.orangeColor : "white")};
   box-shadow: ${p =>
-    p.isActiveDay ? "8px 10px 30px 4px rgb(223 215 243 / 80%)" : "none"};
-  color: ${p => (p.isActiveDay ? "white" : "black")};
-  outline: 1px solid ${p => (p.isActiveDay ? palette.orangeColor : "white")};
+    p.$isActiveDay ? "8px 10px 30px 4px rgb(223 215 243 / 80%)" : "none"};
+  color: ${p => (p.$isActiveDay ? "white" : "black")};
+  outline: 1px solid ${p => (p.$isActiveDay ? palette.orangeColor : "white")};
   flex-direction: column;
   border-radius: 8px;
   cursor: pointer;

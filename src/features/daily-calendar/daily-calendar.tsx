@@ -36,33 +36,37 @@ import { selectStyles } from "../../config/theme/global-styles"
 import { APP_MENU, EOptionsKey } from "../../constants/app"
 import { pathRoutes } from "../../config/routes/path"
 import { useNavigate } from "react-router-dom"
+import ModalEditWork from "../../components/modal/variants/modal-edit-work/modal-edit-work"
 
 const DailyCalendar: React.FC = () => {
-  const [dataPermissions, setDataPermissions] =
-    React.useState<FilterPermissionsDTO>()
+  // const [dataPermissions, setDataPermissions] =
+  //   React.useState<FilterPermissionsDTO>()
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
     useDataUser()
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
-  React.useEffect(() => {
-    // Verify Token
-    const storedToken = handleGetToken()
-    if (!storedToken) {
-      clearAllDataAPP()
-      navigate(pathRoutes.SIGN_IN)
-    }
-    // Verify Permissions
-    const data = handleGetPermissions()
-    setDataPermissions(data)
-    if (
-      !!data &&
-      !Object.values(APP_MENU).some(permission =>
-        data?.calendar.includes(permission),
-      )
-    ) {
-      return
-    }
-  }, [])
+  // React.useEffect(() => {
+  //   // Verify Token
+  //   const storedToken = handleGetToken()
+  //   if (!storedToken) {
+  //     clearAllDataAPP()
+  //     navigate(pathRoutes.SIGN_IN)
+  //   }
+  //   // Verify Permissions
+  //   const data = handleGetPermissions()
+  //   setDataPermissions(data)
+  //   if (
+  //     !!data &&
+  //     !Object.values(APP_MENU).some(permission =>
+  //       data?.calendar.includes(permission),
+  //     )
+  //   ) {
+  //     return
+  //   }
+  // }, [])
+
+  const [isOpenModalEdit, setIsOpenModalEdit] = React.useState<boolean>(false)
+  const [dataEdit, setDataEdit] = React.useState<InfoCalendarDTO>()
   const [isLoadingDataCalendar, setIsLoadingDataCalendar] =
     React.useState<boolean>(false)
   const [infoCalendar, setInfoCalendar] = React.useState<InfoCalendarDTO[]>([])
@@ -84,6 +88,8 @@ const DailyCalendar: React.FC = () => {
   const [daySelected, setDaySelected] = React.useState<any>(new Date())
 
   const [isOpenModalAdd, setIsOpenModalAdd] = React.useState(false)
+
+  const handleCloseModalEdit = () => setIsOpenModalEdit(false)
 
   const handleOpenModalAdd = () => setIsOpenModalAdd(true)
   const handleCloseModalAdd = () => setIsOpenModalAdd(false)
@@ -154,6 +160,15 @@ const DailyCalendar: React.FC = () => {
     }
   }
 
+  const handleEditWork = React.useCallback(
+    (workId: number) => () => {
+      console.log("Edit work => ", workId)
+      setDataEdit(allDataCalendar.filter(work => work.id === workId)[0])
+      setIsOpenModalEdit(true)
+    },
+    [allDataCalendar],
+  )
+
   const getDataCalendar = React.useCallback(async () => {
     const data = handleGetPermissions()
     if (
@@ -171,7 +186,8 @@ const DailyCalendar: React.FC = () => {
         setIsLoadingDataCalendar(false)
       }
     }
-  }, [dataPermissions])
+  }, [])
+  // }, [dataPermissions])
 
   const fetchDataResidentials = async () => {
     try {
@@ -360,9 +376,9 @@ const DailyCalendar: React.FC = () => {
             />
           </ItemFilterDC>
           <ItemFilterDC>
-            {dataPermissions?.work.includes(APP_MENU.CREATE) && (
-              <Button text="New work" onClick={handleOpenModalAdd} />
-            )}
+            {/* {dataPermissions?.work.includes(APP_MENU.CREATE) && ( */}
+            <Button text="New work" onClick={handleOpenModalAdd} />
+            {/* )} */}
           </ItemFilterDC>
         </FilterDailyCalendar>
         <DataDailyCalendar>
@@ -375,7 +391,7 @@ const DailyCalendar: React.FC = () => {
               </div>
               {days.map((day, index) => (
                 <ItemDaily
-                  isActiveDay={
+                  $isActiveDay={
                     daySelected.toDateString() === day.toDateString()
                   }
                   key={index}
@@ -397,9 +413,10 @@ const DailyCalendar: React.FC = () => {
             </ContainerDailyStyles>
           </HeaderDailyCalendar>
           <BodyDailyCalendar>
-            {!isLoadingDataCalendar &&
+            {/* {!isLoadingDataCalendar &&
               (!!dataPermissions?.calendar.includes(APP_MENU.LIST) ||
-                !!dataPermissions?.calendar.includes(APP_MENU.READ_OWN)) &&
+                !!dataPermissions?.calendar.includes(APP_MENU.READ_OWN)) && */}
+            {!isLoadingDataCalendar &&
               (infoCalendar || []).map(info => {
                 if (
                   compareEqualsDate(
@@ -407,7 +424,13 @@ const DailyCalendar: React.FC = () => {
                     daySelected.toLocaleDateString(),
                   )
                 ) {
-                  return <ItemDailyCalendar info={info} />
+                  return (
+                    <ItemDailyCalendar
+                      key={info.id}
+                      info={info}
+                      onEditItem={handleEditWork(info.id)}
+                    />
+                  )
                 }
               })}
             {isLoadingDataCalendar && (
@@ -418,6 +441,12 @@ const DailyCalendar: React.FC = () => {
           </BodyDailyCalendar>
         </DataDailyCalendar>
       </ContainerDailyCalendar>
+      <ModalEditWork
+        isOpen={isOpenModalEdit}
+        handleClose={handleCloseModalEdit}
+        handleRefreshData={getDataCalendar}
+        dataEdit={dataEdit!!}
+      />
       <ModalAddService
         isOpen={isOpenModalAdd}
         handleClose={handleCloseModalAdd}

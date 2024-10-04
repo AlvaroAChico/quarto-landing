@@ -4,28 +4,22 @@ export const ContainerCard = styled.div`
   box-shadow: 8px 10px 30px 4px rgba(238, 236, 243, 1);
   border-radius: 20px;
   background: white;
-  padding: 20px 10px 20px 0;
-  min-width: 250px;
-  min-height: 150px;
+  padding: 40px;
 `
 
 export const ContainerHeadTitle = styled.div`
-  padding-left: 30px;
-  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
-  > h4 {
-    font-size: 15px;
-    font-weight: 400;
-
-    > span {
+  > span {
+    &:nth-child(1) {
       font-size: 35px;
       font-weight: 900;
     }
+    &:nth-child(2) {
+      font-size: 18px;
+      font-weight: 450;
+    }
   }
 `
-
-export const ContainerDataStats = styled.div`
-  position: relative;
-`
-
-export const ContainerChart = styled.div``

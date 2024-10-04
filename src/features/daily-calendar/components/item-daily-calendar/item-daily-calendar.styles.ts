@@ -2,11 +2,12 @@ import styled from "styled-components"
 import { EServiceName } from "../../../../core/models/interfaces/services-model"
 import { palette } from "../../../../config/theme/theme"
 
-export const ItemCalendarStyles = styled.div<{ service: string }>`
+export const ItemCalendarStyles = styled.div<{ $service: string }>`
   justify-content: space-between;
-  flex-direction: row;
   align-items: flex-start;
   border-radius: 16px;
+  flex-direction: row;
+  position: relative;
   position: relative;
   padding: 10px 20px;
   display: flex;
@@ -14,7 +15,7 @@ export const ItemCalendarStyles = styled.div<{ service: string }>`
   gap: 15px;
 
   &:before {
-    content: "${p => p.service}";
+    content: "${p => p.$service}";
     text-transform: uppercase;
     position: absolute;
     font-weight: 900;
@@ -26,19 +27,19 @@ export const ItemCalendarStyles = styled.div<{ service: string }>`
   }
 
   ${p =>
-    p.service.toLowerCase() == EServiceName.CLEAN.toLowerCase()
+    p.$service.toLowerCase() == EServiceName.CLEAN.toLowerCase()
       ? "background: #9fa5f7;"
       : ""}
   ${p =>
-    p.service.toLowerCase() == EServiceName.PAINT.toLowerCase()
+    p.$service.toLowerCase() == EServiceName.PAINT.toLowerCase()
       ? "background: #efb851;"
       : ""}
   ${p =>
-    p.service.toLowerCase() == EServiceName.MISCELLANEOUS.toLowerCase()
+    p.$service.toLowerCase() == EServiceName.MISCELLANEOUS.toLowerCase()
       ? "background: #C0BDCC;"
       : ""}
   ${p =>
-    p.service.toLowerCase() == EServiceName.RESURFACING.toLowerCase()
+    p.$service.toLowerCase() == EServiceName.RESURFACING.toLowerCase()
       ? "background: #66a3d9;"
       : ""}
 `
@@ -162,5 +163,24 @@ export const BtnCompletedDaily = styled(BtnActionsDaily)`
 
   &:hover {
     background: ${palette.successColorHover};
+  }
+`
+
+export const EditStyles = styled.div`
+  background: #e9e928;
+  place-items: center;
+  border-radius: 50%;
+  position: absolute;
+  cursor: pointer;
+  display: grid;
+  height: 30px;
+  width: 30px;
+  left: -8px;
+  top: -8px;
+
+  > svg {
+    color: ${palette.grayDarkColor};
+    max-width: 15px;
+    width: 100%;
   }
 `

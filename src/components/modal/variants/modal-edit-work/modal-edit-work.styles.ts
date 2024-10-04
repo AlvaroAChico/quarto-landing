@@ -9,10 +9,3 @@ export const FormContainer = styled.div`
   margin: auto;
   min-width: 200px;
 `
-
-export const ContainerUploadFiles = styled.div``
-
-export const ContainerListFiles = styled.div`
-  display: flex;
-  gap: 10px;
-`

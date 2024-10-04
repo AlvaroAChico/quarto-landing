@@ -55,6 +55,7 @@ import {
   createEmptyFilterPermissions,
   saveJsonCookiesWithSplit,
 } from "../../utils/cookie-util"
+import { Bars } from "@styled-icons/fa-solid/Bars"
 
 const DashboardLayout: React.FC = () => {
   const [dataPermissions, setDataPermissions] =
@@ -471,10 +472,15 @@ const DashboardLayout: React.FC = () => {
       <ContainerOutlet>
         <div>
           <ContainerTitleApp>
-            <h2>{titleApp}</h2>
-            <span>
-              Hello {(!!dataUser && dataUser?.firstName) || ""}, welcome back
-            </span>
+            <div>
+              <Bars />
+            </div>
+            <div>
+              <h2>{titleApp}</h2>
+              <span>
+                Hello {(!!dataUser && dataUser?.firstName) || ""}, welcome back
+              </span>
+            </div>
           </ContainerTitleApp>
           <ContainerDataProfile>
             <ContainerAvatarSide>

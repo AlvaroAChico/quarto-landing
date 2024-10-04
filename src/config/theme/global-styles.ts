@@ -271,8 +271,6 @@ export const CustomWrapperInputAvatar = styled(WrapperInput)`
 export const CustomWrapperInputFiles = styled(WrapperInput)`
   margin: auto;
   width: 100%;
-  // max-width: 800px;
-  border-bottom: 1px #e0e0e0 solid;
   color: ${palette.grayColor};
 
   > div {

@@ -1,21 +1,12 @@
 import styled from "styled-components"
 
 export const ContainerDashboard = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
   flex-direction: column;
-  padding: 16px;
-  gap: 20px;
-`
-
-export const ContainerDashboardHeader = styled.div`
-  height: 25%;
-  width: 100%;
-  display: flex;
   flex-direction: row;
-  gap: 50px;
-  box-sizing: border-box;
+  padding: 16px;
+  display: flex;
+  width: 100%;
+  gap: 20px;
 `
 
 export const ContainerDashboardBody = styled.div`

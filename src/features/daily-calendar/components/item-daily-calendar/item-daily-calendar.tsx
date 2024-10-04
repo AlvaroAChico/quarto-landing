@@ -5,18 +5,21 @@ import {
   BtnApprovedDaily,
   BtnCompletedDaily,
   BtnRejectedDaily,
+  EditStyles,
   InfoCardDaily,
   InfoTextDaily,
   ItemCalendarStyles,
 } from "./item-daily-calendar.styles"
+import { Edit } from "@styled-icons/fluentui-system-filled/Edit"
 
 interface IOwnProps {
   info: InfoCalendarDTO
+  onEditItem: () => void
 }
 
-const ItemDailyCalendar: React.FC<IOwnProps> = ({ info }) => {
+const ItemDailyCalendar: React.FC<IOwnProps> = ({ info, onEditItem }) => {
   return (
-    <ItemCalendarStyles service={info.service.name}>
+    <ItemCalendarStyles $service={info.service.name}>
       <InfoCardDaily>
         <div>
           <img src={info.residential.picture} />
@@ -27,10 +30,14 @@ const ItemDailyCalendar: React.FC<IOwnProps> = ({ info }) => {
             <span>{info.status.name}</span>
           </div>
           <div>
-            <span>
-              {info.apartment.name}
-              {/* <ChangeCircle /> */}
-            </span>
+            <span>{info.apartment.name}</span>
+            {!!info.contractor &&
+              !!info.contractor.firstName &&
+              !!info.contractor.lastName && (
+                <span>
+                  {info.contractor.firstName} {info.contractor.lastName}
+                </span>
+              )}
           </div>
         </InfoTextDaily>
       </InfoCardDaily>
@@ -48,6 +55,9 @@ const ItemDailyCalendar: React.FC<IOwnProps> = ({ info }) => {
           <span>Completed</span>
         </BtnCompletedDaily>
       </ActionsItemsDaily>
+      <EditStyles>
+        <Edit onClick={onEditItem} />
+      </EditStyles>
     </ItemCalendarStyles>
   )
 }
