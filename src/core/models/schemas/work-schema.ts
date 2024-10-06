@@ -29,4 +29,21 @@ export const CreateWorkSchema = object({
   ),
 })
 
+export const UpdateWorkSchema = object({
+  apartment_id: string(),
+  service_id: string(),
+  contractor_id: string(),
+  start_date: string(),
+  customer_notes: string(),
+  "images[]": array().of(
+    mixed().test("is-valid-file", "File type is not allowed", file => {
+      if (file instanceof File) {
+        return fileTypeValidation(file)
+      }
+      return false
+    }),
+  ),
+})
+
+export type UpdateWorkForm = InferType<typeof UpdateWorkSchema>
 export type CreateWorkForm = InferType<typeof CreateWorkSchema>

@@ -18,11 +18,12 @@ export const ModalContent = styled.div<{ customStyles: string }>`
   background: white;
   padding: 40px;
   border-radius: 15px;
-  width: 500px;
+  max-width: 500px;
+  max-height: 85%;
+  width: 90%;
   z-index: 12;
   position: relative;
   padding-top: 40px;
-  max-height: 85%;
   overflow: auto;
 
   ${p => p.customStyles};

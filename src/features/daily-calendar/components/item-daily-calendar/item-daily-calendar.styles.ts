@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { EServiceName } from "../../../../core/models/interfaces/services-model"
 import { palette } from "../../../../config/theme/theme"
+import { breakpoints } from "../../../../constants/breakpoints"
 
 export const ItemCalendarStyles = styled.div<{ $service: string }>`
   justify-content: space-between;
@@ -42,6 +43,10 @@ export const ItemCalendarStyles = styled.div<{ $service: string }>`
     p.$service.toLowerCase() == EServiceName.RESURFACING.toLowerCase()
       ? "background: #66a3d9;"
       : ""}
+
+  ${breakpoints.tabletLargeMax} {
+    flex-direction: column;
+  }
 `
 
 export const InfoCardDaily = styled.div`

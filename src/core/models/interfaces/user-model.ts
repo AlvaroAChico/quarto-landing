@@ -71,7 +71,7 @@ export interface FilterPermissionsDTO {
   apartment: string[]
   assignment: string[]
   calendar: string[]
-  reports: string[]
+reports: string[]
   work: string[]
   quality: string[]
 }

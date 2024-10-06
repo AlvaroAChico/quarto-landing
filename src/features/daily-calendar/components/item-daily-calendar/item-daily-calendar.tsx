@@ -50,10 +50,10 @@ const ItemDailyCalendar: React.FC<IOwnProps> = ({ info, onEditItem }) => {
           {/* <CloseCircle /> */}
           <span>Rejected</span>
         </BtnRejectedDaily>
-        <BtnCompletedDaily>
-          {/* <Check /> */}
+        {/* <BtnCompletedDaily>
+          <Check />
           <span>Completed</span>
-        </BtnCompletedDaily>
+        </BtnCompletedDaily> */}
       </ActionsItemsDaily>
       <EditStyles>
         <Edit onClick={onEditItem} />

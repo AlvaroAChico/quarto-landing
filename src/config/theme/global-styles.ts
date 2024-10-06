@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from "styled-components"
 import { palette } from "./theme"
+import { breakpoints } from "../../constants/breakpoints"
 
 export const GlobalStyles = createGlobalStyle`
   input[type="number"]::-webkit-inner-spin-button,
@@ -111,6 +112,7 @@ export const WrapperInput = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
 
   > label {
     color: black;
@@ -136,6 +138,9 @@ export const ContainerTable = styled.div`
   background: white;
   padding: 30px;
   width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
   > table {
     border-collapse: collapse;
     width: 100%;
@@ -169,7 +174,7 @@ export const ContainerBody = styled.tbody`
     > td {
       padding: 15px;
       height: 100%;
-      vertical-align: center;
+      vertical-align: middle;
     }
 
     &:hover {
@@ -203,6 +208,9 @@ export const ClasicStylesTD = styled.td`
 `
 
 export const ContainerActions = styled.td`
+padding: 0 !important;
+width: 100px;
+
   > div {
     position: relative;
     max-width 20px;

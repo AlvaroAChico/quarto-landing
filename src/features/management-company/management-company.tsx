@@ -159,7 +159,7 @@ const ManagementCompany: React.FC = () => {
       <HeaderSection
         title="Management Company"
         subtitle="List of management company"
-        nameButton="New Management Company"
+        nameButton="New Company"
         havePermissionCreate={
           dataPermissions?.company.includes(APP_MENU.CREATE) || false
         }

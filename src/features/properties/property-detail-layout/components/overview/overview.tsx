@@ -230,20 +230,7 @@ const DetailsOverview: React.FC = () => {
         {!isLoadingDataProperty ? (
           <CardComponent>
             <CardTitle>Pending Services</CardTitle>
-            <CardSubTitle>
-              {/* {
-                dataProperty?.tasks.filter(task => task.status == "completed")
-                  .length
-              } */}
-              23
-            </CardSubTitle>
-
-            {/* <CardInfo>
-            <ArrowContainer>
-            <ArrowIcon />
-            </ArrowContainer>{" "}
-            <CardText>+1.2%</CardText>
-            </CardInfo> */}
+            <CardSubTitle>23</CardSubTitle>
             <CircularChartContainer>
               <StyledApexCharts
                 options={createChartOptions(dataProperty?.progress || 20)}
@@ -257,36 +244,12 @@ const DetailsOverview: React.FC = () => {
         ) : (
           <Skeleton count={1} height={200} width={240} borderRadius={10} />
         )}
-        {/* <CardComponent>
-          <CardTitle>Objetivos</CardTitle>
-          <CardSubTitle>36/100</CardSubTitle>
-          <CardInfo>
-          <ArrowContainer>
-          <ArrowIcon />
-            </ArrowContainer>
-            <CardText>+2.5%</CardText>
-          </CardInfo>
-          <CircularChartContainer>
-            <StyledApexCharts
-              options={createChartOptions(45)}
-              series={[45]}
-              type="radialBar"
-              height={150}
-            />
-            <PercentageText>45%</PercentageText>
-          </CircularChartContainer>
-        </CardComponent> */}
       </CardsContainer>
       <CardContainerGraphic>
         {!isLoadingDataProperty ? (
           <CardGraphic>
             <GraphicTitle>Additional Information</GraphicTitle>
-            <GraphicSubtitle>
-              {/* {!!dataProperty &&
-                dataProperty.currency == CURRENCY_APP.USD &&
-                "$ "}
-              {!!dataProperty && dataProperty.price} */}
-            </GraphicSubtitle>
+            <GraphicSubtitle></GraphicSubtitle>
             <StyledApexCharts
               options={lineChartOptions}
               series={lineChartSeries}

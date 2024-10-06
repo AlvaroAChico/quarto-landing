@@ -30,6 +30,14 @@ export const ContainerSidebar = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    ${breakpoints.tabletLargeMax} {
+      display: none;
+    }
+  }
+
+  ${breakpoints.tabletLargeMax} {
+    width: 0%;
   }
 `
 
@@ -38,7 +46,7 @@ export const ContainerOutlet = styled.div`
   width: 100%;
 
   > div:nth-child(1) {
-    jusfity-content: space-between;
+    justify-content: space-between;
     box-sizing: border-box;
     flex-direction: row;
     background: #eff1f6;
@@ -46,6 +54,11 @@ export const ContainerOutlet = styled.div`
     display: flex;
     height: 90px;
     width: 100%;
+
+    ${breakpoints.tabletLargeMax} {
+      height: fit-content;
+      max-height: 140px;
+    }
   }
 
   > div:nth-child(2) {
@@ -56,6 +69,18 @@ export const ContainerOutlet = styled.div`
     overflow-y: auto;
     padding: 30px;
     margin: 0;
+
+    ${breakpoints.tabletLargeMax} {
+      height: calc(100% - 140px);
+    }
+  }
+
+  ${breakpoints.desktopSmallMax} {
+    width: 70%;
+  }
+
+  ${breakpoints.tabletLargeMax} {
+    width: 100%;
   }
 `
 
@@ -203,22 +228,39 @@ export const ContainerTitleApp = styled.div`
   width: 50%;
   gap: 10px;
 
+  ${breakpoints.tabletMediumMax} {
+    width: 70%;
+  }
+
   > div {
     &:nth-child(1) {
+      height: 100%;
+      width: 0px;
+
       > svg {
         margin-top: 10px;
-        max-width: 20px;
-        width: 100%;
+        cursor: pointer;
         display: none;
+        height: 20px;
+        width: 20px;
 
         ${breakpoints.tabletLargeMax} {
           display: block;
         }
       }
+
+      ${breakpoints.tabletLargeMax} {
+        display: block;
+        width: 50px;
+      }
     }
     &:nth-child(2) {
       > h2 {
         font-weight: 900;
+
+        ${breakpoints.tabletMediumMax} {
+          font-size: 25px;
+        }
       }
 
       > span {
@@ -239,6 +281,10 @@ export const ContainerDataProfile = styled.div`
     display: flex;
     flex-direction: row;
     gap: 10px;
+  }
+
+  ${breakpoints.tabletMediumMax} {
+    width: 30%;
   }
 `
 
@@ -269,6 +315,11 @@ export const ContainerAvatarSide = styled.div`
   align-items: center;
   gap: 10px;
   padding-right: 10px;
+
+  ${breakpoints.tabletMediumMax} {
+    align-items: start;
+    margin-top: 5px;
+  }
 `
 
 export const AvatarStyles = styled.div`
@@ -289,9 +340,13 @@ export const AvatarStyles = styled.div`
       border-radius: 16px;
     }
   }
+
+  ${breakpoints.tabletLargeMax} {
+    display: none;
+  }
 `
 
-export const DataUserStyles = styled.div`
+export const DataUserStyles = styled.div<{ isOpen: boolean }>`
   > p:nth-child(1) {
     font-size: 14px;
   }
@@ -318,5 +373,77 @@ export const ContainerOptions = styled.div`
     max-width: 30px;
     cursor: pointer;
     width: 100%;
+  }
+`
+
+export const BurguerMenuStyles = styled.div``
+
+export const ContainerFullMenu = styled.div<{ isOpen: boolean }>`
+  visibility: ${p => (p.isOpen ? "visible" : "hidden")};
+  border-right: 6px ${palette.primaryColor} solid;
+  width: ${p => (p.isOpen ? "80%" : "0%")};
+  background: ${palette.blackColor};
+  justify-content: space-between;
+  box-sizing: border-box;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  transition: 0.5s;
+  transition: 0.4s;
+  display: flex;
+  height: 100%;
+  z-index: 2;
+  left: 0;
+  top: 0;
+
+  > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  > svg:last-child {
+    position: absolute;
+    cursor: pointer;
+    height: 40px;
+    color: white;
+    right: 20px;
+    width: 40px;
+    top: 20px;
+  }
+
+  ${breakpoints.tabletLargeMax} {
+    > div {
+      display: ${p => (p.isOpen ? "flex" : "none")};
+    }
+  }
+
+  ${breakpoints.phoneLargeMax} {
+    width: 100%;
+  }
+
+  ${breakpoints.laptopMin} {
+    visibility: hidden;
+    width: 0%;
+  }
+`
+
+export const ContainerOverlay = styled.div<{ isOpen: boolean }>`
+  visibility: ${p => (p.isOpen ? "visible" : "hidden")};
+  width: ${p => (p.isOpen ? "100%" : "0%")};
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  transition: 0.6s;
+  display: flex;
+  height: 100%;
+  left: 0;
+  top: 0;
+
+  ${breakpoints.laptopMin} {
+    visibility: hidden;
+    width: 0%;
   }
 `

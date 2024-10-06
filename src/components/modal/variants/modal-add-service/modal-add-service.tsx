@@ -21,16 +21,11 @@ import {
   selectStyles,
   WrapperInput,
 } from "../../../../config/theme/global-styles"
-import { User } from "styled-icons/boxicons-solid"
 import Button from "../../../button/button"
-import Input from "../../../input/input"
 import Select from "react-select"
 import axios from "axios"
 import { toast } from "sonner"
-import {
-  DataRoleResponse,
-  ServiceDTO,
-} from "../../../../core/models/interfaces/roles-model"
+import { ServiceDTO } from "../../../../core/models/interfaces/roles-model"
 import useDataUser from "../../../../utils/use-data-user"
 import { Trash } from "@styled-icons/ionicons-solid/Trash"
 import { Calendar4 } from "@styled-icons/bootstrap/Calendar4"
@@ -376,9 +371,9 @@ const ModalAddService: React.FC<IOwnProps> = ({
                 isSearchable={false}
                 styles={selectStyles}
               />
-              {!!(errors.contractorId as any)?.message && (
+              {!!(errors.apartmentId as any)?.message && (
                 <ErrorMessage>
-                  {(errors.contractorId as any)?.message}
+                  {(errors.apartmentId as any)?.message}
                 </ErrorMessage>
               )}
             </WrapperInput>
@@ -391,9 +386,9 @@ const ModalAddService: React.FC<IOwnProps> = ({
                 isSearchable={false}
                 styles={selectStyles}
               />
-              {!!(errors.contractorId as any)?.message && (
+              {!!(errors.apartmentId as any)?.message && (
                 <ErrorMessage>
-                  {(errors.contractorId as any)?.message}
+                  {(errors.apartmentId as any)?.message}
                 </ErrorMessage>
               )}
             </WrapperInput>

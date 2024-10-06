@@ -62,3 +62,4 @@ export const pathRoutes = {
     LIST_CONTRACTORS: "/reports/contractor",
   },
 }
+

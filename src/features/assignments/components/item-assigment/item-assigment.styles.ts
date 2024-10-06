@@ -1,5 +1,6 @@
 import styled, { keyframes } from "styled-components"
 import { palette } from "../../../../config/theme/theme"
+import { breakpoints } from "../../../../constants/breakpoints"
 
 export const ItemAssigmentStyles = styled.div`
   box-shadow: 8px 10px 30px 4px rgb(189 189 189 / 13%);
@@ -10,6 +11,10 @@ export const ItemAssigmentStyles = styled.div`
   padding: 10px 20px;
   display: flex;
   gap: 20px;
+
+  ${breakpoints.tabletMediumMax} {
+    flex-direction: column;
+  }
 `
 
 export const InfoAssig = styled.div`
@@ -53,6 +58,10 @@ export const InfoAssig = styled.div`
         font-size: 12px;
       }
     }
+  }
+
+  ${breakpoints.tabletMediumMax} {
+    width: 100%;
   }
 `
 
@@ -102,6 +111,10 @@ export const ActionsAssig = styled.div`
       &:hover {
         background: ${palette.successColorHover};
       }
+
+      ${breakpoints.tabletMediumMax} {
+        height: 40px;
+      }
     }
 
     &:nth-child(2) {
@@ -127,5 +140,10 @@ export const ActionsAssig = styled.div`
     display: grid;
     height: 100%;
     width: 100%;
+  }
+
+  ${breakpoints.tabletMediumMax} {
+    width: 100%;
+    flex-direction: row;
   }
 `

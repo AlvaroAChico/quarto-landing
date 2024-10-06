@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { palette } from "../../../../config/theme/theme"
 import { WrapperInput } from "../../../../config/theme/global-styles"
+import { breakpoints } from "../../../../constants/breakpoints"
 
 export const FormContainer = styled.div`
   grid-template-columns: repeat(2, 1fr);
@@ -31,6 +32,10 @@ export const ContainerButton = styled.div`
     margin-top: 20px;
     width: 100%;
     max-width: 150px;
+
+    ${breakpoints.tabletMediumMax} {
+      max-width: 100%;
+    }
   }
 `
 
@@ -90,6 +95,14 @@ export const ContainerDownInputs = styled.div`
 
   > div {
     width: 45%;
+  }
+
+  ${breakpoints.tabletMediumMax} {
+    flex-direction: column;
+
+    > div {
+      width: 100%;
+    }
   }
 `
 

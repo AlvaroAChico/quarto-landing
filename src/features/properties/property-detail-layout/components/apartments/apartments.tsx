@@ -232,7 +232,7 @@ const DetailsApartments: React.FC = () => {
                 </WrapperInput>
               </div>
               <div>
-                <div>
+                {/* <div>
                   <Select
                     defaultValue={selectedOptionRole}
                     onChange={handleChangeOptionRole}
@@ -241,7 +241,7 @@ const DetailsApartments: React.FC = () => {
                     styles={selectStyles}
                     placeholder="Month"
                   />
-                </div>
+                </div> */}
               </div>
             </ContainerFilters>
             <table>

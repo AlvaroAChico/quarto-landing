@@ -1,30 +1,68 @@
 import styled from "styled-components"
 import { palette } from "../../config/theme/theme"
+import { breakpoints } from "../../constants/breakpoints"
 
 export const ContainerDailyCalendar = styled.div`
   box-shadow: 8px 10px 30px 4px rgba(238, 236, 243, 1);
-  place-items: center;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   border-radius: 16px;
   max-width: 1000px;
   padding: 20px;
-  display: grid;
+  display: flex;
+
+  ${breakpoints.tabletLargeMax} {
+    padding: 10px;
+  }
 `
 
 export const FilterDailyCalendar = styled.div`
-  margin-bottom: 10px;
-  padding: 20px;
-  display: flex;
   justify-content: flex-start;
-  align-item: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  display: flex;
+  padding: 10px;
   width: 100%;
-  gap: 15px;
+  gap: 10px;
+
+  > div:nth-child(1) {
+    display: none;
+  }
+
+  ${breakpoints.tabletLargeMax} {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    > div {
+      width: 48%;
+    }
+
+    > div:nth-child(1) {
+      display: flex;
+      width: 100%;
+
+      > button {
+        width: 100%;
+      }
+    }
+
+    > div:last-child {
+      display: none;
+    }
+  }
 `
 export const DataDailyCalendar = styled.div`
   width: 80%;
 `
 
 export const ItemFilterDC = styled.div`
-  padding: 20px;
+  padding: 5px;
+
+  ${breakpoints.tabletLargeMax} {
+    padding: 0;
+  }
 `
 
 export const HeaderDailyCalendar = styled.div`
@@ -38,15 +76,14 @@ export const ContainerDailyStyles = styled.div`
   align-items: center;
   display: flex;
   width: 100%;
-  gap: 50px;
+  gap: 35px;
 
   > div {
     > span {
       > svg {
-        max-width: 30px;
+        width: 30px;
         cursor: pointer;
         padding: 5px;
-        width: 100%;
       }
     }
 
@@ -67,6 +104,10 @@ export const BodyDailyCalendar = styled.div`
   padding: 40px 20px;
   display: flex;
   gap: 10px;
+
+  ${breakpoints.tabletLargeMax} {
+    padding: 20px 0;
+  }
 `
 
 export const ItemDaily = styled.div<{ $isActiveDay: boolean }>`
