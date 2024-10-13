@@ -49,7 +49,6 @@ const ModalEditUser: React.FC<IOwnProps> = ({
   handleClose,
   handleRefreshData,
 }) => {
-  console.log("Data user edit -> ", dataUserEdit)
   const [optionsRoles, setOptionsRoles] = React.useState<any>([])
   const [selectedOptionRole, setSelectedOptionRole] =
     React.useState<Option | null>(null)
@@ -115,7 +114,6 @@ const ModalEditUser: React.FC<IOwnProps> = ({
           })
           .then(response => {
             setIsSubmitUserUpdate(false)
-            console.log("Response data -> ", response.data)
             const data: UserDTO = response.data as UserDTO
             if (!!data && !!data.id) {
               toast.success("User successfully updated")
@@ -189,7 +187,6 @@ const ModalEditUser: React.FC<IOwnProps> = ({
     }
 
     if (rejectedFiles.length > 0) {
-      console.log("rejectedFiles -> ", rejectedFiles)
       toast.error(
         'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
       )

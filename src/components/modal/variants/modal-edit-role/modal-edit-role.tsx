@@ -170,11 +170,12 @@ const ModalEditRole: React.FC<IOwnProps> = ({
     const storedToken = handleGetToken()
     if (!!storedToken) {
       axios
-        .patch(
+        .post(
           `${settingsApp.api.base}/roles/${data.id}`,
           {
             name: data.name,
             permissions: data.permissions,
+            _method: "PATCH",
           },
           {
             headers: {

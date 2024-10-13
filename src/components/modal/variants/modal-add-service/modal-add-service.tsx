@@ -50,10 +50,15 @@ import { PropertyDTO } from "../../../../core/models/interfaces/property-model"
 import Textarea from "../../../textarea/textarea"
 import { Files } from "@styled-icons/simple-icons/Files"
 import CardFile from "./components/card-file/card-file"
+import { setErrResponse } from "../../../../utils/erros-util"
 
 interface IOwnProps {
   isOpen: boolean
   apartmentId?: string
+  listServices?: ServiceDTO[]
+  listContractors?: UserDTO[]
+  listResidentials?: PropertyDTO[]
+  listProperties?: PropertyDTO[]
   handleClose: () => void
   handleRefreshData: () => void
 }
@@ -61,6 +66,10 @@ interface IOwnProps {
 const ModalAddService: React.FC<IOwnProps> = ({
   isOpen,
   apartmentId,
+  listServices,
+  listContractors,
+  listResidentials,
+  listProperties,
   handleClose,
   handleRefreshData,
 }) => {
@@ -143,7 +152,6 @@ const ModalAddService: React.FC<IOwnProps> = ({
   }, [apartmentId])
 
   const handleSubmit = React.useCallback((data: any) => {
-    console.log("Data -> ", data)
     setIsSubmitUserUpdate(true)
     const storedToken = handleGetToken()
     if (!!storedToken) {
@@ -168,7 +176,6 @@ const ModalAddService: React.FC<IOwnProps> = ({
         })
         .then(response => {
           setIsSubmitUserUpdate(false)
-          console.log("Response data -> ", response.data)
           const data: MessageResponsedDTO = response.data as MessageResponsedDTO
           if (!!data && !!data.message) {
             toast.success(data.message)
@@ -178,71 +185,95 @@ const ModalAddService: React.FC<IOwnProps> = ({
         })
         .catch(err => {
           setIsSubmitUserUpdate(false)
-          toast.error("Failed to authenticate")
+          setErrResponse(err)
         })
     }
   }, [])
 
   React.useEffect(() => {
-    const storedToken = handleGetToken()
+    if (!!listServices) {
+      setOptionsServices(listServices)
+    }
+    if (!!listContractors) {
+      setOptionsContractor(listContractors)
+    }
+    if (!!listResidentials) {
+      setOptionsResidential(listResidentials)
+    }
+    if (!!listProperties) {
+      setListCurrentProperty(listProperties)
+    }
+  }, [listServices, listContractors, listResidentials, listProperties])
 
-    if (!!storedToken) {
-      axios
-        .get(`${settingsApp.api.base}/services`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        })
-        .then(response => {
-          const listData: ServiceDTO[] = response.data as ServiceDTO[]
-          const listServices = (listData || []).map(data => ({
-            value: data.id,
-            label: data.name,
-          }))
-          setOptionsServices(listServices.filter((role: any) => !!role))
-        })
+  React.useEffect(() => {
+    if (
+      !listServices &&
+      !listContractors &&
+      !listResidentials &&
+      !listProperties
+    ) {
+      const storedToken = handleGetToken()
 
-      axios
-        .get(`${settingsApp.api.base}/users?include=role`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        })
-        .then(response => {
-          const listData: UserDTO[] = response.data as UserDTO[]
-          const contractors = (listData || []).filter(user =>
-            user.role.some(
-              ro => ro.name.toLowerCase() === "contractor".toLowerCase(),
-            ),
-          )
-          const listContractors = (contractors || []).map(data => ({
-            value: data.id,
-            label: data.firstName,
-          }))
-          setOptionsContractor(listContractors.filter((cont: any) => !!cont))
-        })
-
-      axios
-        .get(`${settingsApp.api.base}/residentials?include=apartments`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        })
-        .then(response => {
-          const dataResponse: PropertyDTO[] = response.data as PropertyDTO[]
-          if (!!dataResponse) {
-            const listResidentials = (dataResponse || []).map(data => ({
+      if (!!storedToken) {
+        axios
+          .get(`${settingsApp.api.base}/services`, {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+            },
+          })
+          .then(response => {
+            const listData: ServiceDTO[] = response.data as ServiceDTO[]
+            const listServices = (listData || []).map(data => ({
               value: data.id,
               label: data.name,
             }))
-            setListCurrentProperty(dataResponse)
-            setOptionsResidential(listResidentials.filter((res: any) => !!res))
-          }
-        })
+            setOptionsServices(listServices.filter((role: any) => !!role))
+          })
+
+        axios
+          .get(`${settingsApp.api.base}/users?include=role`, {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+            },
+          })
+          .then(response => {
+            const listData: UserDTO[] = response.data as UserDTO[]
+            const contractors = (listData || []).filter(user =>
+              user.role.some(
+                ro => ro.name.toLowerCase() === "contractor".toLowerCase(),
+              ),
+            )
+            const listContractors = (contractors || []).map(data => ({
+              value: data.id,
+              label: data.firstName,
+            }))
+            setOptionsContractor(listContractors.filter((cont: any) => !!cont))
+          })
+
+        axios
+          .get(`${settingsApp.api.base}/residentials?include=apartments`, {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          })
+          .then(response => {
+            const dataResponse: PropertyDTO[] = response.data as PropertyDTO[]
+            if (!!dataResponse) {
+              const listResidentials = (dataResponse || []).map(data => ({
+                value: data.id,
+                label: data.name,
+              }))
+              setListCurrentProperty(dataResponse)
+              setOptionsResidential(
+                listResidentials.filter((res: any) => !!res),
+              )
+            }
+          })
+      }
     }
-  }, [])
+  }, [isOpen, listServices, listContractors, listResidentials, listProperties])
 
   const [listFiles, setListFiles] = React.useState<File[]>([]) // Inicializamos como un array vacío
 
@@ -279,7 +310,6 @@ const ModalAddService: React.FC<IOwnProps> = ({
       }
 
       if (rejectedFiles.length > 0) {
-        console.log("rejectedFiles -> ", rejectedFiles)
         toast.error(
           'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
         )

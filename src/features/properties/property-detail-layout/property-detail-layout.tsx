@@ -85,7 +85,6 @@ const PropertyDetailLayout: React.FC = () => {
           },
         )
         .then(response => {
-          console.log("Response => ", response.data)
           const dataResponse: PropertyDTO[] = response.data as PropertyDTO[]
           if (!!dataResponse) {
             setDataProperty(dataResponse[0])

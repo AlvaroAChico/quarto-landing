@@ -65,5 +65,6 @@ export const createEmptyFilterPermissions = (): FilterPermissionsDTO => {
     reports: [],
     work: [],
     quality: [],
+    contractor: [],
   }
 }

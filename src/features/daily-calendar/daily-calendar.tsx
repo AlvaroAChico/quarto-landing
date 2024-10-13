@@ -5,7 +5,10 @@ import { settingsApp } from "../../config/environment/settings"
 import { InfoCalendarDTO } from "../../core/models/interfaces/calendar-model"
 import { setErrResponse } from "../../utils/erros-util"
 import { ServiceDTO } from "../../core/models/interfaces/roles-model"
-import { UserDTO } from "../../core/models/interfaces/user-model"
+import {
+  FilterPermissionsDTO,
+  UserDTO,
+} from "../../core/models/interfaces/user-model"
 import { PropertyDTO } from "../../core/models/interfaces/property-model"
 import ItemDailyCalendar from "./components/item-daily-calendar/item-daily-calendar"
 import { ArrowIosBackOutline } from "@styled-icons/evaicons-outline/ArrowIosBackOutline"
@@ -32,33 +35,40 @@ import Skeleton from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
+import {
+  InfoCardDaily,
+  InfoTextDaily,
+  ItemCalendarStyles,
+} from "./components/item-daily-calendar/item-daily-calendar.styles"
+import { useNavigate } from "react-router-dom"
+import { pathRoutes } from "../../config/routes/path"
 
 const DailyCalendar: React.FC = () => {
-  // const [dataPermissions, setDataPermissions] =
-  //   React.useState<FilterPermissionsDTO>()
+  const [dataPermissions, setDataPermissions] =
+    React.useState<FilterPermissionsDTO>()
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
     useDataUser()
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
-  // React.useEffect(() => {
-  //   // Verify Token
-  //   const storedToken = handleGetToken()
-  //   if (!storedToken) {
-  //     clearAllDataAPP()
-  //     navigate(pathRoutes.SIGN_IN)
-  //   }
-  //   // Verify Permissions
-  //   const data = handleGetPermissions()
-  //   setDataPermissions(data)
-  //   if (
-  //     !!data &&
-  //     !Object.values(APP_MENU).some(permission =>
-  //       data?.calendar.includes(permission),
-  //     )
-  //   ) {
-  //     return
-  //   }
-  // }, [])
+  React.useEffect(() => {
+    // Verify Token
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      clearAllDataAPP()
+      navigate(pathRoutes.SIGN_IN)
+    }
+    // Verify Permissions
+    const data = handleGetPermissions()
+    setDataPermissions(data)
+    if (
+      !!data &&
+      !Object.values(APP_MENU).some(permission =>
+        data?.calendar.includes(permission),
+      )
+    ) {
+      return
+    }
+  }, [])
 
   const [isOpenModalEdit, setIsOpenModalEdit] = React.useState<boolean>(false)
   const [dataEdit, setDataEdit] = React.useState<InfoCalendarDTO>()
@@ -183,33 +193,54 @@ const DailyCalendar: React.FC = () => {
 
   const getDataCalendar = async () => {
     const data = handleGetPermissions()
-    if (
-      data?.calendar.includes(APP_MENU.LIST) ||
-      data?.calendar.includes(APP_MENU.READ_OWN)
-    ) {
-      setIsLoadingDataCalendar(true)
-      try {
-        const data: InfoCalendarDTO[] = await fetchData(
-          `${settingsApp.api.base}/works?include=apartment,residential,contractor,service,status`,
-        )
-        setAllDataCalendar(data)
-        setInfoCalendar(data)
-      } finally {
-        setIsLoadingDataCalendar(false)
+    const storedToken = handleGetToken()
+    if (!!storedToken) {
+      if (
+        data?.calendar.includes(APP_MENU.LIST) ||
+        data?.calendar.includes(APP_MENU.READ_OWN)
+      ) {
+        setIsLoadingDataCalendar(true)
+        axios
+          .get(
+            `${settingsApp.api.base}/works?include=apartment,residential,contractor,service,status`,
+            {
+              headers: {
+                Authorization: `Bearer ${storedToken}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            },
+          )
+          .then(response => {
+            const listData: InfoCalendarDTO[] =
+              response.data as InfoCalendarDTO[]
+            setAllDataCalendar(listData)
+            setInfoCalendar(listData)
+            setIsLoadingDataCalendar(false)
+          })
+          .catch(err => {
+            setErrResponse(err)
+            setIsLoadingDataCalendar(false)
+          })
       }
     }
   }
 
+  const [listCurrentProperty, setListCurrentProperty] = React.useState<
+    PropertyDTO[]
+  >([])
+
   const fetchDataResidentials = async () => {
     try {
       const data: PropertyDTO[] = await fetchData(
-        `${settingsApp.api.base}/residentials`,
+        `${settingsApp.api.base}/residentials?include=apartments`,
       )
       const listProperties = (data || []).map(property => ({
         value: property.id,
         label: property.name,
       }))
       setOptionsProperty(listProperties)
+      setListCurrentProperty(data)
     } catch (err) {
       setErrResponse(err)
     }
@@ -257,10 +288,10 @@ const DailyCalendar: React.FC = () => {
   React.useEffect(() => {
     const fetchDataAsync = async () => {
       await Promise.all([
-        getDataCalendar(),
-        fetchDataResidentials(),
-        fetchDataContractors(),
         fetchDataServices(),
+        fetchDataContractors(),
+        fetchDataResidentials(),
+        getDataCalendar(),
       ])
     }
 
@@ -290,8 +321,6 @@ const DailyCalendar: React.FC = () => {
           info.service && info.service.name === selectedOptionService.label,
       )
     }
-
-    console.log("Filtered Calendar => ", newListCal)
     setInfoCalendar(newListCal)
   }
 
@@ -306,14 +335,12 @@ const DailyCalendar: React.FC = () => {
 
   return (
     <>
-      {!isLoadingDataCalendar &&
-        (infoCalendar || []).map(info => <>{info.service.name}</>)}
       <ContainerDailyCalendar>
         <FilterDailyCalendar>
           <ItemFilterDC>
-            {/* {dataPermissions?.work.includes(APP_MENU.CREATE) && ( */}
-            <Button text="New work" onClick={handleOpenModalAdd} />
-            {/* )} */}
+            {dataPermissions?.work.includes(APP_MENU.CREATE) && (
+              <Button text="New work" onClick={handleOpenModalAdd} />
+            )}
           </ItemFilterDC>
           <ItemFilterDC>
             <DatePicker
@@ -339,9 +366,6 @@ const DailyCalendar: React.FC = () => {
             />
           </ItemFilterDC>
           <ItemFilterDC>
-            {optionsProperty.map((prop: any) => (
-              <p>Property: {prop.label}</p>
-            ))}
             <Select
               id="property-create-apartment"
               defaultValue={selectedOptionProperty}
@@ -355,9 +379,6 @@ const DailyCalendar: React.FC = () => {
             />
           </ItemFilterDC>
           <ItemFilterDC>
-            {optionsContractors.map((cont: any) => (
-              <p>Contract: {cont.label}</p>
-            ))}
             <Select
               id="contractor-create-apartment"
               defaultValue={selectedOptionContractor}
@@ -371,9 +392,6 @@ const DailyCalendar: React.FC = () => {
             />
           </ItemFilterDC>
           <ItemFilterDC>
-            {optionsServices.map((serv: any) => (
-              <p>Service: {serv.label}</p>
-            ))}
             <Select
               id="service-create-apartment"
               defaultValue={selectedOptionService}
@@ -387,9 +405,9 @@ const DailyCalendar: React.FC = () => {
             />
           </ItemFilterDC>
           <ItemFilterDC>
-            {/* {dataPermissions?.work.includes(APP_MENU.CREATE) && ( */}
-            <Button text="New work" onClick={handleOpenModalAdd} />
-            {/* )} */}
+            {dataPermissions?.work.includes(APP_MENU.CREATE) && (
+              <Button text="New work" onClick={handleOpenModalAdd} />
+            )}
           </ItemFilterDC>
         </FilterDailyCalendar>
         <DataDailyCalendar>
@@ -429,14 +447,18 @@ const DailyCalendar: React.FC = () => {
                 if (
                   compareEqualsDate(
                     formatToDDMMYYYY(info.startDate),
-                    daySelected.toLocaleDateString(),
+                    daySelected.toLocaleDateString("es-ES"),
                   )
                 ) {
                   return (
                     <ItemDailyCalendar
                       key={info.id}
                       info={info}
+                      dataPermissions={
+                        dataPermissions ?? ({} as FilterPermissionsDTO)
+                      }
                       onEditItem={handleEditWork(info.id)}
+                      onRefreshData={getDataCalendar}
                     />
                   )
                 }
@@ -454,11 +476,19 @@ const DailyCalendar: React.FC = () => {
         handleClose={handleCloseModalEdit}
         handleRefreshData={getDataCalendar}
         dataEdit={dataEdit!!}
+        listServices={optionsServices}
+        listContractors={optionsContractors}
+        listResidentials={optionsProperty}
+        listProperties={listCurrentProperty}
       />
       <ModalAddService
         isOpen={isOpenModalAdd}
         handleClose={handleCloseModalAdd}
         handleRefreshData={getDataCalendar}
+        listServices={optionsServices}
+        listContractors={optionsContractors}
+        listResidentials={optionsProperty}
+        listProperties={listCurrentProperty}
       />
     </>
   )

@@ -189,3 +189,16 @@ export const EditStyles = styled.div`
     width: 100%;
   }
 `
+
+export const JobStatusStyle = styled.div<{ status: number }>`
+  border-bottom-color: transparent;
+  background: transparent;
+  box-sizing: border-box;
+  display: inline-block;
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+
+  ${p => (p.status == 7 ? "color: green;" : "")};
+  ${p => (p.status == 4 ? "color: #ff0d00;" : "")};
+`

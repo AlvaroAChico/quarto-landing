@@ -174,7 +174,7 @@ const CreateApartment: React.FC = () => {
         })
         .catch(err => {
           setIsSubmitUserCreate(false)
-          toast.error("Failed to authenticate")
+          setErrResponse(err)
         })
     }
   }, [])
@@ -237,7 +237,6 @@ const CreateApartment: React.FC = () => {
     }
 
     if (rejectedFiles.length > 0) {
-      console.log("rejectedFiles -> ", rejectedFiles)
       toast.error(
         'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
       )
@@ -293,7 +292,6 @@ const CreateApartment: React.FC = () => {
       }
 
       if (rejectedFiles.length > 0) {
-        console.log("rejectedFiles -> ", rejectedFiles)
         toast.error(
           'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
         )

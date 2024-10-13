@@ -85,9 +85,7 @@ const SignIn: React.FC = () => {
         // Expiración expresada en dias
         clearAllDataAPP()
         // localStorage.setItem(COOKIES_APP.PERMISSIONS_APP, "_@")
-        console.log("Response API => ", response)
         const data: SignInResponse = response.data as SignInResponse
-        console.log("Response API data => ", data)
         const expiration = {
           expires: 7,
         }
@@ -104,8 +102,6 @@ const SignIn: React.FC = () => {
         )
         // Filter data permissions
         const result: FilterPermissionsDTO = createEmptyFilterPermissions()
-        console.log("Permissions Result => ", result)
-        console.log("Permissions => ", data.permisos)
         data.permisos
           .map(permission => permission.name)
           .forEach(permission => {
@@ -119,7 +115,6 @@ const SignIn: React.FC = () => {
           })
 
         if (!!result) {
-          console.log("result permissions => ", result)
           saveJsonCookiesWithSplit(result)
           // localStorage.setItem(
           //   COOKIES_APP.PERMISSIONS_APP,

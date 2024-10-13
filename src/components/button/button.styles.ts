@@ -47,12 +47,11 @@ const rotation = keyframes`
 export const LoaderStyles = styled.button`
   width: 25px;
   height: 25px;
-  border: 2px solid #FFF;
+  border: 2px solid #fff;
   border-bottom-color: transparent;
   border-radius: 50%;
   display: inline-block;
   background: transparent;
   box-sizing: border-box;
   animation: ${rotation} 1s linear infinite;
-  }
 `

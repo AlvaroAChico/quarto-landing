@@ -31,6 +31,7 @@ import {
 } from "../../../../core/models/schemas/company-schema"
 import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
 import { APP_MENU } from "../../../../constants/app"
+import { setErrResponse } from "../../../../utils/erros-util"
 
 const CreateManagementCompany: React.FC = () => {
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
@@ -101,8 +102,7 @@ const CreateManagementCompany: React.FC = () => {
         })
         .catch(err => {
           setIsSubmitUserCreate(false)
-          console.log("err => ", err)
-          toast.error("Failed to authenticate")
+          setErrResponse(err)
         })
     }
   }, [])

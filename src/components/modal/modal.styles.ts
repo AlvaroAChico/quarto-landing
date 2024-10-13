@@ -18,7 +18,7 @@ export const ModalContent = styled.div<{ customStyles: string }>`
   background: white;
   padding: 40px;
   border-radius: 15px;
-  max-width: 500px;
+  max-width: 800px;
   max-height: 85%;
   width: 90%;
   z-index: 12;

@@ -65,6 +65,7 @@ import {
 import Textarea from "../../../../components/textarea/textarea"
 import { ManagementCompanyDTO } from "../../../../core/models/interfaces/management-company"
 import { APP_MENU } from "../../../../constants/app"
+import { setErrResponse } from "../../../../utils/erros-util"
 
 const CreateProperty: React.FC = () => {
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
@@ -154,8 +155,7 @@ const CreateProperty: React.FC = () => {
         })
         .catch(err => {
           setIsSubmitUserCreate(false)
-          console.log("err => ", err)
-          toast.error("Failed to authenticate")
+          setErrResponse(err)
         })
     }
   }, [])
@@ -226,7 +226,6 @@ const CreateProperty: React.FC = () => {
     }
 
     if (rejectedFiles.length > 0) {
-      console.log("rejectedFiles -> ", rejectedFiles)
       toast.error(
         'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
       )
@@ -282,7 +281,6 @@ const CreateProperty: React.FC = () => {
       }
 
       if (rejectedFiles.length > 0) {
-        console.log("rejectedFiles -> ", rejectedFiles)
         toast.error(
           'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
         )

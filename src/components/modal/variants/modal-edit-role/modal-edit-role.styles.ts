@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { breakpoints } from "../../../../constants/breakpoints"
 
 export const FormContainer = styled.div`
   display: flex;
@@ -170,6 +171,12 @@ export const ContainerListSwitchs = styled.div`
   flex-direction: row;
   display: flex;
   gap: 10px;
+
+  ${breakpoints.tabletMediumMax} {
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 4px;
+  }
 `
 
 export const ContainerBodySwitch = styled.div`
@@ -181,9 +188,16 @@ export const ContainerBodySwitch = styled.div`
   > span {
     text-transform: capitalize;
   }
+
+  ${breakpoints.tabletMediumMax} {
+    flex-direction: column;
+  }
 `
 
 export const customStylesEdit = `
   min-width: 500px;
   width: fit-content;
+
+  ${breakpoints.tabletLargeMax}{
+  min-width: 100%;}
 `

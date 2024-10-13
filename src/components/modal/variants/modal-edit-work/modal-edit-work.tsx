@@ -1,6 +1,6 @@
 import React from "react"
 import Modal from "../../modal"
-import { useForm } from "react-hook-form"
+import { set, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
   ErrorMessage,
@@ -41,6 +41,10 @@ import { UserDTO } from "../../../../core/models/interfaces/user-model"
 interface IOwnProps {
   isOpen: boolean
   dataEdit: InfoCalendarDTO
+  listServices: ServiceDTO[]
+  listContractors: UserDTO[]
+  listResidentials: PropertyDTO[]
+  listProperties: PropertyDTO[]
   handleClose: () => void
   handleRefreshData: () => void
 }
@@ -48,6 +52,10 @@ interface IOwnProps {
 const ModalEditWork: React.FC<IOwnProps> = ({
   isOpen,
   dataEdit,
+  listServices,
+  listContractors,
+  listResidentials,
+  listProperties,
   handleClose,
   handleRefreshData,
 }) => {
@@ -150,8 +158,10 @@ const ModalEditWork: React.FC<IOwnProps> = ({
           return
         }
 
+        formData.append("_method", "PATCH")
+
         axios
-          .patch(`${settingsApp.api.base}/works/${dataEdit.id}`, formData, {
+          .post(`${settingsApp.api.base}/works/${dataEdit.id}`, formData, {
             headers: {
               Authorization: `Bearer ${storedToken}`,
               ContentType: "application/json",
@@ -160,8 +170,8 @@ const ModalEditWork: React.FC<IOwnProps> = ({
           })
           .then(response => {
             setIsSubmitUpdate(false)
-            const data: ServiceDTO = response.data as ServiceDTO
-            if (!!data && !!data.code) {
+            const data: any = response.data
+            if (!!data) {
               toast.success("Update successful")
               handleRefreshData()
               handleClose()
@@ -177,65 +187,79 @@ const ModalEditWork: React.FC<IOwnProps> = ({
   )
 
   React.useEffect(() => {
-    const storedToken = handleGetToken()
-
-    if (!!storedToken) {
-      axios
-        .get(`${settingsApp.api.base}/services`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        })
-        .then(response => {
-          const listData: ServiceDTO[] = response.data as ServiceDTO[]
-          const listServices = (listData || []).map(data => ({
-            value: data.id,
-            label: data.name,
-          }))
-          setOptionsServices(listServices.filter((role: any) => !!role))
-        })
-
-      axios
-        .get(`${settingsApp.api.base}/users?include=role`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        })
-        .then(response => {
-          const listData: UserDTO[] = response.data as UserDTO[]
-          const contractors = (listData || []).filter(user =>
-            user.role.some(
-              ro => ro.name.toLowerCase() === "contractor".toLowerCase(),
-            ),
-          )
-          const listContractors = (contractors || []).map(data => ({
-            value: data.id,
-            label: data.firstName,
-          }))
-          setOptionsContractor(listContractors.filter((cont: any) => !!cont))
-        })
-
-      axios
-        .get(`${settingsApp.api.base}/residentials?include=apartments`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        })
-        .then(response => {
-          const dataResponse: PropertyDTO[] = response.data as PropertyDTO[]
-          if (!!dataResponse) {
-            const listResidentials = (dataResponse || []).map(data => ({
-              value: data.id,
-              label: data.name,
-            }))
-            setListCurrentProperty(dataResponse)
-            setOptionsResidential(listResidentials.filter((res: any) => !!res))
-          }
-        })
+    if (!!listServices) {
+      setOptionsServices(listServices)
     }
-  }, [])
+    if (!!listContractors) {
+      setOptionsContractor(listContractors)
+    }
+    if (!!listResidentials) {
+      setOptionsResidential(listResidentials)
+    }
+    if (!!listProperties) {
+      setListCurrentProperty(listProperties)
+    }
+  }, [listServices, listContractors, listResidentials, listProperties])
+  // React.useEffect(() => {
+  //   const storedToken = handleGetToken()
+
+  //   if (!!storedToken) {
+  //     axios
+  //       .get(`${settingsApp.api.base}/services`, {
+  //         headers: {
+  //           Authorization: `Bearer ${storedToken}`,
+  //         },
+  //       })
+  //       .then(response => {
+  //         const listData: ServiceDTO[] = response.data as ServiceDTO[]
+  //         const listServices = (listData || []).map(data => ({
+  //           value: data.id,
+  //           label: data.name,
+  //         }))
+  //         setOptionsServices(listServices.filter((role: any) => !!role))
+  //       })
+
+  //     axios
+  //       .get(`${settingsApp.api.base}/users?include=role`, {
+  //         headers: {
+  //           Authorization: `Bearer ${storedToken}`,
+  //         },
+  //       })
+  //       .then(response => {
+  //         const listData: UserDTO[] = response.data as UserDTO[]
+  //         const contractors = (listData || []).filter(user =>
+  //           user.role.some(
+  //             ro => ro.name.toLowerCase() === "contractor".toLowerCase(),
+  //           ),
+  //         )
+  //         const listContractors = (contractors || []).map(data => ({
+  //           value: data.id,
+  //           label: data.firstName,
+  //         }))
+  //         setOptionsContractor(listContractors.filter((cont: any) => !!cont))
+  //       })
+
+  //     axios
+  //       .get(`${settingsApp.api.base}/residentials?include=apartments`, {
+  //         headers: {
+  //           Authorization: `Bearer ${storedToken}`,
+  //           "Content-Type": "application/json",
+  //           Accept: "application/json",
+  //         },
+  //       })
+  //       .then(response => {
+  //         const dataResponse: PropertyDTO[] = response.data as PropertyDTO[]
+  //         if (!!dataResponse) {
+  //           const listResidentials = (dataResponse || []).map(data => ({
+  //             value: data.id,
+  //             label: data.name,
+  //           }))
+  //           setListCurrentProperty(dataResponse)
+  //           setOptionsResidential(listResidentials.filter((res: any) => !!res))
+  //         }
+  //       })
+  //   }
+  // }, [isOpen, dataEdit])
 
   const [listFiles, setListFiles] = React.useState<File[]>([]) // Inicializamos como un array vacío
 
@@ -272,7 +296,6 @@ const ModalEditWork: React.FC<IOwnProps> = ({
       }
 
       if (rejectedFiles.length > 0) {
-        console.log("rejectedFiles -> ", rejectedFiles)
         toast.error(
           'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
         )

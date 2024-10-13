@@ -23,6 +23,7 @@ import { settingsApp } from "../../../../config/environment/settings"
 import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
 import { toast } from "sonner"
 import { APP_MENU } from "../../../../constants/app"
+import { setErrResponse } from "../../../../utils/erros-util"
 
 const CreateService: React.FC = () => {
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
@@ -86,7 +87,7 @@ const CreateService: React.FC = () => {
         })
         .catch(err => {
           setIsSubmitServiceCreate(false)
-          toast.error("Failed to authenticate")
+          setErrResponse(err)
         })
     }
   }, [])

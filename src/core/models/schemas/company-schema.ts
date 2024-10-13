@@ -10,10 +10,10 @@ export const CreateCompanySchema = object({
 
 export const UpdateCompanySchema = object({
   name: string(),
-  managerName: string(),
-  managerPhone: string(),
-  assitantManagerName: string(),
-  assitantManagerPhone: string(),
+  manager_name: string(),
+  manager_phone: string(),
+  assitant_manager_name: string(),
+  assitant_manager_phone: string(),
 })
 
 export type CreateCompanyForm = InferType<typeof CreateCompanySchema>

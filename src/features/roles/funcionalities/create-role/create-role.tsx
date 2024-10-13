@@ -40,6 +40,7 @@ import { useNavigate } from "react-router-dom"
 import { pathRoutes } from "../../../../config/routes/path"
 import { createEmptyFilterPermissions } from "../../../../utils/cookie-util"
 import { APP_MENU } from "../../../../constants/app"
+import { setErrResponse } from "../../../../utils/erros-util"
 
 const CreateRole: React.FC = () => {
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
@@ -111,7 +112,7 @@ const CreateRole: React.FC = () => {
         })
         .catch(err => {
           setIsSubmitRoleCreate(false)
-          toast.error("Failed to authenticate")
+          setErrResponse(err)
         })
     }
   }, [])

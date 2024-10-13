@@ -169,7 +169,7 @@ const ModalEditApartment: React.FC<IOwnProps> = ({
           )
           .then(response => {
             setIsSubmitUserUpdate(false)
-            console.log("Response data -> ", response.data)
+
             const data: UserDTO = response.data as UserDTO
             if (!!data && !!data.id) {
               toast.success("User successfully updated")
@@ -218,7 +218,6 @@ const ModalEditApartment: React.FC<IOwnProps> = ({
     }
 
     if (rejectedFiles.length > 0) {
-      console.log("rejectedFiles -> ", rejectedFiles)
       toast.error(
         'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
       )

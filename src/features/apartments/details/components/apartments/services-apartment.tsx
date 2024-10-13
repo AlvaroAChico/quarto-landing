@@ -109,12 +109,10 @@ const ServicesApartment: React.FC = () => {
 
   const handleEditProject = (projectId: string) => () => {
     handleCleanDropdown()
-    console.log("Delete edit -> ", projectId)
   }
 
   const handleDeleteProject = (projectId: string) => () => {
     handleCleanDropdown()
-    console.log("Delete project -> ", projectId)
   }
 
   const handleClick = React.useCallback(() => {
@@ -146,7 +144,6 @@ const ServicesApartment: React.FC = () => {
           },
         )
         .then(response => {
-          console.log("Response Apartment => ", response.data)
           const dataResponse: ApartmentDTO[] = response.data as ApartmentDTO[]
           if (!!dataResponse) {
             setListApartments(dataResponse[0])

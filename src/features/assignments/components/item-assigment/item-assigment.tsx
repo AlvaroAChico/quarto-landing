@@ -16,6 +16,7 @@ import { settingsApp } from "../../../../config/environment/settings"
 import { toast } from "sonner"
 import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
 import { FilterPermissionsDTO } from "../../../../core/models/interfaces/user-model"
+import { APP_MENU } from "../../../../constants/app"
 
 interface IOwnProps {
   assigment: InfoCalendarDTO
@@ -37,7 +38,7 @@ const ItemAssigment: React.FC<IOwnProps> = ({
     if (storedToken) {
       axios
         .post(
-          `${settingsApp.api.base}/works/${assigment.id}`,
+          `${settingsApp.api.base}/works/${assigment.id}/review`,
           {
             type: "contractor",
             status_id: accepted ? 3 : 4,
@@ -89,14 +90,17 @@ const ItemAssigment: React.FC<IOwnProps> = ({
           <span>Notes: {assigment.customerNotes}</span>
         </div>
       </InfoAssig>
-      {/* {dataPermissions?..includes("update") && (} */}
       <ActionsAssig>
-        <button onClick={handleAccepted} disabled={isLoadingApproval}>
-          <Check2 />
-        </button>
-        <button onClick={handleRejected} disabled={isLoadingApproval}>
-          <Close />
-        </button>
+        {permissions?.contractor.includes(APP_MENU.UPDATE) && (
+          <>
+            <button onClick={handleAccepted} disabled={isLoadingApproval}>
+              <Check2 />
+            </button>
+            <button onClick={handleRejected} disabled={isLoadingApproval}>
+              <Close />
+            </button>
+          </>
+        )}
         {isLoadingApproval && (
           <div>
             <LoaderStyles />

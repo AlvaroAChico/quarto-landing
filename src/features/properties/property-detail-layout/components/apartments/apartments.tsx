@@ -105,12 +105,10 @@ const DetailsApartments: React.FC = () => {
 
   const handleEditProject = (projectId: string) => () => {
     handleCleanDropdown()
-    console.log("Delete edit -> ", projectId)
   }
 
   const handleDeleteProject = (projectId: string) => () => {
     handleCleanDropdown()
-    console.log("Delete project -> ", projectId)
   }
 
   React.useEffect(() => {

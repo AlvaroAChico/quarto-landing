@@ -27,6 +27,7 @@ export interface UserDTO {
   firstName: string
   lastName: string
   picture: string
+  image: string
   contactNumber: string
   documentType: string
   documentNumber: string
@@ -71,9 +72,10 @@ export interface FilterPermissionsDTO {
   apartment: string[]
   assignment: string[]
   calendar: string[]
-reports: string[]
+  reports: string[]
   work: string[]
   quality: string[]
+  contractor: string[]
 }
 
 // export const emptyFilterPermissions = {

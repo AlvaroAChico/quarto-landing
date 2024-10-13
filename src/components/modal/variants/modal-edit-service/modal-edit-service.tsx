@@ -60,7 +60,7 @@ const ModalEditService: React.FC<IOwnProps> = ({
       const storedToken = handleGetToken()
       if (!!storedToken) {
         setIsSubmitUpdate(true)
-        const formData = new FormData()
+        const jsonData: { [key: string]: any } = {}
 
         for (const key in data) {
           if (
@@ -69,18 +69,20 @@ const ModalEditService: React.FC<IOwnProps> = ({
             data[key] !== null &&
             data[key] !== ""
           ) {
-            formData.append(key, data[key])
+            jsonData[key] = data[key]
           }
         }
 
-        if (formData.entries().next().done) {
+        if (Object.keys(jsonData).length === 0) {
           setIsSubmitUpdate(false)
           toast.warning("No changes were made")
           return
         }
 
+        jsonData["_method"] = "PATCH"
+
         axios
-          .patch(`${settingsApp.api.base}/services/${dataEdit.id}`, formData, {
+          .post(`${settingsApp.api.base}/services/${dataEdit.id}`, jsonData, {
             headers: {
               Authorization: `Bearer ${storedToken}`,
               ContentType: "application/json",

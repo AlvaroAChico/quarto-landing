@@ -428,9 +428,9 @@ const DashboardLayout: React.FC = () => {
           <ContainerProfile>
             <ContainerAvatarSide>
               <AvatarStyles>
-                {!!dataUser && !!dataUser?.picture ? (
+                {!!dataUser && !!dataUser?.image ? (
                   <div>
-                    <img src={dataUser?.picture} />
+                    <img src={dataUser?.image} />
                   </div>
                 ) : (
                   <div>
@@ -475,9 +475,9 @@ const DashboardLayout: React.FC = () => {
                 <p>{!!dataRoles ? dataRoles[0] : ""}</p>
               </DataUserStyles>
               <AvatarStyles>
-                {!!dataUser && !!dataUser?.picture ? (
+                {!!dataUser && !!dataUser?.image ? (
                   <div>
-                    <img src={dataUser?.picture} />
+                    <img src={dataUser?.image} />
                   </div>
                 ) : (
                   <div>
@@ -741,9 +741,9 @@ const DashboardLayout: React.FC = () => {
             <ContainerProfile>
               <ContainerAvatarSide>
                 <AvatarStyles>
-                  {!!dataUser && !!dataUser?.picture ? (
+                  {!!dataUser && !!dataUser?.image ? (
                     <div>
-                      <img src={dataUser?.picture} />
+                      <img src={dataUser?.image} />
                     </div>
                   ) : (
                     <div>

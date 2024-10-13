@@ -33,6 +33,7 @@ import { CardImage } from "@styled-icons/bootstrap/CardImage"
 import { Trash } from "@styled-icons/ionicons-solid/Trash"
 import { useDropzone } from "react-dropzone"
 import { APP_MENU } from "../../../../constants/app"
+import { setErrResponse } from "../../../../utils/erros-util"
 
 const CreateUser: React.FC = () => {
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
@@ -113,7 +114,7 @@ const CreateUser: React.FC = () => {
         })
         .catch(err => {
           setIsSubmitUserCreate(false)
-          toast.error("Failed to authenticate")
+          setErrResponse(err)
         })
     }
   }, [])
@@ -177,7 +178,6 @@ const CreateUser: React.FC = () => {
     }
 
     if (rejectedFiles.length > 0) {
-      console.log("rejectedFiles -> ", rejectedFiles)
       toast.error(
         'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
       )

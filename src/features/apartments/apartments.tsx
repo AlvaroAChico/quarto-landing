@@ -172,7 +172,6 @@ const Apartments: React.FC = () => {
           },
         })
         .then(response => {
-          console.log("Response => ", response.data)
           const dataResponse: PropertyDTO[] = response.data as PropertyDTO[]
           if (!!dataResponse) {
             setListProjects(dataResponse)

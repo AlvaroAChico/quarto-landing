@@ -5,7 +5,7 @@
     "local": "http://services-api-local.ocasystem.com:7003"
   },
   "api": {
-    "base": "https://constructores.adarve-peru.com/api",
+    "base": "http://services-api-local.ocasystem.com:7003/api",
     "auth": "http://services-api-local.ocasystem.com:7003/api",
     "base_prod": "https://constructores.adarve-peru.com/api"
   },

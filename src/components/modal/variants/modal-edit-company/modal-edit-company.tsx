@@ -44,10 +44,10 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
     resolver: yupResolver(UpdateCompanySchema),
     defaultValues: {
       name: "",
-      managerName: "",
-      managerPhone: "",
-      assitantManagerName: "",
-      assitantManagerPhone: "",
+      manager_name: "",
+      manager_phone: "",
+      assitant_manager_name: "",
+      assitant_manager_phone: "",
     },
   })
 
@@ -62,7 +62,7 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
       const storedToken = handleGetToken()
       if (!!storedToken) {
         setIsSubmitUpdate(true)
-        const formData = new FormData()
+        const jsonData: { [key: string]: any } = {}
 
         for (const key in data) {
           if (
@@ -71,20 +71,20 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
             data[key] !== null &&
             data[key] !== ""
           ) {
-            formData.append(key, data[key])
+            jsonData[key] = data[key]
           }
         }
 
-        if (formData.entries().next().done) {
+        if (Object.keys(jsonData).length === 0) {
           setIsSubmitUpdate(false)
           toast.warning("No changes were made")
           return
         }
 
         axios
-          .patch(
+          .post(
             `${settingsApp.api.base}/management_companies/${dataEdit.id}`,
-            formData,
+            jsonData,
             {
               headers: {
                 Authorization: `Bearer ${storedToken}`,
@@ -136,10 +136,10 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
             id="managername-create-company"
             placeholder="Enter address"
             icon={FolderOpen}
-            register={register("managerName")}
+            register={register("manager_name")}
           />
-          {!!(errors.managerName as any)?.message && (
-            <ErrorMessage>{(errors.managerName as any)?.message}</ErrorMessage>
+          {!!(errors.manager_name as any)?.message && (
+            <ErrorMessage>{(errors.manager_name as any)?.message}</ErrorMessage>
           )}
         </WrapperInput>
         <WrapperInput>
@@ -150,10 +150,12 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
             id="phone-manager-create-company"
             placeholder="Enter phone manager"
             icon={FolderOpen}
-            register={register("managerPhone")}
+            register={register("manager_phone")}
           />
-          {!!(errors.managerPhone as any)?.message && (
-            <ErrorMessage>{(errors.managerPhone as any)?.message}</ErrorMessage>
+          {!!(errors.manager_phone as any)?.message && (
+            <ErrorMessage>
+              {(errors.manager_phone as any)?.message}
+            </ErrorMessage>
           )}
         </WrapperInput>
         <WrapperInput>
@@ -164,11 +166,11 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
             id="supervisorname-create-company"
             placeholder="Enter Supervisor name"
             icon={FolderOpen}
-            register={register("assitantManagerName")}
+            register={register("assitant_manager_name")}
           />
-          {!!(errors.assitantManagerName as any)?.message && (
+          {!!(errors.assitant_manager_name as any)?.message && (
             <ErrorMessage>
-              {(errors.assitantManagerName as any)?.message}
+              {(errors.assitant_manager_name as any)?.message}
             </ErrorMessage>
           )}
         </WrapperInput>
@@ -180,11 +182,11 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
             id="phone-supervisor-create-company"
             placeholder="Enter phone supervisor"
             icon={FolderOpen}
-            register={register("assitantManagerPhone")}
+            register={register("assitant_manager_phone")}
           />
-          {!!(errors.assitantManagerPhone as any)?.message && (
+          {!!(errors.assitant_manager_phone as any)?.message && (
             <ErrorMessage>
-              {(errors.assitantManagerPhone as any)?.message}
+              {(errors.assitant_manager_phone as any)?.message}
             </ErrorMessage>
           )}
         </WrapperInput>

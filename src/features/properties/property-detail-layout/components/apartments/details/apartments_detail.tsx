@@ -4,11 +4,9 @@ import {
   ContentStylesSection,
   DateStylesTD,
   NameStylesTD,
-  ProgressStylesTD,
 } from "../../../../properties.styles"
 import {
   ApartmentDTO,
-  PropertyDTO,
   StadisticsDTO,
 } from "../../../../../../core/models/interfaces/property-model"
 import { FilterPermissionsDTO } from "../../../../../../core/models/interfaces/user-model"
@@ -18,7 +16,7 @@ import { pathRoutes } from "../../../../../../config/routes/path"
 import axios from "axios"
 import { settingsApp } from "../../../../../../config/environment/settings"
 import { toast } from "sonner"
-import { APP_MENU, months, monthsSelect } from "../../../../../../constants/app"
+import { APP_MENU, months } from "../../../../../../constants/app"
 import { routeWithReplaceId } from "../../../../../../utils/path-util"
 import {
   ContainerActions,
@@ -27,7 +25,6 @@ import {
   ContainerHead,
   ContainerTable,
   NotFoundStyles,
-  selectStyles,
   WrapperInput,
 } from "../../../../../../config/theme/global-styles"
 import Skeleton from "react-loading-skeleton"
@@ -35,7 +32,6 @@ import "react-loading-skeleton/dist/skeleton.css"
 import { ContainerFilters } from "../../task/task.styles"
 import Input from "../../../../../../components/input/input"
 import { Search } from "styled-icons/bootstrap"
-import Select from "react-select"
 import { User } from "styled-icons/boxicons-solid"
 import { formatToDDMonth } from "../../../../../../utils/date-util"
 import { Ellipsis } from "styled-icons/fa-solid"
@@ -113,7 +109,6 @@ const DetailsApartmentsById: React.FC = () => {
 
   const handleDeleteProject = (projectId: string) => () => {
     handleCleanDropdown()
-    console.log("Delete project -> ", projectId)
   }
 
   const handleClick = React.useCallback(() => {
@@ -141,7 +136,6 @@ const DetailsApartmentsById: React.FC = () => {
           },
         )
         .then(response => {
-          console.log("Response => ", response.data)
           const dataResponse: ApartmentDTO[] = response.data as ApartmentDTO[]
           if (!!dataResponse) {
             setListApartments(dataResponse[0])
