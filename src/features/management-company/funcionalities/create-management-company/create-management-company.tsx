@@ -14,7 +14,7 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { CreateUserResponseDTO } from "../../../../core/models/interfaces/user-model"
-import { pathRoutes } from "../../../../config/routes/path"
+import { pathRoutes } from "../../../../config/routes/paths"
 import {
   ErrorMessage,
   WrapperInput,

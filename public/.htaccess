@@ -15,7 +15,7 @@ RewriteRule . /index.html [L]
 	#Header set X-Permitted-Cross-Domain-Policies "none"
 	Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains;"
 
-	Header set Content-Security-Policy "default-src 'self' data:; connect-src 'self' https://constructores.adarve-peru.com; font-src 'self' data:;  frame-src 'self' 'unsafe-inline'; img-src * 'self' data:; media-src 'self' 'unsafe-inline'; object-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'report-sample'; style-src 'self' 'unsafe-inline';style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com"
+	Header set Content-Security-Policy "default-src 'self' data:; connect-src 'self' https://api.tsturnkey.com; font-src 'self' https://fonts.gstatic.com data:;  frame-src 'self' 'unsafe-inline'; img-src * 'self' data:; media-src 'self' 'unsafe-inline'; object-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'report-sample'; style-src 'self' 'unsafe-inline';style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com"
 	
     Header set Referrer-Policy "same-origin"
 	Header set Permissions-Policy "geolocation=(self)"

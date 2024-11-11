@@ -1,12 +1,12 @@
 {
   "app": {
-    "name": "TST Admin - INT",
+    "name": "Quarto",
     "mocks": false,
-    "local": "http://services-api-local.ocasystem.com:7003"
+    "local": "http://localhost:7003"
   },
   "api": {
-    "base": "http://services-api-local.ocasystem.com:7003/api",
-    "auth": "http://services-api-local.ocasystem.com:7003/api"
+    "base": "http://localhost/api",
+    "auth": "http://localhost/api"
   },
   "i18nDebug": false,
   "cloudEnv": "integration"

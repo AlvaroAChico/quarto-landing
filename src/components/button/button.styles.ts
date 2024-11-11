@@ -1,20 +1,15 @@
 // src/components/ui/Button/Button.styles.ts
 import styled, { keyframes } from "styled-components"
 import { breakpoints } from "../../constants/breakpoints"
+import { palette } from "../../config/theme/theme"
 
 export const StyledButton = styled.button<{ customStyles: string }>`
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 1) -40%,
-    rgba(249, 174, 54, 1) 0%,
-    rgba(245, 134, 52, 1) 100%
-  );
+  background: ${palette.primaryColor};
   outline: none;
   border: none;
   color: white;
   height: 50px;
   border-radius: 10px;
-  box-shadow: 5px 5px 30px 2px rgba(245, 134, 52, 0.5);
   cursor: pointer;
   transition: 0.2s;
   padding: 6px 20px;

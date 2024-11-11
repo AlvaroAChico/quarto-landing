@@ -1,7 +1,7 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import HeaderSection from "../../components/header-section/header-section"
-import { pathRoutes } from "../../config/routes/path"
+import { pathRoutes } from "../../config/routes/paths"
 import axios from "axios"
 import Cookies from "js-cookie"
 import { APP_MENU, COOKIES_APP } from "../../constants/app"
@@ -133,7 +133,11 @@ const Roles: React.FC = () => {
         .then(response => {
           const listData: DataRoleResponse[] =
             response.data as DataRoleResponse[]
-          setListRoles(listData)
+          setListRoles(
+            listData.filter(
+              role => role.name !== "super-admin" && role.name !== "admin",
+            ),
+          )
           setIsLoadingListRoles(false)
         })
         .catch(err => {

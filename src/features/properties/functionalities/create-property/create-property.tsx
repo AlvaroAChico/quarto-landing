@@ -7,7 +7,6 @@ import {
   ContainerResFormStyles,
   ContainerStepperCreate,
   ContainerUpInputs,
-  FormContainer,
   ItemStepper,
   ResidentialFormStyles,
   SteppersStyles,
@@ -18,91 +17,129 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { CreateUserResponseDTO } from "../../../../core/models/interfaces/user-model"
-import { pathRoutes } from "../../../../config/routes/path"
+import { pathRoutes } from "../../../../config/routes/paths"
 import {
   ContainerDragAndDropAvatar,
-  ContainerDragAndDropFiles,
   ContainerImageAvatar,
   CustomWrapperInputAvatar,
-  CustomWrapperInputFiles,
   ErrorMessage,
   selectStyles,
   WrapperInput,
 } from "../../../../config/theme/global-styles"
 import Input from "../../../../components/input/input"
 import Button from "../../../../components/button/button"
-import { DataRoleResponse } from "../../../../core/models/interfaces/roles-model"
-import {
-  CreateProjectForm,
-  CreateProjectSchema,
-} from "../../../../core/models/schemas/project-schema"
-import { TextNumberFormat } from "@styled-icons/fluentui-system-filled/TextNumberFormat"
 import { FolderOpen } from "@styled-icons/fa-regular/FolderOpen"
 import { TextDescription } from "@styled-icons/fluentui-system-filled/TextDescription"
-import { Calendar } from "@styled-icons/bootstrap/Calendar"
-import { CalendarCancel } from "@styled-icons/fluentui-system-regular/CalendarCancel"
-import { CurrencyDollar } from "@styled-icons/bootstrap/CurrencyDollar"
-import { Category } from "@styled-icons/boxicons-solid/Category"
 import { CardImage } from "@styled-icons/bootstrap/CardImage"
 import { useDropzone } from "react-dropzone"
-import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
 import { settingsApp } from "../../../../config/environment/settings"
 import useDataUser from "../../../../utils/use-data-user"
-import { formatToDMYHH } from "../../../../utils/date-util"
 import { Trash } from "@styled-icons/ionicons-solid/Trash"
 import { Files } from "@styled-icons/simple-icons/Files"
-import { ClientDTO } from "../../../../core/models/interfaces/client-model"
 import Select from "react-select"
 import {
-  CreateResidentialForm,
-  CreateResidentialSchema,
+  CreatePropertyForm,
+  CreatePropertySchema,
 } from "../../../../core/models/schemas/property-schema"
-import {
-  CreateApartmentForm,
-  CreateApartmentSchema,
-} from "../../../../core/models/schemas/apartment-schema"
 import Textarea from "../../../../components/textarea/textarea"
 import { ManagementCompanyDTO } from "../../../../core/models/interfaces/management-company"
-import { APP_MENU } from "../../../../constants/app"
-import { setErrResponse } from "../../../../utils/erros-util"
 
 const CreateProperty: React.FC = () => {
-  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
-    useDataUser()
-  const navigate = useNavigate()
-
-  React.useEffect(() => {
-    // Verify Token
-    const storedToken = handleGetToken()
-    if (!storedToken) {
-      clearAllDataAPP()
-      navigate(pathRoutes.SIGN_IN)
-    }
-    // Verify Permissions
-    const data = handleGetPermissions()
-    if (!!data && !data?.property.includes(APP_MENU.CREATE)) {
-      return
-    }
-  }, [])
-
-  const [optionsCompany, setOptionsCompany] = React.useState<any>([])
   const [stepActive, setStepActive] = React.useState<number>(1)
-  const [selectedOptionClient, setSelectedOptionClient] = React.useState(null)
-  const [startDate, setStartDate] = React.useState<any>()
-  const [dueDate, setDueDate] = React.useState()
-  const [isSubmitUserCreate, setIsSubmitUserCreate] =
+  const [isSubmitPropertyCreate, setIsSubmitPropertyCreate] =
     React.useState<boolean>(false)
+  const { handleGetToken } = useDataUser()
+  const navigate = useNavigate()
+  // Category
+  const [optionsCategory, setOptionsCategory] = React.useState<any>([])
+  const [seleOpCategory, setSeleOpCategory] = React.useState(null)
+  const handleChangeOptionCategory = (value: any) => {
+    setValue("category_id", value.value)
+    setSeleOpCategory(value)
+  }
+  // Company
+  const [optionsCompany, setOptionsCompany] = React.useState<any>([])
+  const [seleOpCompany, setSeleOpCompany] = React.useState(null)
+  const handleChangeOptionCompany = (value: any) => {
+    setValue("company_id", value.value)
+    setSeleOpCompany(value)
+  }
+  // Agent
+  const [optionsAgent, setOptionsAgent] = React.useState<any>([])
+  const [seleOpAgent, setSeleOpAgent] = React.useState(null)
+  const handleChangeOptionAgent = (value: any) => {
+    setValue("agent_id", value.value)
+    setSeleOpAgent(value)
+  }
+  // Owner
+  const [optionsOwner, setOptionsOwner] = React.useState<any>([])
+  const [seleOpOwner, setSeleOpOwner] = React.useState(null)
+  const handleChangeOptionOwner = (value: any) => {
+    setValue("owner_id", value.value)
+    setSeleOpAgent(value)
+  }
+  // City
+  const [optionsCity, setOptionsCity] = React.useState<any>([])
+  const [seleOpCity, setSeleOpCity] = React.useState(null)
+  const handleChangeOptionCity = (value: any) => {
+    setValue("city_id", value.value)
+    setSeleOpAgent(value)
+  }
+  // Municipality
+  const [optionsMunicipality, setOptionsMunicipality] = React.useState<any>([])
+  const [seleOpMunicipality, setSeleOpMunicipality] = React.useState(null)
+  const handleChangeOptionMunicipality = (value: any) => {
+    setValue("municipality_id", value.value)
+    setSeleOpAgent(value)
+  }
+  // Urbanization
+  const [optionsUrbanization, setOptionsUrbanization] = React.useState<any>([])
+  const [seleOpUrbanization, setSeleOpUrbanization] = React.useState(null)
+  const handleChangeOptionUrbanization = (value: any) => {
+    setValue("urbanization_id", value.value)
+    setSeleOpAgent(value)
+  }
+  // // Category
+  // const [optionsCategory, setOptionsCategory] = React.useState<any>([])
+  // const [seleOpCategory, setSeleOpCategory] = React.useState(null)
 
-  const methods = useForm<CreateResidentialForm>({
-    resolver: yupResolver(CreateResidentialSchema),
+  const methods = useForm<CreatePropertyForm>({
+    resolver: yupResolver(CreatePropertySchema),
     defaultValues: {
-      picture: "",
-      name: "",
+      category_id: "",
+      title: "",
       description: "",
-      address: "",
-      phoneProperty: "",
-      managementCompanyId: "",
+      property_type: "",
+      price: "",
+      company_id: "",
+      agent_id: "",
+      owner_id: "",
+      city_id: "",
+      municipality_id: "",
+      urbanization_id: "",
+      latitude: "",
+      longitude: "",
+      client_address: "",
+      video_link: "",
+      title_image: "",
+      d_image: "",
+      gallery_images: [],
+      nro_piso: "",
+      nro_habitaciones: "",
+      nro_banios: "",
+      nro_puestos: "",
+      nro_m2: "",
+      cbx_lavandero: "",
+      cbx_piscina: "",
+      cbx_pozo_agua: "",
+      cbx_gym: "",
+      cbx_planta_electrica: "",
+      cbx_accept_mascotas: "",
+      cbx_ascensor: "",
+      cbx_internet: "",
+      cbx_amoblado: "",
+      cbx_vigilancia: "",
+      cbx_aire_acodicionado: "",
     },
   })
 
@@ -113,60 +150,48 @@ const CreateProperty: React.FC = () => {
     setValue,
   } = methods
 
-  const handleChangeOptionClient = (value: any) => {
-    // setValue("clientId", value.value)
-    setSelectedOptionClient(value)
-    setValue("managementCompanyId", value.value)
-  }
-
   const handleSubmit = React.useCallback((data: any) => {
-    setIsSubmitUserCreate(true)
-    const storedToken = handleGetToken()
-    if (!!storedToken) {
-      const formData = new FormData()
-      formData.append("name", data.name)
-      formData.append("description", data.description)
-      formData.append("phone_number", data.phoneProperty)
-      formData.append("address", data.address)
-      formData.append("management_company_id", data.managementCompanyId)
-      if (!!data.picture) {
-        formData.append("picture", data.picture)
-      }
-      // if (!!data.files && listFiles.length > 0) {
-      //   formData.append("files", data.files)
-      // }
-
-      axios
-        .post(`${settingsApp.api.base}/residentials`, formData, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            ContentType: "multipart/form-data",
-            Accept: "multipart/form-data",
-          },
-        })
-        .then(response => {
-          setIsSubmitUserCreate(false)
-          const data: CreateUserResponseDTO =
-            response.data as CreateUserResponseDTO
-          if (!!data && !!data.message) {
-            toast.success(data.message)
-            navigate(pathRoutes.PROPERTIES.LIST)
-          }
-        })
-        .catch(err => {
-          setIsSubmitUserCreate(false)
-          setErrResponse(err)
-        })
-    }
+    // setIsSubmitUserCreate(true)
+    // const storedToken = handleGetToken()
+    // if (!!storedToken) {
+    //   const formData = new FormData()
+    //   formData.append("name", data.name)
+    //   formData.append("description", data.description)
+    //   formData.append("phone_number", data.phoneProperty)
+    //   formData.append("address", data.address)
+    //   formData.append("management_company_id", data.managementCompanyId)
+    //   if (!!data.picture) {
+    //     formData.append("picture", data.picture)
+    //   }
+    //   axios
+    //     .post(`${settingsApp.api.base}/residentials`, formData, {
+    //       headers: {
+    //         Authorization: `Bearer ${storedToken}`,
+    //         ContentType: "application/json",
+    //         Accept: "application/json",
+    //       },
+    //     })
+    //     .then(response => {
+    //       setIsSubmitUserCreate(false)
+    //       const data: CreateUserResponseDTO =
+    //         response.data as CreateUserResponseDTO
+    //       if (!!data && !!data.message) {
+    //         toast.success(data.message)
+    //         navigate(pathRoutes.PROPERTIES.LIST)
+    //       }
+    //     })
+    //     .catch(err => {
+    //       setIsSubmitUserCreate(false)
+    //       setErrResponse(err)
+    //     })
+    // }
   }, [])
-  // const [listManagementCompany, setListManagementCompany] = React.useState<
-  //   ManagementCompanyDTO[]
-  // >([])
+
   const fetchListRole = React.useCallback(() => {
     const storedToken = handleGetToken()
     if (storedToken) {
       axios
-        .get(`${settingsApp.api.base}/management_companies`, {
+        .get(`${settingsApp.api.base}/gender`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             "Content-Type": "application/json",
@@ -181,7 +206,7 @@ const CreateProperty: React.FC = () => {
             value: data.id,
             label: data.name,
           }))
-          setOptionsCompany(listProperties.filter(propertu => !!propertu))
+          // setOptionsGender(listProperties.filter(propertu => !!propertu))
         })
         .catch(err => {
           toast.error("Failed to fetch data")
@@ -195,7 +220,7 @@ const CreateProperty: React.FC = () => {
 
   const [infoPicture, setInfoPicture] = React.useState<any>()
   const handleDeletePictureUser = () => {
-    setValue("picture", "")
+    // setValue("picture", "")
     setInfoPicture("")
   }
 
@@ -206,7 +231,7 @@ const CreateProperty: React.FC = () => {
         return
       }
       const file = acceptedFiles[0]
-      setValue("picture", file)
+      // setValue("picture", file)
 
       const reader = new FileReader()
 
@@ -241,81 +266,234 @@ const CreateProperty: React.FC = () => {
     maxFiles: 1,
   })
 
-  const [listFiles, setListFiles] = React.useState<File[]>([]) // Inicializamos como un array vacío
-
-  const handleDeleteOneFile = (fileToDelete: File) => {
-    // Filtramos la lista para eliminar el archivo seleccionado
-    setListFiles(prevFiles => prevFiles.filter(file => file !== fileToDelete))
-  }
-
-  const onDropManyFiles = React.useCallback(
-    (acceptedFiles: any, rejectedFiles: any) => {
-      if (acceptedFiles.length > 0) {
-        const updatedFiles = [...listFiles]
-        acceptedFiles.forEach((file: any) => {
-          // if (updatedFiles.length >= 5) {
-          //   toast.error("Se permite un máximo de 5 archivos.")
-          //   return
-          // }
-          updatedFiles.push(file)
-
-          const reader = new FileReader()
-
-          reader.onabort = () => toast.error("File reading was aborted")
-          reader.onerror = () => toast.error("File reading has failed")
-          reader.onload = () => {
-            const binaryStr = reader.result
-            if (binaryStr instanceof ArrayBuffer) {
-              const blob = new Blob([binaryStr], { type: file.type })
-              const imageUrl = URL.createObjectURL(blob)
-              // Aquí puedes hacer algo con imageUrl, como agregarlo a un estado de URLs
-            } else {
-              toast.error("Error al leer el archivo.")
-            }
-          }
-          reader.readAsArrayBuffer(file)
-        })
-
-        // setValue("files", updatedFiles)
-        setListFiles(updatedFiles)
-      }
-
-      if (rejectedFiles.length > 0) {
-        toast.error(
-          'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
-        )
-      }
+  const listSteppers = [
+    {
+      step: 1,
+      name: "Detalles",
     },
-    [listFiles],
-  )
-
-  const {
-    getRootProps: getRootPropsFiles,
-    getInputProps: getInputPropsFiles,
-    isDragActive: isDragActiveFiles,
-  } = useDropzone({ onDrop: onDropManyFiles })
-
+    {
+      step: 2,
+      name: "Ubicación",
+    },
+    {
+      step: 3,
+      name: "Galeria",
+    },
+    {
+      step: 4,
+      name: "Especificaciones",
+    },
+  ]
   return (
     <>
-      <HeaderSection title="Property" subtitle="Create property" />
+      <HeaderSection />
       <ContainerStepperCreate>
         <SteppersStyles>
-          <ItemStepper isActive={stepActive == 1}>
-            <div>
-              <span onClick={() => setStepActive(1)}>1</span>
-            </div>
-            <span>Details</span>
-            <span />
-          </ItemStepper>
-          <ItemStepper isActive={false}>
-            <span />
-          </ItemStepper>
+          {listSteppers.map(stp => (
+            <ItemStepper isActive={stepActive == stp.step}>
+              <div>
+                <span onClick={() => setStepActive(stp.step)}>{stp.step}</span>
+              </div>
+              <span>{stp.name}</span>
+              <span />
+            </ItemStepper>
+          ))}
         </SteppersStyles>
         {stepActive == 1 && (
           <ResidentialFormStyles>
+            <ContainerResFormStyles>
+              <WrapperInput>
+                <label htmlFor="property-create-project">Categoria</label>
+                <Select
+                  id="property-create-project"
+                  defaultValue={seleOpCategory}
+                  onChange={handleChangeOptionCategory}
+                  options={optionsCategory}
+                  isSearchable={true}
+                  styles={selectStyles}
+                />
+                {!!(errors.category_id as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.category_id as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="last_name-create-project">Titulo</label>
+                <Input
+                  id="last_name-create-project"
+                  placeholder="Enter description"
+                  // icon={TextDescription}
+                  register={register("description")}
+                />
+                {!!(errors.title as any)?.message && (
+                  <ErrorMessage>{(errors.title as any)?.message}</ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="last_name-create-project">Descripción</label>
+                <Textarea
+                  id="last_name-create-project"
+                  placeholder="Enter description"
+                  // icon={TextDescription}
+                  register={register("description")}
+                />
+                {!!(errors.description as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.description as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <div>
+                  <label htmlFor="last_name-create-project">
+                    Tipo de propiedad
+                  </label>
+                  <label>
+                    <input type="checkbox" />
+                    Apartamento
+                  </label>
+                  <label>
+                    <input type="checkbox" />
+                    Inmoviliaria
+                  </label>
+                </div>
+                {!!(errors.description as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.description as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="last_name-create-project">Precio</label>
+                <Input
+                  id="last_name-create-project"
+                  placeholder="Enter description"
+                  // icon={TextDescription}
+                  register={register("price")}
+                />
+                {!!(errors.price as any)?.message && (
+                  <ErrorMessage>{(errors.price as any)?.message}</ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="company-create-project">Company</label>
+                <Select
+                  id="company-create-project"
+                  defaultValue={seleOpCompany}
+                  onChange={handleChangeOptionCompany}
+                  options={optionsCompany}
+                  isSearchable={true}
+                  styles={selectStyles}
+                />
+                {!!(errors.company_id as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.company_id as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="agent-create-project">Agente</label>
+                <Select
+                  id="agent-create-project"
+                  defaultValue={seleOpAgent}
+                  onChange={handleChangeOptionAgent}
+                  options={optionsAgent}
+                  isSearchable={true}
+                  styles={selectStyles}
+                />
+                {!!(errors.agent_id as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.agent_id as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="owner-create-project">Propietario</label>
+                <Select
+                  id="owner-create-project"
+                  defaultValue={seleOpOwner}
+                  onChange={handleChangeOptionOwner}
+                  options={optionsOwner}
+                  isSearchable={true}
+                  styles={selectStyles}
+                />
+                {!!(errors.owner_id as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.owner_id as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+            </ContainerResFormStyles>
+          </ResidentialFormStyles>
+        )}
+        {stepActive == 2 && (
+          <ResidentialFormStyles>
+            <WrapperInput>
+              <label htmlFor="city-create-project">Ciudad</label>
+              <Select
+                id="city-create-project"
+                defaultValue={seleOpCity}
+                onChange={handleChangeOptionCity}
+                options={optionsCity}
+                isSearchable={true}
+                styles={selectStyles}
+              />
+              {!!(errors.city_id as any)?.message && (
+                <ErrorMessage>{(errors.city_id as any)?.message}</ErrorMessage>
+              )}
+            </WrapperInput>
+            <WrapperInput>
+              <label htmlFor="municipality-create-project">Municipalidad</label>
+              <Select
+                id="municipality-create-project"
+                defaultValue={seleOpMunicipality}
+                onChange={handleChangeOptionMunicipality}
+                options={optionsMunicipality}
+                isSearchable={true}
+                styles={selectStyles}
+              />
+              {!!(errors.municipality_id as any)?.message && (
+                <ErrorMessage>
+                  {(errors.municipality_id as any)?.message}
+                </ErrorMessage>
+              )}
+            </WrapperInput>
+            <WrapperInput>
+              <label htmlFor="urbanization-create-project">Urbanización</label>
+              <Select
+                id="urbanization-create-project"
+                defaultValue={seleOpUrbanization}
+                onChange={handleChangeOptionUrbanization}
+                options={optionsUrbanization}
+                isSearchable={true}
+                styles={selectStyles}
+              />
+              {!!(errors.urbanization_id as any)?.message && (
+                <ErrorMessage>
+                  {(errors.urbanization_id as any)?.message}
+                </ErrorMessage>
+              )}
+            </WrapperInput>
+            <WrapperInput>
+              <label htmlFor="latitude-create-project">Latitud</label>
+              <Input
+                id="latitude-create-project"
+                placeholder="Enter latitud"
+                // icon={TextDescription}
+                register={register("latitude")}
+              />
+              {!!(errors.title as any)?.message && (
+                <ErrorMessage>{(errors.title as any)?.message}</ErrorMessage>
+              )}
+            </WrapperInput>
+          </ResidentialFormStyles>
+        )}
+        {stepActive == 3 && (
+          <ResidentialFormStyles>
             <ContainerUpInputs>
-              <CustomWrapperInputAvatar>
-                <label htmlFor="picture-create-project">Residential Logo</label>
+              {/* <CustomWrapperInputAvatar>
+                <label htmlFor="picture-create-project">Imagen</label>
                 <div>
                   {!!infoPicture ? (
                     <ContainerImageAvatar>
@@ -344,95 +522,22 @@ const CreateProperty: React.FC = () => {
                     {(errors.picture as any)?.message}
                   </ErrorMessage>
                 )}
-              </CustomWrapperInputAvatar>
-              <ContainerResFormStyles>
-                <WrapperInput>
-                  <label htmlFor="name-create-project">Name</label>
-                  <Input
-                    id="name-create-project"
-                    placeholder="Enter name"
-                    icon={FolderOpen}
-                    register={register("name")}
-                  />
-                  {!!(errors.name as any)?.message && (
-                    <ErrorMessage>{(errors.name as any)?.message}</ErrorMessage>
-                  )}
-                </WrapperInput>
-                <WrapperInput>
-                  <label htmlFor="description-create-project">
-                    Description
-                  </label>
-                  <Textarea
-                    id="description-create-project"
-                    placeholder="Enter description"
-                    icon={TextDescription}
-                    register={register("description")}
-                  />
-                  {!!(errors.description as any)?.message && (
-                    <ErrorMessage>
-                      {(errors.description as any)?.message}
-                    </ErrorMessage>
-                  )}
-                </WrapperInput>
-              </ContainerResFormStyles>
+              </CustomWrapperInputAvatar> */}
+              ss
             </ContainerUpInputs>
-            <ContainerDownInputs>
-              <WrapperInput>
-                <label htmlFor="address-create-project">Address</label>
-                <Input
-                  id="address-create-project"
-                  placeholder="Enter address"
-                  icon={FolderOpen}
-                  register={register("address")}
-                />
-                {!!(errors.address as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.address as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="phone-manager-create-project">
-                  Phone property
-                </label>
-                <Input
-                  id="phone-manager-create-project"
-                  placeholder="Enter phone manager"
-                  icon={FolderOpen}
-                  register={register("phoneProperty")}
-                />
-                {!!(errors.phoneProperty as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.phoneProperty as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="client-create-project">
-                  Management Company
-                </label>
-                <Select
-                  id="client-create-project"
-                  defaultValue={selectedOptionClient}
-                  onChange={handleChangeOptionClient}
-                  options={optionsCompany}
-                  isSearchable={true}
-                  styles={selectStyles}
-                />
-                {!!(errors.managementCompanyId as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.managementCompanyId as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
-            </ContainerDownInputs>
+          </ResidentialFormStyles>
+        )}
+        {stepActive == 4 && (
+          <ResidentialFormStyles>
+            <ContainerUpInputs>aa</ContainerUpInputs>
           </ResidentialFormStyles>
         )}
         <ContainerButton>
           <Button
+            handleClick={submitWrapper(handleSubmit)}
             onClick={submitWrapper(handleSubmit)}
             text="Create"
-            isLoading={isSubmitUserCreate}
+            isLoading={isSubmitPropertyCreate}
           />
         </ContainerButton>
       </ContainerStepperCreate>

@@ -8,6 +8,7 @@ import { ContainerModal } from "./modal-delete-user.styles"
 import { settingsApp } from "../../../../config/environment/settings"
 import useDataUser from "../../../../utils/use-data-user"
 import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
+import { setErrResponse } from "../../../../utils/erros-util"
 
 interface IOwnProps {
   isOpen: boolean
@@ -50,7 +51,7 @@ const ModalDeleteUser: React.FC<IOwnProps> = ({
         })
         .catch(err => {
           setIsSubmitUserDelete(false)
-          toast.error("Failed to delete user")
+          setErrResponse(err)
         })
     }
   }, [dataUserDelete])

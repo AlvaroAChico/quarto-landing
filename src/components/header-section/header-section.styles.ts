@@ -11,7 +11,7 @@ export const ContainerHeader = styled.div`
   > div:nth-child(1) {
     > h2 {
       font-size: 45px;
-      color: ${palette.primaryColor};
+      color: ${palette.blackColor};
       font-weight: 800;
     }
     > p {

@@ -11,7 +11,7 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { CreateUserResponseDTO } from "../../../../core/models/interfaces/user-model"
-import { pathRoutes } from "../../../../config/routes/path"
+import { pathRoutes } from "../../../../config/routes/paths"
 import {
   ContainerDragAndDropAvatar,
   ContainerImageAvatar,
@@ -34,6 +34,7 @@ import { Trash } from "@styled-icons/ionicons-solid/Trash"
 import { useDropzone } from "react-dropzone"
 import { APP_MENU } from "../../../../constants/app"
 import { setErrResponse } from "../../../../utils/erros-util"
+import { ManagementCompanyDTO } from "../../../../core/models/interfaces/management-company"
 
 const CreateUser: React.FC = () => {
   const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
@@ -56,6 +57,10 @@ const CreateUser: React.FC = () => {
 
   const [optionsRoles, setOptionsRoles] = React.useState<any>([])
   const [selectedOptionRole, setSelectedOptionRole] = React.useState(null)
+
+  const [optionsCompany, setOptionsCompany] = React.useState<any>([])
+  const [selectedOptionCompany, setSelectedOptionCompany] = React.useState(null)
+
   const [isSubmitUserCreate, setIsSubmitUserCreate] =
     React.useState<boolean>(false)
 
@@ -68,6 +73,7 @@ const CreateUser: React.FC = () => {
       email: "",
       password: "",
       role: "",
+      managementCompanyId: "",
     },
   })
 
@@ -83,6 +89,11 @@ const CreateUser: React.FC = () => {
     setSelectedOptionRole(value)
   }
 
+  const handleChangeOptionCompany = (value: any) => {
+    setValue("managementCompanyId", value.value)
+    setSelectedOptionCompany(value)
+  }
+
   const handleSubmit = React.useCallback((data: any) => {
     setIsSubmitUserCreate(true)
     const storedToken = handleGetToken()
@@ -95,6 +106,8 @@ const CreateUser: React.FC = () => {
       formData.append("picture", data.picture)
       formData.append("role", data.role)
       formData.append("password", data.password)
+      formData.append("management_company_id", data.managementCompanyId)
+
       axios
         .post(`${settingsApp.api.base}/users`, formData, {
           headers: {
@@ -137,10 +150,38 @@ const CreateUser: React.FC = () => {
             value: data.name,
             label: data.name,
           }))
-          setOptionsRoles(listRoles.filter(role => !!role))
+          setOptionsRoles(
+            listRoles.filter(
+              role =>
+                !!role &&
+                role.value !== "admin" &&
+                role.value !== "super-admin",
+            ),
+          )
         })
         .catch(err => {
-          toast.error("Failed to fetch data")
+          setErrResponse(err)
+        })
+
+      axios
+        .get(`${settingsApp.api.base}/management_companies`, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        })
+        .then(response => {
+          const listData: ManagementCompanyDTO[] =
+            response.data as ManagementCompanyDTO[]
+          const listCompany = (listData || []).map(data => ({
+            value: data.id,
+            label: data.name,
+          }))
+          setOptionsCompany(listCompany.filter(role => !!role))
+        })
+        .catch(err => {
+          setErrResponse(err)
         })
     }
   }, [])
@@ -296,6 +337,19 @@ const CreateUser: React.FC = () => {
             defaultValue={selectedOptionRole}
             onChange={handleChangeOptionRole}
             options={optionsRoles}
+            isSearchable={false}
+            styles={selectStyles}
+          />
+          {!!(errors.role as any)?.message && (
+            <ErrorMessage>{(errors.role as any)?.message}</ErrorMessage>
+          )}
+        </WrapperInput>
+        <WrapperInput>
+          <label htmlFor="password-create-user">Company</label>
+          <Select
+            defaultValue={selectedOptionCompany}
+            onChange={handleChangeOptionCompany}
+            options={optionsCompany}
             isSearchable={false}
             styles={selectStyles}
           />

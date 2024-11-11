@@ -1,7 +1,7 @@
-import { InferType, object, string } from "yup"
+import { InferType, mixed, object, string } from "yup"
 
 export const CreateApartmentSchema = object({
-  picture: string(),
+  picture: mixed(),
   code: string().required("Enter a code"),
   name: string().required("Enter a name service"),
   description: string().required("Enter a description"),
@@ -10,7 +10,7 @@ export const CreateApartmentSchema = object({
 })
 
 export const UpdateApartmentSchema = object({
-  picture: string(),
+  picture: mixed(),
   code: string(),
   name: string(),
   description: string(),

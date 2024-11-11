@@ -1,3 +1,5 @@
+import { ApartmentDTO, WorksDTO } from "./property-model"
+
 export interface InfoCalendarDTO {
   id: number
   startDate: string
@@ -21,7 +23,16 @@ export interface InfoCalendarDTO {
   residential: InfoResidentialDTO
   service: InfoServiceDTO
   status: InfoStatusDTO
+  images: ImagesSaveDTO[]
 }
+export interface ImagesSaveDTO {
+  id: number
+  fileLocation: string
+  workId: string
+  createdAt: string
+  file: string
+}
+
 export interface InfoApartmentDTO {
   id: number
   code: string
@@ -82,4 +93,27 @@ export interface InfoStatusDTO {
   name: string
   isActive: boolean
   createdAt: string
+}
+
+// export interface InfoReportDTO {
+//   residential: string
+//   nroApartments: string
+//   nroWorksActive: string
+//   nroWorksComplete: string
+// }
+
+// export interface InfoReportDTO {
+//   residentialId: string
+//   name: string
+//   totalApartments: number
+//   totalWorks: number
+//   completedWorks: number
+//   activeWorks: number
+// }
+
+export interface InfoReportDTO {
+  id: number
+  name: string
+  apartments: ApartmentDTO[]
+  works: WorksDTO[]
 }

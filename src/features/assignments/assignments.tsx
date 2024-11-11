@@ -13,7 +13,7 @@ import {
 import ItemAssigment from "./components/item-assigment/item-assigment"
 import { InfoCalendarDTO } from "../../core/models/interfaces/calendar-model"
 import { APP_MENU } from "../../constants/app"
-import { pathRoutes } from "../../config/routes/path"
+import { pathRoutes } from "../../config/routes/paths"
 import { useNavigate } from "react-router-dom"
 import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
 import Skeleton from "react-loading-skeleton"

@@ -1,7 +1,7 @@
 import React from "react"
 import HeaderSection from "../../components/header-section/header-section"
 import { useNavigate } from "react-router-dom"
-import { pathRoutes } from "../../config/routes/path"
+import { pathRoutes } from "../../config/routes/paths"
 import {
   CardStadistics,
   ClientStylesTD,
@@ -161,7 +161,11 @@ const Apartments: React.FC = () => {
   const fetchDataProjects = React.useCallback(() => {
     const storedToken = handleGetToken()
     const data = handleGetPermissions()
-    if (storedToken && !!data?.apartment.includes(APP_MENU.LIST)) {
+    if (
+      storedToken &&
+      (!!data?.apartment.includes(APP_MENU.LIST) ||
+        !!data?.apartment.includes(APP_MENU.READ_OWN))
+    ) {
       setIsLoadingListProjects(true)
       axios
         .get(`${settingsApp.api.base}/residentials?include=apartments`, {
@@ -253,7 +257,8 @@ const Apartments: React.FC = () => {
         {!isLoadingListProjects &&
           !!listProjects &&
           listProjects.length <= 0 &&
-          !!dataPermissions?.apartment.includes(APP_MENU.LIST) && (
+          (!!dataPermissions?.apartment.includes(APP_MENU.LIST) ||
+            !!dataPermissions?.apartment.includes(APP_MENU.READ_OWN)) && (
             <>
               <ContainerTable>
                 <table>
@@ -276,7 +281,8 @@ const Apartments: React.FC = () => {
           !!listProjects &&
           listProjects.length > 0 &&
           !!dataPermissions &&
-          dataPermissions.apartment.includes(APP_MENU.LIST) && (
+          (dataPermissions.apartment.includes(APP_MENU.LIST) ||
+            dataPermissions.apartment.includes(APP_MENU.READ_OWN)) && (
             <ContainerTable>
               <ContainerFilters>
                 <div>
@@ -380,9 +386,10 @@ const Apartments: React.FC = () => {
             </ContainerTable>
           )}
       </ContentStylesSection>
-      {!dataPermissions?.apartment.includes(APP_MENU.LIST) && (
-        <ForbiddenAction />
-      )}
+      {!dataPermissions?.apartment.includes(APP_MENU.LIST) &&
+        !dataPermissions?.apartment.includes(APP_MENU.READ_OWN) && (
+          <ForbiddenAction />
+        )}
       <ModalEditApartment
         isOpen={isOpenModalEdit}
         handleClose={handleCloseModalEdit}

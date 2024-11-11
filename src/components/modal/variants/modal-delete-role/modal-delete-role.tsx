@@ -8,6 +8,7 @@ import { settingsApp } from "../../../../config/environment/settings"
 import useDataUser from "../../../../utils/use-data-user"
 import { RoleDTO } from "../../../../core/models/interfaces/roles-model"
 import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
+import { setErrResponse } from "../../../../utils/erros-util"
 
 interface IOwnProps {
   isOpen: boolean
@@ -50,13 +51,13 @@ const ModalDeleteRole: React.FC<IOwnProps> = ({
         })
         .catch(err => {
           setIsSubmitUserDelete(false)
-          toast.error("Failed to delete user")
+          setErrResponse(err)
         })
     }
   }, [dataUserDelete])
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} title="Delete User">
+    <Modal isOpen={isOpen} onClose={handleClose} title="Delete Role">
       <ContainerModal>
         <div>
           <p>

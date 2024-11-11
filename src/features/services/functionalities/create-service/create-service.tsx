@@ -1,6 +1,6 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import { pathRoutes } from "../../../../config/routes/path"
+import { pathRoutes } from "../../../../config/routes/paths"
 import HeaderSection from "../../../../components/header-section/header-section"
 import { FormContainer } from "../create-service.styles"
 import {

@@ -1,6 +1,6 @@
 import React from "react"
 import HeaderSection from "../../components/header-section/header-section"
-import { pathRoutes } from "../../config/routes/path"
+import { pathRoutes } from "../../config/routes/paths"
 import { useNavigate } from "react-router-dom"
 import { FilterPermissionsDTO } from "../../core/models/interfaces/user-model"
 import useDataUser from "../../utils/use-data-user"

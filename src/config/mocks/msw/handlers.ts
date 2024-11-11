@@ -1,31 +1,32 @@
 import { http, HttpResponse } from "msw"
 import SignInJSON from "../features/auth/sign-in.json"
-import UserListJSON from "../features/users/user-list.json"
-import UserCreateJSON from "../features/users/user-create.json"
-import UserDeleteJSON from "../features/users/user-delete.json"
-import RolesListJSON from "../features/roles/role-list.json"
-import ServicesListJSON from "../features/services/service-list.json"
+// import UserListJSON from "../features/users/user-list.json"
+// import UserCreateJSON from "../features/users/user-create.json"
+// import UserDeleteJSON from "../features/users/user-delete.json"
+// import RolesListJSON from "../features/roles/role-list.json"
+// import ServicesListJSON from "../features/services/service-list.json"
 import PropertiesListJSON from "../features/properties/property-list.json"
-import ProjectFilterIdJSON from "../features/properties/property-filter-id.json"
-import ProjectIdJSON from "../features/properties/property-id.json"
-import ApartmentsIdJSON from "../features/apartments/apartment-id.json"
-import ApartmentsDetailIdJSON from "../features/apartments/apartment-detail-id.json"
-import ProjectFileByIdJSON from "../features/project-files/project-file-id.json"
-import PermissionsListJSON from "../features/permissions/permission-list.json"
-import StadisticsJSON from "../features/properties/stadistics/stadistics.json"
-import ServiceDataJSON from "../features/services/service-data.json"
-import CalendarInfoJSON from "../features/calendar/calendar-service.json"
-import ResidentialReportSON from "../features/report/property-report.json"
-import ContractorReportSON from "../features/report/contractor-report.json"
-import AssigmentListJSON from "../features/asigments/asigments-list.json"
+import VisitsListJSON from "../features/visits/visits-list.json"
+// import ProjectFilterIdJSON from "../features/properties/property-filter-id.json"
+// import ProjectIdJSON from "../features/properties/property-id.json"
+// import ApartmentsIdJSON from "../features/apartments/apartment-id.json"
+// import ApartmentsDetailIdJSON from "../features/apartments/apartment-detail-id.json"
+// import ProjectFileByIdJSON from "../features/project-files/project-file-id.json"
+// import PermissionsListJSON from "../features/permissions/permission-list.json"
+// import StadisticsJSON from "../features/properties/stadistics/stadistics.json"
+// import ServiceDataJSON from "../features/services/service-data.json"
+// import CalendarInfoJSON from "../features/calendar/calendar-service.json"
+// import ResidentialReportSON from "../features/report/property-report.json"
+// import ContractorReportSON from "../features/report/contractor-report.json"
+// import AssigmentListJSON from "../features/asigments/asigments-list.json"
 
 import meJSON from "../features/auth/me.json"
 import { settingsApp } from "../../environment/settings"
 
 export const handlers = [
-  // http.post(`${settingsApp.api.base}/auth/login`, async ({ request }) => {
-  //   return HttpResponse.json(SignInJSON)
-  // }),
+  http.post(`${settingsApp.api.base}/auth/login`, async ({ request }) => {
+    return HttpResponse.json(SignInJSON)
+  }),
   // http.get(`${settingsApp.api.base}/auth/me`, async ({ request }) => {
   //   return HttpResponse.json(meJSON)
   // }),
@@ -76,10 +77,14 @@ export const handlers = [
   // http.get(`${settingsApp.api.base}/services`, () => {
   //   return HttpResponse.json(ServicesListJSON)
   // }),
+  // ******** VISITS ********
+  http.get(`${settingsApp.api.base}/visits`, () => {
+    return HttpResponse.json(VisitsListJSON)
+  }),
   // ******** PROPERTIES ********
-  // http.get(`${settingsApp.api.base}/properties`, () => {
-  //   return HttpResponse.json(PropertiesListJSON)
-  // }),
+  http.get(`${settingsApp.api.base}/properties`, () => {
+    return HttpResponse.json(PropertiesListJSON)
+  }),
   // http.post(`${settingsApp.api.base}/properties`, () => {
   //   return HttpResponse.json(PropertiesListJSON)
   // }),

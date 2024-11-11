@@ -5,7 +5,7 @@ import axios from "axios"
 import Cookies from "js-cookie"
 import { toast } from "sonner"
 import HeaderSection from "../../components/header-section/header-section"
-import { pathRoutes } from "../../config/routes/path"
+import { pathRoutes } from "../../config/routes/paths"
 import { APP_MENU, COOKIES_APP } from "../../constants/app"
 import {
   FilterPermissionsDTO,
@@ -42,7 +42,7 @@ const Users: React.FC = () => {
     const storedToken = handleGetToken()
     if (!storedToken) {
       clearAllDataAPP()
-      navigate(pathRoutes.SIGN_IN)
+      // navigate(paths.SIGN_IN.to)
     }
     // Verify Permissions
     const data = handleGetPermissions()
@@ -106,7 +106,7 @@ const Users: React.FC = () => {
   }
 
   const handleClick = React.useCallback(() => {
-    navigate(pathRoutes.USERS.CREATE)
+    // navigate(paths.USERS)
   }, [])
 
   const fetchListUsers = React.useCallback(() => {
@@ -156,6 +156,7 @@ const Users: React.FC = () => {
             <ContainerHead>
               <tr>
                 <td>Name</td>
+                <td>Role</td>
                 <td>Email</td>
                 <td></td>
               </tr>
@@ -179,6 +180,7 @@ const Users: React.FC = () => {
               <ContainerHead>
                 <tr>
                   <td>Name</td>
+                  <td>Role</td>
                   <td>Email</td>
                   <td></td>
                 </tr>
@@ -199,6 +201,7 @@ const Users: React.FC = () => {
               <ContainerHead>
                 <tr>
                   <td>Name</td>
+                  <td>Role</td>
                   <td>Email</td>
                   <td></td>
                 </tr>
@@ -211,6 +214,11 @@ const Users: React.FC = () => {
                       <ClasicStylesTD>
                         <div>
                           <span>{user.firstName}</span>
+                        </div>
+                      </ClasicStylesTD>
+                      <ClasicStylesTD>
+                        <div>
+                          <span>{user.role[0]?.name}</span>
                         </div>
                       </ClasicStylesTD>
                       <ClasicStylesTD>
@@ -262,8 +270,8 @@ const Users: React.FC = () => {
       />
       <ModalDeleteGeneral
         isOpen={isOpenModalDelete}
-        dataAPI="roles"
-        dataLabel="role"
+        dataAPI="users"
+        dataLabel="user"
         dataId={dataUserDelete?.id || ""}
         dataName={dataUserDelete?.firstName || ""}
         handleClose={handleCloseModalDelete}

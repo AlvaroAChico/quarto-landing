@@ -12,7 +12,7 @@ export const CreateUserSchema = object({
     .matches(rgxEmail, "Enter a valid email")
     .required("Enter a email"),
   contactNumber: string().required("Enter a contact number"),
-  picture: mixed().required("Inserta una imagen para la campaña"),
+  picture: mixed().required("Enter a image"),
   role: string().required("Enter a role"),
   password: string().required("Enter a password"),
 })

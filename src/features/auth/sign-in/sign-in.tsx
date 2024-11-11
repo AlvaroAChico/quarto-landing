@@ -5,6 +5,7 @@ import {
   ContentLeftContainer,
   FormContainer,
   LeftContainer,
+  RecoveryNavLink,
   RightContainer,
 } from "./sign-in.styles"
 import Input from "../../../components/input/input"
@@ -19,7 +20,6 @@ import { useForm } from "react-hook-form"
 import axios from "axios"
 import { toast } from "sonner"
 import Cookies from "js-cookie"
-import { pathRoutes } from "../../../config/routes/path"
 import Button from "../../../components/button/button"
 import { ACTIONS_TITLE_APP, COOKIES_APP } from "../../../constants/app"
 import {
@@ -39,6 +39,7 @@ import {
   createEmptyFilterPermissions,
   saveJsonCookiesWithSplit,
 } from "../../../utils/cookie-util"
+import { pathRoutes } from "../../../config/routes/paths"
 
 const SignIn: React.FC = () => {
   const [isSubmitLogin, setIsSubmitLogin] = React.useState<boolean>(false)
@@ -95,35 +96,16 @@ const SignIn: React.FC = () => {
           JSON.stringify(data.token),
           expiration,
         )
-        Cookies.set(
-          COOKIES_APP.ROLES_APP,
-          JSON.stringify(data.roles),
-          expiration,
-        )
-        // Filter data permissions
-        const result: FilterPermissionsDTO = createEmptyFilterPermissions()
-        data.permisos
-          .map(permission => permission.name)
-          .forEach(permission => {
-            const parts = permission.split("-")
-            const type = parts[0]
+        // Cookies.set(
+        //   COOKIES_APP.ROLES_APP,
+        //   JSON.stringify(data.roles),
+        //   expiration,
+        // )
 
-            if (type in result) {
-              const action = parts.slice(1).join("-")
-              result[type as keyof FilterPermissionsDTO].push(action)
-            }
-          })
-
-        if (!!result) {
-          saveJsonCookiesWithSplit(result)
-          // localStorage.setItem(
-          //   COOKIES_APP.PERMISSIONS_APP,
-          //   JSON.stringify(result),
-          // )
-        }
         dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.DASHBOARD))
         setTimeout(() => {
-          navigate(pathRoutes.DASHBOARD)
+          dispatch(updateActionTitleApp(pathRoutes.PROPERTY.label))
+          navigate(pathRoutes.PROPERTY.to)
         }, 300)
       })
       .catch(err => {
@@ -139,8 +121,6 @@ const SignIn: React.FC = () => {
           <div>
             <img src={ImgLogo} />
           </div>
-          {/* <div>Bienvenido</div> */}
-          {/* <div>Copyright</div> */}
         </ContentLeftContainer>
       </LeftContainer>
       <RightContainer>
@@ -180,6 +160,9 @@ const SignIn: React.FC = () => {
             text="Sign In"
             isLoading={isSubmitLogin}
           />
+          {/* <RecoveryNavLink to={pathRoutes.RECOVERY_PASS.LIST}>
+            I forgot my password
+          </RecoveryNavLink> */}
         </FormContainer>
       </RightContainer>
     </ContainerSignIn>

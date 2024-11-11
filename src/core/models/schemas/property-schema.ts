@@ -1,22 +1,67 @@
 import { array, InferType, mixed, object, string } from "yup"
 
-export const CreateResidentialSchema = object({
-  picture: string(),
-  name: string().required("Enter a name"),
-  description: string().required("Enter a description"),
-  address: string().required("Enter a address"),
-  phoneProperty: string().required("Enter a phone manager"),
-  managementCompanyId: string().required("Enter a manager company"),
-})
+const fileTypeValidation = (file: File): boolean => {
+  const allowedTypes = ["image/png", "image/jpg", "image/jpeg"]
+  return allowedTypes.includes(file.type)
+}
 
-export const UpdateResidentialSchema = object({
-  picture: string(),
-  name: string(),
+export const CreatePropertySchema = object({
+  // Details
+  category_id: string(),
+  title: string(),
   description: string(),
-  address: string(),
-  phoneProperty: string(),
-  managementCompanyId: string(),
+  property_type: string(),
+  price: string(),
+  company_id: string(), // Quarto - Standard - Inmoviliaria
+  agent_id: string(),
+  owner_id: string(),
+  // Location
+  city_id: string(),
+  municipality_id: string(),
+  urbanization_id: string(),
+  latitude: string(),
+  longitude: string(),
+  client_address: string(),
+  // Gallery
+  video_link: string(),
+  title_image: mixed(),
+  d_image: mixed(),
+  gallery_images: array().of(
+    mixed().test("is-valid-file", "File type is not allowed", file => {
+      if (file instanceof File) {
+        return fileTypeValidation(file)
+      }
+      return false
+    }),
+  ),
+  // Specifications
+  nro_piso: string(),
+  nro_habitaciones: string(),
+  nro_banios: string(),
+  nro_puestos: string(),
+  nro_m2: string(),
+  cbx_lavandero: string(),
+  cbx_piscina: string(),
+  cbx_pozo_agua: string(),
+  cbx_gym: string(),
+  cbx_planta_electrica: string(),
+  cbx_accept_mascotas: string(),
+  cbx_ascensor: string(),
+  cbx_internet: string(),
+  cbx_amoblado: string(),
+  cbx_vigilancia: string(),
+  cbx_aire_acodicionado: string(),
 })
 
-export type UpdateResidentialForm = InferType<typeof UpdateResidentialSchema>
-export type CreateResidentialForm = InferType<typeof CreateResidentialSchema>
+export const UpdatePropertySchema = object({
+  picture: mixed(),
+  first_name: string(),
+  last_name: string(),
+  email: string(),
+  phone: string(),
+  position: string(),
+  gender_id: string(),
+})
+
+export type UpdatePropertyForm = InferType<typeof UpdatePropertySchema>
+export type CreatePropertyForm = InferType<typeof CreatePropertySchema>

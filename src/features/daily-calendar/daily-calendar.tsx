@@ -41,7 +41,8 @@ import {
   ItemCalendarStyles,
 } from "./components/item-daily-calendar/item-daily-calendar.styles"
 import { useNavigate } from "react-router-dom"
-import { pathRoutes } from "../../config/routes/path"
+import { pathRoutes } from "../../config/routes/paths"
+import ModalDeleteGeneral from "../../components/modal/variants/modal-delete-general/modal-delete-general"
 
 const DailyCalendar: React.FC = () => {
   const [dataPermissions, setDataPermissions] =
@@ -71,7 +72,10 @@ const DailyCalendar: React.FC = () => {
   }, [])
 
   const [isOpenModalEdit, setIsOpenModalEdit] = React.useState<boolean>(false)
+  const [isOpenModalDelete, setIsOpenModalDelete] =
+    React.useState<boolean>(false)
   const [dataEdit, setDataEdit] = React.useState<InfoCalendarDTO>()
+  const [dataDelete, setDataDelete] = React.useState<InfoCalendarDTO>()
   const [isLoadingDataCalendar, setIsLoadingDataCalendar] =
     React.useState<boolean>(false)
   const [infoCalendar, setInfoCalendar] = React.useState<InfoCalendarDTO[]>([])
@@ -191,6 +195,14 @@ const DailyCalendar: React.FC = () => {
     [allDataCalendar],
   )
 
+  const handleDeleteWork = React.useCallback(
+    (workId: number) => () => {
+      setDataDelete(allDataCalendar.filter(work => work.id === workId)[0])
+      setIsOpenModalDelete(true)
+    },
+    [allDataCalendar],
+  )
+
   const getDataCalendar = async () => {
     const data = handleGetPermissions()
     const storedToken = handleGetToken()
@@ -202,7 +214,7 @@ const DailyCalendar: React.FC = () => {
         setIsLoadingDataCalendar(true)
         axios
           .get(
-            `${settingsApp.api.base}/works?include=apartment,residential,contractor,service,status`,
+            `${settingsApp.api.base}/works?include=apartment,residential,contractor,service,status,images`,
             {
               headers: {
                 Authorization: `Bearer ${storedToken}`,
@@ -458,6 +470,7 @@ const DailyCalendar: React.FC = () => {
                         dataPermissions ?? ({} as FilterPermissionsDTO)
                       }
                       onEditItem={handleEditWork(info.id)}
+                      onDeleteWork={handleDeleteWork(info.id)}
                       onRefreshData={getDataCalendar}
                     />
                   )
@@ -489,6 +502,15 @@ const DailyCalendar: React.FC = () => {
         listContractors={optionsContractors}
         listResidentials={optionsProperty}
         listProperties={listCurrentProperty}
+      />
+      <ModalDeleteGeneral
+        isOpen={isOpenModalDelete}
+        dataAPI="works"
+        dataLabel="work"
+        dataId={dataDelete?.id || ""}
+        dataName={`${dataDelete?.id}` || ""}
+        handleClose={() => setIsOpenModalDelete(false)}
+        handleRefresh={getDataCalendar}
       />
     </>
   )

@@ -14,7 +14,7 @@ import {
 import { FilterPermissionsDTO } from "../../../../../core/models/interfaces/user-model"
 import { useNavigate, useParams } from "react-router-dom"
 import useDataUser from "../../../../../utils/use-data-user"
-import { pathRoutes } from "../../../../../config/routes/path"
+import { pathRoutes } from "../../../../../config/routes/paths"
 import axios from "axios"
 import { settingsApp } from "../../../../../config/environment/settings"
 import { toast } from "sonner"

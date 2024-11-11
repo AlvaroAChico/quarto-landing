@@ -4,7 +4,7 @@ import StadisticsCard from "./components/stadistics-card"
 import useDataUser from "../../utils/use-data-user"
 import { APP_MENU } from "../../constants/app"
 import { useNavigate } from "react-router-dom"
-import { pathRoutes } from "../../config/routes/path"
+import { pathRoutes } from "../../config/routes/paths"
 import {
   FilterPermissionsDTO,
   UserDTO,
@@ -24,18 +24,16 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate()
 
   React.useEffect(() => {
-    // Verify Token
-    const storedToken = handleGetToken()
-    if (!storedToken) {
-      clearAllDataAPP()
-      navigate(pathRoutes.SIGN_IN)
-    }
-    // Verify Permissions
-    const data = handleGetPermissions()
-    setDataPermissions(data)
-    if (!!data && !data?.dashboard.includes(APP_MENU.LIST)) {
-      return
-    }
+    // const storedToken = handleGetToken()
+    // if (!storedToken) {
+    //   clearAllDataAPP()
+    //   navigate(pathRoutes.SIGN_IN)
+    // }
+    // const data = handleGetPermissions()
+    // setDataPermissions(data)
+    // if (!!data && !data?.dashboard.includes(APP_MENU.LIST)) {
+    //   return
+    // }
   }, [])
 
   const [nroProperties, setNroProperties] = React.useState<number>(0)

@@ -35,7 +35,7 @@ import {
 } from "../../../../core/models/schemas/role-schema"
 import { Accordion } from "react-accordion-ts"
 import { useNavigate } from "react-router-dom"
-import { pathRoutes } from "../../../../config/routes/path"
+import { pathRoutes } from "../../../../config/routes/paths"
 import Switch from "../../../switch/switch"
 import { PermissionCreateDTO } from "../../../../core/models/interfaces/permission-model"
 import {
@@ -161,7 +161,7 @@ const ModalEditRole: React.FC<IOwnProps> = ({
         })
     } else {
       clearAllDataAPP()
-      navigate(pathRoutes.SIGN_IN)
+      navigate(pathRoutes.SIGN_IN.to)
     }
   }
 

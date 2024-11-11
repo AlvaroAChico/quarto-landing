@@ -77,6 +77,8 @@ export const InfoTextDaily = styled.div`
 
   > div {
     position: relative;
+    font-size: 10px;
+    color: white;
     z-index: 2;
 
     &:nth-child(1) {
@@ -97,6 +99,25 @@ export const InfoTextDaily = styled.div`
           font-size: 10px;
           padding: 4px 10px;
           color: white;
+        }
+        &:nth-child(3) {
+          background: ${palette.successColor};
+          border-radius: 20px;
+          padding: 4px 10px;
+          font-size: 10px;
+          cursor: pointer;
+          color: white;
+
+          > svg {
+            max-width: 12px;
+            min-width: 8px;
+            width: 100%;
+          }
+        }
+
+        ${breakpoints.tabletLargeMax} {
+          display: grid;
+          place-items: center;
         }
       }
     }
@@ -171,8 +192,7 @@ export const BtnCompletedDaily = styled(BtnActionsDaily)`
   }
 `
 
-export const EditStyles = styled.div`
-  background: #e9e928;
+export const ActionStyles = styled.div`
   place-items: center;
   border-radius: 50%;
   position: absolute;
@@ -180,14 +200,24 @@ export const EditStyles = styled.div`
   display: grid;
   height: 30px;
   width: 30px;
-  left: -8px;
-  top: -8px;
 
   > svg {
     color: ${palette.grayDarkColor};
     max-width: 15px;
     width: 100%;
   }
+`
+
+export const EditStyles = styled(ActionStyles)`
+  background: #e9e928;
+  left: -8px;
+  top: -8px;
+`
+
+export const DeleteStyles = styled(ActionStyles)`
+  background: #f5a8a8;
+  left: -8px;
+  top: 28px;
 `
 
 export const JobStatusStyle = styled.div<{ status: number }>`
@@ -201,4 +231,26 @@ export const JobStatusStyle = styled.div<{ status: number }>`
 
   ${p => (p.status == 7 ? "color: green;" : "")};
   ${p => (p.status == 4 ? "color: #ff0d00;" : "")};
+`
+
+export const ContainerFilesView = styled.div`
+  padding: 15px;
+
+  > h3 {
+    margin-left: -15px;
+    margin-bottom: 10px;
+  }
+
+  > ol {
+    > li {
+      > span {
+        a {
+          text-decoration: none !important;
+          color: ${palette.errorColor};
+          padding-left: 6px;
+          font-weight: 600;
+        }
+      }
+    }
+  }
 `

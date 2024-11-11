@@ -17,15 +17,14 @@ export const ContainerDashboardLayout = styled.div`
   position: fixed;
 `
 
-export const ContainerSidebar = styled.div`
-  width: 30%;
+export const ContainerSidebar = styled.div<{ open: boolean }>`
   transition: 0.5s;
   max-width: 300px;
   box-sizing: border-box;
+  width: ${p => (p.open ? "30%" : "0%")};
 
   > div {
-    border-right: 6px ${palette.primaryColor} solid;
-    background: ${palette.blackColor};
+    background: ${palette.whiteColor};
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -46,25 +45,25 @@ export const ContainerOutlet = styled.div`
   width: 100%;
 
   > div:nth-child(1) {
+    background: ${palette.whiteColor};
     justify-content: space-between;
     box-sizing: border-box;
+    align-items: center;
     flex-direction: row;
-    background: #eff1f6;
-    padding: 10px;
+    padding: 10px 20px;
     display: flex;
-    height: 90px;
+    height: 80px;
     width: 100%;
 
     ${breakpoints.tabletLargeMax} {
-      height: fit-content;
       max-height: 140px;
     }
   }
 
   > div:nth-child(2) {
-    background: white;
+    background: ${palette.inputBgColor};
     width: 100%;
-    height: calc(100% - 90px);
+    height: calc(100% - 80px);
     box-sizing: border-box;
     overflow-y: auto;
     padding: 30px;
@@ -75,18 +74,13 @@ export const ContainerOutlet = styled.div`
     }
   }
 
-  ${breakpoints.desktopSmallMax} {
-    width: 70%;
-  }
-
   ${breakpoints.tabletLargeMax} {
     width: 100%;
   }
 `
 
 export const ContainerLogo = styled.div`
-  justify-content: flex-start;
-  border-bottom: 4px solid #7a86a1;
+  justify-content: center;
   box-sizing: border-box;
   align-items: center;
   padding: 10px 15px;
@@ -94,7 +88,7 @@ export const ContainerLogo = styled.div`
   height: 120px;
 
   > div img {
-    max-width: 50px;
+    max-width: 200px;
   }
 `
 
@@ -124,17 +118,21 @@ export const ContainerMenu = styled.div`
     }
 
     &:hover {
-      color: white;
+      color: ${palette.primaryColor};
     }
   }
 
   .active {
-    background: ${palette.primaryColor} !important;
+    background: ${palette.blackColor} !important;
     color: white;
+
+    &:hover {
+      color: white;
+    }
   }
   .inactive {
     > p {
-      color: green;
+      color: ${palette.blackColor};
     }
   }
 `
@@ -218,11 +216,10 @@ export const SubMenuItem = styled(NavLink)`
   }
 `
 
-export const ContainerTitleApp = styled.div`
+export const ContainerBar = styled.div`
   flex-direction: row;
   justify-content: start;
   align-items: start;
-  padding-left: 10px;
   font-size: 20px;
   display: flex;
   width: 50%;
@@ -255,25 +252,31 @@ export const ContainerTitleApp = styled.div`
       }
     }
     &:nth-child(2) {
-      > h2 {
-        font-weight: 900;
+      height: 100%;
+      width: 0px;
 
-        ${breakpoints.tabletMediumMax} {
-          font-size: 25px;
+      > svg {
+        margin-top: 10px;
+        cursor: pointer;
+        display: block;
+        height: 20px;
+        width: 20px;
+
+        ${breakpoints.tabletLargeMax} {
+          display: none;
         }
       }
 
-      > span {
-        color: ${palette.grayColor};
-        font-size: 14px;
+      ${breakpoints.tabletLargeMax} {
+        display: block;
+        width: 50px;
       }
     }
   }
 `
 
-export const ContainerDataProfile = styled.div`
-  width: 50%;
-  text-align: right;
+export const ContainerUploadProperty = styled.div`
+  width: 100%;
   display: flex;
   justify-content: flex-end;
 
@@ -380,9 +383,8 @@ export const BurguerMenuStyles = styled.div``
 
 export const ContainerFullMenu = styled.div<{ isOpen: boolean }>`
   visibility: ${p => (p.isOpen ? "visible" : "hidden")};
-  border-right: 6px ${palette.primaryColor} solid;
   width: ${p => (p.isOpen ? "80%" : "0%")};
-  background: ${palette.blackColor};
+  background: ${palette.whiteColor};
   justify-content: space-between;
   box-sizing: border-box;
   justify-content: center;
@@ -404,10 +406,10 @@ export const ContainerFullMenu = styled.div<{ isOpen: boolean }>`
   }
 
   > svg:last-child {
+    color: ${palette.blackColor};
     position: absolute;
     cursor: pointer;
     height: 40px;
-    color: white;
     right: 20px;
     width: 40px;
     top: 20px;

@@ -130,7 +130,6 @@ const ModalEditProperty: React.FC<IOwnProps> = ({
       const storedToken = handleGetToken()
       if (!!storedToken) {
         const formData = new FormData()
-
         for (const key in data) {
           if (
             data.hasOwnProperty(key) &&
@@ -138,7 +137,11 @@ const ModalEditProperty: React.FC<IOwnProps> = ({
             data[key] !== null &&
             data[key] !== ""
           ) {
-            formData.append(key, data[key])
+            if (key !== "picture") {
+              formData.append(key, data[key])
+            } else {
+              formData.append("picture", data.picture as File)
+            }
           }
         }
 
@@ -148,14 +151,16 @@ const ModalEditProperty: React.FC<IOwnProps> = ({
           return
         }
 
+        formData.append("_method", "PATCH")
+
         axios
-          .patch(
+          .post(
             `${settingsApp.api.base}/residentials/${dataEdit.id}`,
             formData,
             {
               headers: {
                 Authorization: `Bearer ${storedToken}`,
-                "Content-Type": "application/json",
+                ContentType: "application/json",
                 Accept: "application/json",
               },
             },

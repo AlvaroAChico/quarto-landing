@@ -32,7 +32,7 @@ import ItemCalendarInfo from "./functionalities/item-calendar-info"
 import Skeleton from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
 import { setErrResponse } from "../../utils/erros-util"
-import { pathRoutes } from "../../config/routes/path"
+import { pathRoutes } from "../../config/routes/paths"
 import { useNavigate } from "react-router-dom"
 
 const Calendar: React.FC = () => {

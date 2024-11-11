@@ -46,12 +46,12 @@ export const ContainerResidentialReportBody = styled.div`
   border-radius: 20px;
 `
 export const ContainerTopList = styled.div`
-  height: 15%;
-  width: 100%;
-  display: flex;
-  flex-direction: arrow;
   justify-content: space-between;
+  flex-direction: arrow;
+  margin-bottom: 30px;
   border-radius: 20px;
+  display: flex;
+  width: 100%;
 `
 
 export const ContainerFilterBody = styled.div`
@@ -60,7 +60,7 @@ export const ContainerFilterBody = styled.div`
   display: flex;
   border-radius: 20px;
 `
-export const ContainerBodyScrool = styled.div`
+export const ContainerBodyScrool = styled.tbody`
   overflow-y: auto;
   max-height: 500px;
   width: 100%;
@@ -68,6 +68,25 @@ export const ContainerBodyScrool = styled.div`
   height: 100%;
   display: column;
   padding: 5px 0px;
+  text-align: center;
+
+  > tr {
+    transition: 0.5s;
+
+    td {
+      padding: 10px;
+
+      &:nth-child(1) {
+        text-align: left;
+      }
+    }
+
+    &:hover {
+      box-shadow: 8px 10px 30px 4px rgba(238, 236, 243, 1);
+      border-radius: 10px;
+    }
+  }
+
   div {
     width: 100%;
     display: flex;

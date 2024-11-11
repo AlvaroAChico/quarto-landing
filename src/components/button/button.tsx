@@ -3,8 +3,8 @@ import React from "react"
 import { LoaderStyles, StyledButton } from "./button.styles"
 
 interface ButtonProps {
-  //   children?: React.ReactNode
   onClick: () => void
+  handleClick: () => void
   type?: "button" | "submit" | "reset"
   className?: string
   text: string
@@ -16,6 +16,7 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({
   onClick,
+  handleClick,
   type = "button",
   className,
   text,
@@ -24,11 +25,11 @@ const Button: React.FC<ButtonProps> = ({
   IconRight,
   customStyles,
 }) => {
-  const handleClick = React.useCallback(() => {
-    if (!isLoading) {
-      onClick()
-    }
-  }, [isLoading])
+  // const handleClick = () => {
+  //   if (!isLoading) {
+  //     onClick()
+  //   }
+  // }
 
   return (
     <StyledButton

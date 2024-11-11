@@ -4,9 +4,9 @@ import {
   AvatarStyles,
   ContainerAvatar,
   ContainerAvatarSide,
-  ContainerTitleApp,
+  ContainerBar,
   ContainerDashboardLayout,
-  ContainerDataProfile,
+  ContainerUploadProperty,
   ContainerLogo,
   ContainerMenu,
   ContainerOptions,
@@ -35,7 +35,7 @@ import { Calendar } from "@styled-icons/bootstrap/Calendar"
 import { BarChartFill } from "@styled-icons/bootstrap/BarChartFill"
 import { Dashboard } from "@styled-icons/boxicons-solid/Dashboard"
 import { ExitToApp } from "@styled-icons/material-rounded/ExitToApp"
-import { pathRoutes } from "../../config/routes/path"
+import { getRoutes, pathRoutes } from "../../config/routes/paths"
 import { ACTIONS_TITLE_APP, APP_MENU, COOKIES_APP } from "../../constants/app"
 import {
   FilterPermissionsDTO,
@@ -60,11 +60,13 @@ import {
 } from "../../utils/cookie-util"
 import { Bars } from "@styled-icons/fa-solid/Bars"
 import { Close } from "styled-icons/evaicons-solid"
+import Button from "../button/button"
 
 const DashboardLayout: React.FC = () => {
-  const [dataPermissions, setDataPermissions] =
-    React.useState<FilterPermissionsDTO>()
+  // const [dataPermissions, setDataPermissions] =
+  //   React.useState<FilterPermissionsDTO>()
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
+  const [isHiddenMenu, setIsHiddenMenu] = React.useState(true)
   const [dataRoles, setDataRoles] = React.useState<string[]>()
   const [dataUser, setDataUser] = React.useState<UserDTO>()
   const titleApp = useAppSelector(getActionTitleApp)
@@ -77,6 +79,10 @@ const DashboardLayout: React.FC = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
+  }
+
+  const toggleMenuLarge = () => {
+    setIsHiddenMenu(!isHiddenMenu)
   }
 
   const handleReportsClick = () => {
@@ -102,7 +108,7 @@ const DashboardLayout: React.FC = () => {
               const expiration = {
                 expires: 7,
               }
-              const { roles, permisos, ...meUser } = meData
+              const { roles, ...meUser } = meData
               Cookies.set(
                 COOKIES_APP.USER_RES,
                 JSON.stringify(meUser),
@@ -113,30 +119,6 @@ const DashboardLayout: React.FC = () => {
                 JSON.stringify(roles),
                 expiration,
               )
-              // Filter data permissions
-              const result: FilterPermissionsDTO =
-                createEmptyFilterPermissions()
-
-              permisos
-                .map(permission => permission.name)
-                .forEach(permission => {
-                  const parts = permission.split("-")
-                  const type = parts[0]
-
-                  if (type in result) {
-                    const action = parts.slice(1).join("-")
-                    result[type as keyof FilterPermissionsDTO].push(action)
-                  }
-                })
-
-              if (!!result) {
-                saveJsonCookiesWithSplit(result)
-                // Cookies.set(
-                //   COOKIES_APP.PERMISSIONS_APP,
-                //   JSON.stringify(result),
-                //   expiration,
-                // )
-              }
             }
           })
           .catch(err => {
@@ -147,7 +129,7 @@ const DashboardLayout: React.FC = () => {
       }
     } else {
       clearAllDataAPP()
-      navigate(pathRoutes.SIGN_IN)
+      navigate(pathRoutes.SIGN_IN.to)
     }
   }
 
@@ -158,9 +140,9 @@ const DashboardLayout: React.FC = () => {
   }, [])
 
   React.useEffect(() => {
-    getCookiesDataUser()
-    getCookiesDataRole()
-    getCookiesDataPermission()
+    // getCookiesDataUser()
+    // getCookiesDataRole()
+    // getCookiesDataPermission()
   }, [])
 
   const getCookiesDataUser = React.useCallback(() => {
@@ -179,26 +161,25 @@ const DashboardLayout: React.FC = () => {
   }, [])
 
   const getCookiesDataPermission = React.useCallback(() => {
-    const data = handleGetPermissions()
-
-    if (!!data) {
-      setDataPermissions(data)
-    }
+    // const data = handleGetPermissions()
+    // if (!!data) {
+    //   setDataPermissions(data)
+    // }
   }, [])
 
   const handleLogout = React.useCallback(() => {
     clearAllDataAPP()
-    navigate(pathRoutes.SIGN_IN)
+    navigate(pathRoutes.SIGN_IN.to)
   }, [])
 
-  const handleClickItemMenu = (itemNav: ACTIONS_TITLE_APP) => () => {
+  const handleClickItemMenu = (itemNav: string) => () => {
     dispatch(updateActionTitleApp(itemNav))
     setIsMenuOpen(false)
   }
 
   return (
     <ContainerDashboardLayout>
-      <ContainerSidebar>
+      <ContainerSidebar open={isHiddenMenu}>
         <div>
           <ContainerLogo>
             <div>
@@ -206,289 +187,40 @@ const DashboardLayout: React.FC = () => {
             </div>
           </ContainerLogo>
           <ContainerMenu>
-            {!!dataPermissions &&
-              !!dataPermissions.user &&
-              Object.values(APP_MENU).some(permission =>
-                dataPermissions?.dashboard.includes(permission),
-              ) && (
-                <ItemNavLink
-                  to={pathRoutes.DASHBOARD}
-                  onClick={handleClickItemMenu(ACTIONS_TITLE_APP.DASHBOARD)}
-                  className={({ isActive }) =>
-                    isActive ? "active" : "inactive"
-                  }
-                >
-                  <Dashboard />
-                  <p>Dashboard</p>
-                </ItemNavLink>
-              )}
-            {!!dataPermissions &&
-              !!dataPermissions.user &&
-              Object.values(APP_MENU).some(permission =>
-                dataPermissions?.user.includes(permission),
-              ) && (
-                <ItemNavLink
-                  onClick={handleClickItemMenu(ACTIONS_TITLE_APP.USERS)}
-                  to={pathRoutes.USERS.LIST}
-                  className={({ isActive }) =>
-                    isActive ? "active" : "inactive"
-                  }
-                >
-                  <User />
-                  <p>Users</p>
-                </ItemNavLink>
-              )}
-            {!!dataPermissions &&
-              !!dataPermissions.role &&
-              Object.values(APP_MENU).some(permission =>
-                dataPermissions?.role.includes(permission),
-              ) && (
-                <ItemNavLink
-                  onClick={handleClickItemMenu(ACTIONS_TITLE_APP.ROLES)}
-                  to={pathRoutes.ROLES.LIST}
-                  className={({ isActive }) =>
-                    isActive ? "active" : "inactive"
-                  }
-                >
-                  <LocalPolice />
-                  <p>Roles</p>
-                </ItemNavLink>
-              )}
-            {!!dataPermissions &&
-              !!dataPermissions.service &&
-              Object.values(APP_MENU).some(permission =>
-                dataPermissions?.service.includes(permission),
-              ) && (
-                <ItemNavLink
-                  onClick={handleClickItemMenu(ACTIONS_TITLE_APP.TASKS)}
-                  to={pathRoutes.SERVICES.LIST}
-                  className={({ isActive }) =>
-                    isActive ? "active" : "inactive"
-                  }
-                >
-                  <Task />
-                  <p>Services</p>
-                </ItemNavLink>
-              )}
-            {!!dataPermissions &&
-              !!dataPermissions.company &&
-              Object.values(APP_MENU).some(permission =>
-                dataPermissions?.company.includes(permission),
-              ) && (
-                <ItemNavLink
-                  onClick={handleClickItemMenu(
-                    ACTIONS_TITLE_APP.MANAGEMENT_COMPANY,
-                  )}
-                  to={pathRoutes.MANAGEMENT_COMPANY.LIST}
-                  className={({ isActive }) =>
-                    isActive ? "active" : "inactive"
-                  }
-                >
-                  <Task />
-                  <p>Management Company</p>
-                </ItemNavLink>
-              )}
-            {!!dataPermissions &&
-              !!dataPermissions.property &&
-              Object.values(APP_MENU).some(permission =>
-                dataPermissions?.property.includes(permission),
-              ) && (
-                <ItemNavLink
-                  onClick={handleClickItemMenu(ACTIONS_TITLE_APP.PROJECTS)}
-                  to={pathRoutes.PROPERTIES.LIST}
-                  className={({ isActive }) =>
-                    isActive ? "active" : "inactive"
-                  }
-                >
-                  <FolderOpen />
-                  <p>Properties</p>
-                </ItemNavLink>
-              )}
-            {!!dataPermissions &&
-              !!dataPermissions.apartment &&
-              Object.values(APP_MENU).some(permission =>
-                dataPermissions?.apartment.includes(permission),
-              ) && (
-                <ItemNavLink
-                  onClick={handleClickItemMenu(ACTIONS_TITLE_APP.APARTMENTS)}
-                  to={pathRoutes.APARTMENTS.LIST}
-                  className={({ isActive }) =>
-                    isActive ? "active" : "inactive"
-                  }
-                >
-                  <FolderOpen />
-                  <p>Apartments</p>
-                </ItemNavLink>
-              )}
-            {!!dataPermissions &&
-              !!dataPermissions.assignment &&
-              Object.values(APP_MENU).some(permission =>
-                dataPermissions?.assignment.includes(permission),
-              ) && (
-                <ItemNavLink
-                  onClick={handleClickItemMenu(ACTIONS_TITLE_APP.APARTMENTS)}
-                  to={pathRoutes.ASSIGNMENTS.LIST}
-                  className={({ isActive }) =>
-                    isActive ? "active" : "inactive"
-                  }
-                >
-                  <FolderOpen />
-                  <p>Assignments</p>
-                </ItemNavLink>
-              )}
-            {/* {!!dataPermissions &&
-              !!dataPermissions.calendar &&
-              Object.values(APP_MENU).some(permission =>
-                dataPermissions?.calendar.includes(permission),
-              ) && (
-                <ItemNavLink
-                  onClick={handleClickItemMenu(ACTIONS_TITLE_APP.CALENDAR)
-                  }
-                  to={pathRoutes.CALENDAR.LIST}
-                  className={({ isActive }) =>
-                    isActive ? "active" : "inactive"
-                  }
-                >
-                  <Calendar />
-                  <p>Calendar</p>
-                </ItemNavLink>
-              )} */}
-            {!!dataPermissions &&
-              !!dataPermissions.calendar &&
-              Object.values(APP_MENU).some(permission =>
-                dataPermissions?.calendar.includes(permission),
-              ) && (
-                <ItemNavLink
-                  onClick={handleClickItemMenu(
-                    ACTIONS_TITLE_APP.DAILY_CALENDAR,
-                  )}
-                  to={pathRoutes.DAILY_CALENDAR.LIST}
-                  className={({ isActive }) =>
-                    isActive ? "active" : "inactive"
-                  }
-                >
-                  <Calendar />
-                  <p>Daily Calendar</p>
-                </ItemNavLink>
-              )}
-            {!!dataPermissions &&
-              !!dataPermissions.reports &&
-              Object.values(APP_MENU).some(permission =>
-                dataPermissions?.reports.includes(permission),
-              ) && (
-                <ItemNavLink
-                  onClick={handleClickItemMenu(ACTIONS_TITLE_APP.REPORTS)}
-                  to={pathRoutes.REPORTS.LIST_RESIDENTIAL}
-                  className={({ isActive }) =>
-                    isActive || location.pathname.startsWith("/reports")
-                      ? "active"
-                      : "inactive"
-                  }
-                >
-                  <BarChartFill />
-                  <p>Reports</p>
-                </ItemNavLink>
-              )}
-            <SubMenu open={isReportsOpen}>
-              <SubMenuItem
-                onClick={handleClickItemMenu(
-                  ACTIONS_TITLE_APP.REPORT_RESIDENTIAL,
-                )}
-                to={pathRoutes.REPORTS.LIST_RESIDENTIAL}
+            {getRoutes().map(route => (
+              <ItemNavLink
+                to={route.to}
+                onClick={handleClickItemMenu(route.label)}
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
               >
-                <span>
-                  <CircleSmallIcon />
-                </span>
-                <p>Residential report </p>
-              </SubMenuItem>
-              <SubMenuItem
-                to={pathRoutes.REPORTS.LIST_CUSTOMER}
-                onClick={handleClickItemMenu(
-                  ACTIONS_TITLE_APP.REPORT_CUSTOMERS,
-                )}
-              >
-                <span>
-                  <CircleSmallIcon />
-                </span>
-                <p>Customers Report</p>
-              </SubMenuItem>
-              <SubMenuItem
-                to={pathRoutes.REPORTS.LIST_CONTRACTORS}
-                onClick={handleClickItemMenu(
-                  ACTIONS_TITLE_APP.REPORT_CONTRACTORS,
-                )}
-              >
-                <span>
-                  <CircleSmallIcon />
-                </span>
-                <p>Contractors Report</p>
-              </SubMenuItem>
-            </SubMenu>
+                {<route.icon />}
+                <p>{route.label}</p>
+              </ItemNavLink>
+            ))}
+            <ItemNavLink to="" onClick={handleLogout}>
+              {<ExitToApp />}
+              <p>Cerrar Sesión</p>
+            </ItemNavLink>
           </ContainerMenu>
-          <ContainerProfile>
-            <ContainerAvatarSide>
-              <AvatarStyles>
-                {!!dataUser && !!dataUser?.image ? (
-                  <div>
-                    <img src={dataUser?.image} />
-                  </div>
-                ) : (
-                  <div>
-                    {!!dataUser?.firstName ? dataUser?.firstName[0] : ""}
-                    {!!dataUser?.lastName ? dataUser?.lastName[0] : ""}
-                  </div>
-                )}
-                <StatusOnline />
-              </AvatarStyles>
-              <DataUserStyles isOpen={isMenuOpen}>
-                <p>
-                  {dataUser?.firstName} {dataUser?.lastName}
-                </p>
-                <p>{!!dataRoles ? dataRoles[0] : ""}</p>
-              </DataUserStyles>
-            </ContainerAvatarSide>
-            <ContainerOptions>
-              <ExitToApp onClick={handleLogout} />
-            </ContainerOptions>
-          </ContainerProfile>
         </div>
       </ContainerSidebar>
       <ContainerOutlet>
         <div>
-          <ContainerTitleApp>
+          <ContainerBar>
             <div onClick={toggleMenu}>
               <Bars />
             </div>
-            <div>
-              <h2>{titleApp}</h2>
-              <span>
-                Hello {(!!dataUser && dataUser?.firstName) || ""}, welcome back
-              </span>
+            <div onClick={toggleMenuLarge}>
+              <Bars />
             </div>
-          </ContainerTitleApp>
-          <ContainerDataProfile>
-            <ContainerAvatarSide>
-              <DataUserStyles isOpen={isMenuOpen}>
-                <p>
-                  {dataUser?.firstName} {dataUser?.lastName}
-                </p>
-                <p>{!!dataRoles ? dataRoles[0] : ""}</p>
-              </DataUserStyles>
-              <AvatarStyles>
-                {!!dataUser && !!dataUser?.image ? (
-                  <div>
-                    <img src={dataUser?.image} />
-                  </div>
-                ) : (
-                  <div>
-                    {!!dataUser?.firstName ? dataUser?.firstName[0] : ""}
-                    {!!dataUser?.lastName ? dataUser?.lastName[0] : ""}
-                  </div>
-                )}
-                <StatusOnline />
-              </AvatarStyles>
-            </ContainerAvatarSide>
-          </ContainerDataProfile>
+          </ContainerBar>
+          <ContainerUploadProperty>
+            <Button
+              onClick={() => console.log}
+              text="Subir propiedad"
+              isLoading={false}
+            />
+          </ContainerUploadProperty>
         </div>
         <div>
           <Outlet />
@@ -504,266 +236,23 @@ const DashboardLayout: React.FC = () => {
               </div>
             </ContainerLogo>
             <ContainerMenu>
-              {!!dataPermissions &&
-                !!dataPermissions.user &&
-                Object.values(APP_MENU).some(permission =>
-                  dataPermissions?.dashboard.includes(permission),
-                ) && (
-                  <ItemNavLink
-                    to={pathRoutes.DASHBOARD}
-                    onClick={handleClickItemMenu(ACTIONS_TITLE_APP.DASHBOARD)}
-                    className={({ isActive }) =>
-                      isActive ? "active" : "inactive"
-                    }
-                  >
-                    <Dashboard />
-                    <p>Dashboard</p>
-                  </ItemNavLink>
-                )}
-              {!!dataPermissions &&
-                !!dataPermissions.user &&
-                Object.values(APP_MENU).some(permission =>
-                  dataPermissions?.user.includes(permission),
-                ) && (
-                  <ItemNavLink
-                    onClick={handleClickItemMenu(ACTIONS_TITLE_APP.USERS)}
-                    to={pathRoutes.USERS.LIST}
-                    className={({ isActive }) =>
-                      isActive ? "active" : "inactive"
-                    }
-                  >
-                    <User />
-                    <p>Users</p>
-                  </ItemNavLink>
-                )}
-              {!!dataPermissions &&
-                !!dataPermissions.role &&
-                Object.values(APP_MENU).some(permission =>
-                  dataPermissions?.role.includes(permission),
-                ) && (
-                  <ItemNavLink
-                    onClick={handleClickItemMenu(ACTIONS_TITLE_APP.ROLES)}
-                    to={pathRoutes.ROLES.LIST}
-                    className={({ isActive }) =>
-                      isActive ? "active" : "inactive"
-                    }
-                  >
-                    <LocalPolice />
-                    <p>Roles</p>
-                  </ItemNavLink>
-                )}
-              {!!dataPermissions &&
-                !!dataPermissions.service &&
-                Object.values(APP_MENU).some(permission =>
-                  dataPermissions?.service.includes(permission),
-                ) && (
-                  <ItemNavLink
-                    onClick={handleClickItemMenu(ACTIONS_TITLE_APP.TASKS)}
-                    to={pathRoutes.SERVICES.LIST}
-                    className={({ isActive }) =>
-                      isActive ? "active" : "inactive"
-                    }
-                  >
-                    <Task />
-                    <p>Services</p>
-                  </ItemNavLink>
-                )}
-              {!!dataPermissions &&
-                !!dataPermissions.company &&
-                Object.values(APP_MENU).some(permission =>
-                  dataPermissions?.company.includes(permission),
-                ) && (
-                  <ItemNavLink
-                    onClick={handleClickItemMenu(
-                      ACTIONS_TITLE_APP.MANAGEMENT_COMPANY,
-                    )}
-                    to={pathRoutes.MANAGEMENT_COMPANY.LIST}
-                    className={({ isActive }) =>
-                      isActive ? "active" : "inactive"
-                    }
-                  >
-                    <Task />
-                    <p>Management Company</p>
-                  </ItemNavLink>
-                )}
-              {!!dataPermissions &&
-                !!dataPermissions.property &&
-                Object.values(APP_MENU).some(permission =>
-                  dataPermissions?.property.includes(permission),
-                ) && (
-                  <ItemNavLink
-                    onClick={handleClickItemMenu(ACTIONS_TITLE_APP.PROJECTS)}
-                    to={pathRoutes.PROPERTIES.LIST}
-                    className={({ isActive }) =>
-                      isActive ? "active" : "inactive"
-                    }
-                  >
-                    <FolderOpen />
-                    <p>Properties</p>
-                  </ItemNavLink>
-                )}
-              {!!dataPermissions &&
-                !!dataPermissions.apartment &&
-                Object.values(APP_MENU).some(permission =>
-                  dataPermissions?.apartment.includes(permission),
-                ) && (
-                  <ItemNavLink
-                    onClick={handleClickItemMenu(ACTIONS_TITLE_APP.APARTMENTS)}
-                    to={pathRoutes.APARTMENTS.LIST}
-                    className={({ isActive }) =>
-                      isActive ? "active" : "inactive"
-                    }
-                  >
-                    <FolderOpen />
-                    <p>Apartments</p>
-                  </ItemNavLink>
-                )}
-              {!!dataPermissions &&
-                !!dataPermissions.assignment &&
-                Object.values(APP_MENU).some(permission =>
-                  dataPermissions?.assignment.includes(permission),
-                ) && (
-                  <ItemNavLink
-                    onClick={handleClickItemMenu(ACTIONS_TITLE_APP.APARTMENTS)}
-                    to={pathRoutes.ASSIGNMENTS.LIST}
-                    className={({ isActive }) =>
-                      isActive ? "active" : "inactive"
-                    }
-                  >
-                    <FolderOpen />
-                    <p>Assignments</p>
-                  </ItemNavLink>
-                )}
-              {/* {!!dataPermissions &&
-              !!dataPermissions.calendar &&
-              Object.values(APP_MENU).some(permission =>
-                dataPermissions?.calendar.includes(permission),
-              ) && (
+              {getRoutes().map(route => (
                 <ItemNavLink
-                  onClick={() =>
-                    dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.CALENDAR))
-                  }
-                  to={pathRoutes.CALENDAR.LIST}
+                  to={route.to}
+                  onClick={handleClickItemMenu(route.label)}
                   className={({ isActive }) =>
                     isActive ? "active" : "inactive"
                   }
                 >
-                  <Calendar />
-                  <p>Calendar</p>
+                  {<route.icon />}
+                  <p>{route.label}</p>
                 </ItemNavLink>
-              )} */}
-              {!!dataPermissions &&
-                !!dataPermissions.calendar &&
-                Object.values(APP_MENU).some(permission =>
-                  dataPermissions?.calendar.includes(permission),
-                ) && (
-                  <ItemNavLink
-                    onClick={handleClickItemMenu(
-                      ACTIONS_TITLE_APP.DAILY_CALENDAR,
-                    )}
-                    to={pathRoutes.DAILY_CALENDAR.LIST}
-                    className={({ isActive }) =>
-                      isActive ? "active" : "inactive"
-                    }
-                  >
-                    <Calendar />
-                    <p>Daily Calendar</p>
-                  </ItemNavLink>
-                )}
-              {!!dataPermissions &&
-                !!dataPermissions.reports &&
-                Object.values(APP_MENU).some(permission =>
-                  dataPermissions?.reports.includes(permission),
-                ) && (
-                  <ItemNavLink
-                    onClick={() => {
-                      handleReportsClick()
-                      dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.REPORTS))
-                      setIsMenuOpen(false)
-                    }}
-                    to={pathRoutes.REPORTS.LIST_RESIDENTIAL}
-                    className={({ isActive }) =>
-                      isActive || location.pathname.startsWith("/reports")
-                        ? "active"
-                        : "inactive"
-                    }
-                  >
-                    <BarChartFill />
-                    <p>Reports</p>
-                  </ItemNavLink>
-                )}
-              <SubMenu open={isReportsOpen}>
-                <SubMenuItem
-                  onClick={() =>
-                    dispatch(
-                      updateActionTitleApp(
-                        ACTIONS_TITLE_APP.REPORT_RESIDENTIAL,
-                      ),
-                    )
-                  }
-                  to={pathRoutes.REPORTS.LIST_RESIDENTIAL}
-                >
-                  <span>
-                    <CircleSmallIcon />
-                  </span>
-                  <p>Residential report </p>
-                </SubMenuItem>
-                <SubMenuItem
-                  to={pathRoutes.REPORTS.LIST_CUSTOMER}
-                  onClick={() =>
-                    dispatch(
-                      updateActionTitleApp(ACTIONS_TITLE_APP.REPORT_CUSTOMERS),
-                    )
-                  }
-                >
-                  <span>
-                    <CircleSmallIcon />
-                  </span>
-                  <p>Customers Report</p>
-                </SubMenuItem>
-                <SubMenuItem
-                  to={pathRoutes.REPORTS.LIST_CONTRACTORS}
-                  onClick={() =>
-                    dispatch(
-                      updateActionTitleApp(
-                        ACTIONS_TITLE_APP.REPORT_CONTRACTORS,
-                      ),
-                    )
-                  }
-                >
-                  <span>
-                    <CircleSmallIcon />
-                  </span>
-                  <p>Contractors Report</p>
-                </SubMenuItem>
-              </SubMenu>
+              ))}
+              <ItemNavLink to="" onClick={handleLogout}>
+                {<ExitToApp />}
+                <p>Cerrar Sesión</p>
+              </ItemNavLink>
             </ContainerMenu>
-            <ContainerProfile>
-              <ContainerAvatarSide>
-                <AvatarStyles>
-                  {!!dataUser && !!dataUser?.image ? (
-                    <div>
-                      <img src={dataUser?.image} />
-                    </div>
-                  ) : (
-                    <div>
-                      {!!dataUser?.firstName ? dataUser?.firstName[0] : ""}
-                      {!!dataUser?.lastName ? dataUser?.lastName[0] : ""}
-                    </div>
-                  )}
-                  <StatusOnline />
-                </AvatarStyles>
-                <DataUserStyles isOpen={isMenuOpen}>
-                  <p>
-                    {dataUser?.firstName} {dataUser?.lastName}
-                  </p>
-                  <p>{!!dataRoles ? dataRoles[0] : ""}</p>
-                </DataUserStyles>
-              </ContainerAvatarSide>
-              <ContainerOptions>
-                <ExitToApp onClick={handleLogout} />
-              </ContainerOptions>
-            </ContainerProfile>
           </div>
           <Close onClick={() => setIsMenuOpen(false)} />
         </ContainerFullMenu>

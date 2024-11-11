@@ -1,7 +1,7 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import HeaderSection from "../../components/header-section/header-section"
-import { pathRoutes } from "../../config/routes/path"
+import { pathRoutes } from "../../config/routes/paths"
 import axios from "axios"
 import { toast } from "sonner"
 import {
@@ -289,7 +289,7 @@ const ManagementCompany: React.FC = () => {
       />
       <ModalDeleteGeneral
         isOpen={isOpenModalDelete}
-        dataAPI="managementCompany"
+        dataAPI="management_companies"
         dataLabel="role"
         dataId={dataDelete?.id || ""}
         dataName={dataDelete?.name || ""}

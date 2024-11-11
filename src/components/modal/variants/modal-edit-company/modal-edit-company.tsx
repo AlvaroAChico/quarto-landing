@@ -81,6 +81,8 @@ const ModalEditCompany: React.FC<IOwnProps> = ({
           return
         }
 
+        jsonData["_method"] = "PATCH"
+
         axios
           .post(
             `${settingsApp.api.base}/management_companies/${dataEdit.id}`,

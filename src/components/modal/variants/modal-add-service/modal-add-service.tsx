@@ -162,15 +162,22 @@ const ModalAddService: React.FC<IOwnProps> = ({
       formData.append("contractor_id", data.contractorId)
       formData.append("start_date", formatToDMYHH(data.date))
       formData.append("customer_notes", data.notes)
+
+      // if (!!data && !!data.files && data.files.length > 0) {
+      //   formData.append("images[]", data.files)
+      // }
+      // Añadir cada archivo de la lista de archivos a FormData
       if (!!data && !!data.files && data.files.length > 0) {
-        formData.append("images[]", data.files)
+        data.files.forEach((file: File) => {
+          formData.append("images[]", file)
+        })
       }
 
+      // ContentType: "application/json",
       axios
         .post(`${settingsApp.api.base}/works`, formData, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
-            ContentType: "application/json",
             Accept: "application/json",
           },
         })

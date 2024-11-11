@@ -25,7 +25,7 @@ import {
   ContainerOutletProjectDetails,
 } from "./details.styles"
 import { routeWithReplaceId } from "../../../utils/path-util"
-import { pathRoutes } from "../../../config/routes/path"
+import { pathRoutes } from "../../../config/routes/paths"
 import {
   ApartmentDTO,
   PropertyDTO,

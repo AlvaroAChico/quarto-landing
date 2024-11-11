@@ -31,7 +31,7 @@ import {
   UpdateWorkForm,
   UpdateWorkSchema,
 } from "../../../../core/models/schemas/work-schema"
-import { formatToDDMMYYYY } from "../../../../utils/date-util"
+import { formatToDDMMYYYY, formatToDMYHH } from "../../../../utils/date-util"
 import { PropertyDTO } from "../../../../core/models/interfaces/property-model"
 import { TextDescription } from "@styled-icons/fluentui-system-filled/TextDescription"
 import Textarea from "../../../textarea/textarea"
@@ -145,7 +145,11 @@ const ModalEditWork: React.FC<IOwnProps> = ({
             data[key].length !== 0
           ) {
             if (key != "images") {
-              formData.append(key, data[key])
+              if (key == "start_date") {
+                formData.append(key, formatToDMYHH(data[key]))
+              } else {
+                formData.append(key, data[key])
+              }
             } else {
               formData.append("images[]", data[key])
             }
@@ -200,66 +204,20 @@ const ModalEditWork: React.FC<IOwnProps> = ({
       setListCurrentProperty(listProperties)
     }
   }, [listServices, listContractors, listResidentials, listProperties])
-  // React.useEffect(() => {
-  //   const storedToken = handleGetToken()
 
-  //   if (!!storedToken) {
-  //     axios
-  //       .get(`${settingsApp.api.base}/services`, {
-  //         headers: {
-  //           Authorization: `Bearer ${storedToken}`,
-  //         },
-  //       })
-  //       .then(response => {
-  //         const listData: ServiceDTO[] = response.data as ServiceDTO[]
-  //         const listServices = (listData || []).map(data => ({
-  //           value: data.id,
-  //           label: data.name,
-  //         }))
-  //         setOptionsServices(listServices.filter((role: any) => !!role))
-  //       })
-
-  //     axios
-  //       .get(`${settingsApp.api.base}/users?include=role`, {
-  //         headers: {
-  //           Authorization: `Bearer ${storedToken}`,
-  //         },
-  //       })
-  //       .then(response => {
-  //         const listData: UserDTO[] = response.data as UserDTO[]
-  //         const contractors = (listData || []).filter(user =>
-  //           user.role.some(
-  //             ro => ro.name.toLowerCase() === "contractor".toLowerCase(),
-  //           ),
-  //         )
-  //         const listContractors = (contractors || []).map(data => ({
-  //           value: data.id,
-  //           label: data.firstName,
-  //         }))
-  //         setOptionsContractor(listContractors.filter((cont: any) => !!cont))
-  //       })
-
-  //     axios
-  //       .get(`${settingsApp.api.base}/residentials?include=apartments`, {
-  //         headers: {
-  //           Authorization: `Bearer ${storedToken}`,
-  //           "Content-Type": "application/json",
-  //           Accept: "application/json",
-  //         },
-  //       })
-  //       .then(response => {
-  //         const dataResponse: PropertyDTO[] = response.data as PropertyDTO[]
-  //         if (!!dataResponse) {
-  //           const listResidentials = (dataResponse || []).map(data => ({
-  //             value: data.id,
-  //             label: data.name,
-  //           }))
-  //           setListCurrentProperty(dataResponse)
-  //           setOptionsResidential(listResidentials.filter((res: any) => !!res))
-  //         }
-  //       })
-  //   }
-  // }, [isOpen, dataEdit])
+  React.useEffect(() => {
+    setValue("apartment_id", "")
+    setValue("service_id", "")
+    setValue("contractor_id", "")
+    setValue("start_date", "")
+    setValue("customer_notes", "")
+    setSelectedOptionApartment(null)
+    setSelectedOptionServices(null)
+    setSelectedOptionContractor(null)
+    setSelectedOptionResidential(null)
+    setDaySelected(new Date())
+    setListFiles([])
+  }, [isOpen])
 
   const [listFiles, setListFiles] = React.useState<File[]>([]) // Inicializamos como un array vacío
 
@@ -268,10 +226,6 @@ const ModalEditWork: React.FC<IOwnProps> = ({
       if (acceptedFiles.length > 0) {
         const updatedFiles = [...listFiles]
         acceptedFiles.forEach((file: any) => {
-          // if (updatedFiles.length >= 5) {
-          //   toast.error("Se permite un máximo de 5 archivos.")
-          //   return
-          // }
           updatedFiles.push(file)
 
           const reader = new FileReader()

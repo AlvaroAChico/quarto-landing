@@ -70,6 +70,7 @@ export const ContainerStepperCreate = styled.div`
   box-shadow: 8px 10px 30px 4px rgba(238, 236, 243, 1);
   padding: 30px;
   border-radius: 16px;
+  background: white;
 `
 
 export const ResidentialFormStyles = styled.div``
@@ -147,7 +148,7 @@ export const ItemStepper = styled.div<{ isActive: boolean }>`
 
   > span {
     &:nth-child(2) {
-      color: ${p => (p.isActive ? palette.orangeColor : "#7A86A1")};
+      color: ${p => (p.isActive ? palette.primaryColor : "#7A86A1")};
     }
     &:nth-child(3) {
       background: #ebebeb;

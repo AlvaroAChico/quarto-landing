@@ -145,7 +145,11 @@ const ModalEditApartment: React.FC<IOwnProps> = ({
             data[key] !== null &&
             data[key] !== ""
           ) {
-            formData.append(key, data[key])
+            if (key !== "picture") {
+              formData.append(key, data[key])
+            } else {
+              formData.append("picture", data.picture as File)
+            }
           }
         }
 
@@ -155,18 +159,16 @@ const ModalEditApartment: React.FC<IOwnProps> = ({
           return
         }
 
+        formData.append("_method", "PATCH")
+
         axios
-          .patch(
-            `${settingsApp.api.base}/apartments/${dataEdit.id}`,
-            formData,
-            {
-              headers: {
-                Authorization: `Bearer ${storedToken}`,
-                "Content-Type": "application/json",
-                Accept: "application/json",
-              },
+          .post(`${settingsApp.api.base}/apartments/${dataEdit.id}`, formData, {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              ContentType: "application/json",
+              Accept: "application/json",
             },
-          )
+          })
           .then(response => {
             setIsSubmitUserUpdate(false)
 

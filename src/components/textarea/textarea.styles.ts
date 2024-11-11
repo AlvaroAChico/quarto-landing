@@ -5,14 +5,15 @@ import { palette } from "../../config/theme/theme"
 export const InputWrapper = styled.div`
   display: flex;
   align-items: flex-start;
-  border: 1px solid #ebebeb; // Color del borde
+  border: 1px solid ${palette.inputBorderolor};
   border-radius: 10px; // Radio del borde
   padding: 14px;
   width: 100%;
+  background: ${palette.inputBgColor};
 
   &:focus-within {
-    border-color: #f59e36; // Color del borde cuando está enfocado
-    box-shadow: 0 0 8px rgba(245, 158, 54, 0.5); // Sombra cuando está enfocado
+    border-color: ${palette.primaryColor};
+    // box-shadow: 0 0 8px rgba(245, 158, 54, 0.5); // Sombra cuando está enfocado
   }
 
   ${breakpoints.phoneSmall} {
@@ -20,7 +21,8 @@ export const InputWrapper = styled.div`
   }
 `
 export const StyledInput = styled.textarea`
-  color: ${palette.grayColor};
+  background: ${palette.inputBgColor};
+  color: ${palette.inputTextrolor};
   font-size: 15px;
   resize: none;
   outline: none;
@@ -28,7 +30,7 @@ export const StyledInput = styled.textarea`
   flex: 1;
 
   &::placeholder {
-    color: ${palette.grayColor};
+    color: ${palette.inputTextrolor};
   }
 
   ${breakpoints.phoneSmall} {

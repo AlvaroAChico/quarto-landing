@@ -59,7 +59,7 @@ const ModalDeleteGeneral: React.FC<IOwnProps> = ({
   }, [handleGetToken, dataAPI, dataId])
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} title="Delete User">
+    <Modal isOpen={isOpen} onClose={handleClose} title="Delete">
       <ContainerModal>
         <div>
           <p>

@@ -18,7 +18,7 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { CreateUserResponseDTO } from "../../../../core/models/interfaces/user-model"
-import { pathRoutes } from "../../../../config/routes/path"
+import { pathRoutes } from "../../../../config/routes/paths"
 import {
   ContainerDragAndDropAvatar,
   ContainerDragAndDropFiles,
@@ -304,7 +304,13 @@ const CreateApartment: React.FC = () => {
     getRootProps: getRootPropsFiles,
     getInputProps: getInputPropsFiles,
     isDragActive: isDragActiveFiles,
-  } = useDropzone({ onDrop: onDropManyFiles })
+  } = useDropzone({
+    onDrop: onDropManyFiles,
+    accept: {
+      "image/png": [".png"],
+      "image/jpeg": [".jpg", ".jpeg"],
+    },
+  })
 
   return (
     <>

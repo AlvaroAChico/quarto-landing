@@ -35,6 +35,7 @@ import { Password } from "@styled-icons/material-twotone/Password"
 import { EyeFill, EyeSlashFill } from "@styled-icons/bootstrap"
 import { FormContainer } from "./modal-edit-user.styles"
 import { setErrResponse } from "../../../../utils/erros-util"
+import { ManagementCompanyDTO } from "../../../../core/models/interfaces/management-company"
 
 interface IOwnProps {
   isOpen: boolean
@@ -52,6 +53,10 @@ const ModalEditUser: React.FC<IOwnProps> = ({
   const [optionsRoles, setOptionsRoles] = React.useState<any>([])
   const [selectedOptionRole, setSelectedOptionRole] =
     React.useState<Option | null>(null)
+
+  const [optionsCompany, setOptionsCompany] = React.useState<any>([])
+  const [selectedOptionCompany, setSelectedOptionCompany] = React.useState(null)
+
   const [isSubmitUserUpdate, setIsSubmitUserUpdate] =
     React.useState<boolean>(false)
 
@@ -65,6 +70,7 @@ const ModalEditUser: React.FC<IOwnProps> = ({
       email: "",
       role: "",
       password: "",
+      management_company_id: "",
     },
   })
 
@@ -104,8 +110,10 @@ const ModalEditUser: React.FC<IOwnProps> = ({
           return
         }
 
+        formData.append("_method", "PATCH")
+
         axios
-          .patch(`${settingsApp.api.base}/users/${dataUserEdit.id}`, formData, {
+          .post(`${settingsApp.api.base}/users/${dataUserEdit.id}`, formData, {
             headers: {
               Authorization: `Bearer ${storedToken}`,
               ContentType: "application/json",
@@ -152,8 +160,34 @@ const ModalEditUser: React.FC<IOwnProps> = ({
         .catch(err => {
           toast.error("Failed to fetch data")
         })
+
+      axios
+        .get(`${settingsApp.api.base}/management_companies`, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        })
+        .then(response => {
+          const listData: ManagementCompanyDTO[] =
+            response.data as ManagementCompanyDTO[]
+          const listCompany = (listData || []).map(data => ({
+            value: data.id,
+            label: data.name,
+          }))
+          setOptionsCompany(listCompany.filter(role => !!role))
+        })
+        .catch(err => {
+          setErrResponse(err)
+        })
     }
   }, [])
+
+  const handleChangeOptionCompany = (value: any) => {
+    setValue("management_company_id", value.value)
+    setSelectedOptionCompany(value)
+  }
 
   const [infoPicture, setInfoPicture] = React.useState<any>()
   const handleDeletePictureUser = () => {
@@ -305,6 +339,19 @@ const ModalEditUser: React.FC<IOwnProps> = ({
             defaultValue={selectedOptionRole}
             onChange={handleChangeOptionRole}
             options={optionsRoles}
+            isSearchable={false}
+            styles={selectStyles}
+          />
+          {!!(errors.role as any)?.message && (
+            <ErrorMessage>{(errors.role as any)?.message}</ErrorMessage>
+          )}
+        </WrapperInput>
+        <WrapperInput>
+          <label htmlFor="password-create-user">Company</label>
+          <Select
+            defaultValue={selectedOptionCompany}
+            onChange={handleChangeOptionCompany}
+            options={optionsCompany}
             isSearchable={false}
             styles={selectStyles}
           />

@@ -5,6 +5,8 @@ import {
   BtnApprovedDaily,
   BtnCompletedDaily,
   BtnRejectedDaily,
+  ContainerFilesView,
+  DeleteStyles,
   EditStyles,
   InfoCardDaily,
   InfoTextDaily,
@@ -24,11 +26,15 @@ import ModalNoteCalendar from "../../../../components/modal/variants/modal-note-
 import { LoaderStyles } from "../../../../components/button/button.styles"
 import { CheckCircle } from "@styled-icons/bootstrap/CheckCircle"
 import { CloseCircle } from "@styled-icons/ionicons-outline/CloseCircle"
+import { Files } from "@styled-icons/simple-icons/Files"
+import { Close } from "styled-icons/evaicons-solid"
+import { Reviews } from "styled-icons/material-twotone"
 
 interface IOwnProps {
   info: InfoCalendarDTO
   dataPermissions: FilterPermissionsDTO
   onEditItem: () => void
+  onDeleteWork: () => void
   onRefreshData: () => void
 }
 
@@ -36,6 +42,7 @@ const ItemDailyCalendar: React.FC<IOwnProps> = ({
   info,
   dataPermissions,
   onEditItem,
+  onDeleteWork,
   onRefreshData,
 }) => {
   const [isOpenModal, setIsOpenModal] = React.useState<boolean>(false)
@@ -94,6 +101,31 @@ const ItemDailyCalendar: React.FC<IOwnProps> = ({
     }
   }
 
+  const handleViewFiles = () => {
+    if (!!info && !!info.images && info.images.length > 0) {
+      toast.info(
+        <ContainerFilesView>
+          <h3>This works has {info.images.length} files</h3>
+          <ol>
+            {info.images.map((dataImg, index) => (
+              <li>
+                <span>
+                  File {index + 1} - {dataImg.fileLocation.split(".")[1]} :
+                  <a key={index} href={dataImg.file}>
+                    Download
+                  </a>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </ContainerFilesView>,
+        {
+          position: "bottom-right",
+        },
+      )
+    }
+  }
+
   return (
     <>
       <ItemCalendarStyles $service={info.service.name}>
@@ -105,6 +137,11 @@ const ItemDailyCalendar: React.FC<IOwnProps> = ({
             <div>
               <span>{info.residential.name}</span>
               <span>{info.status.name}</span>
+              {!!info && !!info.images && info.images.length > 0 && (
+                <span onClick={handleViewFiles}>
+                  <Files />
+                </span>
+              )}
             </div>
             <div>
               <span>{info.apartment.name}</span>
@@ -112,9 +149,16 @@ const ItemDailyCalendar: React.FC<IOwnProps> = ({
                 !!info.contractor.firstName &&
                 !!info.contractor.lastName && (
                   <span>
-                    {info.contractor.firstName} {info.contractor.lastName}
+                    Contractor: {info.contractor.firstName}{" "}
+                    {info.contractor.lastName}
                   </span>
                 )}
+              {!!info && !!info.customerNotes && (
+                <span>Notes: {info.customerNotes}</span>
+              )}
+              {!!info && !!info.residential && !!info.residential.address && (
+                <span>Address: {info.residential.address}</span>
+              )}
             </div>
           </InfoTextDaily>
         </InfoCardDaily>
@@ -158,9 +202,14 @@ const ItemDailyCalendar: React.FC<IOwnProps> = ({
           {isWorkReview && <LoaderStyles />}
         </ActionsItemsDaily>
         {dataPermissions?.work.includes(APP_MENU.UPDATE) && (
-          <EditStyles>
-            <Edit onClick={onEditItem} />
+          <EditStyles onClick={onEditItem}>
+            <Edit />
           </EditStyles>
+        )}
+        {dataPermissions?.work.includes(APP_MENU.UPDATE) && (
+          <DeleteStyles onClick={onDeleteWork}>
+            <Close />
+          </DeleteStyles>
         )}
       </ItemCalendarStyles>
       <ModalNoteCalendar

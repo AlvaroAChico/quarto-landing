@@ -28,6 +28,7 @@ export const GlobalStyles = createGlobalStyle`
   .react-datepicker__input-container{
     display: flex;
     gap:20px;
+    color:red;
 
     > svg {
       position: absolute;
@@ -38,7 +39,8 @@ export const GlobalStyles = createGlobalStyle`
     }
 
     > input {
-      border: 1px solid #ebebeb;
+      // border: 1px solid #ebebeb;
+      border: none;
       border-radius: 10px;
       padding-left: 50px;
       max-width: 400px;
@@ -47,8 +49,8 @@ export const GlobalStyles = createGlobalStyle`
       width: 100%;
 
       &:focus-within {
-        border-color: #f59e36; // Color del borde cuando está enfocado
-        box-shadow: 0 0 8px rgba(245, 158, 54, 0.5); // Sombra cuando está enfocado
+        // border-color: #f59e36; // Color del borde cuando está enfocado
+        // box-shadow: 0 0 8px rgba(245, 158, 54, 0.5); // Sombra cuando está enfocado
       }
     }
   }
@@ -106,7 +108,7 @@ export const GlobalStyles = createGlobalStyle`
     outline: none;
     color: white;
   }
-  `
+`
 
 export const WrapperInput = styled.div`
   display: flex;
@@ -128,7 +130,7 @@ export const WrapperInput = styled.div`
 `
 
 export const ErrorMessage = styled.span`
-  color: ${palette.errorColor};
+  color: ${palette.redColor};
   font-size: 12px;
 `
 
@@ -152,12 +154,16 @@ export const ContainerHead = styled.thead`
 
   > tr {
     border-bottom: 1px #e0e0e0 solid;
+
     > td {
       color: ${palette.grayColor};
       font-weight: 600;
       font-size: 12px;
       padding: 10px;
 
+      &:nth-child(1) {
+        min-width: 180px;
+      }
       &:nth-last-child(1) {
         max-width: 20px;
       }
@@ -256,7 +262,7 @@ export const ContainerDropdown = styled.div`
     cursor: pointer;
 
     &:hover {
-      background: ${palette.grayLightColor};
+      background: ${palette.grayColor};
     }
   }
 `
@@ -389,15 +395,19 @@ export const ContainerDragAndDropFiles = styled.div<{ isDragActive: boolean }>`
 export const selectStyles = {
   control: (provided: any, state: any) => ({
     ...provided,
-    borderColor: state.isFocused ? "#f59e36" : palette.grayLightColor,
-    boxShadow: state.isFocused ? "0 0 5px #f59e36" : provided.boxShadow,
-    "&:hover": {
-      borderColor: state.isFocused ? "#f59e36" : "gray", // color al pasar el ratón
-    },
-    background: "white",
+    borderColor: state.isFocused
+      ? palette.primaryColor
+      : palette.inputBorderolor,
+    boxShadow: state.isFocused ? "0 0 0 #fff" : provided.boxShadow,
+    background: palette.inputBgColor,
     borderRadius: 10,
-    padding: "1px 4px",
+    padding: "10px 10px",
     height: "100%",
+    cursor: "pointer",
+    "&:hover": {
+      borderColor: state.isFocused ? palette.grayColor : "none",
+      // transform: "scale(1.05)",
+    },
   }),
   option: (provided: any, state: any) => ({
     ...provided,
@@ -407,5 +417,40 @@ export const selectStyles = {
       backgroundColor: palette.primaryColor,
       color: "white",
     },
+  }),
+  placeholder: (provided: any) => ({
+    ...provided,
+    color: palette.inputTextrolor,
+  }),
+}
+
+export const selectFilterStyles = {
+  control: (provided: any, state: any) => ({
+    ...provided,
+    borderColor: state.isFocused ? "white" : "white",
+    boxShadow: state.isFocused ? "0 0 0 #fff" : provided.boxShadow,
+    background: "white",
+    borderRadius: 10,
+    padding: "10px 10px",
+    height: "100%",
+    cursor: "pointer",
+    "&:hover": {
+      borderColor: state.isFocused ? palette.grayColor : "none",
+      // transform: "scale(1.05)",
+    },
+  }),
+  option: (provided: any, state: any) => ({
+    ...provided,
+    backgroundColor: state.isFocused ? palette.primaryColor : "white",
+    color: state.isSelected ? "black" : "black",
+    "&:hover": {
+      backgroundColor: palette.primaryColor,
+      color: "white",
+    },
+  }),
+  placeholder: (provided: any) => ({
+    ...provided,
+    color: "#000",
+    fontWeight: "800",
   }),
 }

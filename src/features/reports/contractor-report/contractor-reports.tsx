@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { pathRoutes } from "../../../config/routes/path"
+import { pathRoutes } from "../../../config/routes/paths"
 import HeaderSection from "../../../components/header-section/header-section"
 import {
   ContainerContractorReport,

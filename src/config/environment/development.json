@@ -1,13 +1,13 @@
 {
   "app": {
-    "name": "TST Admin - DEV",
+    "name": "Quarto",
     "mocks": false,
-    "local": "http://services-api-local.ocasystem.com:7003"
+    "local": "http://localhost:7003"
   },
   "api": {
-    "base": "http://services-api-local.ocasystem.com:7003/api",
-    "auth": "http://services-api-local.ocasystem.com:7003/api",
-    "base_prod": "https://constructores.adarve-peru.com/api"
+    "base": "https://localhost/api",
+    "auth": "http://localhost/api",
+    "base_prod": "https://localhost/api"
   },
   "i18nDebug": false,
   "cloudEnv": "development"

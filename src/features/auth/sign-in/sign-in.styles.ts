@@ -1,5 +1,7 @@
 import styled from "styled-components"
 import { breakpoints } from "../../../constants/breakpoints"
+import { palette } from "../../../config/theme/theme"
+import { NavLink } from "react-router-dom"
 
 export const ContainerSignIn = styled.div`
   height: 100vh;
@@ -9,28 +11,29 @@ export const ContainerSignIn = styled.div`
   align-items: center;
 `
 export const LeftContainer = styled.div<{ imgHeader: string }>`
-  background-image: url("${p => p.imgHeader}");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  // background-image: url("${p => p.imgHeader}");
+  // background-repeat: no-repeat;
+  // background-position: center;
+  // background-size: cover;
+  background: ${palette.primaryColor};
   position: relative;
   height: 100%;
   width: 100%; // Asumimos full-width en móviles
 
-  &::before {
-    content: "";
-    position: absolute;
-    background: linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 1) -40%,
-      rgb(245 134 52 / 60%) 0%,
-      rgb(13 6 1 / 100%) 100%
-    );
-    width: 100%;
-    height: 100%;
-    top: 0;
-    z-index: 1;
-  }
+  // &::before {
+  //   content: "";
+  //   position: absolute;
+  //   background: linear-gradient(
+  //     0deg,
+  //     rgba(255, 255, 255, 1) -40%,
+  //     rgb(245 134 52 / 60%) 0%,
+  //     rgb(13 6 1 / 100%) 100%
+  //   );
+  //   width: 100%;
+  //   height: 100%;
+  //   top: 0;
+  //   z-index: 1;
+  // }
 
   ${breakpoints.desktopMedium} {
     width: 30%;
@@ -60,10 +63,13 @@ export const ContentLeftContainer = styled.div`
   z-index: 2;
 
   > div:nth-child(1) {
-    height: 20%;
+    height: 100%;
+    display: grid;
+    place-items: center;
 
     > img {
-      max-width: 80px;
+      max-width: 300px;
+      filter: grayscale(100%) brightness(200%);
     }
   }
   > div:nth-child(2) {
@@ -136,5 +142,15 @@ export const SignInButton = styled.button`
 
   &:hover {
     transform: scale(1.05);
+  }
+`
+
+export const RecoveryNavLink = styled(NavLink)`
+  color: ${palette.errorColor};
+  text-decoration: none;
+  margin: auto;
+
+  &:hover {
+    color: ${palette.errorColorHover};
   }
 `
