@@ -194,3 +194,11 @@ export const ContainerListFiles = styled.div`
   display: flex;
   gap: 10px;
 `
+
+export const ContainerSwitchs = styled.div`
+  padding: 50px 0;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 20px;
+`

@@ -11,8 +11,8 @@ export const SwitchContainer = styled.div<{
   > label {
     background: ${p =>
       p.isEnabled ? (p.isActive ? "#4caf50" : "#FF8E8E") : "#cccccc"};
-    width: 90px;
-    height: 42px;
+    width: 130px;
+    height: 55px;
     border-radius: 34px;
     cursor: pointer;
     display: inline-block;
@@ -20,24 +20,25 @@ export const SwitchContainer = styled.div<{
     transition: 0.2s;
 
     &:after {
-      left: ${p => (p.isActive ? "50px" : "7px")};
+      left: ${p => (p.isActive ? "80px" : "8px")};
       background-color: white;
       border-radius: 50%;
       position: absolute;
       transition: 0.2s;
-      height: 33px;
+      height: 40px;
       content: "";
-      width: 33px;
-      top: 5px;
+      width: 40px;
+      top: 8px;
     }
     &:before {
       content: "${p => p.label}";
       position: absolute;
-      font-size: 8px;
+      font-size: 10px;
       color: white;
       text-transform: uppercase;
-      top: ${p => (p.isActive ? "15px" : "15px")};
-      left: ${p => (p.isActive ? "12px" : "43px")};
+      max-width: 20px;
+      top: ${p => (p.isActive ? "15px" : "10px")};
+      left: ${p => (p.isActive ? "20px" : "50px")};
     }
   }
 `

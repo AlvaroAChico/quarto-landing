@@ -8,6 +8,7 @@ import {
   ContainerListFiles,
   ContainerResFormStyles,
   ContainerStepperCreate,
+  ContainerSwitchs,
   ContainerUpInputs,
   ContainerUploadFiles,
   ItemStepper,
@@ -50,6 +51,11 @@ import Textarea from "../../../../components/textarea/textarea"
 import { setErrResponse } from "../../../../utils/erros-util"
 import { CategoryDTO } from "../../../../core/models/interfaces/category-model"
 import CardFile from "../../../../components/card-file/card-file"
+import Switch from "../../../../components/switch/switch"
+import {
+  getInitValues,
+  InitValuesProperty,
+} from "../../../../core/models/interfaces/property-model"
 
 const CreateProperty: React.FC = () => {
   const [stepActive, setStepActive] = React.useState<number>(1)
@@ -97,6 +103,21 @@ const CreateProperty: React.FC = () => {
   // const [seleOpCategory, setSeleOpCategory] = React.useState(null)
   // Type Property
   const [typeProperty, setTypeProperty] = React.useState<any>(1)
+  const [attrCheck, setAttrCheck] = React.useState<InitValuesProperty[]>(
+    getInitValues([
+      "cbx_lavandero",
+      "cbx_piscina",
+      "cbx_pozo_agua",
+      "cbx_gym",
+      "cbx_planta_electrica",
+      "cbx_accept_mascotas",
+      "cbx_ascensor",
+      "cbx_internet",
+      "cbx_amoblado",
+      "cbx_vigilancia",
+      "cbx_aire_acodicionado",
+    ]),
+  )
 
   const fetchData = async (url: string) => {
     const storedToken = handleGetToken()
@@ -470,6 +491,13 @@ const CreateProperty: React.FC = () => {
   const handleChangeTypeProperty = (typeProperty: number) => () =>
     setTypeProperty(typeProperty)
 
+  const changeStatusAttrCheck = (name: string, status: boolean) => {
+    const updatedAttrs = [...attrCheck]
+    const index = updatedAttrs.findIndex(attr => attr.name === name)
+    updatedAttrs[index].status = !status
+    setAttrCheck(updatedAttrs)
+  }
+
   return (
     <>
       <HeaderSection />
@@ -746,7 +774,86 @@ const CreateProperty: React.FC = () => {
         {stepActive == 4 && (
           <>
             <ResidentialFormStyles>
-              <ContainerUpInputs>aa</ContainerUpInputs>
+              <WrapperInput>
+                <label htmlFor="nro_piso-create">Piso</label>
+                <Input
+                  id="nro_piso-create"
+                  placeholder="# Piso"
+                  // icon={TextDescription}
+                  register={register("nro_piso")}
+                />
+                {!!(errors.nro_piso as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.nro_piso as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="nro_habitaciones-create">Habitaciones</label>
+                <Input
+                  id="nro_habitaciones-create"
+                  placeholder="# Piso"
+                  // icon={TextDescription}
+                  register={register("nro_habitaciones")}
+                />
+                {!!(errors.nro_habitaciones as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.nro_habitaciones as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="nro_banios-create">Baños</label>
+                <Input
+                  id="nro_banios-create"
+                  placeholder="# Piso"
+                  // icon={TextDescription}
+                  register={register("nro_banios")}
+                />
+                {!!(errors.nro_banios as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.nro_banios as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="nro_puestos-create">Puestos</label>
+                <Input
+                  id="nro_puestos-create"
+                  placeholder="# Piso"
+                  // icon={TextDescription}
+                  register={register("nro_puestos")}
+                />
+                {!!(errors.nro_puestos as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.nro_puestos as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="nro_m2-create">m2</label>
+                <Input
+                  id="nro_m2-create"
+                  placeholder="# Piso"
+                  // icon={TextDescription}
+                  register={register("nro_m2")}
+                />
+                {!!(errors.nro_m2 as any)?.message && (
+                  <ErrorMessage>{(errors.nro_m2 as any)?.message}</ErrorMessage>
+                )}
+              </WrapperInput>
+              <ContainerSwitchs>
+                {attrCheck.map(attr => (
+                  <Switch
+                    isActive={attr.status}
+                    isEnabled={true}
+                    onToggle={() =>
+                      changeStatusAttrCheck(attr.name, attr.status)
+                    }
+                    label={attr.name}
+                  />
+                ))}
+              </ContainerSwitchs>
             </ResidentialFormStyles>
             <ContainerButton>
               <Button
