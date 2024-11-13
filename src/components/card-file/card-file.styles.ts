@@ -1,8 +1,8 @@
 import styled from "styled-components"
-import { palette } from "../../../../../../config/theme/theme"
+import { palette } from "../../config/theme/theme"
 
 export const CardFileStyles = styled.div`
-  border: 1px solid ${palette.grayLightColor};
+  border: 1px solid ${palette.inputBorderolor};
   flex-direction: column;
   border-radius: 10px;
   height: fit-content;
@@ -27,7 +27,7 @@ export const CardFileStyles = styled.div`
 
     > span {
       &:nth-child(1) {
-        color: ${palette.infoColor};
+        color: ${palette.primaryColor};
         text-overflow: ellipsis;
         white-space: nowrap;
         max-width: 100px;
@@ -36,7 +36,7 @@ export const CardFileStyles = styled.div`
         display: block;
       }
       &:nth-child(2) {
-        color: ${palette.successColor};
+        color: ${palette.errorColor};
         font-size: 12px;
       }
     }

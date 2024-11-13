@@ -1,5 +1,4 @@
 import Cookies from "js-cookie"
-import { FilterPermissionsDTO } from "../core/models/interfaces/user-model"
 
 export const MAX_COOKIE_SIZE = 4000
 export const PREFIX_PERMISSION = "PERTST_ONL"
@@ -48,23 +47,5 @@ export const deleteCookiesWithPrefix = (prefix: string): void => {
 
     Cookies.remove(cookieName)
     i++
-  }
-}
-
-export const createEmptyFilterPermissions = (): FilterPermissionsDTO => {
-  return {
-    dashboard: [],
-    user: [],
-    role: [],
-    service: [],
-    company: [],
-    property: [],
-    apartment: [],
-    assignment: [],
-    calendar: [],
-    reports: [],
-    work: [],
-    quality: [],
-    contractor: [],
   }
 }

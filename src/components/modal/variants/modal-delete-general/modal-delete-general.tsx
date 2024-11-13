@@ -6,7 +6,6 @@ import { toast } from "sonner"
 import { ContainerModal } from "./modal-delete-general.styles"
 import { settingsApp } from "../../../../config/environment/settings"
 import useDataUser from "../../../../utils/use-data-user"
-import { RoleDTO } from "../../../../core/models/interfaces/roles-model"
 import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
 
 interface IOwnProps {

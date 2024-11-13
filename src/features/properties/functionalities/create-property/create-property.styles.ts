@@ -56,8 +56,8 @@ export const ContainerDragAndDrop = styled.div<{ isDragActive: boolean }>`
   }
 
   &:focus-within {
-    border-color: #f59e36; // Color del borde cuando está enfocado
-    box-shadow: 0 0 8px rgba(245, 158, 54, 0.5); // Sombra cuando está enfocado
+    border-color: ${palette.primaryColor};
+    // box-shadow: 0 0 8px rgba(245, 158, 54, 0.5); // Sombra cuando está enfocado
   }
 
   > svg {
@@ -160,4 +160,37 @@ export const ItemStepper = styled.div<{ isActive: boolean }>`
   &:last-child {
     width: fit-content;
   }
+`
+
+export const ContainerCheckTypeProperty = styled.div<{ typeProperty: number }>`
+  background: ${palette.inputBgColor};
+  border: 1px solid ${palette.inputBorderolor};
+  flex-direction: row;
+  border-radius: 10px;
+  transition: 0.2s;
+  display: flex;
+
+  > div {
+    border-radius: 10px;
+    transition: 0.2s;
+    cursor: pointer;
+    padding: 15px;
+    width: 100%;
+
+    &:nth-child(1) {
+      background: ${p => p.typeProperty === 1 && palette.primaryColor};
+      color: ${p => p.typeProperty === 1 && "white"};
+    }
+    &:nth-child(2) {
+      background: ${p => p.typeProperty === 2 && palette.primaryColor};
+      color: ${p => p.typeProperty === 2 && "white"};
+    }
+  }
+`
+
+export const ContainerUploadFiles = styled.div``
+
+export const ContainerListFiles = styled.div`
+  display: flex;
+  gap: 10px;
 `

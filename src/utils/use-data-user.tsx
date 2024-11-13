@@ -1,27 +1,8 @@
 import React from "react"
 import Cookies from "js-cookie"
 import { COOKIES_APP } from "../constants/app"
-import { FilterPermissionsDTO } from "../core/models/interfaces/user-model"
-import {
-  deleteCookiesWithPrefix,
-  getJsonFromCookies,
-  PREFIX_PERMISSION,
-} from "./cookie-util"
 
 const useDataUser = () => {
-  const keysPermissions: (keyof FilterPermissionsDTO)[] = [
-    "dashboard",
-    "user",
-    "role",
-    "service",
-    "company",
-    "property",
-    "apartment",
-    "assignment",
-    "calendar",
-    "reports",
-  ]
-
   const handleGetToken = (): string => {
     const storedToken = Cookies.get(COOKIES_APP.TOKEN_APP)
     if (storedToken != null && storedToken != undefined) {
@@ -30,27 +11,10 @@ const useDataUser = () => {
     return ""
   }
 
-  const handleGetPermissions = (): FilterPermissionsDTO => {
-    // const data = localStorage.getItem(COOKIES_APP.PERMISSIONS_APP)
-    const data = getJsonFromCookies()
-    if (!!data && data != null && data != undefined) {
-      const permissions: FilterPermissionsDTO = data as FilterPermissionsDTO
-      return permissions
-    }
-
-    return keysPermissions.reduce((acc, key) => {
-      acc[key] = []
-      return acc
-    }, {} as FilterPermissionsDTO)
-  }
-
   const clearAllDataAPP = () => {
     Cookies.remove(COOKIES_APP.USER_RES)
     Cookies.remove(COOKIES_APP.TOKEN_APP)
     Cookies.remove(COOKIES_APP.ROLES_APP)
-    // localStorage.removeItem(COOKIES_APP.PERMISSIONS_APP)
-    // localStorage.setItem(COOKIES_APP.PERMISSIONS_APP, "_@")
-    deleteCookiesWithPrefix(PREFIX_PERMISSION)
     localStorage.clear()
     sessionStorage.clear()
 
@@ -65,7 +29,6 @@ const useDataUser = () => {
 
   return {
     handleGetToken,
-    handleGetPermissions,
     clearAllDataAPP,
   }
 }

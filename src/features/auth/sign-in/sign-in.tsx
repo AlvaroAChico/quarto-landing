@@ -22,10 +22,7 @@ import { toast } from "sonner"
 import Cookies from "js-cookie"
 import Button from "../../../components/button/button"
 import { ACTIONS_TITLE_APP, COOKIES_APP } from "../../../constants/app"
-import {
-  FilterPermissionsDTO,
-  SignInResponse,
-} from "../../../core/models/interfaces/user-model"
+import { SignInResponse } from "../../../core/models/interfaces/user-model"
 import {
   SignInForm,
   SignInSchema,
@@ -35,10 +32,6 @@ import { settingsApp } from "../../../config/environment/settings"
 import { useAppDispatch } from "../../../app/hooks"
 import { updateActionTitleApp } from "../../../core/store/app-store/appSlice"
 import useDataUser from "../../../utils/use-data-user"
-import {
-  createEmptyFilterPermissions,
-  saveJsonCookiesWithSplit,
-} from "../../../utils/cookie-util"
 import { pathRoutes } from "../../../config/routes/paths"
 
 const SignIn: React.FC = () => {
@@ -102,7 +95,7 @@ const SignIn: React.FC = () => {
         //   expiration,
         // )
 
-        dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.DASHBOARD))
+        dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.PROPERTIES))
         setTimeout(() => {
           dispatch(updateActionTitleApp(pathRoutes.PROPERTY.label))
           navigate(pathRoutes.PROPERTY.to)

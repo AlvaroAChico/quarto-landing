@@ -12,15 +12,11 @@ export const CreatePropertySchema = object({
   description: string(),
   property_type: string(),
   price: string(),
-  company_id: string(), // Quarto - Standard - Inmoviliaria
-  agent_id: string(),
   owner_id: string(),
   // Location
   city_id: string(),
   municipality_id: string(),
   urbanization_id: string(),
-  latitude: string(),
-  longitude: string(),
   client_address: string(),
   // Gallery
   video_link: string(),

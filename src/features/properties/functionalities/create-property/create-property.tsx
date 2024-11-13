@@ -3,10 +3,13 @@ import HeaderSection from "../../../../components/header-section/header-section"
 import {
   ContainerBodyCreate,
   ContainerButton,
+  ContainerCheckTypeProperty,
   ContainerDownInputs,
+  ContainerListFiles,
   ContainerResFormStyles,
   ContainerStepperCreate,
   ContainerUpInputs,
+  ContainerUploadFiles,
   ItemStepper,
   ResidentialFormStyles,
   SteppersStyles,
@@ -20,8 +23,10 @@ import { CreateUserResponseDTO } from "../../../../core/models/interfaces/user-m
 import { pathRoutes } from "../../../../config/routes/paths"
 import {
   ContainerDragAndDropAvatar,
+  ContainerDragAndDropFiles,
   ContainerImageAvatar,
   CustomWrapperInputAvatar,
+  CustomWrapperInputFiles,
   ErrorMessage,
   selectStyles,
   WrapperInput,
@@ -42,7 +47,9 @@ import {
   CreatePropertySchema,
 } from "../../../../core/models/schemas/property-schema"
 import Textarea from "../../../../components/textarea/textarea"
-import { ManagementCompanyDTO } from "../../../../core/models/interfaces/management-company"
+import { setErrResponse } from "../../../../utils/erros-util"
+import { CategoryDTO } from "../../../../core/models/interfaces/category-model"
+import CardFile from "../../../../components/card-file/card-file"
 
 const CreateProperty: React.FC = () => {
   const [stepActive, setStepActive] = React.useState<number>(1)
@@ -57,51 +64,103 @@ const CreateProperty: React.FC = () => {
     setValue("category_id", value.value)
     setSeleOpCategory(value)
   }
-  // Company
-  const [optionsCompany, setOptionsCompany] = React.useState<any>([])
-  const [seleOpCompany, setSeleOpCompany] = React.useState(null)
-  const handleChangeOptionCompany = (value: any) => {
-    setValue("company_id", value.value)
-    setSeleOpCompany(value)
-  }
-  // Agent
-  const [optionsAgent, setOptionsAgent] = React.useState<any>([])
-  const [seleOpAgent, setSeleOpAgent] = React.useState(null)
-  const handleChangeOptionAgent = (value: any) => {
-    setValue("agent_id", value.value)
-    setSeleOpAgent(value)
-  }
   // Owner
   const [optionsOwner, setOptionsOwner] = React.useState<any>([])
   const [seleOpOwner, setSeleOpOwner] = React.useState(null)
   const handleChangeOptionOwner = (value: any) => {
     setValue("owner_id", value.value)
-    setSeleOpAgent(value)
+    setSeleOpOwner(value)
   }
   // City
   const [optionsCity, setOptionsCity] = React.useState<any>([])
   const [seleOpCity, setSeleOpCity] = React.useState(null)
   const handleChangeOptionCity = (value: any) => {
     setValue("city_id", value.value)
-    setSeleOpAgent(value)
+    setSeleOpCity(value)
   }
   // Municipality
   const [optionsMunicipality, setOptionsMunicipality] = React.useState<any>([])
   const [seleOpMunicipality, setSeleOpMunicipality] = React.useState(null)
   const handleChangeOptionMunicipality = (value: any) => {
     setValue("municipality_id", value.value)
-    setSeleOpAgent(value)
+    setSeleOpMunicipality(value)
   }
   // Urbanization
   const [optionsUrbanization, setOptionsUrbanization] = React.useState<any>([])
   const [seleOpUrbanization, setSeleOpUrbanization] = React.useState(null)
   const handleChangeOptionUrbanization = (value: any) => {
     setValue("urbanization_id", value.value)
-    setSeleOpAgent(value)
+    setSeleOpUrbanization(value)
   }
   // // Category
   // const [optionsCategory, setOptionsCategory] = React.useState<any>([])
   // const [seleOpCategory, setSeleOpCategory] = React.useState(null)
+  // Type Property
+  const [typeProperty, setTypeProperty] = React.useState<any>(1)
+
+  const fetchData = async (url: string) => {
+    const storedToken = handleGetToken()
+    if (!storedToken) {
+      throw new Error("No token found")
+    }
+
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      })
+      return response.data
+    } catch (err) {
+      setErrResponse(err)
+      throw err
+    }
+  }
+  // Fetch data selects
+  const fetchDataCategories = async () => {
+    try {
+      const data: CategoryDTO[] = await fetchData(
+        `${settingsApp.api.base}/categories`,
+      )
+      const listData = (data || []).map(item => ({
+        value: item.id,
+        label: item.name,
+      }))
+      setOptionsCategory(listData)
+    } catch (err) {
+      setErrResponse(err)
+    }
+  }
+
+  const fetchDataOwners = async () => {
+    try {
+      const data: CategoryDTO[] = await fetchData(
+        `${settingsApp.api.base}/owners`,
+      )
+      const listData = (data || []).map(item => ({
+        value: item.id,
+        label: item.name,
+      }))
+      setOptionsOwner(listData)
+    } catch (err) {
+      setErrResponse(err)
+    }
+  }
+
+  React.useEffect(() => {
+    const fetchDataAsync = async () => {
+      await Promise.all([
+        fetchDataCategories(),
+        fetchDataOwners(),
+        // getDataCalendar(),
+      ])
+    }
+
+    fetchDataAsync()
+  }, [])
+  // End fetch data selects
 
   const methods = useForm<CreatePropertyForm>({
     resolver: yupResolver(CreatePropertySchema),
@@ -111,14 +170,10 @@ const CreateProperty: React.FC = () => {
       description: "",
       property_type: "",
       price: "",
-      company_id: "",
-      agent_id: "",
       owner_id: "",
       city_id: "",
       municipality_id: "",
       urbanization_id: "",
-      latitude: "",
-      longitude: "",
       client_address: "",
       video_link: "",
       title_image: "",
@@ -199,13 +254,13 @@ const CreateProperty: React.FC = () => {
           },
         })
         .then(response => {
-          const listData: ManagementCompanyDTO[] =
-            response.data as ManagementCompanyDTO[]
+          // const listData: ManagementCompanyDTO[] =
+          //   response.data as ManagementCompanyDTO[]
           // setListManagementCompany(listData)
-          const listProperties = (listData || []).map(data => ({
-            value: data.id,
-            label: data.name,
-          }))
+          // const listProperties = (listData || []).map(data => ({
+          //   value: data.id,
+          //   label: data.name,
+          // }))
           // setOptionsGender(listProperties.filter(propertu => !!propertu))
         })
         .catch(err => {
@@ -218,9 +273,10 @@ const CreateProperty: React.FC = () => {
     fetchListRole()
   }, [])
 
+  // Init Upload picture Title Image
   const [infoPicture, setInfoPicture] = React.useState<any>()
   const handleDeletePictureUser = () => {
-    // setValue("picture", "")
+    setValue("title_image", "")
     setInfoPicture("")
   }
 
@@ -265,6 +321,132 @@ const CreateProperty: React.FC = () => {
     },
     maxFiles: 1,
   })
+  // End Upload picture Title Image
+
+  // Init Upload picture 3D Image
+  const [infoPicture3D, setInfoPicture3D] = React.useState<any>()
+  const handleDeletePictureUser3D = () => {
+    setValue("d_image", "")
+    setInfoPicture3D("")
+  }
+
+  const onDrop3D = React.useCallback(
+    (acceptedFiles: any, rejectedFiles: any) => {
+      if (acceptedFiles.length > 0) {
+        if (acceptedFiles.length > 1) {
+          toast.error("Solo se permite un archivo.")
+          return
+        }
+        const file = acceptedFiles[0]
+        // setValue("picture", file)
+
+        const reader = new FileReader()
+
+        reader.onabort = () => toast.error("File reading was aborted")
+        reader.onerror = () => toast.error("File reading has failed")
+        reader.onload = () => {
+          const binaryStr = reader.result
+          if (binaryStr instanceof ArrayBuffer) {
+            const blob = new Blob([binaryStr], { type: file.type })
+            const imageUrl = URL.createObjectURL(blob)
+            setInfoPicture3D(imageUrl)
+          } else {
+            toast.error("Error al leer el archivo.")
+          }
+        }
+        reader.readAsArrayBuffer(file)
+      }
+
+      if (rejectedFiles.length > 0) {
+        toast.error(
+          'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
+        )
+      }
+    },
+    [],
+  )
+
+  const {
+    getRootProps: getRootProps3D,
+    getInputProps: getInputProps3D,
+    isDragActive: isDragActive3D,
+  } = useDropzone({
+    onDrop: onDrop3D,
+    accept: {
+      "image/png": [".png"],
+      "image/jpeg": [".jpg", ".jpeg"],
+    },
+    maxFiles: 1,
+  })
+  // End Upload picture 3D Image
+
+  // Init Upload picture Gallery image
+  const [listFiles, setListFiles] = React.useState<File[]>([]) // Inicializamos como un array vacío
+
+  const onDropGallery = React.useCallback(
+    (acceptedFiles: any, rejectedFiles: any) => {
+      if (acceptedFiles.length > 0) {
+        const updatedFiles = [...listFiles]
+        acceptedFiles.forEach((file: any) => {
+          // if (updatedFiles.length >= 5) {
+          //   toast.error("Se permite un máximo de 5 archivos.")
+          //   return
+          // }
+          updatedFiles.push(file)
+
+          const reader = new FileReader()
+
+          reader.onabort = () => toast.error("File reading was aborted")
+          reader.onerror = () => toast.error("File reading has failed")
+          reader.onload = () => {
+            const binaryStr = reader.result
+            if (binaryStr instanceof ArrayBuffer) {
+              const blob = new Blob([binaryStr], { type: file.type })
+              const imageUrl = URL.createObjectURL(blob)
+              // Aquí puedes hacer algo con imageUrl, como agregarlo a un estado de URLs
+            } else {
+              toast.error("Error al leer el archivo.")
+            }
+          }
+          reader.readAsArrayBuffer(file)
+        })
+
+        setValue("gallery_images", updatedFiles)
+        setListFiles(updatedFiles)
+      }
+
+      if (rejectedFiles.length > 0) {
+        toast.error(
+          'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
+        )
+      }
+    },
+    [listFiles],
+  )
+
+  const {
+    getRootProps: getRootPropsGallery,
+    getInputProps: getInputPropsGallery,
+    isDragActive: isDragActiveGallery,
+  } = useDropzone({
+    onDrop: onDropGallery,
+    accept: {
+      "image/png": [".png"],
+      "image/jpeg": [".jpg", ".jpeg"],
+    },
+  })
+
+  const handleDeleteOneFile = React.useCallback(
+    (fileToDelete: File) => {
+      setListFiles(prevFiles => prevFiles.filter(file => file !== fileToDelete))
+    },
+    [listFiles],
+  )
+
+  React.useEffect(() => {
+    setValue("gallery_images", listFiles)
+  }, [listFiles])
+  // End Upload picture Gallery Image
 
   const listSteppers = [
     {
@@ -284,6 +466,10 @@ const CreateProperty: React.FC = () => {
       name: "Especificaciones",
     },
   ]
+
+  const handleChangeTypeProperty = (typeProperty: number) => () =>
+    setTypeProperty(typeProperty)
+
   return (
     <>
       <HeaderSection />
@@ -349,14 +535,14 @@ const CreateProperty: React.FC = () => {
                   <label htmlFor="last_name-create-project">
                     Tipo de propiedad
                   </label>
-                  <label>
-                    <input type="checkbox" />
-                    Apartamento
-                  </label>
-                  <label>
-                    <input type="checkbox" />
-                    Inmoviliaria
-                  </label>
+                  <ContainerCheckTypeProperty typeProperty={typeProperty}>
+                    <div onClick={handleChangeTypeProperty(1)}>
+                      <span>Para alquilar</span>
+                    </div>
+                    <div onClick={handleChangeTypeProperty(2)}>
+                      <span>Para vender</span>
+                    </div>
+                  </ContainerCheckTypeProperty>
                 </div>
                 {!!(errors.description as any)?.message && (
                   <ErrorMessage>
@@ -374,38 +560,6 @@ const CreateProperty: React.FC = () => {
                 />
                 {!!(errors.price as any)?.message && (
                   <ErrorMessage>{(errors.price as any)?.message}</ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="company-create-project">Company</label>
-                <Select
-                  id="company-create-project"
-                  defaultValue={seleOpCompany}
-                  onChange={handleChangeOptionCompany}
-                  options={optionsCompany}
-                  isSearchable={true}
-                  styles={selectStyles}
-                />
-                {!!(errors.company_id as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.company_id as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="agent-create-project">Agente</label>
-                <Select
-                  id="agent-create-project"
-                  defaultValue={seleOpAgent}
-                  onChange={handleChangeOptionAgent}
-                  options={optionsAgent}
-                  isSearchable={true}
-                  styles={selectStyles}
-                />
-                {!!(errors.agent_id as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.agent_id as any)?.message}
-                  </ErrorMessage>
                 )}
               </WrapperInput>
               <WrapperInput>
@@ -476,70 +630,133 @@ const CreateProperty: React.FC = () => {
               )}
             </WrapperInput>
             <WrapperInput>
-              <label htmlFor="latitude-create-project">Latitud</label>
+              <label htmlFor="address-create-project">Dirección</label>
               <Input
-                id="latitude-create-project"
-                placeholder="Enter latitud"
+                id="address-create-project"
+                placeholder="Enter description"
                 // icon={TextDescription}
-                register={register("latitude")}
+                register={register("price")}
               />
-              {!!(errors.title as any)?.message && (
-                <ErrorMessage>{(errors.title as any)?.message}</ErrorMessage>
+              {!!(errors.client_address as any)?.message && (
+                <ErrorMessage>
+                  {(errors.client_address as any)?.message}
+                </ErrorMessage>
               )}
             </WrapperInput>
           </ResidentialFormStyles>
         )}
         {stepActive == 3 && (
           <ResidentialFormStyles>
-            <ContainerUpInputs>
-              {/* <CustomWrapperInputAvatar>
-                <label htmlFor="picture-create-project">Imagen</label>
-                <div>
-                  {!!infoPicture ? (
-                    <ContainerImageAvatar>
-                      <img src={infoPicture} />
-                      <div onClick={handleDeletePictureUser}>
-                        <Trash />
-                      </div>
-                    </ContainerImageAvatar>
+            <CustomWrapperInputAvatar>
+              <label htmlFor="picture-create-project">Imagen del titulo</label>
+              <div>
+                {!!infoPicture ? (
+                  <ContainerImageAvatar>
+                    <img src={infoPicture} />
+                    <div onClick={handleDeletePictureUser}>
+                      <Trash />
+                    </div>
+                  </ContainerImageAvatar>
+                ) : (
+                  <ContainerDragAndDropAvatar
+                    {...getRootProps()}
+                    isDragActive={isDragActive}
+                  >
+                    <CardImage />
+                    <input {...getInputProps()} />
+                    {isDragActive ? (
+                      <p>Suelta la imagen aquí</p>
+                    ) : (
+                      <p>Arrastra o haz clic para cargar una imagen</p>
+                    )}
+                  </ContainerDragAndDropAvatar>
+                )}
+              </div>
+              {!!(errors.title_image as any)?.message && (
+                <ErrorMessage>
+                  {(errors.title_image as any)?.message}
+                </ErrorMessage>
+              )}
+            </CustomWrapperInputAvatar>
+            <CustomWrapperInputAvatar>
+              <label htmlFor="picture-create-project">Imagen 3D</label>
+              <div>
+                {!!infoPicture3D ? (
+                  <ContainerImageAvatar>
+                    <img src={infoPicture3D} />
+                    <div onClick={handleDeletePictureUser3D}>
+                      <Trash />
+                    </div>
+                  </ContainerImageAvatar>
+                ) : (
+                  <ContainerDragAndDropAvatar
+                    {...getRootProps3D()}
+                    isDragActive={isDragActive3D}
+                  >
+                    <CardImage />
+                    <input {...getInputProps3D()} />
+                    {isDragActive3D ? (
+                      <p>Suelta la imagen aquí</p>
+                    ) : (
+                      <p>Arrastra o haz clic para cargar una imagen</p>
+                    )}
+                  </ContainerDragAndDropAvatar>
+                )}
+              </div>
+              {!!(errors.title_image as any)?.message && (
+                <ErrorMessage>
+                  {(errors.title_image as any)?.message}
+                </ErrorMessage>
+              )}
+            </CustomWrapperInputAvatar>
+            <ContainerUploadFiles>
+              <CustomWrapperInputFiles>
+                <label htmlFor="picture-create-project">Files</label>
+                <ContainerDragAndDropFiles
+                  {...getRootPropsGallery()}
+                  isDragActive={isDragActive}
+                >
+                  <Files />
+                  <input {...getInputProps()} />
+                  {isDragActive ? (
+                    <p>Drop picture here</p>
                   ) : (
-                    <ContainerDragAndDropAvatar
-                      {...getRootProps()}
-                      isDragActive={isDragActive}
-                    >
-                      <CardImage />
-                      <input {...getInputProps()} />
-                      {isDragActive ? (
-                        <p>Drop picture here</p>
-                      ) : (
-                        <p>Drag or click to upload an image</p>
-                      )}
-                    </ContainerDragAndDropAvatar>
+                    <p>Drag or click this container to upload an image</p>
                   )}
-                </div>
-                {!!(errors.picture as any)?.message && (
+                </ContainerDragAndDropFiles>
+                {!!(errors.gallery_images as any)?.message && (
                   <ErrorMessage>
-                    {(errors.picture as any)?.message}
+                    {(errors.gallery_images as any)?.message}
                   </ErrorMessage>
                 )}
-              </CustomWrapperInputAvatar> */}
-              ss
-            </ContainerUpInputs>
+                {/* <div>{JSON.stringify(listFiles)}</div> */}
+                <ContainerListFiles>
+                  {listFiles.length > 0 &&
+                    (listFiles || []).map(file => (
+                      <CardFile
+                        file={file}
+                        onDeleteFile={() => handleDeleteOneFile(file)}
+                      />
+                    ))}
+                </ContainerListFiles>
+              </CustomWrapperInputFiles>
+            </ContainerUploadFiles>
           </ResidentialFormStyles>
         )}
         {stepActive == 4 && (
-          <ResidentialFormStyles>
-            <ContainerUpInputs>aa</ContainerUpInputs>
-          </ResidentialFormStyles>
+          <>
+            <ResidentialFormStyles>
+              <ContainerUpInputs>aa</ContainerUpInputs>
+            </ResidentialFormStyles>
+            <ContainerButton>
+              <Button
+                onClick={submitWrapper(handleSubmit)}
+                text="Create"
+                isLoading={isSubmitPropertyCreate}
+              />
+            </ContainerButton>
+          </>
         )}
-        <ContainerButton>
-          <Button
-            handleClick={submitWrapper(handleSubmit)}
-            onClick={submitWrapper(handleSubmit)}
-            text="Create"
-            isLoading={isSubmitPropertyCreate}
-          />
-        </ContainerButton>
       </ContainerStepperCreate>
     </>
   )

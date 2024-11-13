@@ -19,27 +19,12 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
 import axios from "axios"
 import { toast } from "sonner"
-import Cookies from "js-cookie"
 import { pathRoutes } from "../../../config/routes/paths"
 import Button from "../../../components/button/button"
-import { ACTIONS_TITLE_APP, COOKIES_APP } from "../../../constants/app"
-import {
-  FilterPermissionsDTO,
-  SignInResponse,
-} from "../../../core/models/interfaces/user-model"
-import {
-  SignInForm,
-  SignInSchema,
-} from "../../../core/models/schemas/signin-schema"
 import { ErrorMessage, WrapperInput } from "../../../config/theme/global-styles"
 import { settingsApp } from "../../../config/environment/settings"
 import { useAppDispatch } from "../../../app/hooks"
-import { updateActionTitleApp } from "../../../core/store/app-store/appSlice"
 import useDataUser from "../../../utils/use-data-user"
-import {
-  createEmptyFilterPermissions,
-  saveJsonCookiesWithSplit,
-} from "../../../utils/cookie-util"
 import {
   ResetPasswordForm,
   ResetPasswordSchema,
@@ -107,7 +92,7 @@ const ResetPassword: React.FC = () => {
         setIsSubmitLogin(false)
         const data: MessageResponsedDTO = response.data
         toast.success(data.message)
-        navigate(pathRoutes.SIGN_IN)
+        navigate(pathRoutes.SIGN_IN.to)
       })
       .catch(err => {
         setIsSubmitLogin(false)
@@ -180,7 +165,7 @@ const ResetPassword: React.FC = () => {
             text="Reset password"
             isLoading={isSubmitLogin}
           />
-          <RecoveryNavLink to={pathRoutes.SIGN_IN}>Sign in</RecoveryNavLink>
+          <RecoveryNavLink to={pathRoutes.SIGN_IN.to}>Sign in</RecoveryNavLink>
         </FormContainer>
       </RightContainer>
     </ContainerSignIn>

@@ -4,7 +4,6 @@ import { LoaderStyles, StyledButton } from "./button.styles"
 
 interface ButtonProps {
   onClick: () => void
-  handleClick: () => void
   type?: "button" | "submit" | "reset"
   className?: string
   text: string
@@ -16,7 +15,6 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({
   onClick,
-  handleClick,
   type = "button",
   className,
   text,
@@ -25,11 +23,11 @@ const Button: React.FC<ButtonProps> = ({
   IconRight,
   customStyles,
 }) => {
-  // const handleClick = () => {
-  //   if (!isLoading) {
-  //     onClick()
-  //   }
-  // }
+  const handleClick = () => {
+    if (!isLoading) {
+      onClick()
+    }
+  }
 
   return (
     <StyledButton

@@ -47,45 +47,15 @@ export enum NAME_APP_MENU {
   REPORTS_LIST = "reports-list",
 }
 
-export enum APP_PERMISSIONS {
-  LIST = "LIST",
-  CREATE = "CREATE",
-  UPDATE = "UPDATE",
-  DELETE = "DELETE",
-}
-
 export enum COOKIES_APP {
   USER_RES = "USER_RES",
   TOKEN_APP = "TOKEN_APP",
   ROLES_APP = "ROLES_APP",
-  PERMISSIONS_APP = "PERMISSIONS_APP",
 }
 
 export enum ACTIONS_TITLE_APP {
   SIGN_IN = "Sign In",
-  DASHBOARD = "Dashboard",
-  USERS = "Users",
-  CREATE_USERS = "Create user",
-  ROLES = "Roles",
-  CREATE_ROLES = "Create role",
-  PROJECTS = "Properties",
-  MANAGEMENT_COMPANY = "Management Company",
-  APARTMENTS = "Apartments",
-  CREATE_PROJECTS = "Create properties",
-  OVERVIEW_PROJECTS = "Overview properties",
-  ACTIVITY_PROJECTS = "Activity properties",
-  TASKS_PROJECTS = "Tasks properties",
-  CONTRACTOR_PROJECTS = "Contractor properties",
-  FILE_PROJECTS = "Files project",
-  SETTINGS_PROJECTS = "Settings project",
-  TASKS = "Services",
-  CREATE_TASKS = "Create task",
-  CALENDAR = "Calendar",
-  DAILY_CALENDAR = "Daily Calendar",
-  REPORTS = "Reports",
-  REPORT_CONTRACTORS = "Contractors Report",
-  REPORT_RESIDENTIAL = "Residential Report",
-  REPORT_CUSTOMERS = "Customers Report",
+  PROPERTIES = "Propiedades",
 }
 
 export enum CURRENCY_APP {

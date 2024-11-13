@@ -2,7 +2,6 @@ export interface SignInResponse {
   "0": UserDTO
   roles: string[]
   token: string
-  permisos: PermissionDTO[]
 }
 
 export interface MeDTO {
@@ -19,7 +18,6 @@ export interface MeDTO {
   createdAt: string
   username: string
   roles: string[]
-  permisos: PermissionDTO[]
 }
 
 export interface UserDTO {
@@ -45,52 +43,7 @@ export interface RoleDTO {
   guardName: string
   createdAt: string
   updatedAt: string
-  permissions: PermissionDTO[]
 }
-
-export interface PermissionDTO {
-  id: number
-  name: string
-  guardName: string
-  createdAt: string
-  updatedAt: string
-  pivot: PivotDTO
-}
-
-export interface PivotDTO {
-  roleId: number
-  permissionId: number
-}
-
-export interface FilterPermissionsDTO {
-  dashboard: string[]
-  user: string[]
-  role: string[]
-  service: string[]
-  company: string[]
-  property: string[]
-  apartment: string[]
-  assignment: string[]
-  calendar: string[]
-  reports: string[]
-  work: string[]
-  quality: string[]
-  contractor: string[]
-}
-
-// export const emptyFilterPermissions = {
-//   dashboard: [],
-//   user: [],
-//   work: [],
-//   role: [],
-//   service: [],
-//   company: [],
-//   property: [],
-//   apartment: [],
-//   assignment: [],
-//   calendar: [],
-//   reports: [],
-// }
 
 export interface CreateUserDTO {
   first_name: string

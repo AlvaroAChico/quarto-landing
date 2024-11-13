@@ -341,7 +341,10 @@ export const ContainerImageAvatar = styled.div`
 `
 
 export const ContainerDragAndDropAvatar = styled.div<{ isDragActive: boolean }>`
-  border: 1px solid ${p => (p.isDragActive ? palette.successColor : "#ebebeb")};
+  border: 1px solid
+    ${p => (p.isDragActive ? palette.successColor : palette.inputBorderolor)};
+  background: ${palette.inputBgColor};
+  color: ${palette.inputTextrolor};
   justify-content: center;
   flex-direction: column;
   align-items: center;
@@ -354,7 +357,7 @@ export const ContainerDragAndDropAvatar = styled.div<{ isDragActive: boolean }>`
   gap: 10px;
 
   > p {
-    color: ${palette.grayColor};
+    color: ${palette.inputTextrolor};
     font-size: 14px;
   }
 
@@ -389,6 +392,45 @@ export const ContainerDragAndDropFiles = styled.div<{ isDragActive: boolean }>`
   &:focus-within {
     border-color: #f59e36; // Color del borde cuando está enfocado
     box-shadow: 0 0 8px rgba(245, 158, 54, 0.5); // Sombra cuando está enfocado
+  }
+`
+
+export const NameStylesTD = styled.td`
+  > div {
+    flex-direction: row;
+    display: flex;
+    gap: 10px;
+
+    > span {
+      > img {
+        border-radius: 16px;
+        object-fit: cover;
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 2px;
+
+      > span {
+        &:nth-child(2) {
+          color: ${palette.grayColor};
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        &:nth-child(2) {
+          color: ${palette.grayColor};
+          font-size: 12px;
+          font-weight: 200;
+        }
+      }
+    }
   }
 `
 

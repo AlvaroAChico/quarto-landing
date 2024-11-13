@@ -12,6 +12,7 @@ export const TableContainer = styled.div`
 
 export const StyledTable = styled.table`
   border-collapse: collapse;
+  // table-layout: auto;
   border-radius: 15px;
   overflow: hidden;
   width: 100%;

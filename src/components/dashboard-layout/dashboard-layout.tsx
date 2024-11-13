@@ -27,23 +27,10 @@ import {
 } from "./dashboard-layout.styles"
 import ImgLogo from "../../assets/img/logo.webp"
 // Icons
-import { User } from "@styled-icons/boxicons-regular/User"
-import { LocalPolice } from "@styled-icons/material/LocalPolice"
-import { FolderOpen } from "@styled-icons/fa-regular/FolderOpen"
-import { Task } from "@styled-icons/boxicons-regular/Task"
-import { Calendar } from "@styled-icons/bootstrap/Calendar"
-import { BarChartFill } from "@styled-icons/bootstrap/BarChartFill"
-import { Dashboard } from "@styled-icons/boxicons-solid/Dashboard"
 import { ExitToApp } from "@styled-icons/material-rounded/ExitToApp"
 import { getRoutes, pathRoutes } from "../../config/routes/paths"
-import { ACTIONS_TITLE_APP, APP_MENU, COOKIES_APP } from "../../constants/app"
-import {
-  FilterPermissionsDTO,
-  MeDTO,
-  PermissionDTO,
-  SignInResponse,
-  UserDTO,
-} from "../../core/models/interfaces/user-model"
+import { COOKIES_APP } from "../../constants/app"
+import { MeDTO, UserDTO } from "../../core/models/interfaces/user-model"
 import Cookies from "js-cookie"
 import { toast } from "sonner"
 import axios from "axios"
@@ -54,28 +41,19 @@ import {
   getActionTitleApp,
   updateActionTitleApp,
 } from "../../core/store/app-store/appSlice"
-import {
-  createEmptyFilterPermissions,
-  saveJsonCookiesWithSplit,
-} from "../../utils/cookie-util"
 import { Bars } from "@styled-icons/fa-solid/Bars"
 import { Close } from "styled-icons/evaicons-solid"
 import Button from "../button/button"
 
 const DashboardLayout: React.FC = () => {
-  // const [dataPermissions, setDataPermissions] =
-  //   React.useState<FilterPermissionsDTO>()
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
   const [isHiddenMenu, setIsHiddenMenu] = React.useState(true)
   const [dataRoles, setDataRoles] = React.useState<string[]>()
   const [dataUser, setDataUser] = React.useState<UserDTO>()
   const titleApp = useAppSelector(getActionTitleApp)
-  const { handleGetToken, clearAllDataAPP, handleGetPermissions } =
-    useDataUser()
+  const { handleGetToken } = useDataUser()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-
-  const [isReportsOpen, setIsReportsOpen] = React.useState(false)
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -83,10 +61,6 @@ const DashboardLayout: React.FC = () => {
 
   const toggleMenuLarge = () => {
     setIsHiddenMenu(!isHiddenMenu)
-  }
-
-  const handleReportsClick = () => {
-    setIsReportsOpen(!isReportsOpen)
   }
 
   const refreshDataMe = async () => {
@@ -128,7 +102,6 @@ const DashboardLayout: React.FC = () => {
         toast.error("Failed to fetch data")
       }
     } else {
-      clearAllDataAPP()
       navigate(pathRoutes.SIGN_IN.to)
     }
   }
@@ -139,36 +112,7 @@ const DashboardLayout: React.FC = () => {
     return () => clearInterval(intervalId)
   }, [])
 
-  React.useEffect(() => {
-    // getCookiesDataUser()
-    // getCookiesDataRole()
-    // getCookiesDataPermission()
-  }, [])
-
-  const getCookiesDataUser = React.useCallback(() => {
-    const data = Cookies.get(COOKIES_APP.USER_RES)
-    if (!!data) {
-      const user: UserDTO = JSON.parse(data) as UserDTO
-      setDataUser(user)
-    }
-  }, [])
-
-  const getCookiesDataRole = React.useCallback(() => {
-    const data = Cookies.get(COOKIES_APP.ROLES_APP)
-    if (!!data) {
-      setDataRoles(JSON.parse(data))
-    }
-  }, [])
-
-  const getCookiesDataPermission = React.useCallback(() => {
-    // const data = handleGetPermissions()
-    // if (!!data) {
-    //   setDataPermissions(data)
-    // }
-  }, [])
-
   const handleLogout = React.useCallback(() => {
-    clearAllDataAPP()
     navigate(pathRoutes.SIGN_IN.to)
   }, [])
 
@@ -176,6 +120,9 @@ const DashboardLayout: React.FC = () => {
     dispatch(updateActionTitleApp(itemNav))
     setIsMenuOpen(false)
   }
+
+  const handleToCreate = () =>
+    navigate(pathRoutes.PROPERTY.otherPaths.CREATE.to)
 
   return (
     <ContainerDashboardLayout>
@@ -216,7 +163,7 @@ const DashboardLayout: React.FC = () => {
           </ContainerBar>
           <ContainerUploadProperty>
             <Button
-              onClick={() => console.log}
+              onClick={handleToCreate}
               text="Subir propiedad"
               isLoading={false}
             />

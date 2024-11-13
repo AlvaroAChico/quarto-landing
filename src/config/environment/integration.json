@@ -2,11 +2,12 @@
   "app": {
     "name": "Quarto",
     "mocks": false,
-    "local": "http://localhost:7003"
+    "local": "http://3.85.120.166"
   },
   "api": {
-    "base": "http://localhost/api",
-    "auth": "http://localhost/api"
+    "base": "http://3.85.120.166/api",
+    "auth": "http://3.85.120.166/api",
+    "base_prod": "http://3.85.120.166/api"
   },
   "i18nDebug": false,
   "cloudEnv": "integration"

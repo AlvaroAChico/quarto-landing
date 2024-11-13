@@ -12,7 +12,7 @@ interface Route {
   label: string
   icon: any
   visible: boolean
-  children: any[]
+  otherPaths: Object
 }
 
 export const pathRoutes = {
@@ -22,15 +22,20 @@ export const pathRoutes = {
     label: "Propiedades",
     icon: Home,
     visible: true,
-    children: [],
-  },
-  CREATE_PROPERTY: {
-    to: "/crear-propiedad",
-    basePath: "/crear-propiedad",
-    label: "Subir propiedad",
-    icon: Home,
-    visible: false,
-    children: [],
+    otherPaths: {
+      CREATE: {
+        to: "/propiedades/crear",
+        basePath: "/propiedades",
+        label: "Crear propiedad",
+        visible: false,
+      },
+      EDIT: {
+        to: "/propiedades/editar",
+        basePath: "/propiedades",
+        label: "Crear propiedad",
+        visible: false,
+      },
+    },
   },
   VISITS: {
     to: "/visitas",
@@ -38,7 +43,7 @@ export const pathRoutes = {
     label: "Visitas",
     icon: DoorClosed,
     visible: true,
-    children: [],
+    otherPaths: {},
   },
   RENTALS: {
     to: "/alquileres",
@@ -46,7 +51,7 @@ export const pathRoutes = {
     label: "Alquileres",
     icon: Key,
     visible: true,
-    children: [],
+    otherPaths: {},
   },
   CALENDAR: {
     to: "/calendario",
@@ -54,7 +59,7 @@ export const pathRoutes = {
     label: "Calendario",
     icon: Calendar,
     visible: true,
-    children: [],
+    otherPaths: {},
   },
   WINNINGS: {
     to: "/ganancias",
@@ -62,7 +67,7 @@ export const pathRoutes = {
     label: "Ganancias",
     icon: Money,
     visible: true,
-    children: [],
+    otherPaths: {},
   },
   PROFILE: {
     to: "/perfil",
@@ -70,7 +75,7 @@ export const pathRoutes = {
     label: "Mi perfil",
     icon: User,
     visible: true,
-    children: [],
+    otherPaths: {},
   },
   INFO: {
     to: "/info",
@@ -78,7 +83,7 @@ export const pathRoutes = {
     label: "Info",
     icon: Info,
     visible: true,
-    children: [],
+    otherPaths: {},
   },
   SIGN_IN: {
     to: "/",
@@ -86,7 +91,7 @@ export const pathRoutes = {
     label: "Iniciar Sesión",
     icon: Home,
     visible: false,
-    children: [],
+    otherPaths: {},
   },
   RECOVERY_PASS: {
     to: "/recuperar-contraseña",
@@ -94,7 +99,7 @@ export const pathRoutes = {
     label: "Recuperar contraseña",
     icon: "",
     visible: false,
-    children: [],
+    otherPaths: {},
   },
   RESET_PASSWORD: {
     to: "/resetear-contraseña",
@@ -102,7 +107,7 @@ export const pathRoutes = {
     label: "Resetear contraseña",
     icon: "",
     visible: false,
-    children: [],
+    otherPaths: {},
   },
 }
 
@@ -115,6 +120,6 @@ export const getRoutes = (): Route[] => {
       label: route.label,
       icon: route.icon,
       visible: route.visible,
-      children: route.children,
+      otherPaths: route.otherPaths,
     }))
 }

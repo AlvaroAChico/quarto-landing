@@ -22,24 +22,10 @@ import { toast } from "sonner"
 import Cookies from "js-cookie"
 import { pathRoutes } from "../../../config/routes/paths"
 import Button from "../../../components/button/button"
-import { ACTIONS_TITLE_APP, COOKIES_APP } from "../../../constants/app"
-import {
-  FilterPermissionsDTO,
-  SignInResponse,
-} from "../../../core/models/interfaces/user-model"
-import {
-  SignInForm,
-  SignInSchema,
-} from "../../../core/models/schemas/signin-schema"
 import { ErrorMessage, WrapperInput } from "../../../config/theme/global-styles"
 import { settingsApp } from "../../../config/environment/settings"
 import { useAppDispatch } from "../../../app/hooks"
-import { updateActionTitleApp } from "../../../core/store/app-store/appSlice"
 import useDataUser from "../../../utils/use-data-user"
-import {
-  createEmptyFilterPermissions,
-  saveJsonCookiesWithSplit,
-} from "../../../utils/cookie-util"
 import {
   RecoveryForm,
   RecoverySchema,
@@ -88,7 +74,7 @@ const RecoveryPass: React.FC = () => {
         const data: MessageResponsedDTO = response.data
         if (!!data && !!data.message) {
           toast.success(data.message)
-          navigate(pathRoutes.SIGN_IN)
+          navigate(pathRoutes.SIGN_IN.to)
         }
         setIsSubmitLogin(false)
       })
@@ -131,7 +117,7 @@ const RecoveryPass: React.FC = () => {
             text="Recovery password"
             isLoading={isSubmitLogin}
           />
-          <RecoveryNavLink to={pathRoutes.SIGN_IN}>
+          <RecoveryNavLink to={pathRoutes.SIGN_IN.to}>
             Iniciar Sesión
           </RecoveryNavLink>
         </FormContainer>

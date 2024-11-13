@@ -55,9 +55,8 @@ const Properties: React.FC = () => {
     }
   }, [])
 
-  const handleToCreate = () => {
-    // navigate(pathRoutes.CREATE_PROPERTY.to)
-  }
+  const handleToCreate = () =>
+    navigate(pathRoutes.PROPERTY.otherPaths.CREATE.to)
 
   return (
     <SectionRoute>
@@ -73,8 +72,7 @@ const Properties: React.FC = () => {
           </p>
           <div>
             <Button
-              onClick={() => console.log("OOOOOOOO")}
-              handleClick={() => console.log("OOOOOOOO")}
+              onClick={handleToCreate}
               text="Subir propiedad"
               isLoading={false}
               customStyles={`
