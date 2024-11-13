@@ -40,6 +40,22 @@ export const router = createBrowserRouter([
         path: pathRoutes.CALENDAR.to,
         element: <div>CALENDAR</div>,
       },
+      {
+        path: pathRoutes.RENTALS.to,
+        element: <div>ALQUILERES</div>,
+      },
+      {
+        path: pathRoutes.WINNINGS.to,
+        element: <div>GANANCIAS</div>,
+      },
+      {
+        path: pathRoutes.PROFILE.to,
+        element: <div>MI PERFIL</div>,
+      },
+      {
+        path: pathRoutes.INFO.to,
+        element: <div>INFO</div>,
+      },
     ],
   },
   {

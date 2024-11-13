@@ -368,7 +368,10 @@ export const ContainerDragAndDropAvatar = styled.div<{ isDragActive: boolean }>`
 `
 
 export const ContainerDragAndDropFiles = styled.div<{ isDragActive: boolean }>`
-  border: 1px solid ${p => (p.isDragActive ? palette.successColor : "#ebebeb")};
+  border: 1px solid
+    ${p => (p.isDragActive ? palette.successColor : palette.inputBorderolor)};
+  background: ${palette.inputBgColor};
+  color: ${palette.inputTextrolor};
   justify-content: center;
   flex-direction: column;
   align-items: center;
@@ -385,7 +388,7 @@ export const ContainerDragAndDropFiles = styled.div<{ isDragActive: boolean }>`
   }
 
   > p {
-    color: ${palette.grayColor};
+    color: ${palette.inputTextrolor};
     font-size: 14px;
   }
 
