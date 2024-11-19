@@ -5,7 +5,7 @@
     "last_name": "Pérez",
     "email": "juan.perez@example.com",
     "phone": "+34 600 123 456",
-    "picture": "https://randomuser.me/api/portraits/men/1.jpg",
+    "picture": "https://img.freepik.com/foto-gratis/apuesto-joven-empresario-traje_273609-6513.jpg",
     "status": "activo"
   },
   {
@@ -14,7 +14,7 @@
     "last_name": "González",
     "email": "maria.gonzalez@example.com",
     "phone": "+34 600 234 567",
-    "picture": "https://randomuser.me/api/portraits/women/2.jpg",
+    "picture": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKfVT3W9G8n-tTZUaSY9dywYTADCEY-VLTKg&s",
     "status": "activo"
   },
   {
@@ -23,7 +23,7 @@
     "last_name": "López",
     "email": "pedro.lopez@example.com",
     "phone": "+34 600 345 678",
-    "picture": "https://randomuser.me/api/portraits/men/3.jpg",
+    "picture": "https://thumbs.dreamstime.com/b/negocio-en-marcha-empresario-que-trabaja-su-laptop-la-calle-cerca-del-edificio-de-oficinas-persona-negocios-hispana-guapa-sentada-274807760.jpg",
     "status": "inactivo"
   },
   {
@@ -32,7 +32,7 @@
     "last_name": "Martínez",
     "email": "ana.martinez@example.com",
     "phone": "+34 600 456 789",
-    "picture": "https://randomuser.me/api/portraits/women/4.jpg",
+    "picture": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNZYvzjC4odXi6f-Xv7hoFBvaFq14t061MkA&s",
     "status": "activo"
   },
   {
@@ -41,7 +41,7 @@
     "last_name": "Sánchez",
     "email": "luis.sanchez@example.com",
     "phone": "+34 600 567 890",
-    "picture": "https://randomuser.me/api/portraits/men/5.jpg",
+    "picture": "https://media.istockphoto.com/id/1364917563/es/foto/hombre-de-negocios-sonriendo-con-los-brazos-cruzados-sobre-fondo-blanco.jpg?s=612x612&w=0&k=20&c=NqMHLF8T4RzPaBE_WMnflSGB_1-kZZTQgAkekUxumZg=",
     "status": "activo"
   },
   {
@@ -50,7 +50,7 @@
     "last_name": "Ramírez",
     "email": "laura.ramirez@example.com",
     "phone": "+34 600 678 901",
-    "picture": "https://randomuser.me/api/portraits/women/6.jpg",
+    "picture": "https://as1.ftcdn.net/v2/jpg/07/92/96/68/1000_F_792966834_XDVbkrlB3RHfSVJ5auQOrpNzECeWBzGX.jpg",
     "status": "inactivo"
   },
   {
@@ -59,7 +59,7 @@
     "last_name": "Torres",
     "email": "jose.torres@example.com",
     "phone": "+34 600 789 012",
-    "picture": "https://randomuser.me/api/portraits/men/7.jpg",
+    "picture": "https://img.freepik.com/fotos-premium/persona-negocios-sonriendo_1023677-27.jpg",
     "status": "activo"
   },
   {
@@ -68,7 +68,7 @@
     "last_name": "Hernández",
     "email": "isabel.hernandez@example.com",
     "phone": "+34 600 890 123",
-    "picture": "https://randomuser.me/api/portraits/women/8.jpg",
+    "picture": "https://img.freepik.com/foto-gratis/joven-empresaria-sonriendo-camara_74855-1682.jpg",
     "status": "activo"
   },
   {
@@ -77,7 +77,7 @@
     "last_name": "Díaz",
     "email": "carlos.diaz@example.com",
     "phone": "+34 600 901 234",
-    "picture": "https://randomuser.me/api/portraits/men/9.jpg",
+    "picture": "https://img.freepik.com/fotos-premium/retrato-brazos-cruzados-hombre-negocios-feliz-persona-o-empresario-sonriendo-inicio-gestion-o-mentalidad-exito-hombre-negocios-agente-masculino-mision-felicidad-laboral-o-confianza_590464-179568.jpg",
     "status": "inactivo"
   },
   {
@@ -86,7 +86,7 @@
     "last_name": "Jiménez",
     "email": "sofia.jimenez@example.com",
     "phone": "+34 600 012 345",
-    "picture": "https://randomuser.me/api/portraits/women/10.jpg",
+    "picture": "https://img.freepik.com/foto-gratis/gerente-oficina-atractivo-exitoso-chaqueta-roja-sosteniendo-pose-segura-si-mismo-linea-mandibula-mano-sonriendo-sintiendose-seguro-que-trato-sea-signo-pie-confiado-trabajando-ambiente-oficina-saludable_176420-35503.jpg",
     "status": "activo"
   }
 ]

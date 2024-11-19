@@ -107,3 +107,5 @@ export const ContainerListProperties = styled.div`
   display: grid;
   gap: 20px;
 `
+
+export const ContainerSearch = styled.div``

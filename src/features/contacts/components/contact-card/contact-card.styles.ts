@@ -11,7 +11,25 @@ export const ContainerCard = styled.div`
   width: 100%;
 
   &:hover {
-    transform: scale(0.9);
+    transform: scale(0.95);
+  }
+
+  > div {
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    > img {
+      width: 100%;
+      border-radius: 50%;
+      margin: auto;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      padding: 20px;
+    }
   }
 
   ${breakpoints.tabletMediumMax} {

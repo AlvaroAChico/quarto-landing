@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import {
   ContainerListProperties,
   ContainerOffer,
+  ContainerSearch,
   ContentStylesSection,
   SectionRoute,
 } from "./contacts.styles"
@@ -12,53 +13,16 @@ import axios from "axios"
 import { toast } from "sonner"
 import useDataUser from "../../utils/use-data-user"
 import { settingsApp } from "../../config/environment/settings"
-import Button from "../../components/button/button"
-import { palette } from "../../config/theme/theme"
-import PropertyCard from "./components/property-card/property-card"
 import { pathRoutes } from "../../config/routes/paths"
-import {
-  ContainerFilters,
-  ContainerReset,
-  ContainerText,
-  ItemFilterStyle,
-  selectFilterStyles,
-} from "../../config/theme/global-styles"
-import { Filter2 } from "@styled-icons/remix-line/Filter2"
-import Select from "react-select"
-import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
-import { Replay } from "@styled-icons/material/Replay"
+import ContactCard from "./components/contact-card/contact-card"
+import { ContactDTO } from "../../core/models/interfaces/contact-model"
 
 const Contacts: React.FC = () => {
   const [listContacts, setListContacts] = React.useState<any[]>([])
-  // Filter ID
-  const [optionsId, setOptionsId] = React.useState<any>([])
-  const [selectedOptionId, setSelectedOptionId] = React.useState<any>(null)
-  const handleChangeOptionId = (value: any) => {
-    setSelectedOptionId(value)
-    const listIds = listContacts.filter(prop => prop.id == value.value)
-  }
-  // Filter Category
-  const [optionsCategory, setOptionsCategory] = React.useState<any>([])
-  const [selectedOptionCategory, setSelectedOptionCategory] =
-    React.useState<any>(null)
-  const handleChangeOptionCategory = (value: any) => {
-    setSelectedOptionCategory(value)
-    const listIds = listContacts.filter(prop => prop.id == value.value)
-  }
-  // Filter Status
-  const [optionsStatus, setOptionsStatus] = React.useState<any>([])
-  const [selectedOptionStatus, setSelectedOptionStatus] =
-    React.useState<any>(null)
-  const handleChangeOptionStatus = (value: any) => {
-    setSelectedOptionStatus(value)
-    const listIds = listContacts.filter(prop => prop.id == value.value)
-  }
-  const [daySelected, setDaySelected] = React.useState<any>(null)
   const { handleGetToken } = useDataUser()
   const navigate = useNavigate()
 
-  const [listProperties, setListProperties] = React.useState<PropertyDTO[]>([])
+  const [listProperties, setListProperties] = React.useState<ContactDTO[]>([])
   const [isLoadingListProperties, setIsLoadingListProperties] =
     React.useState<boolean>(false)
 
@@ -71,7 +35,7 @@ const Contacts: React.FC = () => {
     if (storedToken) {
       setIsLoadingListProperties(true)
       axios
-        .get(`${settingsApp.api.base}/properties`, {
+        .get(`${settingsApp.api.base}/contacts`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             "Content-Type": "application/json",
@@ -79,7 +43,7 @@ const Contacts: React.FC = () => {
           },
         })
         .then(response => {
-          const dataResponse: PropertyDTO[] = response.data as PropertyDTO[]
+          const dataResponse: ContactDTO[] = response.data as ContactDTO[]
           if (!!dataResponse) {
             setListProperties(dataResponse)
           }
@@ -99,109 +63,14 @@ const Contacts: React.FC = () => {
     <SectionRoute>
       <HeaderSection />
       <ContentStylesSection>
-        {/* <ContainerOffer>
-          <h3>
-            ¡Capta y gana <br /> con Quarto!
-          </h3>
-          <p>
-            Una vez que tu propiedad captada se alquile <br /> recibirás el
-            50%-40% del primer mes de alquiler
-          </p>
-          <div>
-            <Button
-              onClick={handleToCreate}
-              text="Subir propiedad"
-              isLoading={false}
-              customStyles={`
-                background: ${palette.whiteColor};
-                color: ${palette.blackColor};
-                font-weight: 600;
-                margin-top: 20px;
-              `}
-            />
-          </div>
-        </ContainerOffer> */}
-        <ContainerFilters>
-          <ItemFilterStyle>
-            <ContainerText>
-              <span>
-                <Filter2 />
-              </span>
-              <span>Filtrar por</span>
-            </ContainerText>
-          </ItemFilterStyle>
-          <ItemFilterStyle>
-            <Select
-              defaultValue={selectedOptionId}
-              onChange={handleChangeOptionId}
-              options={optionsId}
-              isSearchable={false}
-              styles={selectFilterStyles}
-              placeholder="ID"
-            />
-          </ItemFilterStyle>
-          <ItemFilterStyle>
-            {/* <input placeHolder */}
-            <DatePicker
-              id="date-create-apartment"
-              showIcon
-              selected={daySelected}
-              icon={<></>}
-              toggleCalendarOnIconClick
-              onChange={(date: any) => {
-                setDaySelected(date)
-                // setValue("date", date)
-              }}
-              placeholderText="Fecha"
-              popperClassName="some-custom-class"
-              popperPlacement="top-end"
-              popperModifiers={[
-                {
-                  name: "myModifier",
-                  fn(state) {
-                    return state
-                  },
-                },
-              ]}
-            />
-          </ItemFilterStyle>
-          <ItemFilterStyle>
-            <Select
-              defaultValue={selectedOptionId}
-              onChange={handleChangeOptionId}
-              options={optionsId}
-              isSearchable={false}
-              styles={selectFilterStyles}
-              placeholder="Categoría"
-            />
-          </ItemFilterStyle>
-          <ItemFilterStyle>
-            <Select
-              defaultValue={selectedOptionId}
-              onChange={handleChangeOptionId}
-              options={optionsId}
-              isSearchable={false}
-              styles={selectFilterStyles}
-              placeholder="Estado"
-            />
-          </ItemFilterStyle>
-          <ItemFilterStyle>
-            <ContainerReset>
-              <span>
-                <Replay />
-              </span>
-              <span>Reiniciar filtro</span>
-            </ContainerReset>
-          </ItemFilterStyle>
-        </ContainerFilters>
+        <ContainerSearch>
+          <div></div>
+        </ContainerSearch>
         <ContainerListProperties>
           {(listProperties || []).map(prop => (
-            <PropertyCard
+            <ContactCard
               key={prop.id}
-              image={prop.image}
-              name={prop.name}
-              address={prop.address}
-              price={prop.price}
+              contact={prop}
             />
           ))}
         </ContainerListProperties>

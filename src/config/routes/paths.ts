@@ -64,7 +64,7 @@ export const pathRoutes = {
   REFERRALS: {
     to: "/referidos",
     basePath: "/referidos",
-    label: "Referidos",
+    label: "Inquilinos Referidos",
     icon: Key,
     visible: true,
     otherPaths: {},
