@@ -5,7 +5,21 @@ export const ContainerCard = styled.div`
   box-shadow: 8px 10px 30px 4px rgba(238, 236, 243, 1);
   border-radius: 20px;
   background: white;
-  padding: 40px;
+  padding: 30px;
+  width: 260px;
+  min-width: 260px;
+  height: 140px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+
+  > div:nth-last-child(1) {
+    > img {
+      border-radius: 15px;
+      width: 50px;
+    }
+  }
 
   ${breakpoints.tabletLargeMax} {
     padding: 30px;
@@ -13,19 +27,21 @@ export const ContainerCard = styled.div`
 `
 
 export const ContainerHeadTitle = styled.div`
-  flex-direction: row;
-  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: flex-start;
   display: flex;
-  gap: 10px;
+  height: 100%;
+  gap: 8px;
 
   > span {
     &:nth-child(1) {
-      font-size: 35px;
-      font-weight: 900;
+      font-size: 0.8rem;
+      font-weight: 450;
     }
     &:nth-child(2) {
-      font-size: 18px;
-      font-weight: 450;
+      font-size: 1.6rem;
+      font-weight: 900;
     }
   }
 

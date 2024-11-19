@@ -98,7 +98,7 @@ const SignIn: React.FC = () => {
         dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.PROPERTIES))
         setTimeout(() => {
           dispatch(updateActionTitleApp(pathRoutes.PROPERTY.label))
-          navigate(pathRoutes.PROPERTY.to)
+          navigate(pathRoutes.DASHBOARD.to)
         }, 300)
       })
       .catch(err => {

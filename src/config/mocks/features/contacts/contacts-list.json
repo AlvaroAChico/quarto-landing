@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "first_name": "Juan",
+    "last_name": "Pérez",
+    "email": "juan.perez@example.com",
+    "phone": "+34 600 123 456",
+    "picture": "https://randomuser.me/api/portraits/men/1.jpg",
+    "status": "activo"
+  },
+  {
+    "id": 2,
+    "first_name": "María",
+    "last_name": "González",
+    "email": "maria.gonzalez@example.com",
+    "phone": "+34 600 234 567",
+    "picture": "https://randomuser.me/api/portraits/women/2.jpg",
+    "status": "activo"
+  },
+  {
+    "id": 3,
+    "first_name": "Pedro",
+    "last_name": "López",
+    "email": "pedro.lopez@example.com",
+    "phone": "+34 600 345 678",
+    "picture": "https://randomuser.me/api/portraits/men/3.jpg",
+    "status": "inactivo"
+  },
+  {
+    "id": 4,
+    "first_name": "Ana",
+    "last_name": "Martínez",
+    "email": "ana.martinez@example.com",
+    "phone": "+34 600 456 789",
+    "picture": "https://randomuser.me/api/portraits/women/4.jpg",
+    "status": "activo"
+  },
+  {
+    "id": 5,
+    "first_name": "Luis",
+    "last_name": "Sánchez",
+    "email": "luis.sanchez@example.com",
+    "phone": "+34 600 567 890",
+    "picture": "https://randomuser.me/api/portraits/men/5.jpg",
+    "status": "activo"
+  },
+  {
+    "id": 6,
+    "first_name": "Laura",
+    "last_name": "Ramírez",
+    "email": "laura.ramirez@example.com",
+    "phone": "+34 600 678 901",
+    "picture": "https://randomuser.me/api/portraits/women/6.jpg",
+    "status": "inactivo"
+  },
+  {
+    "id": 7,
+    "first_name": "José",
+    "last_name": "Torres",
+    "email": "jose.torres@example.com",
+    "phone": "+34 600 789 012",
+    "picture": "https://randomuser.me/api/portraits/men/7.jpg",
+    "status": "activo"
+  },
+  {
+    "id": 8,
+    "first_name": "Isabel",
+    "last_name": "Hernández",
+    "email": "isabel.hernandez@example.com",
+    "phone": "+34 600 890 123",
+    "picture": "https://randomuser.me/api/portraits/women/8.jpg",
+    "status": "activo"
+  },
+  {
+    "id": 9,
+    "first_name": "Carlos",
+    "last_name": "Díaz",
+    "email": "carlos.diaz@example.com",
+    "phone": "+34 600 901 234",
+    "picture": "https://randomuser.me/api/portraits/men/9.jpg",
+    "status": "inactivo"
+  },
+  {
+    "id": 10,
+    "first_name": "Sofía",
+    "last_name": "Jiménez",
+    "email": "sofia.jimenez@example.com",
+    "phone": "+34 600 012 345",
+    "picture": "https://randomuser.me/api/portraits/women/10.jpg",
+    "status": "activo"
+  }
+]

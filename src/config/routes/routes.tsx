@@ -10,6 +10,10 @@ import CreateProperty from "../../features/properties/functionalities/create-pro
 import RecoveryPass from "../../features/auth/recovery-pass/recovery-pass"
 import ResetPassword from "../../features/auth/reset-password/reset-password"
 import Visits from "../../features/visits/visits"
+import Dashboard from "../../features/dashboard/dashboard"
+import Rentals from "../../features/rentals/rentals"
+import Referrals from "../../features/referrals/referrals"
+import Contacts from "../../features/contacts/contacts"
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +23,10 @@ export const router = createBrowserRouter([
   {
     element: <DashboardLayout />,
     children: [
+      {
+        path: pathRoutes.DASHBOARD.to,
+        element: <Dashboard />,
+      },
       {
         path: pathRoutes.PROPERTY.to,
         children: [
@@ -37,12 +45,20 @@ export const router = createBrowserRouter([
         element: <Visits />,
       },
       {
-        path: pathRoutes.CALENDAR.to,
-        element: <div>CALENDAR</div>,
+        path: pathRoutes.RENTALS.to,
+        element: <Rentals />,
       },
       {
-        path: pathRoutes.RENTALS.to,
-        element: <div>ALQUILERES</div>,
+        path: pathRoutes.REFERRALS.to,
+        element: <Referrals />,
+      },
+      {
+        path: pathRoutes.CONTACTS.to,
+        element: <Contacts />,
+      },
+      {
+        path: pathRoutes.CALENDAR.to,
+        element: <div>CALENDAR</div>,
       },
       {
         path: pathRoutes.WINNINGS.to,

@@ -1,19 +1,17 @@
 import React from "react"
-import HeaderSection from "../../components/header-section/header-section"
-import {
-  ContainerImageVisit,
-  ContainerListVisits,
-  ContainerVisits,
-  ContentStylesSection,
-} from "./visits.styles"
-import Table from "../../components/table/table"
-import axios from "axios"
-import { settingsApp } from "../../config/environment/settings"
+import { RentalDTO } from "../../core/models/interfaces/rental-model"
 import useDataUser from "../../utils/use-data-user"
 import { useNavigate } from "react-router-dom"
-import { VisitDTO } from "../../core/models/interfaces/visits-model"
+import axios from "axios"
+import { settingsApp } from "../../config/environment/settings"
 import { setErrResponse } from "../../utils/erros-util"
-import { StatusCell } from "../../components/table/table.styles"
+import {
+  ContainerImageRental,
+  ContainerListRentals,
+  ContainerRentals,
+  ContentStylesSection,
+} from "./referrals.styles"
+import HeaderSection from "../../components/header-section/header-section"
 import Select from "react-select"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
@@ -26,16 +24,18 @@ import {
 } from "../../config/theme/global-styles"
 import { Filter2 } from "@styled-icons/remix-line/Filter2"
 import { Replay } from "@styled-icons/material/Replay"
-import { Calendar4 } from "@styled-icons/bootstrap/Calendar4"
+import Table from "../../components/table/table"
+import { StatusCell } from "../../components/table/table.styles"
+import { ReferralDTO } from "../../core/models/interfaces/referral-model"
 
-const Visits: React.FC = () => {
-  const [listVisits, setListVisits] = React.useState<VisitDTO[]>([])
+const Referrals: React.FC = () => {
+  const [listRentals, setListRentals] = React.useState<ReferralDTO[]>([])
   // Filter ID
   const [optionsId, setOptionsId] = React.useState<any>([])
   const [selectedOptionId, setSelectedOptionId] = React.useState<any>(null)
   const handleChangeOptionId = (value: any) => {
     setSelectedOptionId(value)
-    const listIds = listVisits.filter(prop => prop.id == value.value)
+    const listIds = listRentals.filter(prop => prop.id == value.value)
   }
   // Filter Category
   const [optionsCategory, setOptionsCategory] = React.useState<any>([])
@@ -43,7 +43,7 @@ const Visits: React.FC = () => {
     React.useState<any>(null)
   const handleChangeOptionCategory = (value: any) => {
     setSelectedOptionCategory(value)
-    const listIds = listVisits.filter(prop => prop.id == value.value)
+    const listIds = listRentals.filter(prop => prop.id == value.value)
   }
   // Filter Status
   const [optionsStatus, setOptionsStatus] = React.useState<any>([])
@@ -51,14 +51,14 @@ const Visits: React.FC = () => {
     React.useState<any>(null)
   const handleChangeOptionStatus = (value: any) => {
     setSelectedOptionStatus(value)
-    const listIds = listVisits.filter(prop => prop.id == value.value)
+    const listIds = listRentals.filter(prop => prop.id == value.value)
   }
   const [daySelected, setDaySelected] = React.useState<any>(null)
 
   const { handleGetToken } = useDataUser()
   const navigate = useNavigate()
 
-  const [isLoadingListVisits, setIsLoadingListVisits] =
+  const [isLoadingListRentals, setIsLoadingListRentals] =
     React.useState<boolean>(false)
 
   React.useEffect(() => {
@@ -68,9 +68,9 @@ const Visits: React.FC = () => {
   const fetchDataProperties = React.useCallback(() => {
     const storedToken = handleGetToken()
     if (storedToken) {
-      setIsLoadingListVisits(true)
+      setIsLoadingListRentals(true)
       axios
-        .get(`${settingsApp.api.base}/visits`, {
+        .get(`${settingsApp.api.base}/referrals`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             "Content-Type": "application/json",
@@ -78,21 +78,21 @@ const Visits: React.FC = () => {
           },
         })
         .then(response => {
-          const dataResponse: VisitDTO[] = response.data as VisitDTO[]
+          const dataResponse: ReferralDTO[] = response.data as ReferralDTO[]
           if (!!dataResponse) {
-            setListVisits(dataResponse)
+            setListRentals(dataResponse)
           }
-          setIsLoadingListVisits(false)
+          setIsLoadingListRentals(false)
         })
         .catch(err => {
           setErrResponse(err)
-          setIsLoadingListVisits(false)
+          setIsLoadingListRentals(false)
         })
     }
   }, [])
 
   return (
-    <ContainerVisits>
+    <ContainerRentals>
       <HeaderSection />
       <ContentStylesSection>
         <ContainerFilters>
@@ -168,56 +168,48 @@ const Visits: React.FC = () => {
             </ContainerReset>
           </ItemFilterStyle>
         </ContainerFilters>
-        <ContainerListVisits>
+        <ContainerListRentals>
           <Table>
             <Table.Header>
               <tr>
-                <Table.Cell>ID</Table.Cell>
-                <Table.Cell>FOTO</Table.Cell>
-                <Table.Cell>DIRECCIÓN</Table.Cell>
-                <Table.Cell>FECHA DE VISITA</Table.Cell>
-                <Table.Cell>HORA</Table.Cell>
-                <Table.Cell>CATEGORÍA</Table.Cell>
+                <Table.Cell>NOMBRE</Table.Cell>
+                <Table.Cell>RESPONSABLE</Table.Cell>
+                <Table.Cell>INGRESOS</Table.Cell>
+                <Table.Cell>FECHA</Table.Cell>
                 <Table.Cell>ESTADO</Table.Cell>
               </tr>
             </Table.Header>
             <Table.Body>
-              {listVisits.map(vis => (
+              {listRentals.map(vis => (
                 <Table.Row key={vis.id}>
-                  <Table.Cell>{vis.id}</Table.Cell>
-                  <Table.Cell>
-                    <ContainerImageVisit>
-                      <img src={vis.image} />
-                    </ContainerImageVisit>
-                  </Table.Cell>
-                  <Table.Cell>{vis.address}</Table.Cell>
+                  <Table.Cell>{vis.name}</Table.Cell>
+                  <Table.Cell>{vis.responsible}</Table.Cell>
                   <Table.Cell>{vis.date}</Table.Cell>
-                  <Table.Cell>{"4:52pm"}</Table.Cell>
-                  <Table.Cell>{vis.category}</Table.Cell>
+                  <Table.Cell>{vis.income}</Table.Cell>
                   <Table.Cell>
                     <StatusCell status={vis.status}>{vis.status}</StatusCell>
                   </Table.Cell>
                   {/* <Table.Cell>
-                    <ContainerActionsTable>
-                      <ButtonAction onClick={() => openModal(ord)}>
-                        <EditAltIcon />
-                      </ButtonAction>
-                      <ButtonAction onClick={() => openDeleteModal(ord)}>
-                        <TrashIcon />
-                      </ButtonAction>
-                      <ButtonAction>
-                        <ThreeDotsIcon />
-                      </ButtonAction>
-                    </ContainerActionsTable>
-                  </Table.Cell> */}
+                      <ContainerActionsTable>
+                        <ButtonAction onClick={() => openModal(ord)}>
+                          <EditAltIcon />
+                        </ButtonAction>
+                        <ButtonAction onClick={() => openDeleteModal(ord)}>
+                          <TrashIcon />
+                        </ButtonAction>
+                        <ButtonAction>
+                          <ThreeDotsIcon />
+                        </ButtonAction>
+                      </ContainerActionsTable>
+                    </Table.Cell> */}
                 </Table.Row>
               ))}
             </Table.Body>
           </Table>
-        </ContainerListVisits>
+        </ContainerListRentals>
       </ContentStylesSection>
-    </ContainerVisits>
+    </ContainerRentals>
   )
 }
 
-export default Visits
+export default Referrals

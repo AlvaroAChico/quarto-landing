@@ -33,6 +33,7 @@ export const breakpoints = {
   desktopMediumMax: "@media (max-width: 1439px)",
   desktopSmallMax: "@media (max-width: 1199px)",
   laptopMax: "@media (max-width: 1023px)",
+  laptopMediumMax: "@media (max-width: 991px)",
   tabletLargeMax: "@media (max-width: 767px)",
   tabletMediumMax: "@media (max-width: 599px)",
   tabletSmallMax: "@media (max-width: 479px)", // Para todos los tamaños de tablet y móviles

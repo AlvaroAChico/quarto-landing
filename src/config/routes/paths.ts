@@ -16,10 +16,34 @@ interface Route {
 }
 
 export const pathRoutes = {
+  DASHBOARD: {
+    to: "/dashboard",
+    basePath: "/dashboard",
+    label: "Dashboard",
+    icon: DoorClosed,
+    visible: true,
+    otherPaths: {},
+  },
+  VISITS: {
+    to: "/visitas",
+    basePath: "/visitas",
+    label: "Visitas",
+    icon: DoorClosed,
+    visible: true,
+    otherPaths: {},
+  },
+  RENTALS: {
+    to: "/alquileres",
+    basePath: "/alquileres",
+    label: "Alquileres",
+    icon: Key,
+    visible: true,
+    otherPaths: {},
+  },
   PROPERTY: {
     to: "/propiedades",
     basePath: "/propiedades",
-    label: "Propiedades",
+    label: "Mis Propiedades",
     icon: Home,
     visible: true,
     otherPaths: {
@@ -37,18 +61,18 @@ export const pathRoutes = {
       },
     },
   },
-  VISITS: {
-    to: "/visitas",
-    basePath: "/visitas",
-    label: "Visitas",
-    icon: DoorClosed,
+  REFERRALS: {
+    to: "/referidos",
+    basePath: "/referidos",
+    label: "Referidos",
+    icon: Key,
     visible: true,
     otherPaths: {},
   },
-  RENTALS: {
-    to: "/alquileres",
-    basePath: "/alquileres",
-    label: "Alquileres",
+  CONTACTS: {
+    to: "/contactos",
+    basePath: "/contactos",
+    label: "Contactos",
     icon: Key,
     visible: true,
     otherPaths: {},

@@ -16,8 +16,45 @@ import Button from "../../components/button/button"
 import { palette } from "../../config/theme/theme"
 import PropertyCard from "./components/property-card/property-card"
 import { pathRoutes } from "../../config/routes/paths"
+import {
+  ContainerFilters,
+  ContainerReset,
+  ContainerText,
+  ItemFilterStyle,
+  selectFilterStyles,
+} from "../../config/theme/global-styles"
+import { Filter2 } from "@styled-icons/remix-line/Filter2"
+import Select from "react-select"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
+import { Replay } from "@styled-icons/material/Replay"
 
 const Properties: React.FC = () => {
+  const [listRentals, setListRentals] = React.useState<any[]>([])
+  // Filter ID
+  const [optionsId, setOptionsId] = React.useState<any>([])
+  const [selectedOptionId, setSelectedOptionId] = React.useState<any>(null)
+  const handleChangeOptionId = (value: any) => {
+    setSelectedOptionId(value)
+    const listIds = listRentals.filter(prop => prop.id == value.value)
+  }
+  // Filter Category
+  const [optionsCategory, setOptionsCategory] = React.useState<any>([])
+  const [selectedOptionCategory, setSelectedOptionCategory] =
+    React.useState<any>(null)
+  const handleChangeOptionCategory = (value: any) => {
+    setSelectedOptionCategory(value)
+    const listIds = listRentals.filter(prop => prop.id == value.value)
+  }
+  // Filter Status
+  const [optionsStatus, setOptionsStatus] = React.useState<any>([])
+  const [selectedOptionStatus, setSelectedOptionStatus] =
+    React.useState<any>(null)
+  const handleChangeOptionStatus = (value: any) => {
+    setSelectedOptionStatus(value)
+    const listIds = listRentals.filter(prop => prop.id == value.value)
+  }
+  const [daySelected, setDaySelected] = React.useState<any>(null)
   const { handleGetToken } = useDataUser()
   const navigate = useNavigate()
 
@@ -62,7 +99,7 @@ const Properties: React.FC = () => {
     <SectionRoute>
       <HeaderSection />
       <ContentStylesSection>
-        <ContainerOffer>
+        {/* <ContainerOffer>
           <h3>
             ¡Capta y gana <br /> con Quarto!
           </h3>
@@ -83,7 +120,80 @@ const Properties: React.FC = () => {
               `}
             />
           </div>
-        </ContainerOffer>
+        </ContainerOffer> */}
+        <ContainerFilters>
+          <ItemFilterStyle>
+            <ContainerText>
+              <span>
+                <Filter2 />
+              </span>
+              <span>Filtrar por</span>
+            </ContainerText>
+          </ItemFilterStyle>
+          <ItemFilterStyle>
+            <Select
+              defaultValue={selectedOptionId}
+              onChange={handleChangeOptionId}
+              options={optionsId}
+              isSearchable={false}
+              styles={selectFilterStyles}
+              placeholder="ID"
+            />
+          </ItemFilterStyle>
+          <ItemFilterStyle>
+            {/* <input placeHolder */}
+            <DatePicker
+              id="date-create-apartment"
+              showIcon
+              selected={daySelected}
+              icon={<></>}
+              toggleCalendarOnIconClick
+              onChange={(date: any) => {
+                setDaySelected(date)
+                // setValue("date", date)
+              }}
+              placeholderText="Fecha"
+              popperClassName="some-custom-class"
+              popperPlacement="top-end"
+              popperModifiers={[
+                {
+                  name: "myModifier",
+                  fn(state) {
+                    return state
+                  },
+                },
+              ]}
+            />
+          </ItemFilterStyle>
+          <ItemFilterStyle>
+            <Select
+              defaultValue={selectedOptionId}
+              onChange={handleChangeOptionId}
+              options={optionsId}
+              isSearchable={false}
+              styles={selectFilterStyles}
+              placeholder="Categoría"
+            />
+          </ItemFilterStyle>
+          <ItemFilterStyle>
+            <Select
+              defaultValue={selectedOptionId}
+              onChange={handleChangeOptionId}
+              options={optionsId}
+              isSearchable={false}
+              styles={selectFilterStyles}
+              placeholder="Estado"
+            />
+          </ItemFilterStyle>
+          <ItemFilterStyle>
+            <ContainerReset>
+              <span>
+                <Replay />
+              </span>
+              <span>Reiniciar filtro</span>
+            </ContainerReset>
+          </ItemFilterStyle>
+        </ContainerFilters>
         <ContainerListProperties>
           {(listProperties || []).map(prop => (
             <PropertyCard

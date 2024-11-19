@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "name": "Juan Pérez",
+    "responsible": "Acompañante",
+    "income": 1500,
+    "date": "2023-10-01",
+    "status": "Aceptada"
+  },
+  {
+    "id": 2,
+    "name": "María Rodríguez",
+    "responsible": "Individual",
+    "income": 1200,
+    "date": "2023-09-15",
+    "status": "En proceso"
+  },
+  {
+    "id": 3,
+    "name": "Luis Gómez",
+    "responsible": "Acompañante",
+    "income": 1800,
+    "date": "2023-09-20",
+    "status": "Rechazado"
+  },
+  {
+    "id": 4,
+    "name": "Ana Torres",
+    "responsible": "Individual",
+    "income": 2000,
+    "date": "2023-10-05",
+    "status": "Aceptada"
+  },
+  {
+    "id": 5,
+    "name": "Carlos Fernández",
+    "responsible": "Acompañante",
+    "income": 1300,
+    "date": "2023-09-10",
+    "status": "En proceso"
+  },
+  {
+    "id": 6,
+    "name": "Patricia Martínez",
+    "responsible": "Individual",
+    "income": 1600,
+    "date": "2023-09-25",
+    "status": "Rechazado"
+  },
+  {
+    "id": 7,
+    "name": "Sofía López",
+    "responsible": "Acompañante",
+    "income": 1750,
+    "date": "2023-10-02",
+    "status": "Aceptada"
+  },
+  {
+    "id": 8,
+    "name": "Andrés Sánchez",
+    "responsible": "Individual",
+    "income": 1900,
+    "date": "2023-09-03",
+    "status": "Rechazado"
+  },
+  {
+    "id": 9,
+    "name": "Elena Ruiz",
+    "responsible": "Acompañante",
+    "income": 2100,
+    "date": "2023-09-22",
+    "status": "Aceptada"
+  },
+  {
+    "id": 10,
+    "name": "Javier Castro",
+    "responsible": "Individual",
+    "income": 1550,
+    "date": "2023-09-14",
+    "status": "En proceso"
+  }
+]

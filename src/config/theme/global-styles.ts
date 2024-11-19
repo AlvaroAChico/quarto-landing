@@ -437,6 +437,47 @@ export const NameStylesTD = styled.td`
   }
 `
 
+export const ContainerFilters = styled.div`
+  margin-bottom: 20px;
+  flex-direction: row;
+  border-radius: 20px;
+  width: fit-content;
+  background: white;
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+`
+
+export const ItemFilterStyle = styled.div``
+
+export const ContainerText = styled.div`
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 100%;
+  width: 100%;
+
+  > span svg {
+    width: 100%;
+    max-width: 20px;
+  }
+`
+
+export const ContainerReset = styled.div`
+  color: ${palette.redColor};
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  height: 100%;
+  width: 100%;
+
+  > span svg {
+    width: 100%;
+    max-width: 20px;
+  }
+`
+
 export const selectStyles = {
   control: (provided: any, state: any) => ({
     ...provided,

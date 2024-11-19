@@ -2,6 +2,9 @@ import { http, HttpResponse } from "msw"
 import SignInJSON from "../features/auth/sign-in.json"
 import PropertiesListJSON from "../features/properties/property-list.json"
 import VisitsListJSON from "../features/visits/visits-list.json"
+import RentalsListJSON from "../features/rentals/rentals-list.json"
+import ReferralsListJSON from "../features/referrals/referrals-list.json"
+import ContactsListJSON from "../features/contacts/contacts-list.json"
 
 import meJSON from "../features/auth/me.json"
 import { settingsApp } from "../../environment/settings"
@@ -18,8 +21,20 @@ export const handlers = [
   http.get(`${settingsApp.api.base}/visits`, () => {
     return HttpResponse.json(VisitsListJSON)
   }),
+  // ******************** RENTALS ********************
+  http.get(`${settingsApp.api.base}/rentals`, () => {
+    return HttpResponse.json(RentalsListJSON)
+  }),
+  // ******************** REFERRALS ********************
+  http.get(`${settingsApp.api.base}/referrals`, () => {
+    return HttpResponse.json(ReferralsListJSON)
+  }),
   // ******************** PROPERTIES ********************
   http.get(`${settingsApp.api.base}/properties`, () => {
     return HttpResponse.json(PropertiesListJSON)
+  }),
+  // ******************** CONTACTS ********************
+  http.get(`${settingsApp.api.base}/contacts`, () => {
+    return HttpResponse.json(ContactsListJSON)
   }),
 ]

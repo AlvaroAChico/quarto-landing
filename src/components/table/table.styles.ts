@@ -78,14 +78,16 @@ export const StyledTableCell = styled.td`
 
 export const StatusCell = styled.div<{ status: string }>`
   background: ${p =>
-    p.status == "realizada"
+    p.status.toLowerCase() == "realizada".toLowerCase() ||
+    p.status.toLowerCase() == "completada".toLowerCase() ||
+    p.status.toLowerCase() == "aceptada".toLowerCase()
       ? palette.successColor
-      : p.status == "aceptada"
+      : p.status.toLowerCase() == "aceptada".toLowerCase()
         ? palette.infoColor
         : palette.errorColor};
 
   color: ${p =>
-    p.status == "realizada"
+    p.status == "realizada" || p.status == "completada"
       ? palette.successColorHover
       : p.status == "aceptada"
         ? palette.infoColorHover

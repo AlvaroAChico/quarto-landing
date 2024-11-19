@@ -24,6 +24,7 @@ import {
   ContainerOverlay,
   BurguerMenuStyles,
   ContainerFullMenu,
+  ContainerOutletStyles,
 } from "./dashboard-layout.styles"
 import ImgLogo from "../../assets/img/logo.webp"
 // Icons
@@ -169,9 +170,9 @@ const DashboardLayout: React.FC = () => {
             />
           </ContainerUploadProperty>
         </div>
-        <div>
+        <ContainerOutletStyles>
           <Outlet />
-        </div>
+        </ContainerOutletStyles>
       </ContainerOutlet>
       <BurguerMenuStyles>
         <ContainerOverlay isOpen={isMenuOpen} />

@@ -42,7 +42,7 @@ export const ContainerSidebar = styled.div<{ open: boolean }>`
 
 export const ContainerOutlet = styled.div`
   box-sizing: border-box;
-  width: 100%;
+  width: calc(100% - 250px);
 
   > div:nth-child(1) {
     background: ${palette.whiteColor};
@@ -57,20 +57,6 @@ export const ContainerOutlet = styled.div`
 
     ${breakpoints.tabletLargeMax} {
       max-height: 140px;
-    }
-  }
-
-  > div:nth-child(2) {
-    background: ${palette.inputBgColor};
-    width: 100%;
-    height: calc(100% - 80px);
-    box-sizing: border-box;
-    overflow-y: auto;
-    padding: 30px;
-    margin: 0;
-
-    ${breakpoints.tabletLargeMax} {
-      height: calc(100% - 140px);
     }
   }
 
@@ -447,5 +433,19 @@ export const ContainerOverlay = styled.div<{ isOpen: boolean }>`
   ${breakpoints.laptopMin} {
     visibility: hidden;
     width: 0%;
+  }
+`
+
+export const ContainerOutletStyles = styled.div`
+  background: ${palette.inputBgColor};
+  width: 100%;
+  height: calc(100% - 80px);
+  box-sizing: border-box;
+  overflow-y: auto;
+  padding: 30px;
+  margin: 0;
+
+  ${breakpoints.tabletLargeMax} {
+    height: calc(100% - 140px);
   }
 `
