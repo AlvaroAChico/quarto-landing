@@ -14,6 +14,9 @@ import Dashboard from "../../features/dashboard/dashboard"
 import Rentals from "../../features/rentals/rentals"
 import Referrals from "../../features/referrals/referrals"
 import Contacts from "../../features/contacts/contacts"
+import Chats from "../../features/chats/chats"
+import DetailVisits from "../../features/visits/functionalities/detail-visits/detail-visits"
+import CreateReferral from "../../features/referrals/functionalities/create-referral/create-referral"
 
 export const router = createBrowserRouter([
   {
@@ -42,7 +45,16 @@ export const router = createBrowserRouter([
       },
       {
         path: pathRoutes.VISITS.to,
-        element: <Visits />,
+        children: [
+          {
+            path: pathRoutes.VISITS.to,
+            element: <Visits />,
+          },
+          {
+            path: pathRoutes.VISITS.otherPaths.VIEW.to,
+            element: <DetailVisits />,
+          },
+        ],
       },
       {
         path: pathRoutes.RENTALS.to,
@@ -50,7 +62,16 @@ export const router = createBrowserRouter([
       },
       {
         path: pathRoutes.REFERRALS.to,
-        element: <Referrals />,
+        children: [
+          {
+            path: pathRoutes.REFERRALS.to,
+            element: <Referrals />,
+          },
+          {
+            path: pathRoutes.REFERRALS.otherPaths.CREATE.to,
+            element: <CreateReferral />,
+          },
+        ],
       },
       {
         path: pathRoutes.CONTACTS.to,
@@ -61,15 +82,15 @@ export const router = createBrowserRouter([
         element: <div>CALENDAR</div>,
       },
       {
-        path: pathRoutes.WINNINGS.to,
-        element: <div>GANANCIAS</div>,
-      },
-      {
         path: pathRoutes.PROFILE.to,
         element: <div>MI PERFIL</div>,
       },
       {
-        path: pathRoutes.INFO.to,
+        path: pathRoutes.CHATS.to,
+        element: <Chats />,
+      },
+      {
+        path: pathRoutes.INFO_PRODUCTS.to,
         element: <div>INFO</div>,
       },
     ],

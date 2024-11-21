@@ -5,6 +5,7 @@ import {
   ContainerListVisits,
   ContainerVisits,
   ContentStylesSection,
+  StatusCellVisits,
 } from "./visits.styles"
 import Table from "../../components/table/table"
 import axios from "axios"
@@ -13,20 +14,24 @@ import useDataUser from "../../utils/use-data-user"
 import { useNavigate } from "react-router-dom"
 import { VisitDTO } from "../../core/models/interfaces/visits-model"
 import { setErrResponse } from "../../utils/erros-util"
-import { StatusCell } from "../../components/table/table.styles"
 import Select from "react-select"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import {
   ContainerFilters,
   ContainerReset,
+  ContainerResetMobileFilter,
   ContainerText,
   ItemFilterStyle,
   selectFilterStyles,
+  selectStylesFilterTable,
 } from "../../config/theme/global-styles"
 import { Filter2 } from "@styled-icons/remix-line/Filter2"
 import { Replay } from "@styled-icons/material/Replay"
 import { Calendar4 } from "@styled-icons/bootstrap/Calendar4"
+import { routeWithReplaceId } from "../../utils/path-util"
+import { pathRoutes } from "../../config/routes/paths"
+import { ArrowIosDownward } from "@styled-icons/evaicons-solid/ArrowIosDownward"
 
 const Visits: React.FC = () => {
   const [listVisits, setListVisits] = React.useState<VisitDTO[]>([])
@@ -91,10 +96,27 @@ const Visits: React.FC = () => {
     }
   }, [])
 
+  const handleNavigateView = (id: string) => () =>
+    navigate(routeWithReplaceId(pathRoutes.VISITS.otherPaths.VIEW.to, id))
+
   return (
     <ContainerVisits>
       <HeaderSection />
       <ContentStylesSection>
+        <ContainerResetMobileFilter>
+          <ContainerText>
+            <span>
+              <Filter2 />
+            </span>
+            <span>Filtrar por</span>
+          </ContainerText>
+          <ContainerReset>
+            <span>
+              <Replay />
+            </span>
+            <span>Reiniciar filtro</span>
+          </ContainerReset>
+        </ContainerResetMobileFilter>
         <ContainerFilters>
           <ItemFilterStyle>
             <ContainerText>
@@ -110,8 +132,9 @@ const Visits: React.FC = () => {
               onChange={handleChangeOptionId}
               options={optionsId}
               isSearchable={false}
-              styles={selectFilterStyles}
+              styles={selectStylesFilterTable}
               placeholder="ID"
+              noOptionsMessage={() => <>Sin resultados</>}
             />
           </ItemFilterStyle>
           <ItemFilterStyle>
@@ -127,7 +150,6 @@ const Visits: React.FC = () => {
                 // setValue("date", date)
               }}
               placeholderText="Fecha"
-              popperClassName="some-custom-class"
               popperPlacement="top-end"
               popperModifiers={[
                 {
@@ -138,6 +160,9 @@ const Visits: React.FC = () => {
                 },
               ]}
             />
+            <span>
+              <ArrowIosDownward />
+            </span>
           </ItemFilterStyle>
           <ItemFilterStyle>
             <Select
@@ -145,8 +170,9 @@ const Visits: React.FC = () => {
               onChange={handleChangeOptionId}
               options={optionsId}
               isSearchable={false}
-              styles={selectFilterStyles}
+              styles={selectStylesFilterTable}
               placeholder="Categoría"
+              noOptionsMessage={() => <>Sin resultados</>}
             />
           </ItemFilterStyle>
           <ItemFilterStyle>
@@ -155,8 +181,9 @@ const Visits: React.FC = () => {
               onChange={handleChangeOptionId}
               options={optionsId}
               isSearchable={false}
-              styles={selectFilterStyles}
+              styles={selectStylesFilterTable}
               placeholder="Estado"
+              noOptionsMessage={() => <>Sin resultados</>}
             />
           </ItemFilterStyle>
           <ItemFilterStyle>
@@ -173,7 +200,6 @@ const Visits: React.FC = () => {
             <Table.Header>
               <tr>
                 <Table.Cell>ID</Table.Cell>
-                <Table.Cell>FOTO</Table.Cell>
                 <Table.Cell>DIRECCIÓN</Table.Cell>
                 <Table.Cell>FECHA DE VISITA</Table.Cell>
                 <Table.Cell>HORA</Table.Cell>
@@ -183,19 +209,19 @@ const Visits: React.FC = () => {
             </Table.Header>
             <Table.Body>
               {listVisits.map(vis => (
-                <Table.Row key={vis.id}>
+                <Table.Row
+                  key={vis.id}
+                  onDoubleClick={handleNavigateView(vis.id.toString())}
+                >
                   <Table.Cell>{vis.id}</Table.Cell>
-                  <Table.Cell>
-                    <ContainerImageVisit>
-                      <img src={vis.image} />
-                    </ContainerImageVisit>
-                  </Table.Cell>
                   <Table.Cell>{vis.address}</Table.Cell>
                   <Table.Cell>{vis.date}</Table.Cell>
                   <Table.Cell>{"4:52pm"}</Table.Cell>
                   <Table.Cell>{vis.category}</Table.Cell>
                   <Table.Cell>
-                    <StatusCell status={vis.status}>{vis.status}</StatusCell>
+                    <StatusCellVisits status={vis.status}>
+                      {vis.status}
+                    </StatusCellVisits>
                   </Table.Cell>
                   {/* <Table.Cell>
                     <ContainerActionsTable>

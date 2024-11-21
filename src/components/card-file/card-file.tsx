@@ -1,11 +1,11 @@
 import React from "react"
 import { CardFileStyles, CloseStyles } from "./card-file.styles"
-import WordIMG from "../../assets/img/icon-word.png"
-import PdfIMG from "../../assets/img/icon-pdf.png"
-import ImageIMG from "../../assets/img/icon-image.png"
-import PowerPointIMG from "../../assets/img/icon-powerpoint.png"
-import ExcelIMG from "../../assets/img/icon-excel.png"
-import OtherArchiveIMG from "../../assets/img/icon-archive.png"
+import WordIMG from "../../assets/img/icons/icon-word.png"
+import PdfIMG from "../../assets/img/icons/icon-pdf.png"
+import ImageIMG from "../../assets/img/icons/icon-image.png"
+import PowerPointIMG from "../../assets/img/icons/icon-powerpoint.png"
+import ExcelIMG from "../../assets/img/icons/icon-excel.png"
+import OtherArchiveIMG from "../../assets/img/icons/icon-archive.png"
 import { Close } from "styled-icons/evaicons-solid"
 interface IOwnProps {
   file: File

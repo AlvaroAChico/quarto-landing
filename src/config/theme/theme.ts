@@ -14,7 +14,7 @@ export const palette = {
   inputBorderolor: "#D5D5D5",
   inputTextrolor: "#A6A6A6",
   // Alerts color
-  successColor: "#CCF0EB",
+  successColor: "#00B634",
   successColorHover: "#00B69B",
   infoColor: "#FFEDDD",
   infoColorHover: "#FFA756",

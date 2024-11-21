@@ -18,14 +18,17 @@ import "react-datepicker/dist/react-datepicker.css"
 import {
   ContainerFilters,
   ContainerReset,
+  ContainerResetMobileFilter,
   ContainerText,
   ItemFilterStyle,
   selectFilterStyles,
+  selectStylesFilterTable,
 } from "../../config/theme/global-styles"
 import { Filter2 } from "@styled-icons/remix-line/Filter2"
 import { Replay } from "@styled-icons/material/Replay"
 import Table from "../../components/table/table"
 import { StatusCell } from "../../components/table/table.styles"
+import { ArrowIosDownward } from "styled-icons/evaicons-solid"
 
 const Rentals: React.FC = () => {
   const [listRentals, setListRentals] = React.useState<RentalDTO[]>([])
@@ -53,6 +56,7 @@ const Rentals: React.FC = () => {
     const listIds = listRentals.filter(prop => prop.id == value.value)
   }
   const [daySelected, setDaySelected] = React.useState<any>(null)
+  const [daySelectedPay, setDaySelectedPay] = React.useState<any>(null)
 
   const { handleGetToken } = useDataUser()
   const navigate = useNavigate()
@@ -94,6 +98,20 @@ const Rentals: React.FC = () => {
     <ContainerRentals>
       <HeaderSection />
       <ContentStylesSection>
+        <ContainerResetMobileFilter>
+          <ContainerText>
+            <span>
+              <Filter2 />
+            </span>
+            <span>Filtrar por</span>
+          </ContainerText>
+          <ContainerReset>
+            <span>
+              <Replay />
+            </span>
+            <span>Reiniciar filtro</span>
+          </ContainerReset>
+        </ContainerResetMobileFilter>
         <ContainerFilters>
           <ItemFilterStyle>
             <ContainerText>
@@ -109,8 +127,9 @@ const Rentals: React.FC = () => {
               onChange={handleChangeOptionId}
               options={optionsId}
               isSearchable={false}
-              styles={selectFilterStyles}
+              styles={selectStylesFilterTable}
               placeholder="ID"
+              noOptionsMessage={() => <>Sin resultados</>}
             />
           </ItemFilterStyle>
           <ItemFilterStyle>
@@ -125,8 +144,7 @@ const Rentals: React.FC = () => {
                 setDaySelected(date)
                 // setValue("date", date)
               }}
-              placeholderText="Fecha"
-              popperClassName="some-custom-class"
+              placeholderText="Fecha de inicio"
               popperPlacement="top-end"
               popperModifiers={[
                 {
@@ -137,16 +155,36 @@ const Rentals: React.FC = () => {
                 },
               ]}
             />
+            <span>
+              <ArrowIosDownward />
+            </span>
           </ItemFilterStyle>
           <ItemFilterStyle>
-            <Select
-              defaultValue={selectedOptionId}
-              onChange={handleChangeOptionId}
-              options={optionsId}
-              isSearchable={false}
-              styles={selectFilterStyles}
-              placeholder="Categoría"
+            {/* <input placeHolder */}
+            <DatePicker
+              id="date-create-apartment"
+              showIcon
+              selected={daySelectedPay}
+              icon={<></>}
+              toggleCalendarOnIconClick
+              onChange={(date: any) => {
+                setDaySelectedPay(date)
+                // setValue("date", date)
+              }}
+              placeholderText="Fecha de pago"
+              popperPlacement="top-end"
+              popperModifiers={[
+                {
+                  name: "myModifier",
+                  fn(state) {
+                    return state
+                  },
+                },
+              ]}
             />
+            <span>
+              <ArrowIosDownward />
+            </span>
           </ItemFilterStyle>
           <ItemFilterStyle>
             <Select
@@ -154,8 +192,9 @@ const Rentals: React.FC = () => {
               onChange={handleChangeOptionId}
               options={optionsId}
               isSearchable={false}
-              styles={selectFilterStyles}
+              styles={selectStylesFilterTable}
               placeholder="Estado"
+              noOptionsMessage={() => <>Sin resultados</>}
             />
           </ItemFilterStyle>
           <ItemFilterStyle>
@@ -172,7 +211,6 @@ const Rentals: React.FC = () => {
             <Table.Header>
               <tr>
                 <Table.Cell>ID</Table.Cell>
-                <Table.Cell>FOTO</Table.Cell>
                 <Table.Cell>DIRECCIÓN</Table.Cell>
                 <Table.Cell>FECHA DE INICIO</Table.Cell>
                 <Table.Cell>FECHA DE PAGO</Table.Cell>
@@ -183,11 +221,6 @@ const Rentals: React.FC = () => {
               {listRentals.map(vis => (
                 <Table.Row key={vis.id}>
                   <Table.Cell>{vis.id}</Table.Cell>
-                  <Table.Cell>
-                    <ContainerImageRental>
-                      <img src={vis.image} />
-                    </ContainerImageRental>
-                  </Table.Cell>
                   <Table.Cell>{vis.address}</Table.Cell>
                   <Table.Cell>{vis.date_init}</Table.Cell>
                   <Table.Cell>{vis.date_payment}</Table.Cell>

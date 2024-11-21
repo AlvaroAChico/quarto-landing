@@ -1,0 +1,28 @@
+{
+  "id": 1,
+  "name_rental": "089 Kutch Green Apt. 448",
+  "status": "Completada",
+  "date_visit": "26/10/2024",
+  "time_visit": "11:00 am",
+  "note": "Se realizó la visita, el inquilino quedó en avisar si quiere concretar el alquiler",
+  "agent": {
+    "name": "Ana Carolina",
+    "id_pa": "1.374"
+  },
+  "tenant": {
+    "name": "Jhonatan Jhossue",
+    "profile": "Caballero de 35 años, desea alquilar junto a dos socios para tener una oficina de su negocico, posee 2 camionetas para el trabajo.",
+    "contact": {
+      "whatsapp": true,
+      "phone": true
+    }
+  },
+  "owner": {
+    "name": "Verónica Graciela",
+    "property_features": "Casa para uso comercial. Se alquila un espacio de la casa, con entrada independiente, zona de descarga. Racionamiento de agua: Lun - Mie Todo el día, Jue - Dom 8-9pm. No tiene internet.",
+    "contact": {
+      "whatsapp": "123456789",
+      "phone": "123456789"
+    }
+  }
+}

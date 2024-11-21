@@ -4,6 +4,8 @@ export interface PropertyDTO {
   name: string
   address: string
   price: number
+  type: string
+  status: string
 }
 
 export interface InitValuesProperty {

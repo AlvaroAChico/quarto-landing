@@ -4,13 +4,14 @@ import { SwiperSlide } from "swiper/react"
 import { palette } from "../../config/theme/theme"
 
 export const ContainerDashboard = styled.div`
+  justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
   display: flex;
   width: 100%;
   gap: 20px;
 
-  ${breakpoints.tabletMediumMax} {
+  ${breakpoints.phoneLargeMax} {
     flex-direction: column;
   }
 `

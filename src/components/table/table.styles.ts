@@ -94,9 +94,11 @@ export const StatusCell = styled.div<{ status: string }>`
         : palette.errorColorHover};
 
   text-transform: capitalize;
-  border-radius: 10px;
+  border-radius: 6
+  px;
   place-items: center;
-  font-weight: 800;
+  font-size: 0.8rem;
+  font-weight: 600;
   display: grid;
   padding: 5px;
 `

@@ -19,15 +19,18 @@ import { pathRoutes } from "../../config/routes/paths"
 import {
   ContainerFilters,
   ContainerReset,
+  ContainerResetMobileFilter,
   ContainerText,
   ItemFilterStyle,
   selectFilterStyles,
+  selectStylesFilterTable,
 } from "../../config/theme/global-styles"
 import { Filter2 } from "@styled-icons/remix-line/Filter2"
 import Select from "react-select"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { Replay } from "@styled-icons/material/Replay"
+import { ArrowIosDownward } from "styled-icons/evaicons-solid"
 
 const Properties: React.FC = () => {
   const [listRentals, setListRentals] = React.useState<any[]>([])
@@ -99,28 +102,20 @@ const Properties: React.FC = () => {
     <SectionRoute>
       <HeaderSection />
       <ContentStylesSection>
-        {/* <ContainerOffer>
-          <h3>
-            ¡Capta y gana <br /> con Quarto!
-          </h3>
-          <p>
-            Una vez que tu propiedad captada se alquile <br /> recibirás el
-            50%-40% del primer mes de alquiler
-          </p>
-          <div>
-            <Button
-              onClick={handleToCreate}
-              text="Subir propiedad"
-              isLoading={false}
-              customStyles={`
-                background: ${palette.whiteColor};
-                color: ${palette.blackColor};
-                font-weight: 600;
-                margin-top: 20px;
-              `}
-            />
-          </div>
-        </ContainerOffer> */}
+        <ContainerResetMobileFilter>
+          <ContainerText>
+            <span>
+              <Filter2 />
+            </span>
+            <span>Filtrar por</span>
+          </ContainerText>
+          <ContainerReset>
+            <span>
+              <Replay />
+            </span>
+            <span>Reiniciar filtro</span>
+          </ContainerReset>
+        </ContainerResetMobileFilter>
         <ContainerFilters>
           <ItemFilterStyle>
             <ContainerText>
@@ -136,8 +131,9 @@ const Properties: React.FC = () => {
               onChange={handleChangeOptionId}
               options={optionsId}
               isSearchable={false}
-              styles={selectFilterStyles}
+              styles={selectStylesFilterTable}
               placeholder="ID"
+              noOptionsMessage={() => <>Sin resultados</>}
             />
           </ItemFilterStyle>
           <ItemFilterStyle>
@@ -153,7 +149,6 @@ const Properties: React.FC = () => {
                 // setValue("date", date)
               }}
               placeholderText="Fecha"
-              popperClassName="some-custom-class"
               popperPlacement="top-end"
               popperModifiers={[
                 {
@@ -164,6 +159,9 @@ const Properties: React.FC = () => {
                 },
               ]}
             />
+            <span>
+              <ArrowIosDownward />
+            </span>
           </ItemFilterStyle>
           <ItemFilterStyle>
             <Select
@@ -171,8 +169,9 @@ const Properties: React.FC = () => {
               onChange={handleChangeOptionId}
               options={optionsId}
               isSearchable={false}
-              styles={selectFilterStyles}
+              styles={selectStylesFilterTable}
               placeholder="Categoría"
+              noOptionsMessage={() => <>Sin resultados</>}
             />
           </ItemFilterStyle>
           <ItemFilterStyle>
@@ -181,8 +180,9 @@ const Properties: React.FC = () => {
               onChange={handleChangeOptionId}
               options={optionsId}
               isSearchable={false}
-              styles={selectFilterStyles}
+              styles={selectStylesFilterTable}
               placeholder="Estado"
+              noOptionsMessage={() => <>Sin resultados</>}
             />
           </ItemFilterStyle>
           <ItemFilterStyle>
@@ -196,13 +196,7 @@ const Properties: React.FC = () => {
         </ContainerFilters>
         <ContainerListProperties>
           {(listProperties || []).map(prop => (
-            <PropertyCard
-              key={prop.id}
-              image={prop.image}
-              name={prop.name}
-              address={prop.address}
-              price={prop.price}
-            />
+            <PropertyCard key={prop.id} property={prop} />
           ))}
         </ContainerListProperties>
       </ContentStylesSection>

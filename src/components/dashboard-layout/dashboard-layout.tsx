@@ -1,5 +1,5 @@
 import React from "react"
-import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom"
+import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import {
   AvatarStyles,
   ContainerAvatar,
@@ -45,6 +45,7 @@ import {
 import { Bars } from "@styled-icons/fa-solid/Bars"
 import { Close } from "styled-icons/evaicons-solid"
 import Button from "../button/button"
+import LogoutIMG from "../../assets/img/icons/logout.svg"
 
 const DashboardLayout: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
@@ -141,18 +142,18 @@ const DashboardLayout: React.FC = () => {
                 onClick={handleClickItemMenu(route.label)}
                 className={({ isActive }) => (isActive ? "active" : "inactive")}
               >
-                {<route.icon />}
+                <img src={route.icon} />
                 <p>{route.label}</p>
               </ItemNavLink>
             ))}
             <ItemNavLink to="" onClick={handleLogout}>
-              {<ExitToApp />}
+              <img src={LogoutIMG} />
               <p>Cerrar Sesión</p>
             </ItemNavLink>
           </ContainerMenu>
         </div>
       </ContainerSidebar>
-      <ContainerOutlet>
+      <ContainerOutlet isOpen={isMenuOpen}>
         <div>
           <ContainerBar>
             <div onClick={toggleMenu}>
@@ -170,7 +171,7 @@ const DashboardLayout: React.FC = () => {
             />
           </ContainerUploadProperty>
         </div>
-        <ContainerOutletStyles>
+        <ContainerOutletStyles isOpen={isMenuOpen}>
           <Outlet />
         </ContainerOutletStyles>
       </ContainerOutlet>
@@ -192,7 +193,7 @@ const DashboardLayout: React.FC = () => {
                     isActive ? "active" : "inactive"
                   }
                 >
-                  {<route.icon />}
+                  <img src={LogoutIMG} />
                   <p>{route.label}</p>
                 </ItemNavLink>
               ))}

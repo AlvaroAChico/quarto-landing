@@ -6,6 +6,8 @@ import axios from "axios"
 import { settingsApp } from "../../config/environment/settings"
 import { setErrResponse } from "../../utils/erros-util"
 import {
+  ContainerButtonReferral,
+  ContainerFilterActions,
   ContainerImageRental,
   ContainerListRentals,
   ContainerRentals,
@@ -18,15 +20,20 @@ import "react-datepicker/dist/react-datepicker.css"
 import {
   ContainerFilters,
   ContainerReset,
+  ContainerResetMobileFilter,
   ContainerText,
   ItemFilterStyle,
   selectFilterStyles,
+  selectStylesFilterTable,
 } from "../../config/theme/global-styles"
 import { Filter2 } from "@styled-icons/remix-line/Filter2"
 import { Replay } from "@styled-icons/material/Replay"
 import Table from "../../components/table/table"
 import { StatusCell } from "../../components/table/table.styles"
 import { ReferralDTO } from "../../core/models/interfaces/referral-model"
+import { ArrowIosDownward } from "styled-icons/evaicons-solid"
+import Button from "../../components/button/button"
+import { pathRoutes } from "../../config/routes/paths"
 
 const Referrals: React.FC = () => {
   const [listRentals, setListRentals] = React.useState<ReferralDTO[]>([])
@@ -95,79 +102,110 @@ const Referrals: React.FC = () => {
     <ContainerRentals>
       <HeaderSection />
       <ContentStylesSection>
-        <ContainerFilters>
-          <ItemFilterStyle>
+        <ContainerFilterActions>
+          <ContainerResetMobileFilter>
             <ContainerText>
               <span>
                 <Filter2 />
               </span>
               <span>Filtrar por</span>
             </ContainerText>
-          </ItemFilterStyle>
-          <ItemFilterStyle>
-            <Select
-              defaultValue={selectedOptionId}
-              onChange={handleChangeOptionId}
-              options={optionsId}
-              isSearchable={false}
-              styles={selectFilterStyles}
-              placeholder="ID"
-            />
-          </ItemFilterStyle>
-          <ItemFilterStyle>
-            {/* <input placeHolder */}
-            <DatePicker
-              id="date-create-apartment"
-              showIcon
-              selected={daySelected}
-              icon={<></>}
-              toggleCalendarOnIconClick
-              onChange={(date: any) => {
-                setDaySelected(date)
-                // setValue("date", date)
-              }}
-              placeholderText="Fecha"
-              popperClassName="some-custom-class"
-              popperPlacement="top-end"
-              popperModifiers={[
-                {
-                  name: "myModifier",
-                  fn(state) {
-                    return state
-                  },
-                },
-              ]}
-            />
-          </ItemFilterStyle>
-          <ItemFilterStyle>
-            <Select
-              defaultValue={selectedOptionId}
-              onChange={handleChangeOptionId}
-              options={optionsId}
-              isSearchable={false}
-              styles={selectFilterStyles}
-              placeholder="Categoría"
-            />
-          </ItemFilterStyle>
-          <ItemFilterStyle>
-            <Select
-              defaultValue={selectedOptionId}
-              onChange={handleChangeOptionId}
-              options={optionsId}
-              isSearchable={false}
-              styles={selectFilterStyles}
-              placeholder="Estado"
-            />
-          </ItemFilterStyle>
-          <ItemFilterStyle>
             <ContainerReset>
               <span>
                 <Replay />
               </span>
               <span>Reiniciar filtro</span>
             </ContainerReset>
-          </ItemFilterStyle>
-        </ContainerFilters>
+          </ContainerResetMobileFilter>
+          <ContainerFilters>
+            <ItemFilterStyle>
+              <ContainerText>
+                <span>
+                  <Filter2 />
+                </span>
+                <span>Filtrar por</span>
+              </ContainerText>
+            </ItemFilterStyle>
+            <ItemFilterStyle>
+              <Select
+                defaultValue={selectedOptionId}
+                onChange={handleChangeOptionId}
+                options={optionsId}
+                isSearchable={false}
+                styles={selectStylesFilterTable}
+                placeholder="ID"
+                noOptionsMessage={() => <>Sin resultados</>}
+              />
+            </ItemFilterStyle>
+            <ItemFilterStyle>
+              {/* <input placeHolder */}
+              <DatePicker
+                id="date-create-apartment"
+                showIcon
+                selected={daySelected}
+                icon={<></>}
+                toggleCalendarOnIconClick
+                onChange={(date: any) => {
+                  setDaySelected(date)
+                  // setValue("date", date)
+                }}
+                placeholderText="Fecha"
+                popperPlacement="top-end"
+                popperModifiers={[
+                  {
+                    name: "myModifier",
+                    fn(state) {
+                      return state
+                    },
+                  },
+                ]}
+              />
+              <span>
+                <ArrowIosDownward />
+              </span>
+            </ItemFilterStyle>
+            <ItemFilterStyle>
+              <Select
+                defaultValue={selectedOptionId}
+                onChange={handleChangeOptionId}
+                options={optionsId}
+                isSearchable={false}
+                styles={selectStylesFilterTable}
+                placeholder="Categoría"
+                noOptionsMessage={() => <>Sin resultados</>}
+              />
+            </ItemFilterStyle>
+            <ItemFilterStyle>
+              <Select
+                defaultValue={selectedOptionId}
+                onChange={handleChangeOptionId}
+                options={optionsId}
+                isSearchable={false}
+                styles={selectStylesFilterTable}
+                placeholder="Estado"
+                noOptionsMessage={() => <>Sin resultados</>}
+              />
+            </ItemFilterStyle>
+            <ItemFilterStyle>
+              <ContainerReset>
+                <span>
+                  <Replay />
+                </span>
+                <span>Reiniciar filtro</span>
+              </ContainerReset>
+            </ItemFilterStyle>
+          </ContainerFilters>
+          <ContainerButtonReferral>
+            <Button
+              onClick={() =>
+                navigate(pathRoutes.REFERRALS.otherPaths.CREATE.to)
+              }
+              text="Añadir Referido"
+              customStyles={`
+                background-color: #262626;`}
+            />
+          </ContainerButtonReferral>
+        </ContainerFilterActions>
         <ContainerListRentals>
           <Table>
             <Table.Header>

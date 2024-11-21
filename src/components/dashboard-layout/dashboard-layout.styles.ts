@@ -40,9 +40,10 @@ export const ContainerSidebar = styled.div<{ open: boolean }>`
   }
 `
 
-export const ContainerOutlet = styled.div`
+export const ContainerOutlet = styled.div<{ isOpen: boolean }>`
+  width: ${p => (p.isOpen ? "calc(100% - 250px)" : "100%")};
   box-sizing: border-box;
-  width: calc(100% - 250px);
+  overflow: hidden;
 
   > div:nth-child(1) {
     background: ${palette.whiteColor};
@@ -134,6 +135,11 @@ export const ItemNavLink = styled(NavLink)`
       width: 100%;
     }
   }
+
+  > img {
+    max-width: 20px;
+    width: 100%;
+  }
 `
 
 export const ContainerProfile = styled.div`
@@ -196,7 +202,8 @@ export const SubMenuItem = styled(NavLink)`
   &.active {
     background: transparent !important;
     color: white;
-    span {
+    > span,
+    img {
       color: ${palette.primaryColor};
     }
   }
@@ -436,16 +443,12 @@ export const ContainerOverlay = styled.div<{ isOpen: boolean }>`
   }
 `
 
-export const ContainerOutletStyles = styled.div`
+export const ContainerOutletStyles = styled.div<{ isOpen: boolean }>`
+  width: ${p => (p.isOpen ? "calc(100% - 250px)" : "100%")} !important;
   background: ${palette.inputBgColor};
-  width: 100%;
   height: calc(100% - 80px);
   box-sizing: border-box;
   overflow-y: auto;
   padding: 30px;
   margin: 0;
-
-  ${breakpoints.tabletLargeMax} {
-    height: calc(100% - 140px);
-  }
 `

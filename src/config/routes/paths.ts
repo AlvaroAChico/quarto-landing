@@ -1,10 +1,14 @@
-import { Home } from "@styled-icons/feather/Home"
-import { DoorClosed } from "@styled-icons/bootstrap/DoorClosed"
-import { Key } from "@styled-icons/bootstrap/Key"
-import { Calendar } from "@styled-icons/ionicons-outline/Calendar"
-import { Money } from "@styled-icons/fluentui-system-regular/Money"
-import { User } from "@styled-icons/fa-regular/User"
-import { Info } from "@styled-icons/fluentui-system-regular/Info"
+import DashboardIMG from "../../assets/img/icons/grid_view.svg"
+import VisitsIMG from "../../assets/img/icons/door_front.svg"
+import RentalsIMG from "../../assets/img/icons/key.svg"
+import CalendarIMG from "../../assets/img/icons/calendar_month.svg"
+import PropertiesIMG from "../../assets/img/icons/home.svg"
+import ReferralsIMG from "../../assets/img/icons/group_add.svg"
+import WalletIMG from "../../assets/img/icons/payments.svg"
+import ProfileIMG from "../../assets/img/icons/person.svg"
+import ContactsIMG from "../../assets/img/icons/perm_contact_calendar.svg"
+import ChatsIMG from "../../assets/img/icons/chat.svg"
+import ProductsIMG from "../../assets/img/icons/info.svg"
 
 interface Route {
   to: string
@@ -20,7 +24,7 @@ export const pathRoutes = {
     to: "/dashboard",
     basePath: "/dashboard",
     label: "Dashboard",
-    icon: DoorClosed,
+    icon: DashboardIMG,
     visible: true,
     otherPaths: {},
   },
@@ -28,15 +32,30 @@ export const pathRoutes = {
     to: "/visitas",
     basePath: "/visitas",
     label: "Visitas",
-    icon: DoorClosed,
+    icon: VisitsIMG,
     visible: true,
-    otherPaths: {},
+    otherPaths: {
+      VIEW: {
+        to: "/visitas/:id",
+        basePath: "/visitas",
+        label: "Crear propiedad",
+        visible: false,
+      },
+    },
   },
   RENTALS: {
     to: "/alquileres",
     basePath: "/alquileres",
     label: "Alquileres",
-    icon: Key,
+    icon: RentalsIMG,
+    visible: true,
+    otherPaths: {},
+  },
+  CALENDAR: {
+    to: "/calendario",
+    basePath: "/calendario",
+    label: "Calendario",
+    icon: CalendarIMG,
     visible: true,
     otherPaths: {},
   },
@@ -44,7 +63,7 @@ export const pathRoutes = {
     to: "/propiedades",
     basePath: "/propiedades",
     label: "Mis Propiedades",
-    icon: Home,
+    icon: PropertiesIMG,
     visible: true,
     otherPaths: {
       CREATE: {
@@ -64,8 +83,31 @@ export const pathRoutes = {
   REFERRALS: {
     to: "/referidos",
     basePath: "/referidos",
-    label: "Inquilinos Referidos",
-    icon: Key,
+    label: "Inq. Referidos",
+    icon: ReferralsIMG,
+    visible: true,
+    otherPaths: {
+      CREATE: {
+        to: "/referidos/crear",
+        basePath: "/referidos",
+        label: "Añadir Referido",
+        visible: false,
+      },
+    },
+  },
+  WALLET: {
+    to: "/billetera",
+    basePath: "/billetera",
+    label: "Billetera",
+    icon: WalletIMG,
+    visible: true,
+    otherPaths: {},
+  },
+  PROFILE: {
+    to: "/perfil",
+    basePath: "/perfil",
+    label: "Perfil",
+    icon: ProfileIMG,
     visible: true,
     otherPaths: {},
   },
@@ -73,39 +115,23 @@ export const pathRoutes = {
     to: "/contactos",
     basePath: "/contactos",
     label: "Contactos",
-    icon: Key,
+    icon: ContactsIMG,
     visible: true,
     otherPaths: {},
   },
-  CALENDAR: {
-    to: "/calendario",
-    basePath: "/calendario",
-    label: "Calendario",
-    icon: Calendar,
+  CHATS: {
+    to: "/chats",
+    basePath: "/chats",
+    label: "Chats",
+    icon: ChatsIMG,
     visible: true,
     otherPaths: {},
   },
-  WINNINGS: {
-    to: "/ganancias",
-    basePath: "/ganancias",
-    label: "Ganancias",
-    icon: Money,
-    visible: true,
-    otherPaths: {},
-  },
-  PROFILE: {
-    to: "/perfil",
-    basePath: "/perfil",
-    label: "Mi perfil",
-    icon: User,
-    visible: true,
-    otherPaths: {},
-  },
-  INFO: {
+  INFO_PRODUCTS: {
     to: "/info",
     basePath: "/info",
     label: "Info",
-    icon: Info,
+    icon: ProductsIMG,
     visible: true,
     otherPaths: {},
   },
@@ -113,7 +139,7 @@ export const pathRoutes = {
     to: "/",
     basePath: "/",
     label: "Iniciar Sesión",
-    icon: Home,
+    icon: "",
     visible: false,
     otherPaths: {},
   },

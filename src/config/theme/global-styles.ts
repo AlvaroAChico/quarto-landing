@@ -104,7 +104,7 @@ export const GlobalStyles = createGlobalStyle`
 
   .react-datepicker__day--selected,
   .react-datepicker__day--keyboard-selected {
-    background: ${palette.secondaryColor};
+    background: ${palette.primaryColor};
     outline: none;
     color: white;
   }
@@ -438,24 +438,135 @@ export const NameStylesTD = styled.td`
 `
 
 export const ContainerFilters = styled.div`
+  border: 1px solid ${palette.inputBorderolor};
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
   flex-direction: row;
-  border-radius: 20px;
+  border-radius: 15px;
   width: fit-content;
   background: white;
   display: flex;
-  padding: 20px;
-  gap: 20px;
+  gap: 5px;
+
+  > div {
+    width: 25%;
+    height: 40px;
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  ${breakpoints.laptopMax} {
+    justify-content: flex-start;
+    width: 100%;
+
+    > div {
+      &:nth-child(1) {
+        display: none;
+      }
+      &:nth-last-child(1) {
+        display: none;
+      }
+
+      &:nth-last-child(2) {
+        border: none;
+      }
+    }
+  }
+
+  ${breakpoints.tabletMediumMax} {
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    > div {
+      width: calc(50% - 2.5px);
+
+      &:nth-last-child(4) {
+        border: none;
+      }
+    }
+  }
 `
 
-export const ItemFilterStyle = styled.div``
+export const ContainerResetMobileFilter = styled.div`
+  border: 1px solid ${palette.inputBorderolor};
+  border-radius: 15px;
+  margin-bottom: 10px;
+  background: white;
+  display: none;
+
+  > div {
+    padding: 10px;
+
+    &:nth-child(1) {
+      border-right: 1px solid ${palette.inputBorderolor};
+    }
+  }
+
+  ${breakpoints.laptopMax} {
+    display: flex;
+  }
+`
+
+export const ItemFilterStyle = styled.div`
+  border-right: 1px solid ${palette.inputBorderolor};
+  position: relative;
+  padding: 32px 10px;
+
+  > div {
+    width: 100%;
+  }
+
+  &:nth-last-child(1) {
+    border-right: none;
+  }
+
+  .react-datepicker__input-container {
+    > input {
+      color: black !important;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0;
+
+      &::placeholder {
+        color: black !important;
+        font-weight: 600;
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  > span:nth-last-child(1) {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: 0px;
+    right: 12px;
+    margin: auto;
+    top: 0px;
+
+    > svg {
+      width: 100%;
+      max-width: 20px;
+    }
+  }
+
+  ${breakpoints.tabletMediumMax} {
+    padding: 25px 10px;
+  }
+`
 
 export const ContainerText = styled.div`
   justify-content: center;
   align-items: center;
+  font-size: 0.8rem;
+  font-weight: 600;
   display: flex;
   height: 100%;
   width: 100%;
+  gap: 15px;
 
   > span svg {
     width: 100%;
@@ -467,10 +578,12 @@ export const ContainerReset = styled.div`
   color: ${palette.redColor};
   justify-content: center;
   align-items: center;
+  font-size: 0.8rem;
   cursor: pointer;
   display: flex;
   height: 100%;
   width: 100%;
+  gap: 15px;
 
   > span svg {
     width: 100%;
@@ -538,5 +651,45 @@ export const selectFilterStyles = {
     ...provided,
     color: "#000",
     fontWeight: "800",
+  }),
+}
+
+export const selectStylesFilterTable = {
+  control: (provided: any, state: any) => ({
+    ...provided,
+    border: "0px solid transparent",
+    backgroundColor: "transparent",
+    boxShadow: "none",
+    borderRadius: 0,
+    outline: "none",
+    fontSize: "0.8rem",
+    "> div:nth-child(1) div": {
+      color: "#000000",
+      fontWeight: 600,
+    },
+    "> div:nth-child(2)": {
+      paddingRight: "5px",
+      "> span": {
+        display: "none",
+      },
+      "> div svg": {
+        fill: "black",
+      },
+    },
+  }),
+  option: (provided: any, state: any) => ({
+    ...provided,
+    backgroundColor: state.isFocused ? palette.primaryColor : "white",
+    color: state.isSelected ? "black" : "black",
+    "&:hover": {
+      backgroundColor: palette.primaryColor,
+      color: "white",
+    },
+  }),
+  placeholder: (provided: any) => ({
+    ...provided,
+    color: "#000",
+    fontWeight: "600",
+    fontSize: "0.8rem",
   }),
 }

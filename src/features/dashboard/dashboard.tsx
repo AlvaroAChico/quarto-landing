@@ -20,9 +20,6 @@ import { setErrResponse } from "../../utils/erros-util"
 import { PropertyDTO } from "../../core/models/interfaces/property-model"
 import axios from "axios"
 import { settingsApp } from "../../config/environment/settings"
-import StatsICON from "../../assets/img/icon-stats.jpg"
-import PersonICON from "../../assets/img/icon-person.jpg"
-import PropertyICON from "../../assets/img/icon-property.jpg"
 import { Swiper } from "swiper/react"
 import { Navigation, Autoplay } from "swiper/modules"
 import "swiper/css"
@@ -34,6 +31,11 @@ import { pathRoutes } from "../../config/routes/paths"
 import PropertiesAddsIMG from "../../assets/img/properties-adds.png"
 import { selectStyles, WrapperInput } from "../../config/theme/global-styles"
 import Select from "react-select"
+import StatsICON from "../../assets/img/icons/paid.svg"
+import KeyICON from "../../assets/img/icons/key_stats.svg"
+import DoorICON from "../../assets/img/icons/door_front_stats.svg"
+import HomeICON from "../../assets/img/icons/gite.svg"
+import TenantsICON from "../../assets/img/icons/group_add_stats.svg"
 
 const Dashboard: React.FC = () => {
   // Property
@@ -63,10 +65,6 @@ const Dashboard: React.FC = () => {
   const { handleGetToken } = useDataUser()
   const navigate = useNavigate()
 
-  const [nroProperties, setNroProperties] = React.useState<number>(0)
-  const [nroContractors, setNroContractors] = React.useState<number>(0)
-  const [nroWorks, setNroWorks] = React.useState<number>(0)
-
   const fetchData = async (url: string) => {
     const storedToken = handleGetToken()
     if (!storedToken) {
@@ -93,31 +91,7 @@ const Dashboard: React.FC = () => {
       const data: PropertyDTO[] = await fetchData(
         `${settingsApp.api.base}/residentials`,
       )
-      setNroProperties(data.length)
-    } catch (err) {
-      setErrResponse(err)
-    }
-  }
-
-  const fetchDataContractors = async () => {
-    try {
-      const data: UserDTO[] = await fetchData(
-        `${settingsApp.api.base}/users?include=role`,
-      )
-      const listUsers = (data || [])
-        .map(user => {
-          if (
-            user.role.length > 0 &&
-            user.role.some(role => role.name.toLowerCase() === "contractor")
-          ) {
-            return {
-              value: user.id,
-              label: `${user.firstName} ${user.lastName}`,
-            }
-          }
-        })
-        .filter(us => us != undefined)
-      setNroContractors(listUsers.length)
+      // setNroProperties(data.length)
     } catch (err) {
       setErrResponse(err)
     }
@@ -139,19 +113,33 @@ const Dashboard: React.FC = () => {
       <ContainerDashboard>
         <StadisticsCard
           data={"$3, 000"}
-          label="Gananancias de este Mes"
+          label="Gananancias este Mes"
           icon={StatsICON}
+          bg="#D9F7E7"
         />
-        <StadisticsCard data={"45"} label="Alq. Concretados" icon={StatsICON} />
+        <StadisticsCard
+          data={"45"}
+          label="Alq. Concretados"
+          icon={KeyICON}
+          bg="#D9F7E7"
+        />
         <StadisticsCard
           data={"23"}
           label="Visitas Realizadas"
-          icon={PersonICON}
+          icon={DoorICON}
+          bg="#E4E4FF"
         />
         <StadisticsCard
           data={"16"}
           label="Prop. Captadas"
-          icon={PropertyICON}
+          icon={HomeICON}
+          bg="#E4E4FF"
+        />
+        <StadisticsCard
+          data={"25"}
+          label="Inquilinos Referidos"
+          icon={TenantsICON}
+          bg="#FEF2D6"
         />
       </ContainerDashboard>
       <ContainerAdds>

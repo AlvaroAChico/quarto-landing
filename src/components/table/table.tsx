@@ -23,6 +23,7 @@ interface TBodyProps {
 interface TRowProps {
   sticky?: boolean
   onClick?: () => void
+  onDoubleClick?: () => void
   children: React.ReactNode
 }
 
@@ -52,8 +53,17 @@ const TableBody: React.FC<TBodyProps> = ({ children }) => (
   <StyledBodyRow>{children}</StyledBodyRow>
 )
 
-const TableRow: React.FC<TRowProps> = ({ sticky, onClick, children }) => (
-  <StyledTableRow onClick={onClick} sticky={sticky}>
+const TableRow: React.FC<TRowProps> = ({
+  sticky,
+  onClick,
+  onDoubleClick,
+  children,
+}) => (
+  <StyledTableRow
+    onClick={onClick}
+    sticky={sticky}
+    onDoubleClick={onDoubleClick}
+  >
     {children}
   </StyledTableRow>
 )
