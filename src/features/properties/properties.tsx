@@ -31,6 +31,7 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { Replay } from "@styled-icons/material/Replay"
 import { ArrowIosDownward } from "styled-icons/evaicons-solid"
+import { propertyRepository } from "../../api/repositories/property-repository"
 
 const Properties: React.FC = () => {
   const [listRentals, setListRentals] = React.useState<any[]>([])
@@ -69,29 +70,16 @@ const Properties: React.FC = () => {
     fetchDataProperties()
   }, [])
 
-  const fetchDataProperties = React.useCallback(() => {
-    const storedToken = handleGetToken()
-    if (storedToken) {
+  const fetchDataProperties = React.useCallback(async () => {
+    try {
       setIsLoadingListProperties(true)
-      axios
-        .get(`${settingsApp.api.base}/properties`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        })
-        .then(response => {
-          const dataResponse: PropertyDTO[] = response.data as PropertyDTO[]
-          if (!!dataResponse) {
-            setListProperties(dataResponse)
-          }
-          setIsLoadingListProperties(false)
-        })
-        .catch(err => {
-          toast.error("Failed to fetch data")
-          setIsLoadingListProperties(false)
-        })
+      const response: PropertyDTO[] =
+        (await propertyRepository.getProperties()) as PropertyDTO[]
+      if (!!response) {
+        setListProperties(response)
+      }
+    } finally {
+      setIsLoadingListProperties(false)
     }
   }, [])
 

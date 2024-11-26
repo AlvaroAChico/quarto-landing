@@ -6,6 +6,7 @@ import VisitsListJSON from "../features/visits/visits-list.json"
 import VisitsDetailJSON from "../features/visits/visits-detail.json"
 import RentalsListJSON from "../features/rentals/rentals-list.json"
 import ReferralsListJSON from "../features/referrals/referrals-list.json"
+import MovementsListJSON from "../features/movements/movements-list.json"
 import ContactsListJSON from "../features/contacts/contacts-list.json"
 
 import meJSON from "../features/auth/me.json"
@@ -37,6 +38,11 @@ export const handlers = [
   // ******************** PROPERTIES ********************
   http.get(`${settingsApp.api.base}/properties`, () => {
     return HttpResponse.json(PropertiesListJSON)
+  }),
+  // ******************** MOVEMENTS ********************
+  http.get(`${settingsApp.api.base}/movements`, () => {
+    console.log("Respondiento ...")
+    return HttpResponse.json(MovementsListJSON)
   }),
   // ******************** CONTACTS ********************
   http.get(`${settingsApp.api.base}/contacts`, () => {

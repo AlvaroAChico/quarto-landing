@@ -10,5 +10,5 @@
     "base_prod": "http://3.85.120.166/api"
   },
   "i18nDebug": false,
-  "cloudEnv": "integration"
+  "cloudEnv": "int"
 }

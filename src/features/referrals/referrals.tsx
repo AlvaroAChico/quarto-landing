@@ -8,7 +8,6 @@ import { setErrResponse } from "../../utils/erros-util"
 import {
   ContainerButtonReferral,
   ContainerFilterActions,
-  ContainerImageRental,
   ContainerListRentals,
   ContainerRentals,
   ContentStylesSection,
@@ -23,7 +22,6 @@ import {
   ContainerResetMobileFilter,
   ContainerText,
   ItemFilterStyle,
-  selectFilterStyles,
   selectStylesFilterTable,
 } from "../../config/theme/global-styles"
 import { Filter2 } from "@styled-icons/remix-line/Filter2"

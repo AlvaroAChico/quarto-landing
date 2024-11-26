@@ -17,6 +17,8 @@ import Contacts from "../../features/contacts/contacts"
 import Chats from "../../features/chats/chats"
 import DetailVisits from "../../features/visits/functionalities/detail-visits/detail-visits"
 import CreateReferral from "../../features/referrals/functionalities/create-referral/create-referral"
+import Wallet from "../../features/wallet/wallet"
+import InfoProducts from "../../features/info-products/info-products"
 
 export const router = createBrowserRouter([
   {
@@ -74,6 +76,10 @@ export const router = createBrowserRouter([
         ],
       },
       {
+        path: pathRoutes.WALLET.to,
+        element: <Wallet />,
+      },
+      {
         path: pathRoutes.CONTACTS.to,
         element: <Contacts />,
       },
@@ -91,7 +97,7 @@ export const router = createBrowserRouter([
       },
       {
         path: pathRoutes.INFO_PRODUCTS.to,
-        element: <div>INFO</div>,
+        element: <InfoProducts />,
       },
     ],
   },

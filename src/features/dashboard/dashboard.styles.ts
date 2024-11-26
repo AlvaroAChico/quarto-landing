@@ -10,6 +10,8 @@ export const ContainerDashboard = styled.div`
   display: flex;
   width: 100%;
   gap: 20px;
+  // display: grid;
+  // grid-template-columns: repeat(5, 1fr);
 
   ${breakpoints.phoneLargeMax} {
     flex-direction: column;

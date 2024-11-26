@@ -1,0 +1,92 @@
+[
+  {
+    "id": "1",
+    "description": "Alquiler de departamento en el centro, 2 habitaciones",
+    "amount": "800",
+    "status": "pagado"
+  },
+  {
+    "id": "2",
+    "description": "Venta de departamento de lujo en la playa",
+    "amount": "250000",
+    "status": "pendiente"
+  },
+  {
+    "id": "3",
+    "description": "Alquiler de estudio amueblado en zona universitaria",
+    "amount": "600",
+    "status": "pagado"
+  },
+  {
+    "id": "4",
+    "description": "Venta de departamento con vista al mar, 3 habitaciones",
+    "amount": "300000",
+    "status": "pendiente"
+  },
+  {
+    "id": "5",
+    "description": "Alquiler de departamento acogedor en barrio residencial",
+    "amount": "700",
+    "status": "pagado"
+  },
+  {
+    "id": "6",
+    "description": "Venta de penthouse con terraza en el centro",
+    "amount": "450000",
+    "status": "pendiente"
+  },
+  {
+    "id": "7",
+    "description": "Alquiler de departamento cerca del metro, 1 habitación",
+    "amount": "650",
+    "status": "pagado"
+  },
+  {
+    "id": "8",
+    "description": "Venta de departamento reformado, zona tranquila",
+    "amount": "180000",
+    "status": "pendiente"
+  },
+  {
+    "id": "9",
+    "description": "Alquiler de departamento familiar, 3 habitaciones, parking incluido",
+    "amount": "900",
+    "status": "pagado"
+  },
+  {
+    "id": "10",
+    "description": "Venta de dúplex en zona comercial, ideal inversión",
+    "amount": "220000",
+    "status": "pendiente"
+  },
+  {
+    "id": "11",
+    "description": "Alquiler de departamento moderno en nueva construcción",
+    "amount": "750",
+    "status": "pagado"
+  },
+  {
+    "id": "12",
+    "description": "Venta de departamento con balcón en el corazón de la ciudad",
+    "amount": "200000",
+    "status": "pendiente"
+  },
+  {
+    "id": "13",
+    "description": "Alquiler de loft industrial en el distrito artístico",
+    "amount": "900",
+    "status": "pagado"
+  },
+  {
+    "id": "14",
+    "description": "Venta de apartamento en edificio histórico, remodelado",
+    "amount": "275000",
+    "status": "pendiente"
+  },
+  {
+    "id": "15",
+    "description": "Alquiler de departamento con jardín, ubicado en suburbios",
+    "amount": "850",
+    "status": "pagado"
+  }
+]

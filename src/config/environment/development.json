@@ -2,13 +2,13 @@
   "app": {
     "name": "Quarto",
     "mocks": false,
-    "local": "http://3.85.120.166"
+    "local": "https://localhost"
   },
   "api": {
-    "base": "http://3.85.120.166/api",
-    "auth": "http://3.85.120.166/api",
-    "base_prod": "http://3.85.120.166/api"
+    "base": "https://localhost/api",
+    "auth": "https://localhost/api",
+    "base_prod": "https://localhost/api"
   },
   "i18nDebug": false,
-  "cloudEnv": "development"
+  "cloudEnv": "dev"
 }

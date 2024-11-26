@@ -128,9 +128,9 @@ export const pathRoutes = {
     otherPaths: {},
   },
   INFO_PRODUCTS: {
-    to: "/info",
-    basePath: "/info",
-    label: "Info",
+    to: "/productos",
+    basePath: "/productos",
+    label: "Productos",
     icon: ProductsIMG,
     visible: true,
     otherPaths: {},

@@ -10,8 +10,8 @@ export const ContainerCard = styled.div<{ bg: string }>`
   height: fit-content;
   background: white;
   padding: 15px;
-  width: 170px;
   display: flex;
+  width: 170px;
   gap: 10px;
 
   > div:nth-child(1) {

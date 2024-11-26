@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import { palette } from "../../config/theme/theme"
 import { breakpoints } from "../../constants/breakpoints"
 
 export const ContainerFilterActions = styled.div`
