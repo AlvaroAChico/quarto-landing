@@ -29,6 +29,7 @@ import { Replay } from "@styled-icons/material/Replay"
 import Table from "../../components/table/table"
 import { StatusCell } from "../../components/table/table.styles"
 import { ArrowIosDownward } from "styled-icons/evaicons-solid"
+import { rentalRepository } from "../../api/repositories/rental-repository"
 
 const Rentals: React.FC = () => {
   const [listRentals, setListRentals] = React.useState<RentalDTO[]>([])
@@ -68,29 +69,16 @@ const Rentals: React.FC = () => {
     fetchDataProperties()
   }, [])
 
-  const fetchDataProperties = React.useCallback(() => {
-    const storedToken = handleGetToken()
-    if (storedToken) {
+  const fetchDataProperties = React.useCallback(async () => {
+    try {
       setIsLoadingListRentals(true)
-      axios
-        .get(`${settingsApp.api.base}/rentals`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        })
-        .then(response => {
-          const dataResponse: RentalDTO[] = response.data as RentalDTO[]
-          if (!!dataResponse) {
-            setListRentals(dataResponse)
-          }
-          setIsLoadingListRentals(false)
-        })
-        .catch(err => {
-          setErrResponse(err)
-          setIsLoadingListRentals(false)
-        })
+      const response: RentalDTO[] =
+        (await rentalRepository.getAll()) as RentalDTO[]
+      if (!!response) {
+        setListRentals(response)
+      }
+    } finally {
+      setIsLoadingListRentals(false)
     }
   }, [])
 

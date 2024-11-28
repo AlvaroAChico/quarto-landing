@@ -46,6 +46,7 @@ import { Bars } from "@styled-icons/fa-solid/Bars"
 import { Close } from "styled-icons/evaicons-solid"
 import Button from "../button/button"
 import LogoutIMG from "../../assets/img/icons/logout.svg"
+import { authRepository } from "../../api/repositories/auth-repository"
 
 const DashboardLayout: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
@@ -66,45 +67,17 @@ const DashboardLayout: React.FC = () => {
   }
 
   const refreshDataMe = async () => {
-    const storedToken = handleGetToken()
-
-    if (!!storedToken) {
-      try {
-        const response = await axios
-          .get(`${settingsApp.api.base}/auth/me`, {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-              ContentType: "application/json",
-              Accept: "application/json",
-            },
-          })
-          .then(response => {
-            const meData: MeDTO = response.data as MeDTO
-            if (!!meData && !!meData.id) {
-              const expiration = {
-                expires: 7,
-              }
-              const { roles, ...meUser } = meData
-              Cookies.set(
-                COOKIES_APP.USER_RES,
-                JSON.stringify(meUser),
-                expiration,
-              )
-              Cookies.set(
-                COOKIES_APP.ROLES_APP,
-                JSON.stringify(roles),
-                expiration,
-              )
-            }
-          })
-          .catch(err => {
-            toast.error("Failed to fetch data")
-          })
-      } catch (err) {
-        toast.error("Failed to fetch data")
+    try {
+      const response: MeDTO = (await authRepository.getMe()) as MeDTO
+      if (!!response && !!response.id) {
+        const expiration = {
+          expires: 7,
+        }
+        const { roles, ...meUser } = response
+        Cookies.set(COOKIES_APP.USER_RES, JSON.stringify(meUser), expiration)
+        Cookies.set(COOKIES_APP.ROLES_APP, JSON.stringify(roles), expiration)
       }
-    } else {
-      navigate(pathRoutes.SIGN_IN.to)
+    } finally {
     }
   }
 

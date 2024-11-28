@@ -1,11 +1,29 @@
 export interface PropertyDTO {
-  id: number
-  image: string
-  name: string
-  address: string
-  price: number
+  id: 1
+  uuid: string
+  title: string
+  description: string
   type: string
+  rentDuration: string
+  price: number
+  fullAddress: string
+  latitude: string
+  longitude: string
+  city: string
+  municipality: string
+  urbanization: string
+  relatedId: number
+  parameters: any
+  planId: number
+  realtorId: number
+  createdBy: number
+  categoryId: number
+  typeId: number
+  ownerId: string
   status: string
+  isActive: boolean
+  createdAt: string
+  image: string
 }
 
 export interface InitValuesProperty {

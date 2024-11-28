@@ -56,10 +56,25 @@ const CardFile: React.FC<IOwnProps> = ({ file, onDeleteFile }) => {
       iconSrc = OtherArchiveIMG
   }
 
+  const [fileImage, setFileImage] = React.useState<string | ArrayBuffer | null>(
+    null,
+  )
+  React.useEffect(() => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => {
+      setFileImage(reader.result)
+    }
+  }, [])
+
   return (
     <CardFileStyles>
       <div>
-        <img src={iconSrc} alt="icon" />
+        {/* <img src={iconSrc} alt="icon" /> */}
+        <img
+          src={typeof fileImage === "string" ? fileImage : undefined}
+          alt="icon"
+        />
       </div>
       <div>
         <span>{file.name}</span>

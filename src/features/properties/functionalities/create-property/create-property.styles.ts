@@ -76,7 +76,45 @@ export const ContainerStepperCreate = styled.div`
 export const ResidentialFormStyles = styled.div``
 
 export const ContainerResFormStyles = styled.div`
+  flex-direction: column;
+  display: flex;
   width: 100%;
+  gap: 20px;
+`
+
+export const ContainerSwitchTwo = styled.div`
+  flex-direction: column;
+  display: flex;
+  gap: 10px;
+
+  > label {
+    font-weight: 600;
+  }
+`
+
+export const ContainerThreeInputs = styled.div`
+  display: flex;
+  gap: 10px;
+
+  > div {
+    width: calc(33% - 10px);
+  }
+`
+
+export const ContainerTwoInputs = styled.div`
+  display: flex;
+  gap: 10px;
+
+  > div {
+    width: calc(50% - 10px);
+  }
+`
+export const ContainerOneInputs = styled.div`
+  display: flex;
+
+  > div {
+    width: 100%;
+  }
 `
 
 export const ContainerUpInputs = styled.div`
@@ -192,13 +230,15 @@ export const ContainerUploadFiles = styled.div``
 
 export const ContainerListFiles = styled.div`
   display: flex;
+  overflow-y: auto;
+  padding: 20px 10px;
   gap: 10px;
+  justify-content: flex-start !important;
 `
 
 export const ContainerSwitchs = styled.div`
-  padding: 50px 0;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
+  padding: 10px 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 `

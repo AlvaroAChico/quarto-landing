@@ -7,6 +7,7 @@ import { ContainerModal } from "./modal-delete-general.styles"
 import { settingsApp } from "../../../../config/environment/settings"
 import useDataUser from "../../../../utils/use-data-user"
 import { MessageResponsedDTO } from "../../../../core/models/interfaces/general-model"
+import { generalRepository } from "../../../../api/repositories/general-repository"
 
 interface IOwnProps {
   isOpen: boolean
@@ -31,29 +32,19 @@ const ModalDeleteGeneral: React.FC<IOwnProps> = ({
 
   const { handleGetToken } = useDataUser()
 
-  const handleDelete = React.useCallback(() => {
-    setIsSubmitDelete(true)
-    const storedToken = handleGetToken()
-    if (storedToken) {
-      axios
-        .delete(`${settingsApp.api.base}/${dataAPI}/${dataId}`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        })
-        .then(response => {
-          const data: MessageResponsedDTO = response.data as MessageResponsedDTO
-          toast.success(data.message)
-          handleRefresh()
-          setIsSubmitDelete(false)
-          handleClose()
-        })
-        .catch(err => {
-          toast.error(err.response.data.message)
-          setIsSubmitDelete(false)
-        })
+  const handleDelete = React.useCallback(async () => {
+    try {
+      const response: MessageResponsedDTO = (await generalRepository.deleteItem(
+        `${dataAPI}/${dataId}`,
+      )) as MessageResponsedDTO
+      if (!!response) {
+        toast.success(response.message)
+        handleRefresh()
+        setIsSubmitDelete(false)
+        handleClose()
+      }
+    } finally {
+      setIsSubmitDelete(false)
     }
   }, [handleGetToken, dataAPI, dataId])
 

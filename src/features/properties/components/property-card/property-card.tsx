@@ -15,11 +15,16 @@ interface IOwnProps {
 const PropertyCard: React.FC<IOwnProps> = ({ property }) => {
   return (
     <ContainerCard>
-      <ContainerHeadImage image={property.image} />
-      <ContainerInfo status={property.status} type={property.type}>
-        <p>{property.address}</p>
+      <ContainerHeadImage
+        image={
+          property.image ||
+          "https://nexoinmobiliario.pe/blog/wp-content/uploads/2022/06/destacada-identificar-departamentos-modernos-nexo-inmobiliario.jpg"
+        }
+      />
+      <ContainerInfo status={property.status} type={property.type || "quarto"}>
+        <p>{property.fullAddress}</p>
         <p>
-          {property.price}
+          $ {property.price}
           <span>{property.status}</span>
         </p>
         <div>
@@ -34,7 +39,7 @@ const PropertyCard: React.FC<IOwnProps> = ({ property }) => {
               `}
           />
         </div>
-        <p>{property.type}</p>
+        <p>{property.type || "Quarto"}</p>
       </ContainerInfo>
     </ContainerCard>
   )

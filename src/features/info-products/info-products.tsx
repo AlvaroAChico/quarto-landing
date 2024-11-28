@@ -5,12 +5,14 @@ import {
   ItemProduct,
   ContainerHeadCard,
   ContainerSegurosAccordion,
+  ContainerTitle,
+  ContainerDescription,
 } from "./info-products.styles"
 import { Accordion } from "react-accordion-ts"
 import "react-accordion-ts/src/panel.css"
 
 const InfoProducts: React.FC = () => {
-  const ProductsAcc = [
+  const productsAcc = [
     {
       name: "Póliza de Daños al Inmueble",
       description:
@@ -38,14 +40,39 @@ const InfoProducts: React.FC = () => {
     },
   ]
 
-  const items = [{ name: "List Permissions" }].map(({ name }): any => ({
+  const cuotasAcc = [
+    {
+      name: "Próximamente",
+      description: "",
+    },
+  ]
+
+  const itemsSeguros = productsAcc.map(({ name, description }): any => ({
     open,
     title: (
-      <div>
-        <span>{name}</span>
-      </div>
+      <ContainerTitle>
+        <li>{name}</li>
+      </ContainerTitle>
     ),
-    content: <>Accordion</>,
+    content: (
+      <ContainerDescription>
+        <span>{description}</span>
+      </ContainerDescription>
+    ),
+  }))
+
+  const itemsCuotas = cuotasAcc.map(({ name, description }): any => ({
+    open,
+    title: (
+      <ContainerTitle>
+        <li>{name}</li>
+      </ContainerTitle>
+    ),
+    content: (
+      <ContainerDescription>
+        <span>{description}</span>
+      </ContainerDescription>
+    ),
   }))
 
   return (
@@ -62,7 +89,7 @@ const InfoProducts: React.FC = () => {
             </p>
           </ContainerHeadCard>
           <ContainerSegurosAccordion>
-            <Accordion items={items} duration={300} multiple={false} />
+            <Accordion items={itemsSeguros} duration={300} multiple={false} />
           </ContainerSegurosAccordion>
         </ItemProduct>
         <ItemProduct>
@@ -75,7 +102,7 @@ const InfoProducts: React.FC = () => {
             </p>
           </ContainerHeadCard>
           <ContainerSegurosAccordion>
-            <Accordion items={items} duration={300} multiple={false} />
+            <Accordion items={itemsCuotas} duration={300} multiple={false} />
           </ContainerSegurosAccordion>
         </ItemProduct>
       </ContainerProducts>

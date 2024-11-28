@@ -33,6 +33,7 @@ import { useAppDispatch } from "../../../app/hooks"
 import { updateActionTitleApp } from "../../../core/store/app-store/appSlice"
 import useDataUser from "../../../utils/use-data-user"
 import { pathRoutes } from "../../../config/routes/paths"
+import { authRepository } from "../../../api/repositories/auth-repository"
 
 const SignIn: React.FC = () => {
   const [isSubmitLogin, setIsSubmitLogin] = React.useState<boolean>(false)
@@ -55,56 +56,31 @@ const SignIn: React.FC = () => {
 
   const { clearAllDataAPP } = useDataUser()
 
-  const handleSubmit = (data: any) => {
-    setIsSubmitLogin(true)
-    axios
-      .post(
-        `${settingsApp.api.base}/auth/login`,
-        {
-          email: data.email,
-          password: data.password,
-        },
-        {
-          headers: {
-            ContentType: "application/json",
-            Accept: "application/json",
-            CacheControl: "no-cache",
-            Pragma: "no-cache",
-            Expires: "0",
-          },
-        },
-      )
-      .then(response => {
-        setIsSubmitLogin(false)
-        // Expiración expresada en dias
-        clearAllDataAPP()
-        // localStorage.setItem(COOKIES_APP.PERMISSIONS_APP, "_@")
-        const data: SignInResponse = response.data as SignInResponse
-        const expiration = {
-          expires: 7,
-        }
-        Cookies.set(COOKIES_APP.USER_RES, JSON.stringify(data["0"]), expiration)
-        Cookies.set(
-          COOKIES_APP.TOKEN_APP,
-          JSON.stringify(data.token),
-          expiration,
-        )
-        // Cookies.set(
-        //   COOKIES_APP.ROLES_APP,
-        //   JSON.stringify(data.roles),
-        //   expiration,
-        // )
+  const handleSubmit = async (data: any) => {
+    try {
+      setIsSubmitLogin(true)
+      const response: SignInResponse = (await authRepository.signIn({
+        email: data.email,
+        password: data.password,
+      })) as SignInResponse
 
-        dispatch(updateActionTitleApp(ACTIONS_TITLE_APP.PROPERTIES))
+      if (!!response) {
+        setIsSubmitLogin(false)
+        clearAllDataAPP()
+        Cookies.set(COOKIES_APP.USER_RES, JSON.stringify(response["0"]), {
+          expires: 3,
+        })
+        Cookies.set(COOKIES_APP.TOKEN_APP, JSON.stringify(response.token), {
+          expires: 7,
+        })
+
         setTimeout(() => {
-          dispatch(updateActionTitleApp(pathRoutes.PROPERTY.label))
           navigate(pathRoutes.DASHBOARD.to)
         }, 300)
-      })
-      .catch(err => {
-        setIsSubmitLogin(false)
-        toast.error(err.response.data.message)
-      })
+      }
+    } finally {
+      setIsSubmitLogin(false)
+    }
   }
 
   return (

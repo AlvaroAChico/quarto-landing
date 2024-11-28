@@ -13,7 +13,7 @@ import { settingsApp } from "./config/environment/settings"
 // }
 
 const container = document.getElementById("root")
-worker.start()
+// worker.start()
 
 if (container) {
   const root = createRoot(container)

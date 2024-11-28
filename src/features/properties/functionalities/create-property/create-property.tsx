@@ -1,15 +1,16 @@
 import React from "react"
 import HeaderSection from "../../../../components/header-section/header-section"
 import {
-  ContainerBodyCreate,
   ContainerButton,
   ContainerCheckTypeProperty,
-  ContainerDownInputs,
   ContainerListFiles,
+  ContainerOneInputs,
   ContainerResFormStyles,
   ContainerStepperCreate,
   ContainerSwitchs,
-  ContainerUpInputs,
+  ContainerSwitchTwo,
+  ContainerThreeInputs,
+  ContainerTwoInputs,
   ContainerUploadFiles,
   ItemStepper,
   ResidentialFormStyles,
@@ -56,6 +57,13 @@ import {
   getInitValues,
   InitValuesProperty,
 } from "../../../../core/models/interfaces/property-model"
+import { categoryRepository } from "../../../../api/repositories/category-repository"
+import { ownerRepository } from "../../../../api/repositories/owner-repository"
+import { validateErrorSchema } from "../../../../utils/validations-util"
+import { parameterRepository } from "../../../../api/repositories/parameter-repository"
+import { ParameterDTO } from "../../../../core/models/interfaces/parameter-model"
+import { ETypeParam } from "../../../../constants/app"
+import { propertyRepository } from "../../../../api/repositories/property-repository"
 
 const CreateProperty: React.FC = () => {
   const [stepActive, setStepActive] = React.useState<number>(1)
@@ -103,70 +111,58 @@ const CreateProperty: React.FC = () => {
   // const [seleOpCategory, setSeleOpCategory] = React.useState(null)
   // Type Property
   const [typeProperty, setTypeProperty] = React.useState<any>(1)
-  const [attrCheck, setAttrCheck] = React.useState<InitValuesProperty[]>(
-    getInitValues([
-      "cbx_lavandero",
-      "cbx_piscina",
-      "cbx_pozo_agua",
-      "cbx_gym",
-      "cbx_planta_electrica",
-      "cbx_accept_mascotas",
-      "cbx_ascensor",
-      "cbx_internet",
-      "cbx_amoblado",
-      "cbx_vigilancia",
-      "cbx_aire_acodicionado",
-    ]),
-  )
+  const [listParams, setListParams] = React.useState<ParameterDTO[]>([])
 
-  const fetchData = async (url: string) => {
-    const storedToken = handleGetToken()
-    if (!storedToken) {
-      throw new Error("No token found")
-    }
-
-    try {
-      const response = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${storedToken}`,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      })
-      return response.data
-    } catch (err) {
-      setErrResponse(err)
-      throw err
-    }
-  }
   // Fetch data selects
   const fetchDataCategories = async () => {
     try {
-      const data: CategoryDTO[] = await fetchData(
-        `${settingsApp.api.base}/categories`,
-      )
-      const listData = (data || []).map(item => ({
-        value: item.id,
-        label: item.name,
-      }))
-      setOptionsCategory(listData)
-    } catch (err) {
-      setErrResponse(err)
+      const response: CategoryDTO[] =
+        (await categoryRepository.getAll()) as CategoryDTO[]
+      if (!!response) {
+        const listData = (response || []).map(it => ({
+          value: it.id,
+          label: it.name,
+        }))
+        setOptionsCategory(listData)
+      }
+    } finally {
     }
   }
 
   const fetchDataOwners = async () => {
     try {
-      const data: CategoryDTO[] = await fetchData(
-        `${settingsApp.api.base}/owners`,
-      )
-      const listData = (data || []).map(item => ({
-        value: item.id,
-        label: item.name,
-      }))
-      setOptionsOwner(listData)
-    } catch (err) {
-      setErrResponse(err)
+      const response: CategoryDTO[] =
+        (await ownerRepository.getAll()) as CategoryDTO[]
+      if (!!response) {
+        const listData = (response || []).map(it => ({
+          value: it.id,
+          label: it.name,
+        }))
+        setOptionsOwner(listData)
+      }
+    } finally {
+    }
+  }
+
+  const fetchDataParameters = async () => {
+    try {
+      const response: ParameterDTO[] =
+        (await parameterRepository.getAll()) as ParameterDTO[]
+      if (!!response) {
+        const listParams: ParameterDTO[] = response.map(it => {
+          const newIt = { ...it }
+          if (it.type.toLowerCase() == ETypeParam.CHECKBOX) {
+            newIt.value = false
+          }
+          if (it.type.toLowerCase() == ETypeParam.NUMBER) {
+            newIt.value = ""
+          }
+          return newIt
+        })
+        setValue("params_json", JSON.stringify(listParams))
+        setListParams(listParams)
+      }
+    } finally {
     }
   }
 
@@ -175,13 +171,12 @@ const CreateProperty: React.FC = () => {
       await Promise.all([
         fetchDataCategories(),
         fetchDataOwners(),
-        // getDataCalendar(),
+        fetchDataParameters(),
       ])
     }
 
     fetchDataAsync()
   }, [])
-  // End fetch data selects
 
   const methods = useForm<CreatePropertyForm>({
     resolver: yupResolver(CreatePropertySchema),
@@ -200,22 +195,7 @@ const CreateProperty: React.FC = () => {
       title_image: "",
       d_image: "",
       gallery_images: [],
-      nro_piso: "",
-      nro_habitaciones: "",
-      nro_banios: "",
-      nro_puestos: "",
-      nro_m2: "",
-      cbx_lavandero: "",
-      cbx_piscina: "",
-      cbx_pozo_agua: "",
-      cbx_gym: "",
-      cbx_planta_electrica: "",
-      cbx_accept_mascotas: "",
-      cbx_ascensor: "",
-      cbx_internet: "",
-      cbx_amoblado: "",
-      cbx_vigilancia: "",
-      cbx_aire_acodicionado: "",
+      params_json: "",
     },
   })
 
@@ -239,59 +219,20 @@ const CreateProperty: React.FC = () => {
     //   if (!!data.picture) {
     //     formData.append("picture", data.picture)
     //   }
-    //   axios
-    //     .post(`${settingsApp.api.base}/residentials`, formData, {
-    //       headers: {
-    //         Authorization: `Bearer ${storedToken}`,
-    //         ContentType: "application/json",
-    //         Accept: "application/json",
-    //       },
-    //     })
-    //     .then(response => {
-    //       setIsSubmitUserCreate(false)
-    //       const data: CreateUserResponseDTO =
-    //         response.data as CreateUserResponseDTO
-    //       if (!!data && !!data.message) {
-    //         toast.success(data.message)
-    //         navigate(pathRoutes.PROPERTIES.LIST)
-    //       }
-    //     })
-    //     .catch(err => {
-    //       setIsSubmitUserCreate(false)
-    //       setErrResponse(err)
-    //     })
+    // try {
+    //   setIsSubmitUserCreate(true)
+    //   const response: CreateUserResponseDTO =
+    //     (await propertyRepository.createProperty(
+    //       formData,
+    //     )) as CreateUserResponseDTO
+    //   if (!!response) {
+    //     toast.success(response.message)
+    //     navigate(pathRoutes.PROPERTIES.LIST)
+    //   }
+    // } finally {
+    //   setIsSubmitUserCreate(false)
     // }
-  }, [])
-
-  const fetchListRole = React.useCallback(() => {
-    const storedToken = handleGetToken()
-    if (storedToken) {
-      axios
-        .get(`${settingsApp.api.base}/gender`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        })
-        .then(response => {
-          // const listData: ManagementCompanyDTO[] =
-          //   response.data as ManagementCompanyDTO[]
-          // setListManagementCompany(listData)
-          // const listProperties = (listData || []).map(data => ({
-          //   value: data.id,
-          //   label: data.name,
-          // }))
-          // setOptionsGender(listProperties.filter(propertu => !!propertu))
-        })
-        .catch(err => {
-          toast.error("Failed to fetch data")
-        })
-    }
-  }, [handleGetToken])
-
-  React.useEffect(() => {
-    fetchListRole()
+    // }
   }, [])
 
   // Init Upload picture Title Image
@@ -488,14 +429,69 @@ const CreateProperty: React.FC = () => {
     },
   ]
 
-  const handleChangeTypeProperty = (typeProperty: number) => () =>
+  const handleChangeTypeProperty = (typeProperty: number) => () => {
+    setValue("property_type", `${typeProperty}`)
     setTypeProperty(typeProperty)
+  }
 
-  const changeStatusAttrCheck = (name: string, status: boolean) => {
-    const updatedAttrs = [...attrCheck]
-    const index = updatedAttrs.findIndex(attr => attr.name === name)
-    updatedAttrs[index].status = !status
-    setAttrCheck(updatedAttrs)
+  const handleValidateNextStep = () => {
+    switch (stepActive) {
+      case 1: {
+        if (
+          validateErrorSchema(errors, [
+            "category_id",
+            "title",
+            "description",
+            "property_type",
+            "price",
+            "owner_id",
+          ])
+        ) {
+          setStepActive(2)
+        }
+        break
+      }
+      case 2: {
+        if (
+          validateErrorSchema(errors, [
+            "city_id",
+            "municipality_id",
+            "urbanization_id",
+            "client_address",
+          ])
+        ) {
+          setStepActive(3)
+        }
+        break
+      }
+      case 3: {
+        if (
+          validateErrorSchema(errors, [
+            "video_link",
+            "title_image",
+            "d_image",
+            "gallery_images",
+          ])
+        ) {
+          setStepActive(4)
+        }
+        break
+      }
+    }
+    submitWrapper(handleSubmit)()
+  }
+
+  const handleChangeToggle = (id: number) => () => {
+    const newListParams = listParams.map(param => {
+      if (param.id == id) {
+        return {
+          ...param,
+          value: !param.value,
+        }
+      }
+      return param
+    })
+    setListParams(newListParams)
   }
 
   return (
@@ -506,7 +502,13 @@ const CreateProperty: React.FC = () => {
           {listSteppers.map(stp => (
             <ItemStepper isActive={stepActive == stp.step}>
               <div>
-                <span onClick={() => setStepActive(stp.step)}>{stp.step}</span>
+                <span
+                  onClick={() => {
+                    // setStepActive(stp.step)
+                  }}
+                >
+                  {stp.step}
+                </span>
               </div>
               <span>{stp.name}</span>
               <span />
@@ -516,227 +518,251 @@ const CreateProperty: React.FC = () => {
         {stepActive == 1 && (
           <ResidentialFormStyles>
             <ContainerResFormStyles>
-              <WrapperInput>
-                <label htmlFor="property-create-project">Categoria</label>
-                <Select
-                  id="property-create-project"
-                  defaultValue={seleOpCategory}
-                  onChange={handleChangeOptionCategory}
-                  options={optionsCategory}
-                  isSearchable={true}
-                  styles={selectStyles}
-                />
-                {!!(errors.category_id as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.category_id as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="last_name-create-project">Titulo</label>
-                <Input
-                  id="last_name-create-project"
-                  placeholder="Enter description"
-                  // icon={TextDescription}
-                  register={register("description")}
-                />
-                {!!(errors.title as any)?.message && (
-                  <ErrorMessage>{(errors.title as any)?.message}</ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="last_name-create-project">Descripción</label>
-                <Textarea
-                  id="last_name-create-project"
-                  placeholder="Enter description"
-                  // icon={TextDescription}
-                  register={register("description")}
-                />
-                {!!(errors.description as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.description as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <div>
-                  <label htmlFor="last_name-create-project">
-                    Tipo de propiedad
-                  </label>
-                  <ContainerCheckTypeProperty typeProperty={typeProperty}>
-                    <div onClick={handleChangeTypeProperty(1)}>
-                      <span>Para alquilar</span>
-                    </div>
-                    <div onClick={handleChangeTypeProperty(2)}>
-                      <span>Para vender</span>
-                    </div>
-                  </ContainerCheckTypeProperty>
-                </div>
-                {!!(errors.description as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.description as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="last_name-create-project">Precio</label>
-                <Input
-                  id="last_name-create-project"
-                  placeholder="Enter description"
-                  // icon={TextDescription}
-                  register={register("price")}
-                />
-                {!!(errors.price as any)?.message && (
-                  <ErrorMessage>{(errors.price as any)?.message}</ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="owner-create-project">Propietario</label>
-                <Select
-                  id="owner-create-project"
-                  defaultValue={seleOpOwner}
-                  onChange={handleChangeOptionOwner}
-                  options={optionsOwner}
-                  isSearchable={true}
-                  styles={selectStyles}
-                />
-                {!!(errors.owner_id as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.owner_id as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
+              <ContainerTwoInputs>
+                <WrapperInput>
+                  <label htmlFor="property-create-project">Categoria</label>
+                  <Select
+                    id="property-create-project"
+                    defaultValue={seleOpCategory}
+                    onChange={handleChangeOptionCategory}
+                    options={optionsCategory}
+                    isSearchable={true}
+                    styles={selectStyles}
+                  />
+                  {!!(errors.category_id as any)?.message && (
+                    <ErrorMessage>
+                      {(errors.category_id as any)?.message}
+                    </ErrorMessage>
+                  )}
+                </WrapperInput>
+                <WrapperInput>
+                  <label htmlFor="last_name-create-project">Titulo</label>
+                  <Input
+                    id="last_name-create-project"
+                    placeholder="Enter description"
+                    // icon={TextDescription}
+                    register={register("title")}
+                  />
+                  {!!(errors.title as any)?.message && (
+                    <ErrorMessage>
+                      {(errors.title as any)?.message}
+                    </ErrorMessage>
+                  )}
+                </WrapperInput>
+              </ContainerTwoInputs>
+              <ContainerOneInputs>
+                <WrapperInput>
+                  <label htmlFor="last_name-create-project">Descripción</label>
+                  <Textarea
+                    id="last_name-create-project"
+                    placeholder="Enter description"
+                    // icon={TextDescription}
+                    register={register("description")}
+                  />
+                  {!!(errors.description as any)?.message && (
+                    <ErrorMessage>
+                      {(errors.description as any)?.message}
+                    </ErrorMessage>
+                  )}
+                </WrapperInput>
+              </ContainerOneInputs>
+              <ContainerThreeInputs>
+                <WrapperInput>
+                  <ContainerSwitchTwo>
+                    <label htmlFor="last_name-create-project">
+                      Tipo de propiedad
+                    </label>
+                    <ContainerCheckTypeProperty typeProperty={typeProperty}>
+                      <div onClick={handleChangeTypeProperty(1)}>
+                        <span>Para alquilar</span>
+                      </div>
+                      <div onClick={handleChangeTypeProperty(2)}>
+                        <span>Para vender</span>
+                      </div>
+                    </ContainerCheckTypeProperty>
+                  </ContainerSwitchTwo>
+                  {!!(errors.description as any)?.message && (
+                    <ErrorMessage>
+                      {(errors.description as any)?.message}
+                    </ErrorMessage>
+                  )}
+                </WrapperInput>
+                <WrapperInput>
+                  <label htmlFor="last_name-create-project">Precio</label>
+                  <Input
+                    id="last_name-create-project"
+                    placeholder="Enter description"
+                    // icon={TextDescription}
+                    register={register("price")}
+                  />
+                  {!!(errors.price as any)?.message && (
+                    <ErrorMessage>
+                      {(errors.price as any)?.message}
+                    </ErrorMessage>
+                  )}
+                </WrapperInput>
+                <WrapperInput>
+                  <label htmlFor="owner-create-project">Propietario</label>
+                  <Select
+                    id="owner-create-project"
+                    defaultValue={seleOpOwner}
+                    onChange={handleChangeOptionOwner}
+                    options={optionsOwner}
+                    isSearchable={true}
+                    styles={selectStyles}
+                  />
+                  {!!(errors.owner_id as any)?.message && (
+                    <ErrorMessage>
+                      {(errors.owner_id as any)?.message}
+                    </ErrorMessage>
+                  )}
+                </WrapperInput>
+              </ContainerThreeInputs>
             </ContainerResFormStyles>
           </ResidentialFormStyles>
         )}
         {stepActive == 2 && (
           <ResidentialFormStyles>
-            <WrapperInput>
-              <label htmlFor="city-create-project">Ciudad</label>
-              <Select
-                id="city-create-project"
-                defaultValue={seleOpCity}
-                onChange={handleChangeOptionCity}
-                options={optionsCity}
-                isSearchable={true}
-                styles={selectStyles}
-              />
-              {!!(errors.city_id as any)?.message && (
-                <ErrorMessage>{(errors.city_id as any)?.message}</ErrorMessage>
-              )}
-            </WrapperInput>
-            <WrapperInput>
-              <label htmlFor="municipality-create-project">Municipalidad</label>
-              <Select
-                id="municipality-create-project"
-                defaultValue={seleOpMunicipality}
-                onChange={handleChangeOptionMunicipality}
-                options={optionsMunicipality}
-                isSearchable={true}
-                styles={selectStyles}
-              />
-              {!!(errors.municipality_id as any)?.message && (
-                <ErrorMessage>
-                  {(errors.municipality_id as any)?.message}
-                </ErrorMessage>
-              )}
-            </WrapperInput>
-            <WrapperInput>
-              <label htmlFor="urbanization-create-project">Urbanización</label>
-              <Select
-                id="urbanization-create-project"
-                defaultValue={seleOpUrbanization}
-                onChange={handleChangeOptionUrbanization}
-                options={optionsUrbanization}
-                isSearchable={true}
-                styles={selectStyles}
-              />
-              {!!(errors.urbanization_id as any)?.message && (
-                <ErrorMessage>
-                  {(errors.urbanization_id as any)?.message}
-                </ErrorMessage>
-              )}
-            </WrapperInput>
-            <WrapperInput>
-              <label htmlFor="address-create-project">Dirección</label>
-              <Input
-                id="address-create-project"
-                placeholder="Enter description"
-                // icon={TextDescription}
-                register={register("price")}
-              />
-              {!!(errors.client_address as any)?.message && (
-                <ErrorMessage>
-                  {(errors.client_address as any)?.message}
-                </ErrorMessage>
-              )}
-            </WrapperInput>
+            <ContainerThreeInputs>
+              <WrapperInput>
+                <label htmlFor="city-create-project">Ciudad</label>
+                <Select
+                  id="city-create-project"
+                  defaultValue={seleOpCity}
+                  onChange={handleChangeOptionCity}
+                  options={optionsCity}
+                  isSearchable={true}
+                  styles={selectStyles}
+                />
+                {!!(errors.city_id as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.city_id as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="municipality-create-project">
+                  Municipalidad
+                </label>
+                <Select
+                  id="municipality-create-project"
+                  defaultValue={seleOpMunicipality}
+                  onChange={handleChangeOptionMunicipality}
+                  options={optionsMunicipality}
+                  isSearchable={true}
+                  styles={selectStyles}
+                />
+                {!!(errors.municipality_id as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.municipality_id as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
+                <label htmlFor="urbanization-create-project">
+                  Urbanización
+                </label>
+                <Select
+                  id="urbanization-create-project"
+                  defaultValue={seleOpUrbanization}
+                  onChange={handleChangeOptionUrbanization}
+                  options={optionsUrbanization}
+                  isSearchable={true}
+                  styles={selectStyles}
+                />
+                {!!(errors.urbanization_id as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.urbanization_id as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+            </ContainerThreeInputs>
+            <ContainerOneInputs>
+              <WrapperInput>
+                <label htmlFor="address-create-project">Dirección</label>
+                <Input
+                  id="address-create-project"
+                  placeholder="Enter description"
+                  // icon={TextDescription}
+                  register={register("price")}
+                />
+                {!!(errors.client_address as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.client_address as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+            </ContainerOneInputs>
           </ResidentialFormStyles>
         )}
         {stepActive == 3 && (
           <ResidentialFormStyles>
-            <CustomWrapperInputAvatar>
-              <label htmlFor="picture-create-project">Imagen del titulo</label>
-              <div>
-                {!!infoPicture ? (
-                  <ContainerImageAvatar>
-                    <img src={infoPicture} />
-                    <div onClick={handleDeletePictureUser}>
-                      <Trash />
-                    </div>
-                  </ContainerImageAvatar>
-                ) : (
-                  <ContainerDragAndDropAvatar
-                    {...getRootProps()}
-                    isDragActive={isDragActive}
-                  >
-                    <CardImage />
-                    <input {...getInputProps()} />
-                    {isDragActive ? (
-                      <p>Suelta la imagen aquí</p>
-                    ) : (
-                      <p>Arrastra o haz clic para cargar una imagen</p>
-                    )}
-                  </ContainerDragAndDropAvatar>
+            <ContainerTwoInputs>
+              <CustomWrapperInputAvatar>
+                <label htmlFor="picture-create-project">
+                  Imagen del titulo
+                </label>
+                <div>
+                  {!!infoPicture ? (
+                    <ContainerImageAvatar>
+                      <img src={infoPicture} />
+                      <div onClick={handleDeletePictureUser}>
+                        <Trash />
+                      </div>
+                    </ContainerImageAvatar>
+                  ) : (
+                    <ContainerDragAndDropAvatar
+                      {...getRootProps()}
+                      isDragActive={isDragActive}
+                    >
+                      <CardImage />
+                      <input {...getInputProps()} />
+                      {isDragActive ? (
+                        <p>Suelta la imagen aquí</p>
+                      ) : (
+                        <p>Arrastra o haz clic para cargar una imagen</p>
+                      )}
+                    </ContainerDragAndDropAvatar>
+                  )}
+                </div>
+                {!!(errors.title_image as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.title_image as any)?.message}
+                  </ErrorMessage>
                 )}
-              </div>
-              {!!(errors.title_image as any)?.message && (
-                <ErrorMessage>
-                  {(errors.title_image as any)?.message}
-                </ErrorMessage>
-              )}
-            </CustomWrapperInputAvatar>
-            <CustomWrapperInputAvatar>
-              <label htmlFor="picture-create-project">Imagen 3D</label>
-              <div>
-                {!!infoPicture3D ? (
-                  <ContainerImageAvatar>
-                    <img src={infoPicture3D} />
-                    <div onClick={handleDeletePictureUser3D}>
-                      <Trash />
-                    </div>
-                  </ContainerImageAvatar>
-                ) : (
-                  <ContainerDragAndDropAvatar
-                    {...getRootProps3D()}
-                    isDragActive={isDragActive3D}
-                  >
-                    <CardImage />
-                    <input {...getInputProps3D()} />
-                    {isDragActive3D ? (
-                      <p>Suelta la imagen aquí</p>
-                    ) : (
-                      <p>Arrastra o haz clic para cargar una imagen</p>
-                    )}
-                  </ContainerDragAndDropAvatar>
+              </CustomWrapperInputAvatar>
+              <CustomWrapperInputAvatar>
+                <label htmlFor="picture-create-project">Imagen 3D</label>
+                <div>
+                  {!!infoPicture3D ? (
+                    <ContainerImageAvatar>
+                      <img src={infoPicture3D} />
+                      <div onClick={handleDeletePictureUser3D}>
+                        <Trash />
+                      </div>
+                    </ContainerImageAvatar>
+                  ) : (
+                    <ContainerDragAndDropAvatar
+                      {...getRootProps3D()}
+                      isDragActive={isDragActive3D}
+                    >
+                      <CardImage />
+                      <input {...getInputProps3D()} />
+                      {isDragActive3D ? (
+                        <p>Suelta la imagen aquí</p>
+                      ) : (
+                        <p>Arrastra o haz clic para cargar una imagen</p>
+                      )}
+                    </ContainerDragAndDropAvatar>
+                  )}
+                </div>
+                {!!(errors.title_image as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.title_image as any)?.message}
+                  </ErrorMessage>
                 )}
-              </div>
-              {!!(errors.title_image as any)?.message && (
-                <ErrorMessage>
-                  {(errors.title_image as any)?.message}
-                </ErrorMessage>
-              )}
-            </CustomWrapperInputAvatar>
+              </CustomWrapperInputAvatar>
+            </ContainerTwoInputs>
             <ContainerUploadFiles>
               <CustomWrapperInputFiles>
                 <label htmlFor="picture-create-project">Files</label>
@@ -757,7 +783,6 @@ const CreateProperty: React.FC = () => {
                     {(errors.gallery_images as any)?.message}
                   </ErrorMessage>
                 )}
-                {/* <div>{JSON.stringify(listFiles)}</div> */}
                 <ContainerListFiles>
                   {listFiles.length > 0 &&
                     (listFiles || []).map(file => (
@@ -774,96 +799,71 @@ const CreateProperty: React.FC = () => {
         {stepActive == 4 && (
           <>
             <ResidentialFormStyles>
-              <WrapperInput>
-                <label htmlFor="nro_piso-create">Piso</label>
-                <Input
-                  id="nro_piso-create"
-                  placeholder="# Piso"
-                  // icon={TextDescription}
-                  register={register("nro_piso")}
-                />
-                {!!(errors.nro_piso as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.nro_piso as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="nro_habitaciones-create">Habitaciones</label>
-                <Input
-                  id="nro_habitaciones-create"
-                  placeholder="# Piso"
-                  // icon={TextDescription}
-                  register={register("nro_habitaciones")}
-                />
-                {!!(errors.nro_habitaciones as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.nro_habitaciones as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="nro_banios-create">Baños</label>
-                <Input
-                  id="nro_banios-create"
-                  placeholder="# Piso"
-                  // icon={TextDescription}
-                  register={register("nro_banios")}
-                />
-                {!!(errors.nro_banios as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.nro_banios as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="nro_puestos-create">Puestos</label>
-                <Input
-                  id="nro_puestos-create"
-                  placeholder="# Piso"
-                  // icon={TextDescription}
-                  register={register("nro_puestos")}
-                />
-                {!!(errors.nro_puestos as any)?.message && (
-                  <ErrorMessage>
-                    {(errors.nro_puestos as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="nro_m2-create">m2</label>
-                <Input
-                  id="nro_m2-create"
-                  placeholder="# Piso"
-                  // icon={TextDescription}
-                  register={register("nro_m2")}
-                />
-                {!!(errors.nro_m2 as any)?.message && (
-                  <ErrorMessage>{(errors.nro_m2 as any)?.message}</ErrorMessage>
-                )}
-              </WrapperInput>
               <ContainerSwitchs>
-                {attrCheck.map(attr => (
-                  <Switch
-                    isActive={attr.status}
-                    isEnabled={true}
-                    onToggle={() =>
-                      changeStatusAttrCheck(attr.name, attr.status)
-                    }
-                    label={attr.name}
-                  />
-                ))}
+                {listParams.map(param => {
+                  if (param.type.toLowerCase() == ETypeParam.CHECKBOX) {
+                    return (
+                      <Switch
+                        isActive={!!param.value}
+                        isEnabled={true}
+                        onToggle={handleChangeToggle(param.id)}
+                        label={param.name}
+                      />
+                    )
+                  }
+                  return (
+                    <WrapperInput>
+                      <label htmlFor={`${param.name}_create`}>
+                        {param.name}
+                      </label>
+                      <Input
+                        id={`${param.name}_create`}
+                        placeholder={`${param.name}`}
+                        type={
+                          param.type.toLowerCase() == ETypeParam.NUMBER
+                            ? "number"
+                            : "text"
+                        }
+                        onChange={(e: any) => {
+                          const newListParams = listParams.map(it => {
+                            if (it.id == param.id) {
+                              return {
+                                ...it,
+                                value: e.target.value,
+                              }
+                            }
+                            return it
+                          })
+                          setListParams(newListParams)
+                        }}
+                      />
+                    </WrapperInput>
+                  )
+                })}
               </ContainerSwitchs>
             </ResidentialFormStyles>
-            <ContainerButton>
-              <Button
-                onClick={submitWrapper(handleSubmit)}
-                text="Create"
-                isLoading={isSubmitPropertyCreate}
-              />
-            </ContainerButton>
+            <button
+              onClick={() => {
+                console.log(
+                  "Test json => ",
+                  listParams.map(it => ({
+                    id: it.id,
+                    value: it.value,
+                  })),
+                )
+              }}
+            >
+              Test
+            </button>
           </>
         )}
+        <ContainerButton>
+          <Button
+            onClick={handleValidateNextStep}
+            text={stepActive == 4 ? "Crear" : "Siguiente"}
+            isLoading={isSubmitPropertyCreate}
+          />
+        </ContainerButton>
       </ContainerStepperCreate>
     </>
   )

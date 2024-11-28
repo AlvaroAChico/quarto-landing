@@ -30,6 +30,7 @@ import {
   ResetPasswordSchema,
 } from "../../../core/models/schemas/reset-schema"
 import { MessageResponsedDTO } from "../../../core/models/interfaces/general-model"
+import { authRepository } from "../../../api/repositories/auth-repository"
 
 const ResetPassword: React.FC = () => {
   const [isSubmitLogin, setIsSubmitLogin] = React.useState<boolean>(false)
@@ -65,39 +66,24 @@ const ResetPassword: React.FC = () => {
     }
   }, [])
 
-  const { clearAllDataAPP } = useDataUser()
-
-  const handleSubmit = (data: any) => {
-    setIsSubmitLogin(true)
-    axios
-      .post(
-        `${settingsApp.api.base}/auth/reset-password`,
+  const handleSubmit = async (data: any) => {
+    try {
+      setIsSubmitLogin(true)
+      const response: MessageResponsedDTO = (await authRepository.resetPassword(
         {
           token: data.token,
           email: data.email,
           password: data.password,
           password_confirmation: data.password_confirmation,
         },
-        {
-          headers: {
-            ContentType: "application/json",
-            Accept: "application/json",
-            CacheControl: "no-cache",
-            Pragma: "no-cache",
-            Expires: "0",
-          },
-        },
-      )
-      .then(response => {
-        setIsSubmitLogin(false)
-        const data: MessageResponsedDTO = response.data
-        toast.success(data.message)
+      )) as MessageResponsedDTO
+      if (!!response) {
+        toast.success(response.message)
         navigate(pathRoutes.SIGN_IN.to)
-      })
-      .catch(err => {
-        setIsSubmitLogin(false)
-        toast.error(err.response.data.message)
-      })
+      }
+    } finally {
+      setIsSubmitLogin(false)
+    }
   }
 
   return (

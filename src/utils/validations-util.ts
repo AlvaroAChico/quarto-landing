@@ -1,3 +1,5 @@
+import { FieldErrors } from "react-hook-form"
+
 export const validationObjectData = (data: any) => {
   //   const formData = new FormData()
   //   for (const key in data) {
@@ -19,4 +21,20 @@ export const validationObjectData = (data: any) => {
   //     return
   //   }
   //   formData.append("_method", "PATCH")
+}
+
+export const validateErrorSchema = (
+  errors: FieldErrors,
+  its: string[],
+): boolean => {
+  its.forEach(it => {
+    if (
+      (errors[it] as any)?.message == "" ||
+      (errors[it] as any)?.message == undefined
+    ) {
+      return true
+    }
+  })
+
+  return false
 }

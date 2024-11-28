@@ -27,4 +27,24 @@ export const ContainerHeadCard = styled.div`
   }
 `
 
-export const ContainerSegurosAccordion = styled.div``
+export const ContainerSegurosAccordion = styled.div`
+  width: 100%;
+
+  .panel button {
+    text-align: left;
+    width: 100%;
+  }
+`
+
+export const ContainerTitle = styled.div`
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 15px 10px;
+  border-top: 1px solid ${palette.inputBorderolor};
+`
+
+export const ContainerDescription = styled.div`
+  font-size: 0.8rem;
+  padding: 20px;
+  border-top: 1px solid ${palette.inputBorderolor};
+`

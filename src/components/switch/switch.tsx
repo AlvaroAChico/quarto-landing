@@ -1,5 +1,9 @@
 import React from "react"
-import { SwitchContainer, ToggleStyles } from "./switch.styles"
+import {
+  ContainerAllSwitch,
+  SwitchContainer,
+  ToggleStyles,
+} from "./switch.styles"
 
 interface SwitchProps {
   label: string
@@ -21,7 +25,8 @@ const Switch: React.FC<SwitchProps> = ({
   }, [isEnabled, onToggle])
 
   return (
-    <>
+    <ContainerAllSwitch>
+      <span>{label}</span>
       <SwitchContainer
         isActive={isActive}
         isEnabled={isEnabled}
@@ -34,8 +39,9 @@ const Switch: React.FC<SwitchProps> = ({
           onChange={handleChangeTogle}
         />
         <label htmlFor="toggle"></label>
+        <span>{isEnabled ? "Si" : "No"}</span>
       </SwitchContainer>
-    </>
+    </ContainerAllSwitch>
   )
 }
 

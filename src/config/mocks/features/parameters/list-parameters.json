@@ -1,0 +1,114 @@
+[
+    {
+      "id": 1,
+      "name": "Piso #",
+      "type": "number",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 3,
+      "name": "Habitaciones",
+      "type": "number",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 4,
+      "name": "Baños",
+      "type": "number",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 5,
+      "name": "Puestos",
+      "type": "number",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 6,
+      "name": "Lavandero",
+      "type": "checkbox",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 7,
+      "name": "m2",
+      "type": "number",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 8,
+      "name": "Aceptan Mascotas",
+      "type": "checkbox",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 9,
+      "name": "Amoblado",
+      "type": "checkbox",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 10,
+      "name": "Piscina",
+      "type": "checkbox",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 11,
+      "name": "Gimnasio",
+      "type": "checkbox",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 12,
+      "name": "Ascensor",
+      "type": "checkbox",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 13,
+      "name": "Vigilancia 24H",
+      "type": "checkbox",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 14,
+      "name": "Pozo de agua",
+      "type": "checkbox",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 15,
+      "name": "Planta eléctrica",
+      "type": "checkbox",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 16,
+      "name": "Internet",
+      "type": "checkbox",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    },
+    {
+      "id": 17,
+      "name": "Aire acondicionado",
+      "type": "checkbox",
+      "isActive": true,
+      "createdAt": "2024-11-27 19:14:51"
+    }
+  ]

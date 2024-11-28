@@ -31,6 +31,7 @@ import {
   RecoverySchema,
 } from "../../../core/models/schemas/recovery-schema"
 import { MessageResponsedDTO } from "../../../core/models/interfaces/general-model"
+import { authRepository } from "../../../api/repositories/auth-repository"
 
 const RecoveryPass: React.FC = () => {
   const [isSubmitLogin, setIsSubmitLogin] = React.useState<boolean>(false)
@@ -50,38 +51,20 @@ const RecoveryPass: React.FC = () => {
     register,
   } = methods
 
-  const { clearAllDataAPP } = useDataUser()
-
-  const handleSubmit = (data: any) => {
-    setIsSubmitLogin(true)
-    axios
-      .post(
-        `${settingsApp.api.base}/auth/recover-password`,
-        {
+  const handleSubmit = async (data: any) => {
+    try {
+      setIsSubmitLogin(true)
+      const response: MessageResponsedDTO =
+        (await authRepository.recoveryPassword({
           email: data.email,
-        },
-        {
-          headers: {
-            ContentType: "application/json",
-            Accept: "application/json",
-            CacheControl: "no-cache",
-            Pragma: "no-cache",
-            Expires: "0",
-          },
-        },
-      )
-      .then(response => {
-        const data: MessageResponsedDTO = response.data
-        if (!!data && !!data.message) {
-          toast.success(data.message)
-          navigate(pathRoutes.SIGN_IN.to)
-        }
-        setIsSubmitLogin(false)
-      })
-      .catch(err => {
-        setIsSubmitLogin(false)
-        toast.error(err.response.data.message)
-      })
+        })) as MessageResponsedDTO
+      if (!!response) {
+        toast.success(response.message)
+        navigate(pathRoutes.SIGN_IN.to)
+      }
+    } finally {
+      setIsSubmitLogin(false)
+    }
   }
 
   return (

@@ -45,14 +45,14 @@ export const ContainerInfo = styled.div<{ status: string; type: string }>`
       > span {
         margin-left: 20px;
         background: ${p =>
-          p.status.toLowerCase() == "aceptado".toLowerCase()
+          p.status == "aceptado"
             ? palette.successColor
-            : p.status.toLowerCase() == "en proceso".toLowerCase()
+            : p.status == "en proceso"
               ? palette.infoColor
               : palette.errorColor};
 
         color: ${p =>
-          p.status.toLowerCase() == "aceptado".toLowerCase()
+          p.status == "aceptado"
             ? "white"
             : p.status == "aceptada"
               ? palette.infoColorHover
@@ -71,13 +71,13 @@ export const ContainerInfo = styled.div<{ status: string; type: string }>`
 
     &:nth-last-child(1) {
       background: ${p =>
-        p.type.toLowerCase() == "quarto"
+        p.type == "quarto"
           ? palette.primaryColor
-          : p.type.toLowerCase() == "estándar"
+          : p.type == "estándar"
             ? "#D9F6F0"
             : "#1E68BF"};
 
-      color: ${p => (p.type.toLowerCase() == "estándar" ? "#00C494" : "white")};
+      color: ${p => (p.type == "estándar" ? "#00C494" : "white")};
 
       position: absolute;
       top: 20px;

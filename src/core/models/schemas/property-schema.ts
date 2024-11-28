@@ -7,46 +7,32 @@ const fileTypeValidation = (file: File): boolean => {
 
 export const CreatePropertySchema = object({
   // Details
-  category_id: string(),
-  title: string(),
-  description: string(),
-  property_type: string(),
-  price: string(),
-  owner_id: string(),
+  category_id: string().required("Ingresa una respuesta"),
+  title: string().required("Ingresa una respuesta"),
+  description: string().required("Ingresa una respuesta"),
+  property_type: string().required("Ingresa una respuesta"),
+  price: string().required("Ingresa una respuesta"),
+  owner_id: string().required("Ingresa una respuesta"),
   // Location
-  city_id: string(),
-  municipality_id: string(),
-  urbanization_id: string(),
-  client_address: string(),
+  city_id: string().required("Ingresa una respuesta"),
+  municipality_id: string().required("Ingresa una respuesta"),
+  urbanization_id: string().required("Ingresa una respuesta"),
+  client_address: string().required("Ingresa una respuesta"),
   // Gallery
-  video_link: string(),
-  title_image: mixed(),
-  d_image: mixed(),
+  video_link: string().required("Ingresa una respuesta"),
+  title_image: mixed().required("Ingresa una respuesta"),
+  d_image: mixed().required("Ingresa una respuesta"),
   gallery_images: array().of(
-    mixed().test("is-valid-file", "File type is not allowed", file => {
-      if (file instanceof File) {
-        return fileTypeValidation(file)
-      }
-      return false
-    }),
+    mixed()
+      .test("is-valid-file", "File type is not allowed", file => {
+        if (file instanceof File) {
+          return fileTypeValidation(file)
+        }
+        return false
+      })
+      .required("Ingresa una respuesta"),
   ),
-  // Specifications
-  nro_piso: string(),
-  nro_habitaciones: string(),
-  nro_banios: string(),
-  nro_puestos: string(),
-  nro_m2: string(),
-  cbx_lavandero: string(),
-  cbx_piscina: string(),
-  cbx_pozo_agua: string(),
-  cbx_gym: string(),
-  cbx_planta_electrica: string(),
-  cbx_accept_mascotas: string(),
-  cbx_ascensor: string(),
-  cbx_internet: string(),
-  cbx_amoblado: string(),
-  cbx_vigilancia: string(),
-  cbx_aire_acodicionado: string(),
+  params_json: string().required("Ingresa una respuesta"),
 })
 
 export const UpdatePropertySchema = object({

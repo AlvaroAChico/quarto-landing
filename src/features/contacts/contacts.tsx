@@ -16,43 +16,27 @@ import { settingsApp } from "../../config/environment/settings"
 import { pathRoutes } from "../../config/routes/paths"
 import ContactCard from "./components/contact-card/contact-card"
 import { ContactDTO } from "../../core/models/interfaces/contact-model"
+import { contactRepository } from "../../api/repositories/contact-repository"
 
 const Contacts: React.FC = () => {
-  const [listContacts, setListContacts] = React.useState<any[]>([])
-  const { handleGetToken } = useDataUser()
+  const [listContacts, setListContacts] = React.useState<ContactDTO[]>([])
+  const [isLoadingFetch, setIsLoadingFetch] = React.useState<boolean>(false)
   const navigate = useNavigate()
-
-  const [listProperties, setListProperties] = React.useState<ContactDTO[]>([])
-  const [isLoadingListProperties, setIsLoadingListProperties] =
-    React.useState<boolean>(false)
 
   React.useEffect(() => {
     fetchDataProperties()
   }, [])
 
-  const fetchDataProperties = React.useCallback(() => {
-    const storedToken = handleGetToken()
-    if (storedToken) {
-      setIsLoadingListProperties(true)
-      axios
-        .get(`${settingsApp.api.base}/contacts`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        })
-        .then(response => {
-          const dataResponse: ContactDTO[] = response.data as ContactDTO[]
-          if (!!dataResponse) {
-            setListProperties(dataResponse)
-          }
-          setIsLoadingListProperties(false)
-        })
-        .catch(err => {
-          toast.error("Failed to fetch data")
-          setIsLoadingListProperties(false)
-        })
+  const fetchDataProperties = React.useCallback(async () => {
+    try {
+      setIsLoadingFetch(true)
+      const response: ContactDTO[] =
+        (await contactRepository.getAll()) as ContactDTO[]
+      if (!!response) {
+        setListContacts(response)
+      }
+    } finally {
+      setIsLoadingFetch(false)
     }
   }, [])
 
@@ -67,11 +51,8 @@ const Contacts: React.FC = () => {
           <div></div>
         </ContainerSearch>
         <ContainerListProperties>
-          {(listProperties || []).map(prop => (
-            <ContactCard
-              key={prop.id}
-              contact={prop}
-            />
+          {(listContacts || []).map(prop => (
+            <ContactCard key={prop.id} contact={prop} />
           ))}
         </ContainerListProperties>
       </ContentStylesSection>

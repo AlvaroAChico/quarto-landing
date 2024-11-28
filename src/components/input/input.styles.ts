@@ -10,6 +10,7 @@ export const InputWrapper = styled.div`
   padding: 4px 14px;
   width: 100%;
   background: ${palette.inputBgColor};
+  height: 58px;
 
   &:focus-within {
     border-color: ${palette.primaryColor};

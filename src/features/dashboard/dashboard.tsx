@@ -62,44 +62,11 @@ const Dashboard: React.FC = () => {
     setSeleOpUrbanization(value)
   }
   // End Urbanization
-  const { handleGetToken } = useDataUser()
   const navigate = useNavigate()
-
-  const fetchData = async (url: string) => {
-    const storedToken = handleGetToken()
-    if (!storedToken) {
-      throw new Error("No token found")
-    }
-
-    try {
-      const response = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${storedToken}`,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      })
-      return response.data
-    } catch (err) {
-      setErrResponse(err)
-      throw err
-    }
-  }
-
-  const fetchDataResidentials = async () => {
-    try {
-      const data: PropertyDTO[] = await fetchData(
-        `${settingsApp.api.base}/residentials`,
-      )
-      // setNroProperties(data.length)
-    } catch (err) {
-      setErrResponse(err)
-    }
-  }
 
   React.useEffect(() => {
     const fetchDataAsync = async () => {
-      // await Promise.all([fetchDataResidentials(), fetchDataContractors()])
+      // await Promise.all([fetchDataContractors()])
     }
 
     fetchDataAsync()

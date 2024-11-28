@@ -1,18 +1,32 @@
 import styled from "styled-components"
 
+export const ContainerAllSwitch = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  > span {
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+`
+
 export const SwitchContainer = styled.div<{
   isActive: boolean
   isEnabled: boolean
   label: string
 }>`
   pointer-events: ${p => (p.isEnabled ? "inherit" : "none")};
+  align-items: center;
   position: relative;
+  display: flex;
+  gap: 10px;
 
   > label {
     background: ${p =>
-      p.isEnabled ? (p.isActive ? "#4caf50" : "#FF8E8E") : "#cccccc"};
-    width: 130px;
-    height: 55px;
+      p.isEnabled ? (p.isActive ? "#00C49A" : "#FF7C98") : "#cccccc"};
+    width: 60px;
+    height: 35px;
     border-radius: 34px;
     cursor: pointer;
     display: inline-block;
@@ -20,25 +34,15 @@ export const SwitchContainer = styled.div<{
     transition: 0.2s;
 
     &:after {
-      left: ${p => (p.isActive ? "80px" : "8px")};
+      left: ${p => (p.isActive ? "28px" : "6px")};
       background-color: white;
       border-radius: 50%;
       position: absolute;
       transition: 0.2s;
-      height: 40px;
+      height: 25px;
+      width: 25px;
       content: "";
-      width: 40px;
-      top: 8px;
-    }
-    &:before {
-      content: "${p => p.label}";
-      position: absolute;
-      font-size: 10px;
-      color: white;
-      text-transform: uppercase;
-      max-width: 20px;
-      top: ${p => (p.isActive ? "15px" : "10px")};
-      left: ${p => (p.isActive ? "20px" : "50px")};
+      top: 5px;
     }
   }
 `
@@ -54,16 +58,4 @@ export const ToggleStyles = styled.input`
   cursor: pointer;
   outline: none;
   transition: background 0.3s;
-
-  // &:before {
-  //   content: "";
-  //   position: absolute;
-  //   width: 18px;
-  //   height: 18px;
-  //   border-radius: 50%;
-  //   background: white;
-  //   top: 1px;
-  //   left: ${props => (props.checked ? "20px" : "1px")};
-  //   transition: left 0.3s;
-  // }
 `

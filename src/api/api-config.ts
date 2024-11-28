@@ -9,6 +9,9 @@ const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
+    CacheControl: "no-cache",
+    Pragma: "no-cache",
+    Expires: "0",
   },
 })
 

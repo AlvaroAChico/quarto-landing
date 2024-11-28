@@ -15,41 +15,23 @@ import useDataUser from "../../../../utils/use-data-user"
 import axios from "axios"
 import { VisitDetailDTO } from "../../../../core/models/interfaces/visits-model"
 import { settingsApp } from "../../../../config/environment/settings"
+import { visitRepository } from "../../../../api/repositories/visit-repository"
 
 const DetailVisits: React.FC = () => {
   const [dataFetch, setDataFetch] = React.useState<VisitDetailDTO>()
   const { id } = useParams()
-  const { handleGetToken } = useDataUser()
-
-  const fetchData = async (url: string) => {
-    const storedToken = handleGetToken()
-    if (!storedToken) {
-      throw new Error("No token found")
-    }
-
-    try {
-      const response = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${storedToken}`,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      })
-      return response.data
-    } catch (err) {
-      setErrResponse(err)
-      throw err
-    }
-  }
 
   const fetchDataDetail = async () => {
     try {
-      const data: VisitDetailDTO = await fetchData(
-        `${settingsApp.api.base}/visits/${id}`,
-      )
-      setDataFetch(data)
-    } catch (err) {
-      setErrResponse(err)
+      if (!id) return
+
+      const response: VisitDetailDTO = (await visitRepository.getVisitById(
+        id,
+      )) as VisitDetailDTO
+      if (!!response) {
+        setDataFetch(response)
+      }
+    } finally {
     }
   }
 

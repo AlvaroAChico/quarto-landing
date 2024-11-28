@@ -32,6 +32,7 @@ import { ReferralDTO } from "../../core/models/interfaces/referral-model"
 import { ArrowIosDownward } from "styled-icons/evaicons-solid"
 import Button from "../../components/button/button"
 import { pathRoutes } from "../../config/routes/paths"
+import { tenantRepository } from "../../api/repositories/tenant-repository"
 
 const Referrals: React.FC = () => {
   const [listRentals, setListRentals] = React.useState<ReferralDTO[]>([])
@@ -70,29 +71,16 @@ const Referrals: React.FC = () => {
     fetchDataProperties()
   }, [])
 
-  const fetchDataProperties = React.useCallback(() => {
-    const storedToken = handleGetToken()
-    if (storedToken) {
+  const fetchDataProperties = React.useCallback(async () => {
+    try {
       setIsLoadingListRentals(true)
-      axios
-        .get(`${settingsApp.api.base}/referrals`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        })
-        .then(response => {
-          const dataResponse: ReferralDTO[] = response.data as ReferralDTO[]
-          if (!!dataResponse) {
-            setListRentals(dataResponse)
-          }
-          setIsLoadingListRentals(false)
-        })
-        .catch(err => {
-          setErrResponse(err)
-          setIsLoadingListRentals(false)
-        })
+      const response: ReferralDTO[] =
+        (await tenantRepository.getAll()) as ReferralDTO[]
+      if (!!response) {
+        setListRentals(response)
+      }
+    } finally {
+      setIsLoadingListRentals(false)
     }
   }, [])
 

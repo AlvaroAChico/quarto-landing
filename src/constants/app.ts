@@ -111,3 +111,8 @@ export enum EOptionsKey {
   CONTRACTOR_KEY,
   SERVICE_KEY,
 }
+
+export enum ETypeParam {
+  NUMBER = "number",
+  CHECKBOX = "checkbox",
+}

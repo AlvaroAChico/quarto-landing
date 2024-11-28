@@ -32,6 +32,7 @@ import { Calendar4 } from "@styled-icons/bootstrap/Calendar4"
 import { routeWithReplaceId } from "../../utils/path-util"
 import { pathRoutes } from "../../config/routes/paths"
 import { ArrowIosDownward } from "@styled-icons/evaicons-solid/ArrowIosDownward"
+import { visitRepository } from "../../api/repositories/visit-repository"
 
 const Visits: React.FC = () => {
   const [listVisits, setListVisits] = React.useState<VisitDTO[]>([])
@@ -59,8 +60,6 @@ const Visits: React.FC = () => {
     const listIds = listVisits.filter(prop => prop.id == value.value)
   }
   const [daySelected, setDaySelected] = React.useState<any>(null)
-
-  const { handleGetToken } = useDataUser()
   const navigate = useNavigate()
 
   const [isLoadingListVisits, setIsLoadingListVisits] =
@@ -70,29 +69,16 @@ const Visits: React.FC = () => {
     fetchDataProperties()
   }, [])
 
-  const fetchDataProperties = React.useCallback(() => {
-    const storedToken = handleGetToken()
-    if (storedToken) {
+  const fetchDataProperties = React.useCallback(async () => {
+    try {
       setIsLoadingListVisits(true)
-      axios
-        .get(`${settingsApp.api.base}/visits`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        })
-        .then(response => {
-          const dataResponse: VisitDTO[] = response.data as VisitDTO[]
-          if (!!dataResponse) {
-            setListVisits(dataResponse)
-          }
-          setIsLoadingListVisits(false)
-        })
-        .catch(err => {
-          setErrResponse(err)
-          setIsLoadingListVisits(false)
-        })
+      const response: VisitDTO[] =
+        (await visitRepository.getAll()) as VisitDTO[]
+      if (!!response) {
+        setListVisits(response)
+      }
+    } finally {
+      setIsLoadingListVisits(false)
     }
   }, [])
 
