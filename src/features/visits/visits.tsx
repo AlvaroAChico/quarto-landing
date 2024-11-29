@@ -33,6 +33,7 @@ import { routeWithReplaceId } from "../../utils/path-util"
 import { pathRoutes } from "../../config/routes/paths"
 import { ArrowIosDownward } from "@styled-icons/evaicons-solid/ArrowIosDownward"
 import { visitRepository } from "../../api/repositories/visit-repository"
+import VisitsJSON from "../../config/mocks/features/visits/visits-list.json"
 
 const Visits: React.FC = () => {
   const [listVisits, setListVisits] = React.useState<VisitDTO[]>([])
@@ -194,7 +195,7 @@ const Visits: React.FC = () => {
               </tr>
             </Table.Header>
             <Table.Body>
-              {listVisits.map(vis => (
+              {(listVisits.length > 0 ? listVisits : VisitsJSON).map(vis => (
                 <Table.Row
                   key={vis.id}
                   onDoubleClick={handleNavigateView(vis.id.toString())}

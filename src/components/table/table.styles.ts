@@ -77,25 +77,8 @@ export const StyledTableCell = styled.td`
 `
 
 export const StatusCell = styled.div<{ status: string }>`
-  background: ${p =>
-    p.status.toLowerCase() == "realizada".toLowerCase() ||
-    p.status.toLowerCase() == "completada".toLowerCase() ||
-    p.status.toLowerCase() == "aceptada".toLowerCase()
-      ? palette.successColor
-      : p.status.toLowerCase() == "aceptada".toLowerCase()
-        ? palette.infoColor
-        : palette.errorColor};
-
-  color: ${p =>
-    p.status == "realizada" || p.status == "completada"
-      ? palette.successColorHover
-      : p.status == "aceptada"
-        ? palette.infoColorHover
-        : palette.errorColorHover};
-
   text-transform: capitalize;
-  border-radius: 6
-  px;
+  border-radius: 6px;
   place-items: center;
   font-size: 0.8rem;
   font-weight: 600;

@@ -10,6 +10,7 @@ import {
   ContainerListRentals,
   ContainerRentals,
   ContentStylesSection,
+  StatusCellRentals,
 } from "./rentals.styles"
 import HeaderSection from "../../components/header-section/header-section"
 import Select from "react-select"
@@ -76,11 +77,7 @@ const Rentals: React.FC = () => {
       const response: RentalDTO[] =
         (await rentalRepository.getAll()) as RentalDTO[]
       if (!!response) {
-        // if (response.length > 0) {
-        //   setListRentals(RentalsJSON)
-        // } else {
         setListRentals(response)
-        // }
       }
     } finally {
       setIsLoadingListRentals(false)
@@ -211,28 +208,17 @@ const Rentals: React.FC = () => {
               </tr>
             </Table.Header>
             <Table.Body>
-              {listRentals.map(vis => (
+              {(listRentals.length > 0 ? listRentals : RentalsJSON).map(vis => (
                 <Table.Row key={vis.id}>
                   <Table.Cell>{vis.id}</Table.Cell>
                   <Table.Cell>{vis.address}</Table.Cell>
                   <Table.Cell>{vis.date_init}</Table.Cell>
                   <Table.Cell>{vis.date_payment}</Table.Cell>
                   <Table.Cell>
-                    <StatusCell status={vis.status}>{vis.status}</StatusCell>
+                    <StatusCellRentals status={vis.status}>
+                      {vis.status}
+                    </StatusCellRentals>
                   </Table.Cell>
-                  {/* <Table.Cell>
-                      <ContainerActionsTable>
-                        <ButtonAction onClick={() => openModal(ord)}>
-                          <EditAltIcon />
-                        </ButtonAction>
-                        <ButtonAction onClick={() => openDeleteModal(ord)}>
-                          <TrashIcon />
-                        </ButtonAction>
-                        <ButtonAction>
-                          <ThreeDotsIcon />
-                        </ButtonAction>
-                      </ContainerActionsTable>
-                    </Table.Cell> */}
                 </Table.Row>
               ))}
             </Table.Body>

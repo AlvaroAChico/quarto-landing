@@ -5,7 +5,7 @@
     "address": "Av. Bolívar, Caracas, Venezuela",
     "date": "2023-10-01",
     "category": "apartamento",
-    "status": "activo",
+    "status": "Pagado",
     "date_init": "2023-09-01",
     "date_payment": "2023-10-01"
   },
@@ -15,7 +15,7 @@
     "address": "Calle 23, Maracaibo, Venezuela",
     "date": "2023-09-15",
     "category": "casa",
-    "status": "aceptada",
+    "status": "Pagado",
     "date_init": "2023-08-10",
     "date_payment": "2023-09-15"
   },
@@ -25,7 +25,7 @@
     "address": "Av. Urdaneta, Valencia, Venezuela",
     "date": "2023-09-20",
     "category": "comercial",
-    "status": "rechazada",
+    "status": "Pendiente",
     "date_init": "2023-08-15",
     "date_payment": "2023-09-20"
   },
@@ -35,7 +35,7 @@
     "address": "Calle La Paz, Caracas, Venezuela",
     "date": "2023-10-05",
     "category": "anexo",
-    "status": "completada",
+    "status": "Pendiente",
     "date_init": "2023-09-05",
     "date_payment": "2023-10-05"
   },
@@ -45,7 +45,7 @@
     "address": "Calle Los Jardines, Barquisimeto, Venezuela",
     "date": "2023-09-10",
     "category": "habitación",
-    "status": "aceptada",
+    "status": "Pagado",
     "date_init": "2023-08-12",
     "date_payment": "2023-09-10"
   },
@@ -55,7 +55,7 @@
     "address": "Calle Santa Rosa, Valencia, Venezuela",
     "date": "2023-09-25",
     "category": "apartamento",
-    "status": "rechazada",
+    "status": "Pendiente",
     "date_init": "2023-08-20",
     "date_payment": "2023-09-25"
   },
@@ -65,7 +65,7 @@
     "address": "Calle Sucre, Maracay, Venezuela",
     "date": "2023-10-02",
     "category": "casa",
-    "status": "activo",
+    "status": "Pagado",
     "date_init": "2023-09-02",
     "date_payment": "2023-10-02"
   },
@@ -75,7 +75,7 @@
     "address": "Av. Los Próceres, Caracas, Venezuela",
     "date": "2023-10-03",
     "category": "comercial",
-    "status": "aceptada",
+    "status": "Pagado",
     "date_init": "2023-09-03",
     "date_payment": "2023-10-03"
   },
@@ -85,7 +85,7 @@
     "address": "Calle Carabobo, Ciudad Bolívar, Venezuela",
     "date": "2023-10-04",
     "category": "anexo",
-    "status": "rechazada",
+    "status": "Pendiente",
     "date_init": "2023-08-18",
     "date_payment": "2023-10-04"
   },
@@ -95,7 +95,7 @@
     "address": "Calle 30, Lechería, Venezuela",
     "date": "2023-10-01",
     "category": "habitación",
-    "status": "completada",
+    "status": "Pendiente",
     "date_init": "2023-09-01",
     "date_payment": "2023-10-01"
   },
@@ -105,7 +105,7 @@
     "address": "Calle San Juan, Maracay, Venezuela",
     "date": "2023-09-28",
     "category": "apartamento",
-    "status": "aceptada",
+    "status": "Pagado",
     "date_init": "2023-08-28",
     "date_payment": "2023-09-28"
   },
@@ -115,7 +115,7 @@
     "address": "Av. Las Américas, San Cristóbal, Venezuela",
     "date": "2023-09-30",
     "category": "casa",
-    "status": "rechazada",
+    "status": "Pendiente",
     "date_init": "2023-08-27",
     "date_payment": "2023-09-30"
   },
@@ -125,7 +125,7 @@
     "address": "Calle La Florida, Maturín, Venezuela",
     "date": "2023-09-22",
     "category": "comercial",
-    "status": "completada",
+    "status": "Pendiente",
     "date_init": "2023-08-22",
     "date_payment": "2023-09-22"
   },
@@ -135,7 +135,7 @@
     "address": "Calle El Comercio, Caracas, Venezuela",
     "date": "2023-09-16",
     "category": "anexo",
-    "status": "aceptada",
+    "status": "Pagado",
     "date_init": "2023-08-15",
     "date_payment": "2023-09-16"
   },
@@ -145,7 +145,7 @@
     "address": "Calle 5 de Julio, Puerto La Cruz, Venezuela",
     "date": "2023-09-18",
     "category": "habitación",
-    "status": "rechazada",
+    "status": "Pendiente",
     "date_init": "2023-08-18",
     "date_payment": "2023-09-18"
   },
@@ -155,7 +155,7 @@
     "address": "Calle 1, Cabimas, Venezuela",
     "date": "2023-10-01",
     "category": "apartamento",
-    "status": "activo",
+    "status": "Pagado",
     "date_init": "2023-09-01",
     "date_payment": "2023-10-01"
   },
@@ -165,7 +165,7 @@
     "address": "Calle Independencia, Mérida, Venezuela",
     "date": "2023-09-14",
     "category": "casa",
-    "status": "aceptada",
+    "status": "Pagado",
     "date_init": "2023-08-11",
     "date_payment": "2023-09-14"
   },
@@ -175,7 +175,7 @@
     "address": "Calle Libertador, Valencia, Venezuela",
     "date": "2023-09-20",
     "category": "comercial",
-    "status": "rechazada",
+    "status": "Pendiente",
     "date_init": "2023-08-20",
     "date_payment": "2023-09-20"
   },
@@ -185,7 +185,7 @@
     "address": "Calle 21, Caracas, Venezuela",
     "date": "2023-10-05",
     "category": "anexo",
-    "status": "completada",
+    "status": "Pendiente",
     "date_init": "2023-09-05",
     "date_payment": "2023-10-05"
   },
@@ -195,7 +195,7 @@
     "address": "Calle Las Delicias, Barquisimeto, Venezuela",
     "date": "2023-09-10",
     "category": "habitación",
-    "status": "aceptada",
+    "status": "Pagado",
     "date_init": "2023-08-10",
     "date_payment": "2023-09-10"
   },
@@ -205,7 +205,7 @@
     "address": "Calle Zulia, Maracay, Venezuela",
     "date": "2023-09-25",
     "category": "apartamento",
-    "status": "rechazada",
+    "status": "Pendiente",
     "date_init": "2023-08-22",
     "date_payment": "2023-09-25"
   },
@@ -215,7 +215,7 @@
     "address": "Calle La Concordia, Mérida, Venezuela",
     "date": "2023-10-02",
     "category": "casa",
-    "status": "activo",
+    "status": "Pagado",
     "date_init": "2023-09-02",
     "date_payment": "2023-10-02"
   },
@@ -225,7 +225,7 @@
     "address": "Av. Los Abogados, Caracas, Venezuela",
     "date": "2023-10-03",
     "category": "comercial",
-    "status": "aceptada",
+    "status": "Pagado",
     "date_init": "2023-09-03",
     "date_payment": "2023-10-03"
   },
@@ -235,7 +235,7 @@
     "address": "Calle El Carmen, Maracaibo, Venezuela",
     "date": "2023-10-04",
     "category": "anexo",
-    "status": "rechazada",
+    "status": "Pendiente",
     "date_init": "2023-08-19",
     "date_payment": "2023-10-04"
   },
@@ -245,7 +245,7 @@
     "address": "Calle del Progreso, Valencia, Venezuela",
     "date": "2023-10-01",
     "category": "habitación",
-    "status": "completada",
+    "status": "Pendiente",
     "date_init": "2023-09-01",
     "date_payment": "2023-10-01"
   },
@@ -255,7 +255,7 @@
     "address": "Calle de Los Cerezos, Lechería, Venezuela",
     "date": "2023-09-28",
     "category": "apartamento",
-    "status": "aceptada",
+    "status": "Pagado",
     "date_init": "2023-08-28",
     "date_payment": "2023-09-28"
   },
@@ -265,7 +265,7 @@
     "address": "Av. Bolívar, Mérida, Venezuela",
     "date": "2023-09-30",
     "category": "casa",
-    "status": "rechazada",
+    "status": "Pendiente",
     "date_init": "2023-08-26",
     "date_payment": "2023-09-30"
   },
@@ -275,7 +275,7 @@
     "address": "Calle La Paz, Barquisimeto, Venezuela",
     "date": "2023-09-22",
     "category": "comercial",
-    "status": "completada",
+    "status": "Pendiente",
     "date_init": "2023-08-22",
     "date_payment": "2023-09-22"
   },
@@ -285,7 +285,7 @@
     "address": "Calle San Martín, Caracas, Venezuela",
     "date": "2023-09-16",
     "category": "anexo",
-    "status": "aceptada",
+    "status": "Pagado",
     "date_init": "2023-08-12",
     "date_payment": "2023-09-16"
   },
@@ -295,7 +295,7 @@
     "address": "Calle 10 de diciembre, Puerto La Cruz, Venezuela",
     "date": "2023-09-18",
     "category": "habitación",
-    "status": "rechazada",
+    "status": "Pendiente",
     "date_init": "2023-08-18",
     "date_payment": "2023-09-18"
   },
@@ -305,7 +305,7 @@
     "address": "Calle 4, Cabimas, Venezuela",
     "date": "2023-10-01",
     "category": "apartamento",
-    "status": "activo",
+    "status": "Pagado",
     "date_init": "2023-09-01",
     "date_payment": "2023-10-01"
   },
@@ -315,7 +315,7 @@
     "address": "Calle José Antonio, Mérida, Venezuela",
     "date": "2023-09-14",
     "category": "casa",
-    "status": "aceptada",
+    "status": "Pagado",
     "date_init": "2023-08-11",
     "date_payment": "2023-09-14"
   },
@@ -325,7 +325,7 @@
     "address": "Av. 19 de Abril, Valencia, Venezuela",
     "date": "2023-09-20",
     "category": "comercial",
-    "status": "rechazada",
+    "status": "Pendiente",
     "date_init": "2023-08-20",
     "date_payment": "2023-09-20"
   },
@@ -335,7 +335,7 @@
     "address": "Calle San Felipe, Caracas, Venezuela",
     "date": "2023-10-05",
     "category": "anexo",
-    "status": "completada",
+    "status": "Pendiente",
     "date_init": "2023-09-05",
     "date_payment": "2023-10-05"
   },
@@ -345,7 +345,7 @@
     "address": "Calle San José, Barquisimeto, Venezuela",
     "date": "2023-09-10",
     "category": "habitación",
-    "status": "aceptada",
+    "status": "Pagado",
     "date_init": "2023-08-10",
     "date_payment": "2023-09-10"
   },
@@ -355,7 +355,7 @@
     "address": "Calle Las Flores, Maracay, Venezuela",
     "date": "2023-09-25",
     "category": "apartamento",
-    "status": "rechazada",
+    "status": "Pendiente",
     "date_init": "2023-08-22",
     "date_payment": "2023-09-25"
   },
@@ -365,7 +365,7 @@
     "address": "Calle Norte, Tequesquitengo, Venezuela",
     "date": "2023-10-02",
     "category": "casa",
-    "status": "activo",
+    "status": "Pagado",
     "date_init": "2023-09-02",
     "date_payment": "2023-10-02"
   }
