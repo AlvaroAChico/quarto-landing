@@ -504,7 +504,7 @@ const CreateProperty: React.FC = () => {
               <div>
                 <span
                   onClick={() => {
-                    // setStepActive(stp.step)
+                    setStepActive(stp.step)
                   }}
                 >
                   {stp.step}

@@ -30,6 +30,7 @@ import Table from "../../components/table/table"
 import { StatusCell } from "../../components/table/table.styles"
 import { ArrowIosDownward } from "styled-icons/evaicons-solid"
 import { rentalRepository } from "../../api/repositories/rental-repository"
+import RentalsJSON from "../../config/mocks/features/rentals/rentals-list.json"
 
 const Rentals: React.FC = () => {
   const [listRentals, setListRentals] = React.useState<RentalDTO[]>([])
@@ -75,7 +76,11 @@ const Rentals: React.FC = () => {
       const response: RentalDTO[] =
         (await rentalRepository.getAll()) as RentalDTO[]
       if (!!response) {
+        // if (response.length > 0) {
+        //   setListRentals(RentalsJSON)
+        // } else {
         setListRentals(response)
+        // }
       }
     } finally {
       setIsLoadingListRentals(false)
