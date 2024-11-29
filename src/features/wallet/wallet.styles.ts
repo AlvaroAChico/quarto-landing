@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { StatusCell } from "../../components/table/table.styles"
 
 export const ContainerWallet = styled.div`
   justify-content: space-between;
@@ -28,4 +29,12 @@ export const ContainerWinningsStats = styled.div`
 
 export const ContainerMovements = styled.div`
   width: 100%;
+`
+
+export const StatusCellMovement = styled(StatusCell)<{ status: string }>`
+  background: ${p =>
+    p.status.toLowerCase() == "Pagado".toLowerCase() ? "#CCF0EB" : "#FFEDDD"};
+
+  color: ${p =>
+    p.status.toLowerCase() == "Pagado".toLowerCase() ? "#00B69B" : "#FFA756"};
 `

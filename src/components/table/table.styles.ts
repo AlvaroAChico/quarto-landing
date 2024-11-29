@@ -85,3 +85,19 @@ export const StatusCell = styled.div<{ status: string }>`
   display: grid;
   padding: 5px;
 `
+
+export const StatusCellReferrals = styled(StatusCell)<{ status: string }>`
+  background: ${p =>
+    p.status.toLowerCase() == "Aceptada".toLowerCase()
+      ? "#CCF0D6"
+      : p.status.toLowerCase() == "En proceso".toLowerCase()
+        ? "#FFEDDD"
+        : "#FDE1DF"};
+
+  color: ${p =>
+    p.status.toLowerCase() == "Aceptada".toLowerCase()
+      ? "#00B634"
+      : p.status.toLowerCase() == "En proceso".toLowerCase()
+        ? "#FFA756"
+        : "#EF3826"};
+`

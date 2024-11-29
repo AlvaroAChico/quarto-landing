@@ -17,6 +17,7 @@ import { pathRoutes } from "../../config/routes/paths"
 import ContactCard from "./components/contact-card/contact-card"
 import { ContactDTO } from "../../core/models/interfaces/contact-model"
 import { contactRepository } from "../../api/repositories/contact-repository"
+import ContactsJSON from "../../config/mocks/features/contacts/contacts-list.json"
 
 const Contacts: React.FC = () => {
   const [listContacts, setListContacts] = React.useState<ContactDTO[]>([])
@@ -51,7 +52,7 @@ const Contacts: React.FC = () => {
           <div></div>
         </ContainerSearch>
         <ContainerListProperties>
-          {(listContacts || []).map(prop => (
+          {(listContacts.length > 0 ? listContacts : ContactsJSON).map(prop => (
             <ContactCard key={prop.id} contact={prop} />
           ))}
         </ContainerListProperties>

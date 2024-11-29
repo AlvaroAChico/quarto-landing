@@ -4,6 +4,7 @@ import {
   ContainerMovements,
   ContainerWallet,
   ContainerWinningsStats,
+  StatusCellMovement,
 } from "./wallet.styles"
 import HeaderSection from "../../components/header-section/header-section"
 import CardStatsWallet from "./components/card-stats-wallet/card-stats-wallet"
@@ -11,13 +12,13 @@ import totalIMG from "../../assets/img/icons/paid_white.svg"
 import comissionIMG from "../../assets/img/icons/money_bag.svg"
 import bonoIMG from "../../assets/img/icons/request_quote.svg"
 import Table from "../../components/table/table"
-import { StatusCell } from "../../components/table/table.styles"
 import { MovementDTO } from "../../core/models/interfaces/movement-model"
 import { movementRepository } from "../../api/repositories/movement-repository"
 import ReactApexChart from "react-apexcharts"
 import { ApexOptions } from "apexcharts"
 import { palette } from "../../config/theme/theme"
 import { months } from "../../constants/app"
+import MovementJSON from "../../config/mocks/features/movements/movements-list.json"
 
 const Wallet = () => {
   const [listMovements, setListMovements] = React.useState<MovementDTO[]>([])
@@ -124,16 +125,20 @@ const Wallet = () => {
               </tr>
             </Table.Header>
             <Table.Body>
-              {listMovements.map(it => (
-                <Table.Row key={it.id}>
-                  <Table.Cell>{it.id}</Table.Cell>
-                  <Table.Cell>{it.description}</Table.Cell>
-                  <Table.Cell>{it.amount}</Table.Cell>
-                  <Table.Cell>
-                    <StatusCell status={it.status}>{it.status}</StatusCell>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
+              {(listMovements.length > 0 ? listMovements : MovementJSON).map(
+                it => (
+                  <Table.Row key={it.id}>
+                    <Table.Cell>{it.id}</Table.Cell>
+                    <Table.Cell>{it.description}</Table.Cell>
+                    <Table.Cell>{it.amount}</Table.Cell>
+                    <Table.Cell>
+                      <StatusCellMovement status={it.status}>
+                        {it.status}
+                      </StatusCellMovement>
+                    </Table.Cell>
+                  </Table.Row>
+                ),
+              )}
             </Table.Body>
           </Table>
         </ContainerMovements>

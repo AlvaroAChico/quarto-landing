@@ -13,7 +13,7 @@
     "address": "Calle 23, Maracaibo, Venezuela",
     "date": "2023-09-15",
     "category": "casa",
-    "status": "aceptada"
+    "status": "Cancelada"
   },
   {
     "id": 3,
@@ -37,7 +37,7 @@
     "address": "Calle Los Jardines, Barquisimeto, Venezuela",
     "date": "2023-09-10",
     "category": "habitación",
-    "status": "aceptada"
+    "status": "Cancelada"
   },
   {
     "id": 6,
@@ -69,7 +69,7 @@
     "address": "Calle Carabobo, Ciudad Bolívar, Venezuela",
     "date": "2023-10-04",
     "category": "anexo",
-    "status": "rechazada"
+    "status": "Cancelada"
   },
   {
     "id": 10,

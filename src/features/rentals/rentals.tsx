@@ -28,7 +28,6 @@ import {
 import { Filter2 } from "@styled-icons/remix-line/Filter2"
 import { Replay } from "@styled-icons/material/Replay"
 import Table from "../../components/table/table"
-import { StatusCell } from "../../components/table/table.styles"
 import { ArrowIosDownward } from "styled-icons/evaicons-solid"
 import { rentalRepository } from "../../api/repositories/rental-repository"
 import RentalsJSON from "../../config/mocks/features/rentals/rentals-list.json"

@@ -20,27 +20,22 @@ export const ContainerImageVisit = styled.div`
   }
 `
 
-export const StatusCellVisits = styled(StatusCell)`
+export const StatusCellVisits = styled(StatusCell)<{ status: string }>`
   background: ${p =>
-    p.status.toLowerCase() == "realizada".toLowerCase()
-      ? palette.successColor
-      : p.status.toLowerCase() == "aceptada".toLowerCase()
-        ? palette.infoColor
-        : palette.errorColor};
+    p.status.toLowerCase() == "Realizada".toLowerCase()
+      ? "#CCF0D6"
+      : p.status.toLowerCase() == "Aceptada".toLowerCase()
+        ? "#FFEDDD"
+        : p.status.toLowerCase() == "Rechazada".toLowerCase()
+          ? "#FDE1DF"
+          : "#E8E8E8"};
 
   color: ${p =>
-    p.status.toLowerCase() == "realizada".toLowerCase()
-      ? "white"
-      : p.status == "aceptada"
-        ? palette.infoColorHover
-        : palette.errorColorHover};
-
-  text-transform: capitalize;
-  border-radius: 6 px;
-  place-items: center;
-  border-radius: 5px;
-  padding: 5px 10px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  display: grid;
+    p.status.toLowerCase() == "Realizada".toLowerCase()
+      ? "#00B634"
+      : p.status.toLowerCase() == "Aceptada".toLowerCase()
+        ? "#FFA756"
+        : p.status.toLowerCase() == "Rechazada".toLowerCase()
+          ? "#EF3826"
+          : "#6E6E6E"};
 `

@@ -27,12 +27,13 @@ import {
 import { Filter2 } from "@styled-icons/remix-line/Filter2"
 import { Replay } from "@styled-icons/material/Replay"
 import Table from "../../components/table/table"
-import { StatusCell } from "../../components/table/table.styles"
+import { StatusCellReferrals } from "../../components/table/table.styles"
 import { ReferralDTO } from "../../core/models/interfaces/referral-model"
 import { ArrowIosDownward } from "styled-icons/evaicons-solid"
 import Button from "../../components/button/button"
 import { pathRoutes } from "../../config/routes/paths"
 import { tenantRepository } from "../../api/repositories/tenant-repository"
+import ReferralsJSON from "../../config/mocks/features/referrals/referrals-list.json"
 
 const Referrals: React.FC = () => {
   const [listRentals, setListRentals] = React.useState<ReferralDTO[]>([])
@@ -204,16 +205,19 @@ const Referrals: React.FC = () => {
               </tr>
             </Table.Header>
             <Table.Body>
-              {listRentals.map(vis => (
-                <Table.Row key={vis.id}>
-                  <Table.Cell>{vis.name}</Table.Cell>
-                  <Table.Cell>{vis.responsible}</Table.Cell>
-                  <Table.Cell>{vis.date}</Table.Cell>
-                  <Table.Cell>{vis.income}</Table.Cell>
-                  <Table.Cell>
-                    <StatusCell status={vis.status}>{vis.status}</StatusCell>
-                  </Table.Cell>
-                  {/* <Table.Cell>
+              {(listRentals.length > 0 ? listRentals : ReferralsJSON).map(
+                vis => (
+                  <Table.Row key={vis.id}>
+                    <Table.Cell>{vis.name}</Table.Cell>
+                    <Table.Cell>{vis.responsible}</Table.Cell>
+                    <Table.Cell>{vis.date}</Table.Cell>
+                    <Table.Cell>{vis.income}</Table.Cell>
+                    <Table.Cell>
+                      <StatusCellReferrals status={vis.status}>
+                        {vis.status}
+                      </StatusCellReferrals>
+                    </Table.Cell>
+                    {/* <Table.Cell>
                       <ContainerActionsTable>
                         <ButtonAction onClick={() => openModal(ord)}>
                           <EditAltIcon />
@@ -226,8 +230,9 @@ const Referrals: React.FC = () => {
                         </ButtonAction>
                       </ContainerActionsTable>
                     </Table.Cell> */}
-                </Table.Row>
-              ))}
+                  </Table.Row>
+                ),
+              )}
             </Table.Body>
           </Table>
         </ContainerListRentals>
