@@ -24,7 +24,6 @@ if (container) {
         <RouterProvider router={router} />
         <App />
       </Provider>
-      ,
     </React.StrictMode>,
   )
 } else {

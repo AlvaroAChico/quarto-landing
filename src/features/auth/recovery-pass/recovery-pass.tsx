@@ -32,6 +32,14 @@ import {
 } from "../../../core/models/schemas/recovery-schema"
 import { MessageResponsedDTO } from "../../../core/models/interfaces/general-model"
 import { authRepository } from "../../../api/repositories/auth-repository"
+import {
+  ContainerBg,
+  ContainerFormSignIn,
+  ContainerLogo,
+  CreateAccountLink,
+} from "../sign-in/sign-in.styles"
+import BgIMG from "../../../assets/img/bg_geometry.svg"
+import LogoWhiteIMG from "../../../assets/img/logo_white.svg"
 
 const RecoveryPass: React.FC = () => {
   const [isSubmitLogin, setIsSubmitLogin] = React.useState<boolean>(false)
@@ -69,42 +77,38 @@ const RecoveryPass: React.FC = () => {
 
   return (
     <ContainerSignIn>
-      <LeftContainer imgHeader={ImgHeader}>
-        <ContentLeftContainer>
-          <div>
-            <img src={ImgLogo} />
-          </div>
-          {/* <div>Bienvenido</div> */}
-          {/* <div>Copyright</div> */}
-        </ContentLeftContainer>
-      </LeftContainer>
-      <RightContainer>
+      <ContainerBg bg={BgIMG}>
         <FormContainer>
-          <h1>Recovery Password</h1>
-          <ContainerInputs>
-            <WrapperInput>
-              <label htmlFor="email-signin">Your email</label>
-              <Input
-                id="email-signin"
-                placeholder="Your Email"
-                icon={User}
-                register={register("email")}
-              />
-              {!!(errors.email as any)?.message && (
-                <ErrorMessage>{(errors.email as any)?.message}</ErrorMessage>
-              )}
-            </WrapperInput>
-          </ContainerInputs>
-          <Button
-            onClick={submitWrapper(handleSubmit)}
-            text="Recovery password"
-            isLoading={isSubmitLogin}
-          />
-          <RecoveryNavLink to={pathRoutes.SIGN_IN.to}>
-            Iniciar Sesión
-          </RecoveryNavLink>
+          <ContainerLogo>
+            <img src={LogoWhiteIMG} />
+          </ContainerLogo>
+          <ContainerFormSignIn>
+            <h2>Recuperar Contraseña</h2>
+            <ContainerInputs>
+              <WrapperInput>
+                <label htmlFor="email-signin">Correo electrónico:</label>
+                <Input
+                  id="email-signin"
+                  placeholder="Correo electrónico"
+                  icon={User}
+                  register={register("email")}
+                />
+                {!!(errors.email as any)?.message && (
+                  <ErrorMessage>{(errors.email as any)?.message}</ErrorMessage>
+                )}
+              </WrapperInput>
+            </ContainerInputs>
+            <Button
+              onClick={submitWrapper(handleSubmit)}
+              text="Recuperar Contraseña"
+              isLoading={isSubmitLogin}
+            />
+            <CreateAccountLink to={pathRoutes.SIGN_IN.to}>
+              Iniciar Sesión
+            </CreateAccountLink>
+          </ContainerFormSignIn>
         </FormContainer>
-      </RightContainer>
+      </ContainerBg>
     </ContainerSignIn>
   )
 }

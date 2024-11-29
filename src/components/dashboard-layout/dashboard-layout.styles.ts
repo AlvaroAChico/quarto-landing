@@ -202,9 +202,14 @@ export const SubMenuItem = styled(NavLink)`
   &.active {
     background: transparent !important;
     color: white;
-    > span,
-    img {
+
+    > span {
       color: ${palette.primaryColor};
+    }
+
+    > img {
+      color: ${palette.primaryColor};
+      filter: invert(1);
     }
   }
 `

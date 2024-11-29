@@ -2,119 +2,56 @@ import styled from "styled-components"
 import { breakpoints } from "../../../constants/breakpoints"
 import { palette } from "../../../config/theme/theme"
 import { NavLink } from "react-router-dom"
+import { WrapperInput } from "../../../config/theme/global-styles"
 
 export const ContainerSignIn = styled.div`
   height: 100vh;
   width: 100vw;
-  display: flex;
+`
+export const ContainerBg = styled.div<{ bg: string }>`
+  background-image: url(${props => props.bg});
+  background-position: center;
+  background-repeat: no-repeat;
   justify-content: center;
+  background-size: cover;
   align-items: center;
-`
-export const LeftContainer = styled.div<{ imgHeader: string }>`
-  // background-image: url("${p => p.imgHeader}");
-  // background-repeat: no-repeat;
-  // background-position: center;
-  // background-size: cover;
-  background: ${palette.primaryColor};
-  position: relative;
-  height: 100%;
-  width: 100%; // Asumimos full-width en móviles
-
-  // &::before {
-  //   content: "";
-  //   position: absolute;
-  //   background: linear-gradient(
-  //     0deg,
-  //     rgba(255, 255, 255, 1) -40%,
-  //     rgb(245 134 52 / 60%) 0%,
-  //     rgb(13 6 1 / 100%) 100%
-  //   );
-  //   width: 100%;
-  //   height: 100%;
-  //   top: 0;
-  //   z-index: 1;
-  // }
-
-  ${breakpoints.desktopMedium} {
-    width: 30%;
-  }
-  ${breakpoints.laptop} {
-    width: 25%; // Volver a 100% en dispositivos muy pequeños
-  }
-
-  ${breakpoints.tabletLargeMax} {
-    width: 0%; // Volver a 100% para teléfonos
-  }
-`
-
-export const ContentLeftContainer = styled.div`
   display: flex;
-  flex-direction: column;
   height: 100%;
   width: 100%;
-  color: white;
-  position: absolute;
-  padding: 20px;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  margin: 0;
-  z-index: 2;
+`
 
-  > div:nth-child(1) {
-    height: 100%;
-    display: grid;
-    place-items: center;
+export const ContainerLogo = styled.div`
+  justify-content: center;
+  display: flex;
 
-    > img {
-      max-width: 300px;
-      filter: grayscale(100%) brightness(200%);
-    }
-  }
-  > div:nth-child(2) {
-    height: 75%;
-  }
-  > div:nth-child(3) {
-    height: 5%;
+  > img {
+    margin-bottom: 20px;
+    max-width: 200px;
+    width: 100%;
   }
 `
 
-export const RightContainer = styled.div`
-  background-color: white;
-  height: 100%;
+export const FormContainer = styled.div``
+
+export const ContainerFormSignIn = styled.div`
   width: 100%;
-  display: grid;
-  place-items: center;
-
-  ${breakpoints.desktopMedium} {
-    width: 70%;
-  }
-  ${breakpoints.laptop} {
-    width: 75%; // Volver a 100% para teléfonos
-  }
-
-  ${breakpoints.tabletLargeMax} {
-    width: 100%; // Volver a 100% para teléfonos
-  }
-`
-
-export const FormContainer = styled.div`
-  width: fit-content;
-  height: fit-content;
-  min-width: 350px;
-  max-width: 90%;
+  height: 100%;
+  min-width: 400px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
+  background: white;
+  padding: 60px 40px;
+  border-radius: 20px;
   gap: 20px;
-  margin: auto;
 
-  ${breakpoints.tabletSmall} {
-    min-width: 200px;
+  > h1,
+  h2 {
+    text-align: center;
   }
 
-  ${breakpoints.phoneSmall} {
-    min-width: 100px;
+  > p {
+    font-size: 0.8rem;
   }
 `
 
@@ -145,12 +82,47 @@ export const SignInButton = styled.button`
   }
 `
 
-export const RecoveryNavLink = styled(NavLink)`
-  color: ${palette.errorColor};
-  text-decoration: none;
+export const ContainerCreateAccount = styled.div`
+  font-size: 0.8rem;
+  text-align: center;
+
+  > span {
+    margin-right: 10px;
+  }
+`
+
+export const CreateAccountLink = styled(NavLink)`
+  font-weight: 800;
+  color: #00b69b;
   margin: auto;
 
   &:hover {
-    color: ${palette.errorColorHover};
+    color: ${palette.primaryColor};
+  }
+`
+
+export const RecoveryNavLink = styled(NavLink)`
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #797a7c;
+  margin: 0;
+
+  &:hover {
+    color: ${palette.primaryColor};
+  }
+`
+
+export const CustomPassWrapperInput = styled(WrapperInput)`
+  > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    > label {
+      color: black;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
   }
 `

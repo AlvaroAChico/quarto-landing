@@ -19,6 +19,7 @@ import DetailVisits from "../../features/visits/functionalities/detail-visits/de
 import CreateReferral from "../../features/referrals/functionalities/create-referral/create-referral"
 import Wallet from "../../features/wallet/wallet"
 import InfoProducts from "../../features/info-products/info-products"
+import NotFound from "../../features/not-found/not-found"
 
 export const router = createBrowserRouter([
   {
@@ -111,6 +112,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <>NotFound</>,
+    element: <NotFound />,
   },
 ])

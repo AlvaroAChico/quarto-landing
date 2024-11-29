@@ -1,12 +1,15 @@
 import React from "react"
 import {
+  ContainerBg,
+  ContainerFormSignIn,
   ContainerInputs,
+  ContainerLogo,
+  ContainerCreateAccount,
   ContainerSignIn,
-  ContentLeftContainer,
   FormContainer,
-  LeftContainer,
+  CreateAccountLink,
   RecoveryNavLink,
-  RightContainer,
+  CustomPassWrapperInput,
 } from "./sign-in.styles"
 import Input from "../../../components/input/input"
 import ImgHeader from "../../../assets/img/img_signin.webp"
@@ -34,6 +37,8 @@ import { updateActionTitleApp } from "../../../core/store/app-store/appSlice"
 import useDataUser from "../../../utils/use-data-user"
 import { pathRoutes } from "../../../config/routes/paths"
 import { authRepository } from "../../../api/repositories/auth-repository"
+import BgIMG from "../../../assets/img/bg_geometry.svg"
+import LogoWhiteIMG from "../../../assets/img/logo_white.svg"
 
 const SignIn: React.FC = () => {
   const [isSubmitLogin, setIsSubmitLogin] = React.useState<boolean>(false)
@@ -85,55 +90,64 @@ const SignIn: React.FC = () => {
 
   return (
     <ContainerSignIn>
-      <LeftContainer imgHeader={ImgHeader}>
-        <ContentLeftContainer>
-          <div>
-            <img src={ImgLogo} />
-          </div>
-        </ContentLeftContainer>
-      </LeftContainer>
-      <RightContainer>
+      <ContainerBg bg={BgIMG}>
         <FormContainer>
-          <h1>Sign In</h1>
-          <ContainerInputs>
-            <WrapperInput>
-              <label htmlFor="email-signin">Your email</label>
-              <Input
-                id="email-signin"
-                placeholder="Your Email"
-                icon={User}
-                register={register("email")}
-              />
-              {!!(errors.email as any)?.message && (
-                <ErrorMessage>{(errors.email as any)?.message}</ErrorMessage>
-              )}
-            </WrapperInput>
-            <WrapperInput>
-              <label className="label" htmlFor="password-signin">
-                Your password
-              </label>
-              <Input
-                placeholder="Your Password"
-                icon={Password}
-                type="password"
-                toggleIcon={{ Show: EyeFill, Hide: EyeSlashFill }}
-                register={register("password")}
-              />
-              {!!(errors.password as any)?.message && (
-                <ErrorMessage>{(errors.password as any)?.message}</ErrorMessage>
-              )}
-            </WrapperInput>
-          </ContainerInputs>
-          <Button
-            onClick={submitWrapper(handleSubmit)}
-            text="Sign In"
-            isLoading={isSubmitLogin}
-          />
-          {/* <RecoveryNavLink to={pathRoutes.RECOVERY_PASS.LIST}>
-            I forgot my password
-          </RecoveryNavLink> */}
+          <ContainerLogo>
+            <img src={LogoWhiteIMG} />
+          </ContainerLogo>
+          <ContainerFormSignIn>
+            <h1>Iniciar Sesión</h1>
+            <p>Introduce tu correo electrónico y contraseña para continuar</p>
+            <ContainerInputs>
+              <WrapperInput>
+                <label htmlFor="email-signin">Correo electrónico:</label>
+                <Input
+                  id="email-signin"
+                  placeholder="Correo electrónico"
+                  icon={User}
+                  register={register("email")}
+                />
+                {!!(errors.email as any)?.message && (
+                  <ErrorMessage>{(errors.email as any)?.message}</ErrorMessage>
+                )}
+              </WrapperInput>
+              <CustomPassWrapperInput>
+                <div>
+                  <label className="label" htmlFor="password-signin">
+                    Contraseña:
+                  </label>
+                  <RecoveryNavLink to={pathRoutes.RECOVERY_PASS.to}>
+                    ¿Olvidaste tu contraseña?
+                  </RecoveryNavLink>
+                </div>
+                <Input
+                  placeholder="Contraseña"
+                  icon={Password}
+                  type="password"
+                  toggleIcon={{ Show: EyeFill, Hide: EyeSlashFill }}
+                  register={register("password")}
+                />
+                {!!(errors.password as any)?.message && (
+                  <ErrorMessage>
+                    {(errors.password as any)?.message}
+                  </ErrorMessage>
+                )}
+              </CustomPassWrapperInput>
+            </ContainerInputs>
+            <Button
+              onClick={submitWrapper(handleSubmit)}
+              text="Iniciar sesión"
+              isLoading={isSubmitLogin}
+            />
+            <ContainerCreateAccount>
+              <span>¿Aún no tienes una cuenta?</span>
+              <CreateAccountLink to={pathRoutes.RECOVERY_PASS.to}>
+                Crear Cuenta
+              </CreateAccountLink>
+            </ContainerCreateAccount>
+          </ContainerFormSignIn>
         </FormContainer>
-      </RightContainer>
+      </ContainerBg>
     </ContainerSignIn>
   )
 }
