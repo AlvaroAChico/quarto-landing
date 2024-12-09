@@ -207,6 +207,7 @@ export const ContainerCheckTypeProperty = styled.div<{ typeProperty: number }>`
   border-radius: 10px;
   transition: 0.2s;
   display: flex;
+  height: 60px;
 
   > div {
     border-radius: 10px;

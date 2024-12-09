@@ -34,7 +34,7 @@ const InfoProducts: React.FC = () => {
         "Protección contra daños que puedan ocurrir durante el periodo de alquiler, con un monto asegurado de hasta un x12 del canon mensual, con la función de sustituir los depósitos en garantía ",
     },
     {
-      name: "Acceso a Inmovibiaria",
+      name: "Acceso a inmobiliaria",
       description:
         "Protección contra daños que puedan ocurrir durante el periodo de alquiler, con un monto asegurado de hasta un x12 del canon mensual, con la función de sustituir los depósitos en garantía ",
     },
