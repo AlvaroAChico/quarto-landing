@@ -7,6 +7,6 @@ export const propertyRepository = {
   },
 
   createProperty: async (formData: FormData): Promise<any> => {
-    return await apiService.postFormData("/upload/profile-image", formData)
+    return await apiService.postFormData("/properties", formData)
   },
 }

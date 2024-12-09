@@ -7,32 +7,37 @@ const fileTypeValidation = (file: File): boolean => {
 
 export const CreatePropertySchema = object({
   // Details
-  category_id: string().required("Ingresa una respuesta"),
-  title: string().required("Ingresa una respuesta"),
-  description: string().required("Ingresa una respuesta"),
-  property_type: string().required("Ingresa una respuesta"),
-  price: string().required("Ingresa una respuesta"),
-  owner_id: string().required("Ingresa una respuesta"),
+  title: string(),
+  description: string(),
+  type_id: string(),
+  plan_id: string(),
+  price: string(),
+  // -------------
+  category_id: string(),
+  owner_id: string(),
   // Location
-  city_id: string().required("Ingresa una respuesta"),
-  municipality_id: string().required("Ingresa una respuesta"),
-  urbanization_id: string().required("Ingresa una respuesta"),
-  client_address: string().required("Ingresa una respuesta"),
+  city_id: string(),
+  municipality_id: string(),
+  urbanization_id: string(),
+  client_address: string(),
   // Gallery
-  video_link: string().required("Ingresa una respuesta"),
-  title_image: mixed().required("Ingresa una respuesta"),
-  d_image: mixed().required("Ingresa una respuesta"),
+  video_link: string(),
+  title_image: mixed(),
+  d_image: mixed(),
   gallery_images: array().of(
-    mixed()
-      .test("is-valid-file", "File type is not allowed", file => {
-        if (file instanceof File) {
-          return fileTypeValidation(file)
-        }
-        return false
-      })
-      .required("Ingresa una respuesta"),
+    mixed().test("is-valid-file", "File type is not allowed", file => {
+      if (file instanceof File) {
+        return fileTypeValidation(file)
+      }
+      return false
+    }),
   ),
-  params_json: string().required("Ingresa una respuesta"),
+  parameters: array().of(
+    object({
+      parameter_id: string(),
+      value: string(),
+    }),
+  ),
 })
 
 export const UpdatePropertySchema = object({

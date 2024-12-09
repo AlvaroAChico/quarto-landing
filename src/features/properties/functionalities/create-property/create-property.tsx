@@ -160,8 +160,50 @@ const CreateProperty: React.FC = () => {
           }
           return newIt
         })
-        setValue("params_json", JSON.stringify(listParams))
+        // setValue("parameters", JSON.stringify(listParams))
         setListParams(listParams)
+      }
+    } finally {
+    }
+  }
+
+  const fetchDataMunicipalities = async () => {
+    try {
+      const response: any[] = (await parameterRepository.getMuni()) as any[]
+      if (!!response) {
+        const listData = (response || []).map(it => ({
+          value: it.id,
+          label: it.name,
+        }))
+        setOptionsOwner(listData)
+      }
+    } finally {
+    }
+  }
+
+  const fetchDataNeighborhoods = async () => {
+    try {
+      const response: any[] = (await parameterRepository.getNei()) as any[]
+      if (!!response) {
+        const listData = (response || []).map(it => ({
+          value: it.id,
+          label: it.name,
+        }))
+        setOptionsOwner(listData)
+      }
+    } finally {
+    }
+  }
+
+  const fetchDataStates = async () => {
+    try {
+      const response: any[] = (await parameterRepository.getState()) as any[]
+      if (!!response) {
+        const listData = (response || []).map(it => ({
+          value: it.id,
+          label: it.name,
+        }))
+        setOptionsOwner(listData)
       }
     } finally {
     }
@@ -173,6 +215,9 @@ const CreateProperty: React.FC = () => {
         fetchDataCategories(),
         fetchDataOwners(),
         fetchDataParameters(),
+        fetchDataMunicipalities(),
+        fetchDataNeighborhoods(),
+        fetchDataStates(),
       ])
     }
 
@@ -185,7 +230,8 @@ const CreateProperty: React.FC = () => {
       category_id: "",
       title: "",
       description: "",
-      property_type: "",
+      type_id: "1",
+      plan_id: "1",
       price: "",
       owner_id: "",
       city_id: "",
@@ -196,7 +242,7 @@ const CreateProperty: React.FC = () => {
       title_image: "",
       d_image: "",
       gallery_images: [],
-      params_json: "",
+      parameters: [],
     },
   })
 
@@ -207,34 +253,46 @@ const CreateProperty: React.FC = () => {
     setValue,
   } = methods
 
-  const handleSubmit = React.useCallback((data: any) => {
-    // setIsSubmitUserCreate(true)
-    // const storedToken = handleGetToken()
-    // if (!!storedToken) {
-    //   const formData = new FormData()
-    //   formData.append("name", data.name)
-    //   formData.append("description", data.description)
-    //   formData.append("phone_number", data.phoneProperty)
-    //   formData.append("address", data.address)
-    //   formData.append("management_company_id", data.managementCompanyId)
-    //   if (!!data.picture) {
-    //     formData.append("picture", data.picture)
-    //   }
-    // try {
-    //   setIsSubmitUserCreate(true)
-    //   const response: CreateUserResponseDTO =
-    //     (await propertyRepository.createProperty(
-    //       formData,
-    //     )) as CreateUserResponseDTO
-    //   if (!!response) {
-    //     toast.success(response.message)
-    //     navigate(pathRoutes.PROPERTIES.LIST)
-    //   }
-    // } finally {
-    //   setIsSubmitUserCreate(false)
-    // }
-    // }
-  }, [])
+  const [isSubmitUserCreate, setIsSubmitUserCreate] = React.useState(false)
+
+  const handleSubmit = async (data: any) => {
+    setIsSubmitUserCreate(true)
+    // console.log("oooooo")
+    try {
+      const formData = new FormData()
+      for (const key in data) {
+        if (
+          data.hasOwnProperty(key) &&
+          data[key] !== undefined &&
+          data[key] !== null &&
+          data[key] !== "" &&
+          key != "parameters" &&
+          key != "gallery_images"
+        ) {
+          formData.append(key, data[key])
+        }
+      }
+
+      // formData.append("parameters[]", listParams)
+
+      if (formData.entries().next().done) {
+        false
+        toast.warning("No se encontraron registros")
+        return
+      }
+
+      const response: CreateUserResponseDTO =
+        (await propertyRepository.createProperty(
+          formData,
+        )) as CreateUserResponseDTO
+      if (!!response) {
+        toast.success(response.message)
+        // navigate(pathRoutes.PROPERTIES.LIST)
+      }
+    } finally {
+      setIsSubmitUserCreate(false)
+    }
+  }
 
   // Init Upload picture Title Image
   const [infoPicture, setInfoPicture] = React.useState<any>()
@@ -411,7 +469,7 @@ const CreateProperty: React.FC = () => {
   }, [listFiles])
 
   const handleChangeTypeProperty = (typeProperty: number) => () => {
-    setValue("property_type", `${typeProperty}`)
+    setValue("type_id", `${typeProperty}`)
     setTypeProperty(typeProperty)
   }
 
@@ -538,6 +596,27 @@ const CreateProperty: React.FC = () => {
 
         <ResidentialFormStyles>
           <ContainerThreeInputs>
+            <WrapperInput>
+              <label htmlFor="plan-create-project">Plan</label>
+              <Select
+                id="plan-create-project"
+                defaultValue={[{ value: 1, label: "Quarto" }]}
+                onChange={() => {
+                  setValue("plan_id", "1")
+                }}
+                options={[
+                  {
+                    value: 1,
+                    label: "Quarto",
+                  },
+                ]}
+                isSearchable={true}
+                styles={selectStyles}
+              />
+              {!!(errors.city_id as any)?.message && (
+                <ErrorMessage>{(errors.city_id as any)?.message}</ErrorMessage>
+              )}
+            </WrapperInput>
             <WrapperInput>
               <label htmlFor="city-create-project">Ciudad</label>
               <Select
@@ -744,22 +823,10 @@ const CreateProperty: React.FC = () => {
               })}
             </ContainerSwitchs>
           </ResidentialFormStyles>
-          <button
-            onClick={() => {
-              console.log(
-                "Test json => ",
-                listParams.map(it => ({
-                  id: it.id,
-                  value: it.value,
-                })),
-              )
-            }}
-          >
-            Test
-          </button>
         </>
 
         <ContainerButton>
+          {/* <button onClick={submitWrapper(handleSubmit)()}>aaa</button> */}
           <Button
             onClick={submitWrapper(handleSubmit)}
             text={"Crear"}
