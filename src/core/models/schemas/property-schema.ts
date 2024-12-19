@@ -1,4 +1,4 @@
-import { array, InferType, mixed, object, string } from "yup"
+import { array, InferType, mixed, number, object, string } from "yup"
 
 const fileTypeValidation = (file: File): boolean => {
   const allowedTypes = ["image/png", "image/jpg", "image/jpeg"]
@@ -10,16 +10,17 @@ export const CreatePropertySchema = object({
   title: string(),
   description: string(),
   type_id: string(),
+  rent_duration: string(),
   plan_id: string(),
-  price: string(),
+  price: number(),
   // -------------
   category_id: string(),
   owner_id: string(),
   // Location
-  city_id: string(),
-  municipality_id: string(),
-  urbanization_id: string(),
-  client_address: string(),
+  full_address: string(),
+  city: string(),
+  municipality: string(),
+  urbanization: string(),
   // Gallery
   video_link: string(),
   title_image: mixed(),

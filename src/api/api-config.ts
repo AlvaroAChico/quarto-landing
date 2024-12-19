@@ -19,7 +19,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   config => {
-    const token = JSON.parse(Cookies.get(COOKIES_APP.TOKEN_APP) || "{}")
+    const token = Cookies.get(COOKIES_APP.TOKEN_APP)?.slice(1, -1) ?? ""
 
     // const isPathWithoutToken = pathsWithoutToken.some(path =>
     //   config.url?.endsWith(path),
@@ -31,6 +31,7 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`
     }
+
     return config
   },
   error => {

@@ -32,9 +32,16 @@ export interface AgentDTO {
 }
 
 export interface OwnerDTO {
-  name: string
-  property_features: string
-  contact: ContactDTO
+  id: number
+  uuid: string
+  documentType: string
+  documentNumber: string
+  fullName: string
+  address: string
+  relatedId: number
+  status: string
+  isActive: boolean
+  createdAt: string
 }
 
 export interface ContactDTO {

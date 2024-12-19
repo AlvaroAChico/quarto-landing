@@ -65,6 +65,11 @@ import { ParameterDTO } from "../../../../core/models/interfaces/parameter-model
 import { ETypeParam } from "../../../../constants/app"
 import { propertyRepository } from "../../../../api/repositories/property-repository"
 import ModalAddOwner from "../../../../components/modal/variants/modal-add-owner/modal-add-owner"
+import {
+  MunicipalityDTO,
+  UrbanizationDTO,
+} from "../../../../core/models/interfaces/city-model"
+import { OwnerDTO } from "../../../../core/models/interfaces/visits-model"
 
 const CreateProperty: React.FC = () => {
   const [openAddOwner, setOpenAddOwner] = React.useState<boolean>(false)
@@ -86,25 +91,71 @@ const CreateProperty: React.FC = () => {
     setValue("owner_id", value.value)
     setSeleOpOwner(value)
   }
+  // Rent Duration
+  const [optionsRentDurations, setOptionsRentDurations] = React.useState<any>([
+    {
+      value: 1,
+      label: "Diario",
+    },
+    {
+      value: 2,
+      label: "Mensual",
+    },
+    {
+      value: 3,
+      label: "Anual",
+    },
+    {
+      value: 4,
+      label: "Trimestral",
+    },
+  ])
+  const [seleOpRentDuration, setSeleOpRentDuration] = React.useState(null)
+  const handleChangeOptionRentDuration = (value: any) => {
+    setValue("rent_duration", value.value)
+    setSeleOpRentDuration(value)
+  }
   // City
   const [optionsCity, setOptionsCity] = React.useState<any>([])
   const [seleOpCity, setSeleOpCity] = React.useState(null)
   const handleChangeOptionCity = (value: any) => {
-    setValue("city_id", value.value)
+    setValue("city", value.value)
     setSeleOpCity(value)
+    setOptionsMunicipality(
+      allMunicipality
+        .filter(ft => ft.cityId == value.value)
+        .map(it => ({
+          value: it.id,
+          label: it.name,
+        })),
+    )
   }
   // Municipality
+  const [allMunicipality, setAllMunicipality] = React.useState<
+    MunicipalityDTO[]
+  >([])
   const [optionsMunicipality, setOptionsMunicipality] = React.useState<any>([])
   const [seleOpMunicipality, setSeleOpMunicipality] = React.useState(null)
   const handleChangeOptionMunicipality = (value: any) => {
-    setValue("municipality_id", value.value)
+    setValue("municipality", value.value)
     setSeleOpMunicipality(value)
+    setOptionsUrbanization(
+      allUrbanization
+        .filter(ft => ft.municipalityId == value.value)
+        .map(it => ({
+          value: it.id,
+          label: it.name,
+        })),
+    )
   }
   // Urbanization
+  const [allUrbanization, setAllUrbanization] = React.useState<
+    UrbanizationDTO[]
+  >([])
   const [optionsUrbanization, setOptionsUrbanization] = React.useState<any>([])
   const [seleOpUrbanization, setSeleOpUrbanization] = React.useState(null)
   const handleChangeOptionUrbanization = (value: any) => {
-    setValue("urbanization_id", value.value)
+    setValue("urbanization", value.value)
     setSeleOpUrbanization(value)
   }
   // // Category
@@ -132,12 +183,12 @@ const CreateProperty: React.FC = () => {
 
   const fetchDataOwners = async () => {
     try {
-      const response: CategoryDTO[] =
-        (await ownerRepository.getAll()) as CategoryDTO[]
+      const response: OwnerDTO[] =
+        (await ownerRepository.getAll()) as OwnerDTO[]
       if (!!response) {
         const listData = (response || []).map(it => ({
           value: it.id,
-          label: it.name,
+          label: it.fullName,
         }))
         setOptionsOwner(listData)
       }
@@ -167,34 +218,6 @@ const CreateProperty: React.FC = () => {
     }
   }
 
-  const fetchDataMunicipalities = async () => {
-    try {
-      const response: any[] = (await parameterRepository.getMuni()) as any[]
-      if (!!response) {
-        const listData = (response || []).map(it => ({
-          value: it.id,
-          label: it.name,
-        }))
-        setOptionsOwner(listData)
-      }
-    } finally {
-    }
-  }
-
-  const fetchDataNeighborhoods = async () => {
-    try {
-      const response: any[] = (await parameterRepository.getNei()) as any[]
-      if (!!response) {
-        const listData = (response || []).map(it => ({
-          value: it.id,
-          label: it.name,
-        }))
-        setOptionsOwner(listData)
-      }
-    } finally {
-    }
-  }
-
   const fetchDataStates = async () => {
     try {
       const response: any[] = (await parameterRepository.getState()) as any[]
@@ -203,7 +226,29 @@ const CreateProperty: React.FC = () => {
           value: it.id,
           label: it.name,
         }))
-        setOptionsOwner(listData)
+        setOptionsCity(listData)
+      }
+    } finally {
+    }
+  }
+
+  const fetchDataMunicipalities = async () => {
+    try {
+      const response: MunicipalityDTO[] =
+        (await parameterRepository.getMuni()) as MunicipalityDTO[]
+      if (!!response) {
+        setAllMunicipality(response)
+      }
+    } finally {
+    }
+  }
+
+  const fetchDataNeighborhoods = async () => {
+    try {
+      const response: UrbanizationDTO[] =
+        (await parameterRepository.getNei()) as UrbanizationDTO[]
+      if (!!response) {
+        setAllUrbanization(response)
       }
     } finally {
     }
@@ -215,9 +260,9 @@ const CreateProperty: React.FC = () => {
         fetchDataCategories(),
         fetchDataOwners(),
         fetchDataParameters(),
+        fetchDataStates(),
         fetchDataMunicipalities(),
         fetchDataNeighborhoods(),
-        fetchDataStates(),
       ])
     }
 
@@ -232,12 +277,13 @@ const CreateProperty: React.FC = () => {
       description: "",
       type_id: "1",
       plan_id: "1",
-      price: "",
+      price: 0,
+      rent_duration: "",
       owner_id: "",
-      city_id: "",
-      municipality_id: "",
-      urbanization_id: "",
-      client_address: "",
+      city: "",
+      municipality: "",
+      urbanization: "",
+      full_address: "",
       video_link: "",
       title_image: "",
       d_image: "",
@@ -267,13 +313,28 @@ const CreateProperty: React.FC = () => {
           data[key] !== null &&
           data[key] !== "" &&
           key != "parameters" &&
+          key != "price" &&
           key != "gallery_images"
         ) {
           formData.append(key, data[key])
         }
       }
 
-      // formData.append("parameters[]", listParams)
+      // console.log("Params submit => ", data)
+      console.log("Params submit => ", formData)
+      // formData.append("parameters[]", ...listParams)
+
+      listParams.forEach((param, index) => {
+        if (
+          param.value !== null &&
+          param.value !== undefined &&
+          param.value !== ""
+        ) {
+          console.log("param.value => ", param.value)
+          formData.append(`parameters[${index}][id]`, `${param.id}`)
+          formData.append(`parameters[${index}][value]`, `${param.value}`)
+        }
+      })
 
       if (formData.entries().next().done) {
         false
@@ -560,11 +621,12 @@ const CreateProperty: React.FC = () => {
                 )}
               </WrapperInput>
               <WrapperInput>
-                <label htmlFor="last_name-create-project">Precio</label>
+                <label htmlFor="price-create-project">Precio</label>
                 <Input
-                  id="last_name-create-project"
-                  placeholder="Enter description"
+                  id="price-create-project"
+                  placeholder="Enter price"
                   // icon={TextDescription}
+                  type="number"
                   register={register("price")}
                 />
                 {!!(errors.price as any)?.message && (
@@ -573,7 +635,7 @@ const CreateProperty: React.FC = () => {
               </WrapperInput>
               <WrapperInput>
                 <label htmlFor="owner-create-project">
-                  Propietario{" "}
+                  Propietario
                   <span onClick={() => setOpenAddOwner(true)}>Crear</span>
                 </label>
                 <Select
@@ -597,6 +659,70 @@ const CreateProperty: React.FC = () => {
         <ResidentialFormStyles>
           <ContainerThreeInputs>
             <WrapperInput>
+              <label htmlFor="city-create-project">Ciudad</label>
+              <Select
+                id="city-create-project"
+                defaultValue={seleOpCity}
+                onChange={handleChangeOptionCity}
+                options={optionsCity}
+                isSearchable={true}
+                styles={selectStyles}
+              />
+              {!!(errors.city as any)?.message && (
+                <ErrorMessage>{(errors.city as any)?.message}</ErrorMessage>
+              )}
+            </WrapperInput>
+            <WrapperInput>
+              <label htmlFor="municipality-create-project">Municipalidad</label>
+              <Select
+                id="municipality-create-project"
+                defaultValue={seleOpMunicipality}
+                onChange={handleChangeOptionMunicipality}
+                options={optionsMunicipality}
+                isSearchable={true}
+                styles={selectStyles}
+              />
+              {!!(errors.municipality as any)?.message && (
+                <ErrorMessage>
+                  {(errors.municipality as any)?.message}
+                </ErrorMessage>
+              )}
+            </WrapperInput>
+            <WrapperInput>
+              <label htmlFor="urbanization-create-project">Urbanización</label>
+              <Select
+                id="urbanization-create-project"
+                defaultValue={seleOpUrbanization}
+                onChange={handleChangeOptionUrbanization}
+                options={optionsUrbanization}
+                isSearchable={true}
+                styles={selectStyles}
+              />
+              {!!(errors.urbanization as any)?.message && (
+                <ErrorMessage>
+                  {(errors.urbanization as any)?.message}
+                </ErrorMessage>
+              )}
+            </WrapperInput>
+          </ContainerThreeInputs>
+          <ContainerOneInputs>
+            <WrapperInput>
+              <label htmlFor="address-create-project">Dirección</label>
+              <Input
+                id="address-create-project"
+                placeholder="Enter address"
+                // icon={TextDescription}
+                register={register("full_address")}
+              />
+              {!!(errors.full_address as any)?.message && (
+                <ErrorMessage>
+                  {(errors.full_address as any)?.message}
+                </ErrorMessage>
+              )}
+            </WrapperInput>
+          </ContainerOneInputs>
+          <ContainerTwoInputs>
+            <WrapperInput>
               <label htmlFor="plan-create-project">Plan</label>
               <Select
                 id="plan-create-project"
@@ -613,73 +739,25 @@ const CreateProperty: React.FC = () => {
                 isSearchable={true}
                 styles={selectStyles}
               />
-              {!!(errors.city_id as any)?.message && (
-                <ErrorMessage>{(errors.city_id as any)?.message}</ErrorMessage>
+              {!!(errors.city as any)?.message && (
+                <ErrorMessage>{(errors.city as any)?.message}</ErrorMessage>
               )}
             </WrapperInput>
             <WrapperInput>
-              <label htmlFor="city-create-project">Ciudad</label>
+              <label htmlFor="duration-create-project">Duración</label>
               <Select
-                id="city-create-project"
-                defaultValue={seleOpCity}
-                onChange={handleChangeOptionCity}
-                options={optionsCity}
+                id="duration-create-project"
+                defaultValue={seleOpRentDuration}
+                onChange={handleChangeOptionRentDuration}
+                options={optionsRentDurations}
                 isSearchable={true}
                 styles={selectStyles}
               />
-              {!!(errors.city_id as any)?.message && (
-                <ErrorMessage>{(errors.city_id as any)?.message}</ErrorMessage>
+              {!!(errors.city as any)?.message && (
+                <ErrorMessage>{(errors.city as any)?.message}</ErrorMessage>
               )}
             </WrapperInput>
-            <WrapperInput>
-              <label htmlFor="municipality-create-project">Municipalidad</label>
-              <Select
-                id="municipality-create-project"
-                defaultValue={seleOpMunicipality}
-                onChange={handleChangeOptionMunicipality}
-                options={optionsMunicipality}
-                isSearchable={true}
-                styles={selectStyles}
-              />
-              {!!(errors.municipality_id as any)?.message && (
-                <ErrorMessage>
-                  {(errors.municipality_id as any)?.message}
-                </ErrorMessage>
-              )}
-            </WrapperInput>
-            <WrapperInput>
-              <label htmlFor="urbanization-create-project">Urbanización</label>
-              <Select
-                id="urbanization-create-project"
-                defaultValue={seleOpUrbanization}
-                onChange={handleChangeOptionUrbanization}
-                options={optionsUrbanization}
-                isSearchable={true}
-                styles={selectStyles}
-              />
-              {!!(errors.urbanization_id as any)?.message && (
-                <ErrorMessage>
-                  {(errors.urbanization_id as any)?.message}
-                </ErrorMessage>
-              )}
-            </WrapperInput>
-          </ContainerThreeInputs>
-          <ContainerOneInputs>
-            <WrapperInput>
-              <label htmlFor="address-create-project">Dirección</label>
-              <Input
-                id="address-create-project"
-                placeholder="Enter description"
-                // icon={TextDescription}
-                register={register("price")}
-              />
-              {!!(errors.client_address as any)?.message && (
-                <ErrorMessage>
-                  {(errors.client_address as any)?.message}
-                </ErrorMessage>
-              )}
-            </WrapperInput>
-          </ContainerOneInputs>
+          </ContainerTwoInputs>
         </ResidentialFormStyles>
 
         <ResidentialFormStyles>
