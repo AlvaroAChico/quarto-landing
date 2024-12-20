@@ -13,7 +13,7 @@ const env = settingsEnv.environment.toLowerCase() as keyof typeof settingsMap
 const selectedSettings = settingsMap[env] || settingsDEV
 
 const {
-  app: { name, mocks, local },
+  app: { name, mocks, local, basePath },
   api: { base, auth },
   cloudEnv,
 } = selectedSettings
@@ -23,6 +23,7 @@ export const settingsApp = {
     name,
     mocks,
     local,
+    basePath,
   },
   api: {
     base,

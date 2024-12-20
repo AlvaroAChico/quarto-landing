@@ -121,24 +121,24 @@ const DetailVisits: React.FC = () => {
           <div>
             <div>
               <span>Propietario</span>
-              <span>{dataFetch?.owner.name}</span>
+              {/* <span>{dataFetch?.owner.name}</span> */}
             </div>
             <div>
               <Whatsapp
-                onClick={handleSendWhatsApp(
-                  dataFetch?.owner?.contact?.whatsapp || "",
-                )}
+              // onClick={handleSendWhatsApp(
+              //   dataFetch?.owner?.contact?.whatsapp || "",
+              // )}
               />
               <Phone
-                onClick={handleCallPhone(
-                  dataFetch?.owner?.contact?.whatsapp || "",
-                )}
+              // onClick={handleCallPhone(
+              //   dataFetch?.owner?.contact?.whatsapp || "",
+              // )}
               />
             </div>
           </div>
           <div>
             <span>Características del inmueble</span>
-            <span>{dataFetch?.owner.property_features}</span>
+            {/* <span>{dataFetch?.owner.property_features}</span> */}
           </div>
         </ItemInfoRental>
       </ContainerInfoRental>

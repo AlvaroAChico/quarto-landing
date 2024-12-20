@@ -38,7 +38,7 @@ export const pathRoutes = {
     visible: true,
     otherPaths: {
       VIEW: {
-        to: "/visitas/:id",
+        to: `${basePath}/visitas/:id`,
         basePath: "/visitas",
         label: "Crear propiedad",
         visible: false,
@@ -69,13 +69,13 @@ export const pathRoutes = {
     visible: true,
     otherPaths: {
       CREATE: {
-        to: "/propiedades/crear",
+        to: `${basePath}/propiedades/crear`,
         basePath: "/propiedades",
         label: "Crear propiedad",
         visible: false,
       },
       EDIT: {
-        to: "/propiedades/editar",
+        to: `${basePath}/propiedades/editar`,
         basePath: "/propiedades",
         label: "Crear propiedad",
         visible: false,
@@ -90,7 +90,7 @@ export const pathRoutes = {
     visible: true,
     otherPaths: {
       CREATE: {
-        to: "/referidos/crear",
+        to: `${basePath}/referidos/crear`,
         basePath: "/referidos",
         label: "Añadir Referido",
         visible: false,
