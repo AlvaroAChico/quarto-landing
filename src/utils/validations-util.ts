@@ -1,7 +1,7 @@
 import { FieldErrors, FieldValues, UseFormGetValues } from "react-hook-form"
 import {
-  CreatePropertyForm,
   CreatePropertySchema,
+  CreatePropStep01Form,
 } from "../core/models/schemas/property-schema"
 
 export const validationObjectData = (data: any) => {
@@ -31,7 +31,7 @@ export const validationObjectData = (data: any) => {
 
 export const validateErrorSchema = (
   errors: FieldErrors,
-  getValues: UseFormGetValues<CreatePropertyForm>,
+  getValues: UseFormGetValues<CreatePropStep01Form>,
   its: string[],
 ): boolean => {
   let isValid = true
