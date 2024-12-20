@@ -48,21 +48,12 @@ import {
   CreatePropertySchema,
   CreatePropStep01Form,
   CreatePropStep01Schema,
+  CreatePropStep02Form,
   CreatePropStep02Schema,
+  CreatePropStep03Form,
   CreatePropStep03Schema,
+  CreatePropStep04Form,
   CreatePropStep04Schema,
-  errorsStep01,
-  errorsStep02,
-  errorsStep03,
-  registerStep01,
-  registerStep02,
-  setValueStep01,
-  setValueStep02,
-  setValueStep03,
-  submitWrapperStep01,
-  submitWrapperStep02,
-  submitWrapperStep03,
-  submitWrapperStep04,
 } from "../../../../core/models/schemas/property-schema"
 import Textarea from "../../../../components/textarea/textarea"
 import { setErrResponse } from "../../../../utils/erros-util"
@@ -127,6 +118,85 @@ const CreateProperty: React.FC = () => {
       label: "Trimestral",
     },
   ])
+
+  // Schemas Methods
+  // ********** Step 01 **********
+  const methodsStep01 = useForm<CreatePropStep01Form>({
+    resolver: yupResolver(CreatePropStep01Schema),
+    defaultValues: {
+      category_id: "",
+      title: "",
+      description: "",
+      type_id: "1",
+      price: 0,
+      owner_id: "",
+    },
+  })
+
+  const {
+    handleSubmit: submitWrapperStep01,
+    formState: { errors: errorsStep01 },
+    register: registerStep01,
+    setValue: setValueStep01,
+    getValues: getValuesStep01,
+  } = methodsStep01
+
+  // ********** Step 02 **********
+  const methodsStep02 = useForm<CreatePropStep02Form>({
+    resolver: yupResolver(CreatePropStep02Schema),
+    defaultValues: {
+      city: "",
+      municipality: "",
+      urbanization: "",
+      full_address: "",
+      plan_id: "",
+      rent_duration: "",
+    },
+  })
+
+  const {
+    handleSubmit: submitWrapperStep02,
+    formState: { errors: errorsStep02 },
+    register: registerStep02,
+    setValue: setValueStep02,
+    getValues: getValuesStep02,
+  } = methodsStep02
+
+  // ********** Step 03 **********
+  const methodsStep03 = useForm<CreatePropStep03Form>({
+    resolver: yupResolver(CreatePropStep03Schema),
+    defaultValues: {
+      video_link: "",
+      title_image: "",
+      d_image: "",
+      gallery_images: [],
+    },
+  })
+
+  const {
+    handleSubmit: submitWrapperStep03,
+    formState: { errors: errorsStep03 },
+    register: registerStep03,
+    setValue: setValueStep03,
+    getValues: getValuesStep03,
+  } = methodsStep03
+
+  // ********** Step 04 **********
+  const methodsStep04 = useForm<CreatePropStep04Form>({
+    resolver: yupResolver(CreatePropStep04Schema),
+    defaultValues: {
+      parameters: [],
+    },
+  })
+
+  const {
+    handleSubmit: submitWrapperStep04,
+    formState: { errors: errorsStep04 },
+    register: registerStep04,
+    setValue: setValueStep04,
+    getValues: getValuesStep04,
+  } = methodsStep04
+
   const [seleOpRentDuration, setSeleOpRentDuration] = React.useState(null)
   const handleChangeOptionRentDuration = (value: any) => {
     setValueStep02("rent_duration", value.value)
@@ -311,75 +381,81 @@ const CreateProperty: React.FC = () => {
   const [isSubmitUserCreate, setIsSubmitUserCreate] = React.useState(false)
 
   const [isSubmitting, setIsSubmitting] = React.useState(false)
-  const [formData, setFormData] = React.useState({})
+  const [formSteps, setFormSteps] = React.useState({})
 
   const handleSubmit01 = (data: any) => {
-    const finalData = { ...formData, ...data }
+    setFormSteps({ ...formSteps, ...data })
     setStepActive(2)
   }
   const handleSubmit02 = (data: any) => {
-    const finalData = { ...formData, ...data }
+    setFormSteps({ ...formSteps, ...data })
     setStepActive(3)
   }
   const handleSubmit03 = (data: any) => {
-    const finalData = { ...formData, ...data }
+    setFormSteps({ ...formSteps, ...data })
     setStepActive(4)
   }
 
-  const handleSubmit04 = async (data: any) => {
-    const finalData = { ...formData, ...data }
-    // Envía finalData a tu API
-    console.log(finalData)
+  const handleSubmit04 = React.useCallback(
+    async (data: any) => {
+      const finalData = { ...formSteps, ...data }
+      // Envía finalData a tu API
+      console.log(finalData)
 
-    if (isSubmitting) return
-    setIsSubmitting(true)
-    setIsSubmitUserCreate(true)
-    try {
-      const formData = new FormData()
-      for (const key in data) {
-        if (
-          data.hasOwnProperty(key) &&
-          data[key] !== undefined &&
-          data[key] !== null &&
-          data[key] !== "" &&
-          key != "parameters" &&
-          key != "price" &&
-          key != "gallery_images"
-        ) {
-          formData.append(key, data[key])
+      if (isSubmitting) return
+      setIsSubmitting(true)
+      setIsSubmitUserCreate(true)
+      try {
+        const formData = new FormData()
+        for (const key in finalData) {
+          if (
+            finalData.hasOwnProperty(key) &&
+            finalData[key] !== undefined &&
+            finalData[key] !== null &&
+            finalData[key] !== "" &&
+            key != "parameters" &&
+            key != "price" &&
+            key != "gallery_images"
+          ) {
+            console.log("AAAAAAA => ", key)
+            console.log("BBBBBB => ", finalData[key])
+            formData.append(key, finalData[key])
+          }
         }
-      }
 
-      listParams.forEach((param, index) => {
-        if (
-          param.value !== null &&
-          param.value !== undefined &&
-          param.value !== ""
-        ) {
-          formData.append(`parameters[${index}][id]`, `${param.id}`)
-          formData.append(`parameters[${index}][value]`, `${param.value}`)
+        console.log("Form Data result => ", JSON.stringify(formData))
+        listParams.forEach((param, index) => {
+          if (
+            param.value !== null &&
+            param.value !== undefined &&
+            param.value !== ""
+          ) {
+            formData.append(`parameters[${index}][id]`, `${param.id}`)
+            formData.append(`parameters[${index}][value]`, `${param.value}`)
+          }
+        })
+
+        if (formData.entries().next().done) {
+          false
+          toast.warning("No se encontraron registros")
+          return
         }
-      })
 
-      if (formData.entries().next().done) {
-        false
-        toast.warning("No se encontraron registros")
-        return
+        const response: CreateUserResponseDTO =
+          (await propertyRepository.createProperty(
+            formData,
+          )) as CreateUserResponseDTO
+        if (!!response) {
+          toast.success(response.message)
+          // navigate(pathRoutes.PROPERTIES.LIST)
+        }
+      } finally {
+        setIsSubmitUserCreate(false)
+        setIsSubmitting(false)
       }
-
-      const response: CreateUserResponseDTO =
-        (await propertyRepository.createProperty(
-          formData,
-        )) as CreateUserResponseDTO
-      if (!!response) {
-        toast.success(response.message)
-        // navigate(pathRoutes.PROPERTIES.LIST)
-      }
-    } finally {
-      setIsSubmitUserCreate(false)
-      setIsSubmitting(false)
-    }
-  }
+    },
+    [formSteps],
+  )
 
   // Init Upload picture Title Image
   const [infoPicture, setInfoPicture] = React.useState<any>()
