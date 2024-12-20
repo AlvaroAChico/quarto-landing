@@ -19,9 +19,11 @@ interface Route {
   otherPaths: Object
 }
 
+const basePath = "/realtor"
+
 export const pathRoutes = {
   DASHBOARD: {
-    to: "/dashboard",
+    to: `${basePath}/dashboard`,
     basePath: "/dashboard",
     label: "Dashboard",
     icon: DashboardIMG,
@@ -29,7 +31,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   VISITS: {
-    to: "/visitas",
+    to: `${basePath}/visitas`,
     basePath: "/visitas",
     label: "Visitas",
     icon: VisitsIMG,
@@ -44,7 +46,7 @@ export const pathRoutes = {
     },
   },
   RENTALS: {
-    to: "/alquileres",
+    to: `${basePath}/alquileres`,
     basePath: "/alquileres",
     label: "Alquileres",
     icon: RentalsIMG,
@@ -52,7 +54,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   CALENDAR: {
-    to: "/calendario",
+    to: `${basePath}/calendario`,
     basePath: "/calendario",
     label: "Calendario",
     icon: CalendarIMG,
@@ -60,7 +62,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   PROPERTY: {
-    to: "/propiedades",
+    to: `${basePath}/propiedades`,
     basePath: "/propiedades",
     label: "Mis Propiedades",
     icon: PropertiesIMG,
@@ -81,7 +83,7 @@ export const pathRoutes = {
     },
   },
   REFERRALS: {
-    to: "/referidos",
+    to: `${basePath}/referidos`,
     basePath: "/referidos",
     label: "Inq. Referidos",
     icon: ReferralsIMG,
@@ -96,7 +98,7 @@ export const pathRoutes = {
     },
   },
   WALLET: {
-    to: "/billetera",
+    to: `${basePath}/billetera`,
     basePath: "/billetera",
     label: "Billetera",
     icon: WalletIMG,
@@ -104,7 +106,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   PROFILE: {
-    to: "/perfil",
+    to: `${basePath}/perfil`,
     basePath: "/perfil",
     label: "Perfil",
     icon: ProfileIMG,
@@ -112,7 +114,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   CONTACTS: {
-    to: "/contactos",
+    to: `${basePath}/contactos`,
     basePath: "/contactos",
     label: "Contactos",
     icon: ContactsIMG,
@@ -120,7 +122,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   CHATS: {
-    to: "/chats",
+    to: `${basePath}/chats`,
     basePath: "/chats",
     label: "Chats",
     icon: ChatsIMG,
@@ -128,7 +130,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   INFO_PRODUCTS: {
-    to: "/productos",
+    to: `${basePath}/productos`,
     basePath: "/productos",
     label: "Productos",
     icon: ProductsIMG,
@@ -136,7 +138,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   SIGN_IN: {
-    to: "/",
+    to: `${basePath}/`,
     basePath: "/",
     label: "Iniciar Sesión",
     icon: "",
@@ -144,7 +146,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   RECOVERY_PASS: {
-    to: "/recuperar-contraseña",
+    to: `${basePath}/recuperar-contraseña`,
     basePath: "/recuperar-contraseña",
     label: "Recuperar contraseña",
     icon: "",
@@ -152,7 +154,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   RESET_PASSWORD: {
-    to: "/resetear-contraseña",
+    to: `${basePath}/resetear-contraseña`,
     basePath: "/resetear-contraseña",
     label: "Resetear contraseña",
     icon: "",

@@ -116,3 +116,22 @@ export enum ETypeParam {
   NUMBER = "number",
   CHECKBOX = "checkbox",
 }
+
+export const listSteppersProperty = [
+  {
+    step: 1,
+    name: "Detalles",
+  },
+  {
+    step: 2,
+    name: "Ubicación",
+  },
+  {
+    step: 3,
+    name: "Galeria",
+  },
+  {
+    step: 4,
+    name: "Especificaciones",
+  },
+]

@@ -7,7 +7,7 @@ const fileTypeValidation = (file: File): boolean => {
 
 export const CreatePropertySchema = object({
   // Details
-  title: string(),
+  title: string().required("Ingresa una respuesta"),
   description: string(),
   type_id: string(),
   rent_duration: string(),

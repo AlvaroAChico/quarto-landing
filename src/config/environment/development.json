@@ -2,7 +2,8 @@
   "app": {
     "name": "Quarto",
     "mocks": false,
-    "local": "https://localhost"
+    "local": "https://localhost",
+    "basePath": ""
   },
   "api": {
     "base": "https://localhost/api",

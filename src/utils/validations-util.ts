@@ -1,4 +1,8 @@
-import { FieldErrors } from "react-hook-form"
+import { FieldErrors, FieldValues, UseFormGetValues } from "react-hook-form"
+import {
+  CreatePropertyForm,
+  CreatePropertySchema,
+} from "../core/models/schemas/property-schema"
 
 export const validationObjectData = (data: any) => {
   //   const formData = new FormData()
@@ -23,18 +27,31 @@ export const validationObjectData = (data: any) => {
   //   formData.append("_method", "PATCH")
 }
 
+type ValidKeys = keyof CreatePropertyForm
+
 export const validateErrorSchema = (
   errors: FieldErrors,
+  getValues: UseFormGetValues<CreatePropertyForm>,
   its: string[],
 ): boolean => {
-  its.forEach(it => {
-    if (
-      (errors[it] as any)?.message == "" ||
-      (errors[it] as any)?.message == undefined
-    ) {
-      return true
-    }
-  })
+  let isValid = true
 
-  return false
+  its.forEach(it => {
+    // console.log("---------- Init property ----------")
+    // console.log(`Data ${it} => `, {
+    //   evaluation: `Evaluando: ${it} => Tiene el error ${errors[it]?.message} `,
+    //   errors: errors,
+    //   valueKey: getValues(it as ValidKeys),
+    //   objects: Object.keys(errors).includes(it),
+    // })
+    // console.log("---------- End property ----------")
+    if (Object.keys(errors).includes(it)) {
+      // console.log("- - 1 - - ")
+      isValid = false
+    }
+    // console.log("- - 2 - - ")
+  })
+  // console.log("**************************************")
+
+  return isValid
 }

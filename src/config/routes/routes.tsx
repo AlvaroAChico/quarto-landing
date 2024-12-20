@@ -111,7 +111,7 @@ export const router = createBrowserRouter([
     element: <ResetPassword />,
   },
   {
-    path: "*",
+    path: "/realtor/*",
     element: <NotFound />,
   },
 ])

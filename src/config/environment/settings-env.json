@@ -2,7 +2,8 @@
   "app": {
     "name": "Quarto",
     "mocks": true,
-    "local": "http://3.85.120.166"
+    "local": "http://3.85.120.166",
+    "basePath": ""
   },
   "api": {
     "base": "http://3.85.120.166/api",
