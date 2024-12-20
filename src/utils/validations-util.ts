@@ -27,7 +27,7 @@ export const validationObjectData = (data: any) => {
   //   formData.append("_method", "PATCH")
 }
 
-type ValidKeys = keyof CreatePropertyForm
+// type ValidKeys = keyof CreatePropertyForm
 
 export const validateErrorSchema = (
   errors: FieldErrors,
@@ -37,21 +37,16 @@ export const validateErrorSchema = (
   let isValid = true
 
   its.forEach(it => {
-    // console.log("---------- Init property ----------")
     // console.log(`Data ${it} => `, {
     //   evaluation: `Evaluando: ${it} => Tiene el error ${errors[it]?.message} `,
     //   errors: errors,
     //   valueKey: getValues(it as ValidKeys),
     //   objects: Object.keys(errors).includes(it),
     // })
-    // console.log("---------- End property ----------")
     if (Object.keys(errors).includes(it)) {
-      // console.log("- - 1 - - ")
       isValid = false
     }
-    // console.log("- - 2 - - ")
   })
-  // console.log("**************************************")
 
   return isValid
 }

@@ -3,7 +3,7 @@
     "name": "Quarto",
     "mocks": false,
     "local": "http://3.85.120.166:8080",
-    "basePath": ""
+    "basePath": "/realtor"
   },
   "api": {
     "base": "http://3.85.120.166:8080/api",

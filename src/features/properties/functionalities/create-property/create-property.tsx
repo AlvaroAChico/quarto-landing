@@ -45,8 +45,24 @@ import { Trash } from "@styled-icons/ionicons-solid/Trash"
 import { Files } from "@styled-icons/simple-icons/Files"
 import Select from "react-select"
 import {
-  CreatePropertyForm,
   CreatePropertySchema,
+  CreatePropStep01Form,
+  CreatePropStep01Schema,
+  CreatePropStep02Schema,
+  CreatePropStep03Schema,
+  CreatePropStep04Schema,
+  errorsStep01,
+  errorsStep02,
+  errorsStep03,
+  registerStep01,
+  registerStep02,
+  setValueStep01,
+  setValueStep02,
+  setValueStep03,
+  submitWrapperStep01,
+  submitWrapperStep02,
+  submitWrapperStep03,
+  submitWrapperStep04,
 } from "../../../../core/models/schemas/property-schema"
 import Textarea from "../../../../components/textarea/textarea"
 import { setErrResponse } from "../../../../utils/erros-util"
@@ -82,14 +98,14 @@ const CreateProperty: React.FC = () => {
   const [optionsCategory, setOptionsCategory] = React.useState<any>([])
   const [seleOpCategory, setSeleOpCategory] = React.useState(null)
   const handleChangeOptionCategory = (value: any) => {
-    setValue("category_id", value.value)
+    setValueStep01("category_id", value.value)
     setSeleOpCategory(value)
   }
   // Owner
   const [optionsOwner, setOptionsOwner] = React.useState<any>([])
   const [seleOpOwner, setSeleOpOwner] = React.useState(null)
   const handleChangeOptionOwner = (value: any) => {
-    setValue("owner_id", value.value)
+    setValueStep01("owner_id", value.value)
     setSeleOpOwner(value)
   }
   // Rent Duration
@@ -113,14 +129,14 @@ const CreateProperty: React.FC = () => {
   ])
   const [seleOpRentDuration, setSeleOpRentDuration] = React.useState(null)
   const handleChangeOptionRentDuration = (value: any) => {
-    setValue("rent_duration", value.value)
+    setValueStep02("rent_duration", value.value)
     setSeleOpRentDuration(value)
   }
   // City
   const [optionsCity, setOptionsCity] = React.useState<any>([])
   const [seleOpCity, setSeleOpCity] = React.useState(null)
   const handleChangeOptionCity = (value: any) => {
-    setValue("city", value.value)
+    setValueStep02("city", value.value)
     setSeleOpCity(value)
     setOptionsMunicipality(
       allMunicipality
@@ -138,7 +154,7 @@ const CreateProperty: React.FC = () => {
   const [optionsMunicipality, setOptionsMunicipality] = React.useState<any>([])
   const [seleOpMunicipality, setSeleOpMunicipality] = React.useState(null)
   const handleChangeOptionMunicipality = (value: any) => {
-    setValue("municipality", value.value)
+    setValueStep02("municipality", value.value)
     setSeleOpMunicipality(value)
     setOptionsUrbanization(
       allUrbanization
@@ -156,7 +172,7 @@ const CreateProperty: React.FC = () => {
   const [optionsUrbanization, setOptionsUrbanization] = React.useState<any>([])
   const [seleOpUrbanization, setSeleOpUrbanization] = React.useState(null)
   const handleChangeOptionUrbanization = (value: any) => {
-    setValue("urbanization", value.value)
+    setValueStep02("urbanization", value.value)
     setSeleOpUrbanization(value)
   }
   // // Category
@@ -270,42 +286,54 @@ const CreateProperty: React.FC = () => {
     fetchDataAsync()
   }, [])
 
-  const methods = useForm<CreatePropertyForm>({
-    resolver: yupResolver(CreatePropertySchema),
-    defaultValues: {
-      category_id: "",
-      title: "",
-      description: "",
-      type_id: "1",
-      plan_id: "1",
-      price: 0,
-      rent_duration: "",
-      owner_id: "",
-      city: "",
-      municipality: "",
-      urbanization: "",
-      full_address: "",
-      video_link: "",
-      title_image: "",
-      d_image: "",
-      gallery_images: [],
-      parameters: [],
-    },
-  })
+  // const methods = useForm<CreatePropStep01Form>({
+  //   resolver: yupResolver(CreatePropStep01Schema),
+  //   defaultValues: {
+  //     category_id: "",
+  //     title: "",
+  //     description: "",
+  //     type_id: "1",
+  //     price: 0,
+  //     owner_id: "",
+  //   },
+  // })
 
-  const {
-    handleSubmit: submitWrapper,
-    formState: { errors },
-    register,
-    setValue,
-    getValues,
-  } = methods
+  // const {
+  //   handleSubmit: submitWrapperStep01,
+  //   formState: { errors: errorsStep01 },
+  //   register: registerStep01,
+  //   setValue: setValueStep01,
+  //   getValues: getValuesStep01,
+  // } = methods
+
+  // Componente principal del formulario
 
   const [isSubmitUserCreate, setIsSubmitUserCreate] = React.useState(false)
 
-  const handleSubmit = async (data: any) => {
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [formData, setFormData] = React.useState({})
+
+  const handleSubmit01 = (data: any) => {
+    const finalData = { ...formData, ...data }
+    setStepActive(2)
+  }
+  const handleSubmit02 = (data: any) => {
+    const finalData = { ...formData, ...data }
+    setStepActive(3)
+  }
+  const handleSubmit03 = (data: any) => {
+    const finalData = { ...formData, ...data }
+    setStepActive(4)
+  }
+
+  const handleSubmit04 = async (data: any) => {
+    const finalData = { ...formData, ...data }
+    // Envía finalData a tu API
+    console.log(finalData)
+
+    if (isSubmitting) return
+    setIsSubmitting(true)
     setIsSubmitUserCreate(true)
-    // console.log("oooooo")
     try {
       const formData = new FormData()
       for (const key in data) {
@@ -322,17 +350,12 @@ const CreateProperty: React.FC = () => {
         }
       }
 
-      // console.log("Params submit => ", data)
-      console.log("Params submit => ", formData)
-      // formData.append("parameters[]", ...listParams)
-
       listParams.forEach((param, index) => {
         if (
           param.value !== null &&
           param.value !== undefined &&
           param.value !== ""
         ) {
-          console.log("param.value => ", param.value)
           formData.append(`parameters[${index}][id]`, `${param.id}`)
           formData.append(`parameters[${index}][value]`, `${param.value}`)
         }
@@ -354,13 +377,14 @@ const CreateProperty: React.FC = () => {
       }
     } finally {
       setIsSubmitUserCreate(false)
+      setIsSubmitting(false)
     }
   }
 
   // Init Upload picture Title Image
   const [infoPicture, setInfoPicture] = React.useState<any>()
   const handleDeletePictureUser = () => {
-    setValue("title_image", "")
+    setValueStep03("title_image", "")
     setInfoPicture("")
   }
 
@@ -410,7 +434,7 @@ const CreateProperty: React.FC = () => {
   // Init Upload picture 3D Image
   const [infoPicture3D, setInfoPicture3D] = React.useState<any>()
   const handleDeletePictureUser3D = () => {
-    setValue("d_image", "")
+    setValueStep03("d_image", "")
     setInfoPicture3D("")
   }
 
@@ -495,7 +519,7 @@ const CreateProperty: React.FC = () => {
           reader.readAsArrayBuffer(file)
         })
 
-        setValue("gallery_images", updatedFiles)
+        setValueStep03("gallery_images", updatedFiles)
         setListFiles(updatedFiles)
       }
 
@@ -528,11 +552,11 @@ const CreateProperty: React.FC = () => {
   )
 
   React.useEffect(() => {
-    setValue("gallery_images", listFiles)
+    setValueStep03("gallery_images", listFiles)
   }, [listFiles])
 
   const handleChangeTypeProperty = (typeProperty: number) => () => {
-    setValue("type_id", `${typeProperty}`)
+    setValueStep01("type_id", `${typeProperty}`)
     setTypeProperty(typeProperty)
   }
 
@@ -549,70 +573,74 @@ const CreateProperty: React.FC = () => {
     setListParams(newListParams)
   }
 
-  const handleValidateNextStep = () => {
-    submitWrapper(console.log)()
-    // submitWrapper(handleSubmit)()
-  }
+  // const handleValidateNextStep = () => {
+  //   submitWrapper(console.log)()
+  // }
 
-  React.useEffect(() => {
-    console.log("Cambio el errors => ", errors)
-    switch (stepActive) {
-      case 1: {
-        if (
-          validateErrorSchema(errors, getValues, [
-            "category_id",
-            "title",
-            "description",
-            "property_type",
-            "price",
-            "owner_id",
-          ])
-        ) {
-          setStepActive(2)
-        }
-        break
-      }
-      case 2: {
-        if (
-          validateErrorSchema(errors, getValues, [
-            "city_id",
-            "municipality_id",
-            "urbanization_id",
-            "client_address",
-          ])
-        ) {
-          setStepActive(3)
-        }
-        break
-      }
-      case 3: {
-        if (
-          validateErrorSchema(errors, getValues, [
-            "video_link",
-            "title_image",
-            "d_image",
-            "gallery_images",
-          ])
-        ) {
-          setStepActive(4)
-        }
-        break
-      }
-      case 4: {
-        if (
-          validateErrorSchema(errors, getValues, [
-            "video_link",
-            "title_image",
-            "d_image",
-            "gallery_images",
-          ])
-        ) {
-          setStepActive(4)
-        }
-        break
-      }
-    }
-  }, [errors])
+  // React.useEffect(() => {
+  //   console.log("Errors actualizado")
+  //   switch (stepActive) {
+  //     case 0:
+  //       {
+  //         setStepActive(1)
+  //       }
+  //       break
+  //     case 1: {
+  //       if (
+  //         validateErrorSchema(errors, getValues, [
+  //           "category_id",
+  //           "title",
+  //           "description",
+  //           "property_type",
+  //           "price",
+  //           "owner_id",
+  //         ])
+  //       ) {
+  //         setStepActive(2)
+  //       }
+  //       break
+  //     }
+  //     case 2: {
+  //       if (
+  //         validateErrorSchema(errors, getValues, [
+  //           "city_id",
+  //           "municipality_id",
+  //           "urbanization_id",
+  //           "client_address",
+  //         ])
+  //       ) {
+  //         setStepActive(3)
+  //       }
+  //       break
+  //     }
+  //     case 3: {
+  //       if (
+  //         validateErrorSchema(errors, getValues, [
+  //           "video_link",
+  //           "title_image",
+  //           "d_image",
+  //           "gallery_images",
+  //         ])
+  //       ) {
+  //         setStepActive(4)
+  //       }
+  //       break
+  //     }
+  //     case 4: {
+  //       if (
+  //         validateErrorSchema(errors, getValues, [
+  //           "video_link",
+  //           "title_image",
+  //           "d_image",
+  //           "gallery_images",
+  //         ])
+  //       ) {
+  //         handleSubmit(getValues())
+  //       }
+  //       break
+  //     }
+  //   }
+  // }, [errors])
 
   return (
     <>
@@ -649,9 +677,9 @@ const CreateProperty: React.FC = () => {
                     isSearchable={true}
                     styles={selectStyles}
                   />
-                  {!!(errors.category_id as any)?.message && (
+                  {!!(errorsStep01.category_id as any)?.message && (
                     <ErrorMessage>
-                      {(errors.category_id as any)?.message}
+                      {(errorsStep01.category_id as any)?.message}
                     </ErrorMessage>
                   )}
                 </WrapperInput>
@@ -661,11 +689,11 @@ const CreateProperty: React.FC = () => {
                     id="last_name-create-project"
                     placeholder="Enter description"
                     // icon={TextDescription}
-                    register={register("title")}
+                    register={registerStep01("title")}
                   />
-                  {!!(errors.title as any)?.message && (
+                  {!!(errorsStep01.title as any)?.message && (
                     <ErrorMessage>
-                      {(errors.title as any)?.message}
+                      {(errorsStep01.title as any)?.message}
                     </ErrorMessage>
                   )}
                 </WrapperInput>
@@ -677,11 +705,11 @@ const CreateProperty: React.FC = () => {
                     id="last_name-create-project"
                     placeholder="Enter description"
                     // icon={TextDescription}
-                    register={register("description")}
+                    register={registerStep01("description")}
                   />
-                  {!!(errors.description as any)?.message && (
+                  {!!(errorsStep01.description as any)?.message && (
                     <ErrorMessage>
-                      {(errors.description as any)?.message}
+                      {(errorsStep01.description as any)?.message}
                     </ErrorMessage>
                   )}
                 </WrapperInput>
@@ -701,9 +729,9 @@ const CreateProperty: React.FC = () => {
                       </div>
                     </ContainerCheckTypeProperty>
                   </ContainerSwitchTwo>
-                  {!!(errors.description as any)?.message && (
+                  {!!(errorsStep01.type_id as any)?.message && (
                     <ErrorMessage>
-                      {(errors.description as any)?.message}
+                      {(errorsStep01.type_id as any)?.message}
                     </ErrorMessage>
                   )}
                 </WrapperInput>
@@ -714,11 +742,11 @@ const CreateProperty: React.FC = () => {
                     placeholder="Enter price"
                     // icon={TextDescription}
                     type="number"
-                    register={register("price")}
+                    register={registerStep01("price")}
                   />
-                  {!!(errors.price as any)?.message && (
+                  {!!(errorsStep01.price as any)?.message && (
                     <ErrorMessage>
-                      {(errors.price as any)?.message}
+                      {(errorsStep01.price as any)?.message}
                     </ErrorMessage>
                   )}
                 </WrapperInput>
@@ -735,9 +763,9 @@ const CreateProperty: React.FC = () => {
                     isSearchable={true}
                     styles={selectStyles}
                   />
-                  {!!(errors.owner_id as any)?.message && (
+                  {!!(errorsStep01.owner_id as any)?.message && (
                     <ErrorMessage>
-                      {(errors.owner_id as any)?.message}
+                      {(errorsStep01.owner_id as any)?.message}
                     </ErrorMessage>
                   )}
                 </WrapperInput>
@@ -758,8 +786,10 @@ const CreateProperty: React.FC = () => {
                   isSearchable={true}
                   styles={selectStyles}
                 />
-                {!!(errors.city as any)?.message && (
-                  <ErrorMessage>{(errors.city as any)?.message}</ErrorMessage>
+                {!!(errorsStep02.city as any)?.message && (
+                  <ErrorMessage>
+                    {(errorsStep02.city as any)?.message}
+                  </ErrorMessage>
                 )}
               </WrapperInput>
               <WrapperInput>
@@ -774,9 +804,9 @@ const CreateProperty: React.FC = () => {
                   isSearchable={true}
                   styles={selectStyles}
                 />
-                {!!(errors.municipality as any)?.message && (
+                {!!(errorsStep02.municipality as any)?.message && (
                   <ErrorMessage>
-                    {(errors.municipality as any)?.message}
+                    {(errorsStep02.municipality as any)?.message}
                   </ErrorMessage>
                 )}
               </WrapperInput>
@@ -792,9 +822,9 @@ const CreateProperty: React.FC = () => {
                   isSearchable={true}
                   styles={selectStyles}
                 />
-                {!!(errors.urbanization as any)?.message && (
+                {!!(errorsStep02.urbanization as any)?.message && (
                   <ErrorMessage>
-                    {(errors.urbanization as any)?.message}
+                    {(errorsStep02.urbanization as any)?.message}
                   </ErrorMessage>
                 )}
               </WrapperInput>
@@ -806,11 +836,11 @@ const CreateProperty: React.FC = () => {
                   id="address-create-project"
                   placeholder="Enter address"
                   // icon={TextDescription}
-                  register={register("full_address")}
+                  register={registerStep02("full_address")}
                 />
-                {!!(errors.full_address as any)?.message && (
+                {!!(errorsStep02.full_address as any)?.message && (
                   <ErrorMessage>
-                    {(errors.full_address as any)?.message}
+                    {(errorsStep02.full_address as any)?.message}
                   </ErrorMessage>
                 )}
               </WrapperInput>
@@ -822,7 +852,7 @@ const CreateProperty: React.FC = () => {
                   id="plan-create-project"
                   defaultValue={[{ value: 1, label: "Quarto" }]}
                   onChange={() => {
-                    setValue("plan_id", "1")
+                    setValueStep02("plan_id", "1")
                   }}
                   options={[
                     {
@@ -833,8 +863,10 @@ const CreateProperty: React.FC = () => {
                   isSearchable={true}
                   styles={selectStyles}
                 />
-                {!!(errors.city as any)?.message && (
-                  <ErrorMessage>{(errors.city as any)?.message}</ErrorMessage>
+                {!!(errorsStep02.city as any)?.message && (
+                  <ErrorMessage>
+                    {(errorsStep02.city as any)?.message}
+                  </ErrorMessage>
                 )}
               </WrapperInput>
               <WrapperInput>
@@ -847,8 +879,10 @@ const CreateProperty: React.FC = () => {
                   isSearchable={true}
                   styles={selectStyles}
                 />
-                {!!(errors.city as any)?.message && (
-                  <ErrorMessage>{(errors.city as any)?.message}</ErrorMessage>
+                {!!(errorsStep02.city as any)?.message && (
+                  <ErrorMessage>
+                    {(errorsStep02.city as any)?.message}
+                  </ErrorMessage>
                 )}
               </WrapperInput>
             </ContainerTwoInputs>
@@ -884,9 +918,9 @@ const CreateProperty: React.FC = () => {
                     </ContainerDragAndDropAvatar>
                   )}
                 </div>
-                {!!(errors.title_image as any)?.message && (
+                {!!(errorsStep03.title_image as any)?.message && (
                   <ErrorMessage>
-                    {(errors.title_image as any)?.message}
+                    {(errorsStep03.title_image as any)?.message}
                   </ErrorMessage>
                 )}
               </CustomWrapperInputAvatar>
@@ -915,9 +949,9 @@ const CreateProperty: React.FC = () => {
                     </ContainerDragAndDropAvatar>
                   )}
                 </div>
-                {!!(errors.title_image as any)?.message && (
+                {!!(errorsStep03.title_image as any)?.message && (
                   <ErrorMessage>
-                    {(errors.title_image as any)?.message}
+                    {(errorsStep03.title_image as any)?.message}
                   </ErrorMessage>
                 )}
               </CustomWrapperInputAvatar>
@@ -937,9 +971,9 @@ const CreateProperty: React.FC = () => {
                     <p>Drag or click this container to upload an image</p>
                   )}
                 </ContainerDragAndDropFiles>
-                {!!(errors.gallery_images as any)?.message && (
+                {!!(errorsStep03.gallery_images as any)?.message && (
                   <ErrorMessage>
-                    {(errors.gallery_images as any)?.message}
+                    {(errorsStep03.gallery_images as any)?.message}
                   </ErrorMessage>
                 )}
                 <ContainerListFiles>
@@ -1006,7 +1040,20 @@ const CreateProperty: React.FC = () => {
         <ContainerButton>
           {/* <button onClick={submitWrapper(handleSubmit)()}>aaa</button> */}
           <Button
-            onClick={handleValidateNextStep}
+            onClick={() => {
+              if (stepActive == 1) {
+                submitWrapperStep01(handleSubmit01)()
+              }
+              if (stepActive == 2) {
+                submitWrapperStep02(handleSubmit02)()
+              }
+              if (stepActive == 3) {
+                submitWrapperStep03(handleSubmit03)()
+              }
+              if (stepActive == 4) {
+                submitWrapperStep04(handleSubmit04)()
+              }
+            }}
             text={stepActive == 4 ? "Crear" : "Siguiente"}
             isLoading={isSubmitPropertyCreate}
           />
