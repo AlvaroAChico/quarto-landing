@@ -22,7 +22,7 @@ interface Route {
 
 export const pathRoutes = {
   DASHBOARD: {
-    to: "/dashboard",
+    to: `${settingsApp.app.basePath}/dashboard`,
     basePath: "/dashboard",
     label: "Dashboard",
     icon: DashboardIMG,
@@ -30,14 +30,14 @@ export const pathRoutes = {
     otherPaths: {},
   },
   VISITS: {
-    to: "/visitas",
+    to: `${settingsApp.app.basePath}/visitas`,
     basePath: "/visitas",
     label: "Visitas",
     icon: VisitsIMG,
     visible: true,
     otherPaths: {
       VIEW: {
-        to: "/visitas/:id",
+        to: `${settingsApp.app.basePath}/visitas/:id`,
         basePath: "/visitas",
         label: "Crear propiedad",
         visible: false,
@@ -45,7 +45,7 @@ export const pathRoutes = {
     },
   },
   RENTALS: {
-    to: "/alquileres",
+    to: `${settingsApp.app.basePath}/alquileres`,
     basePath: "/alquileres",
     label: "Alquileres",
     icon: RentalsIMG,
@@ -53,7 +53,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   CALENDAR: {
-    to: "/calendario",
+    to: `${settingsApp.app.basePath}/calendario`,
     basePath: "/calendario",
     label: "Calendario",
     icon: CalendarIMG,
@@ -61,20 +61,20 @@ export const pathRoutes = {
     otherPaths: {},
   },
   PROPERTY: {
-    to: "/propiedades",
+    to: `${settingsApp.app.basePath}/propiedades`,
     basePath: "/propiedades",
     label: "Mis Propiedades",
     icon: PropertiesIMG,
     visible: true,
     otherPaths: {
       CREATE: {
-        to: "/propiedades/crear",
+        to: `${settingsApp.app.basePath}/propiedades/crear`,
         basePath: "/propiedades",
         label: "Crear propiedad",
         visible: false,
       },
       EDIT: {
-        to: "/propiedades/editar",
+        to: `${settingsApp.app.basePath}/propiedades/editar`,
         basePath: "/propiedades",
         label: "Crear propiedad",
         visible: false,
@@ -82,14 +82,14 @@ export const pathRoutes = {
     },
   },
   REFERRALS: {
-    to: "/referidos",
+    to: `${settingsApp.app.basePath}/referidos`,
     basePath: "/referidos",
     label: "Inq. Referidos",
     icon: ReferralsIMG,
     visible: true,
     otherPaths: {
       CREATE: {
-        to: "/referidos/crear",
+        to: `${settingsApp.app.basePath}/referidos/crear`,
         basePath: "/referidos",
         label: "Añadir Referido",
         visible: false,
@@ -97,7 +97,7 @@ export const pathRoutes = {
     },
   },
   WALLET: {
-    to: "/billetera",
+    to: `${settingsApp.app.basePath}/billetera`,
     basePath: "/billetera",
     label: "Billetera",
     icon: WalletIMG,
@@ -105,7 +105,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   PROFILE: {
-    to: "/perfil",
+    to: `${settingsApp.app.basePath}/perfil`,
     basePath: "/perfil",
     label: "Perfil",
     icon: ProfileIMG,
@@ -113,7 +113,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   CONTACTS: {
-    to: "/contactos",
+    to: `${settingsApp.app.basePath}/contactos`,
     basePath: "/contactos",
     label: "Contactos",
     icon: ContactsIMG,
@@ -121,7 +121,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   CHATS: {
-    to: "/chats",
+    to: `${settingsApp.app.basePath}/chats`,
     basePath: "/chats",
     label: "Chats",
     icon: ChatsIMG,
@@ -129,7 +129,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   INFO_PRODUCTS: {
-    to: "/productos",
+    to: `${settingsApp.app.basePath}/productos`,
     basePath: "/productos",
     label: "Productos",
     icon: ProductsIMG,
@@ -137,7 +137,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   SIGN_IN: {
-    to: "/",
+    to: `${settingsApp.app.basePath}/`,
     basePath: "/",
     label: "Iniciar Sesión",
     icon: "",
@@ -145,7 +145,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   RECOVERY_PASS: {
-    to: "/recuperar-contraseña",
+    to: `${settingsApp.app.basePath}/recuperar-contraseña`,
     basePath: "/recuperar-contraseña",
     label: "Recuperar contraseña",
     icon: "",
@@ -153,7 +153,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   RESET_PASSWORD: {
-    to: "/resetear-contraseña",
+    to: `${settingsApp.app.basePath}/resetear-contraseña`,
     basePath: "/resetear-contraseña",
     label: "Resetear contraseña",
     icon: "",

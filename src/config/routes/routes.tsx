@@ -115,11 +115,11 @@ export const router = createBrowserRouter(
       element: <ResetPassword />,
     },
     {
-      path: "*",
+      path: `/realtor/*`,
       element: <NotFound />,
     },
   ],
-  {
-    basename: settingsApp.app.basePath,
-  },
+  // {
+  //   basename: settingsApp.app.basePath,
+  // },
 )
