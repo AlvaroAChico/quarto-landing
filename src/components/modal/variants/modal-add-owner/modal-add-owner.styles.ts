@@ -35,3 +35,9 @@ export const ContainerModal = styled.div`
     }
   }
 `
+
+export const ContainerFormOwner = styled.div`
+  flex-wrap: wrap;
+  display: flex;
+  gap: 20px;
+`

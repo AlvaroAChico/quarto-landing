@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "http://3.85.120.166/realtor",
+  "homepage": "https://adarve-peru.com/realtor",
   "scripts": {
     "dev": "vite",
     "start": "vite",

@@ -134,4 +134,23 @@ export const listSteppersProperty = [
     step: 4,
     name: "Especificaciones",
   },
+  {
+    step: 5,
+    name: "Documentación legal",
+  },
+]
+
+export const optionsTypesDocument = [
+  {
+    value: "Cédula", // Cedula V
+    label: "Cédula",
+  },
+  {
+    value: "Pasaporte", //Pasaporte PA
+    label: "Pasaporte",
+  },
+  {
+    value: "Carnet de Extranjeria", //Carnet de Extranjeria CE
+    label: "Carnet de Extranjeria",
+  },
 ]

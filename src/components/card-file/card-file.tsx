@@ -65,7 +65,7 @@ const CardFile: React.FC<IOwnProps> = ({ file, onDeleteFile }) => {
     reader.onload = () => {
       setFileImage(reader.result)
     }
-  }, [])
+  }, [file])
 
   return (
     <CardFileStyles>

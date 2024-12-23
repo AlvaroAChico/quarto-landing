@@ -14,14 +14,16 @@ import {
 } from "../../core/models/schemas/user-schema"
 
 interface FileUploadProps {
+  title?: string
   imageUrl: string | null
   keyValue: keyof UpdateUserForm
   isActiveChange?: boolean
   setImageUrl: (url: string | null) => void
-  setValueBinary: (key: keyof UpdateUserForm, file: any) => void
+  setValueBinary: (key: keyof UpdateUserForm | any, file: any) => void
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({
+  title = "",
   imageUrl,
   isActiveChange = false,
   keyValue,
@@ -79,6 +81,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
   return (
     <CustomWrapperInputAvatar>
+      {title && <label htmlFor="picture-create-project">{title}</label>}
       <div>
         {imageUrl ? (
           <ContainerImageAvatar>

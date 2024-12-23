@@ -243,3 +243,14 @@ export const ContainerSwitchs = styled.div`
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 `
+
+export const ActionCreateSpan = styled.span`
+  padding: 0 0 0 10px !important;
+  display: inline-block;
+  transition: 0.4s;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(0.9);
+  }
+`

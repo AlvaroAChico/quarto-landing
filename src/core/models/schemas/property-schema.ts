@@ -61,7 +61,7 @@ export const CreatePropStep01Schema = object({
   category_id: string(),
   title: string().required("Ingresa una respuesta"),
   description: string(),
-  type_id: string(),
+  type_id: string().required("Ingresa una respuesta"),
   price: number(),
   owner_id: string(),
 })
@@ -71,14 +71,13 @@ export const CreatePropStep02Schema = object({
   municipality: string(),
   urbanization: string(),
   full_address: string(),
-  plan_id: string(),
+  plan_id: string().required("Ingresa una respuesta"),
   rent_duration: string(),
 })
 
 export const CreatePropStep03Schema = object({
-  video_link: string(),
+  // video_link: string(),
   title_image: mixed(),
-  d_image: mixed(),
   gallery_images: array().of(
     mixed().test("is-valid-file", "File type is not allowed", file => {
       if (file instanceof File) {
