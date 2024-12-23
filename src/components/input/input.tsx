@@ -8,6 +8,7 @@ interface InputProps {
   toggleIcon?: any
   placeholder?: string
   customStyles?: string
+  disabled?: boolean
   register?: any
   [key: string]: any
 }
@@ -19,6 +20,7 @@ const Input: React.FC<InputProps> = ({
   type = "text",
   toggleIcon: ToggleIcon,
   customStyles = "",
+  disabled = false,
   register,
   ...props
 }) => {
@@ -36,6 +38,7 @@ const Input: React.FC<InputProps> = ({
         id={id}
         type={showPassword ? "text" : type}
         placeholder={placeholder}
+        disabled={disabled}
         {...register}
         {...props}
       />

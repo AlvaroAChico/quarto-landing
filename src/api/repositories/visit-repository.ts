@@ -9,4 +9,8 @@ export const visitRepository = {
   getVisitById: async (id: string): Promise<any> => {
     return await apiService.get<any>(`/visits/${id}`)
   },
+
+  completeVisit: async (id: number, formData: FormData): Promise<any> => {
+    return await apiService.postFormData(`/visits/${id}`, formData)
+  },
 }

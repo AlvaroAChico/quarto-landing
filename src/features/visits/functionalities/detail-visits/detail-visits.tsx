@@ -5,6 +5,7 @@ import {
   ContainerInfoRental,
   ContainerInfoVisit,
   ItemInfoRental,
+  OptionsDetailVisits,
 } from "./detail-visits.styles"
 import { Edit } from "@styled-icons/boxicons-solid/Edit"
 import { CloseOutline } from "@styled-icons/evaicons-outline/CloseOutline"
@@ -16,9 +17,14 @@ import axios from "axios"
 import { VisitDetailDTO } from "../../../../core/models/interfaces/visits-model"
 import { settingsApp } from "../../../../config/environment/settings"
 import { visitRepository } from "../../../../api/repositories/visit-repository"
+import Button from "../../../../components/button/button"
+import { palette } from "../../../../config/theme/theme"
+import ModalCompleteVisit from "../../../../components/modal/variants/modal-complete-visit/modal-complete-visit"
 
 const DetailVisits: React.FC = () => {
   const [dataFetch, setDataFetch] = React.useState<VisitDetailDTO>()
+  const [openCompleteVisit, setOpenCompleteVisit] =
+    React.useState<boolean>(false)
   const { id } = useParams()
 
   const fetchDataDetail = async () => {
@@ -52,97 +58,111 @@ const DetailVisits: React.FC = () => {
   }
 
   return (
-    <ContainerDetail>
-      <ContainerInfoVisit>
-        <div>
-          <h2>{dataFetch?.name_rental}</h2>
-          <span>
-            <Edit />
-            <CloseOutline />
-          </span>
-        </div>
-        <div>
-          <p>
-            <span>ID {dataFetch?.id}</span>
-            <span>{dataFetch?.status}</span>
-          </p>
-          <p>
-            <span>Fecha de la visita</span>
-            <strong>{dataFetch?.date_visit}</strong>
-          </p>
-          <p>
-            <span>Hora de la visita</span>
-            <strong>{dataFetch?.time_visit}</strong>
-          </p>
-          <p>
-            <span>Nota</span>
+    <>
+      <ContainerDetail>
+        <OptionsDetailVisits>
+          <Button
+            onClick={() => setOpenCompleteVisit(true)}
+            text="Completar"
+            customStyles={`background: ${palette.secondaryColor}`}
+          />
+        </OptionsDetailVisits>
+        <ContainerInfoVisit>
+          <div>
+            <h2>{dataFetch?.name_rental}</h2>
             <span>
-              <strong>{dataFetch?.note}</strong>
+              <Edit />
+              <CloseOutline />
             </span>
-          </p>
-        </div>
-      </ContainerInfoVisit>
-      <ContainerInfoRental>
-        <ItemInfoRental>
-          <div>
-            <span>Nombre</span>
-            <span>{dataFetch?.agent.name}</span>
           </div>
           <div>
-            <span>ID PA</span>
-            <span>{dataFetch?.agent.id_pa}</span>
+            <p>
+              <span>ID {dataFetch?.id}</span>
+              <span>{dataFetch?.status}</span>
+            </p>
+            <p>
+              <span>Fecha de la visita</span>
+              <strong>{dataFetch?.date_visit}</strong>
+            </p>
+            <p>
+              <span>Hora de la visita</span>
+              <strong>{dataFetch?.time_visit}</strong>
+            </p>
+            <p>
+              <span>Nota</span>
+              <span>
+                <strong>{dataFetch?.note}</strong>
+              </span>
+            </p>
           </div>
-        </ItemInfoRental>
-        <ItemInfoRental>
-          <div>
+        </ContainerInfoVisit>
+        <ContainerInfoRental>
+          <ItemInfoRental>
             <div>
-              <span>Inquilino</span>
-              <span>{dataFetch?.tenant.name}</span>
+              <span>Nombre</span>
+              <span>{dataFetch?.agent.name}</span>
             </div>
             <div>
-              <Whatsapp
-                onClick={handleSendWhatsApp(
-                  dataFetch?.tenant?.contact?.whatsapp || "",
-                )}
-              />
-              <Phone
-                onClick={handleCallPhone(
-                  dataFetch?.tenant?.contact?.whatsapp || "",
-                )}
-              />
+              <span>ID PA</span>
+              <span>{dataFetch?.agent.id_pa}</span>
             </div>
-          </div>
-          <div>
-            <span>Perfil Inquilino</span>
-            <span>{dataFetch?.tenant.profile}</span>
-          </div>
-        </ItemInfoRental>
-        <ItemInfoRental>
-          <div>
+          </ItemInfoRental>
+          <ItemInfoRental>
             <div>
-              <span>Propietario</span>
-              {/* <span>{dataFetch?.owner.name}</span> */}
+              <div>
+                <span>Inquilino</span>
+                <span>{dataFetch?.tenant.name}</span>
+              </div>
+              <div>
+                <Whatsapp
+                  onClick={handleSendWhatsApp(
+                    dataFetch?.tenant?.contact?.whatsapp || "",
+                  )}
+                />
+                <Phone
+                  onClick={handleCallPhone(
+                    dataFetch?.tenant?.contact?.whatsapp || "",
+                  )}
+                />
+              </div>
             </div>
             <div>
-              <Whatsapp
-              // onClick={handleSendWhatsApp(
-              //   dataFetch?.owner?.contact?.whatsapp || "",
-              // )}
-              />
-              <Phone
-              // onClick={handleCallPhone(
-              //   dataFetch?.owner?.contact?.whatsapp || "",
-              // )}
-              />
+              <span>Perfil Inquilino</span>
+              <span>{dataFetch?.tenant.profile}</span>
             </div>
-          </div>
-          <div>
-            <span>Características del inmueble</span>
-            {/* <span>{dataFetch?.owner.property_features}</span> */}
-          </div>
-        </ItemInfoRental>
-      </ContainerInfoRental>
-    </ContainerDetail>
+          </ItemInfoRental>
+          <ItemInfoRental>
+            <div>
+              <div>
+                <span>Propietario</span>
+                <span>{dataFetch?.owner.fullName}</span>
+              </div>
+              <div>
+                <Whatsapp
+                // onClick={handleSendWhatsApp(
+                //   dataFetch?.owner?.contact?.whatsapp || "",
+                // )}
+                />
+                <Phone
+                // onClick={handleCallPhone(
+                //   dataFetch?.owner?.contact?.whatsapp || "",
+                // )}
+                />
+              </div>
+            </div>
+            <div>
+              <span>Características del inmueble</span>
+              {/* <span>{dataFetch?.owner.property_features}</span> */}
+            </div>
+          </ItemInfoRental>
+        </ContainerInfoRental>
+      </ContainerDetail>
+      <ModalCompleteVisit
+        handleClose={() => setOpenCompleteVisit(false)}
+        handleRefresh={console.log}
+        isOpen={openCompleteVisit}
+      />
+    </>
   )
 }
 

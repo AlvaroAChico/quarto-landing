@@ -320,7 +320,7 @@ export const ContainerImageAvatar = styled.div`
     box-shadow:
       rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
       rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
-    background: ${palette.errorColor};
+    background: #eb8e88;
     place-items: center;
     position: absolute;
     border-radius: 20px;
@@ -362,8 +362,8 @@ export const ContainerDragAndDropAvatar = styled.div<{ isDragActive: boolean }>`
   }
 
   &:focus-within {
-    border-color: #f59e36; // Color del borde cuando está enfocado
-    box-shadow: 0 0 8px rgba(245, 158, 54, 0.5); // Sombra cuando está enfocado
+    border-color: rgb(122, 255, 110); // Color del borde cuando está enfocado
+    box-shadow: 0 0 8px rgba(122, 255, 110, 0.5); // Sombra cuando está enfocado
   }
 `
 

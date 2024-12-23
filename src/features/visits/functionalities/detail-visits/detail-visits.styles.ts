@@ -14,6 +14,15 @@ export const ContainerDetail = styled.div`
   }
 `
 
+export const OptionsDetailVisits = styled.div`
+  justify-content: right;
+  margin-bottom: 20px;
+  max-width: 1000px;
+  display: flex;
+  width: 100%;
+  gap: 20px;
+`
+
 export const GeneralInfoVisit = styled.div`
   background: white;
   border: 1px solid ${palette.inputBorderolor};

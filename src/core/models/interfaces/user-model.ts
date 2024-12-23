@@ -22,19 +22,25 @@ export interface MeDTO {
 
 export interface UserDTO {
   id: number
+  uuid: string
   firstName: string
   lastName: string
-  picture: string
-  image: string
+  email: string
+  photo: string
   contactNumber: string
+  documentPicture: string
   documentType: string
   documentNumber: string
-  email: string
+  entryDate: string
+  trainingDate: string
+  workZone: string
+  timeAvailability: string
+  notes: string
   status: string
   isActive: boolean
   createdAt: string
   username: string
-  role: RoleDTO[]
+  roles: RoleDTO[]
 }
 
 export interface RoleDTO {

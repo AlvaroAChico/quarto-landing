@@ -1,6 +1,7 @@
 import React from "react"
 import Cookies from "js-cookie"
 import { COOKIES_APP } from "../constants/app"
+import { UserDTO } from "../core/models/interfaces/user-model"
 
 const useDataUser = () => {
   const handleGetToken = (): string => {
@@ -9,6 +10,14 @@ const useDataUser = () => {
       return JSON.parse(storedToken)
     }
     return ""
+  }
+
+  const handleGetUser = (): UserDTO => {
+    const storedUser = Cookies.get(COOKIES_APP.USER_RES)
+    if (storedUser != null && storedUser != undefined) {
+      return JSON.parse(storedUser) as UserDTO
+    }
+    return {} as UserDTO
   }
 
   const clearAllDataAPP = () => {
@@ -28,6 +37,7 @@ const useDataUser = () => {
   }
 
   return {
+    handleGetUser,
     handleGetToken,
     clearAllDataAPP,
   }

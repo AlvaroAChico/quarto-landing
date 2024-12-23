@@ -177,6 +177,7 @@ const CreateReferral: React.FC = () => {
                 id="own_cedula"
                 placeholder="Introduce la respuesta"
                 register={register("own_cedula")}
+                type="number"
               />
               {!!(errors.own_cedula as any)?.message && (
                 <ErrorMessage>
@@ -191,6 +192,7 @@ const CreateReferral: React.FC = () => {
                 id="own_phone"
                 placeholder="Introduce la respuesta"
                 register={register("own_phone")}
+                type="number"
               />
               {!!(errors.own_phone as any)?.message && (
                 <ErrorMessage>

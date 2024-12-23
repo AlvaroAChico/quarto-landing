@@ -21,6 +21,8 @@ import Wallet from "../../features/wallet/wallet"
 import InfoProducts from "../../features/info-products/info-products"
 import NotFound from "../../features/not-found/not-found"
 import { settingsApp } from "../environment/settings"
+import Profile from "../../features/profile/profile"
+import MyCalendar from "../../features/my-calendar/my-calendar"
 
 export const router = createBrowserRouter(
   [
@@ -88,11 +90,11 @@ export const router = createBrowserRouter(
         },
         {
           path: pathRoutes.CALENDAR.to,
-          element: <div>CALENDAR</div>,
+          element: <MyCalendar />,
         },
         {
           path: pathRoutes.PROFILE.to,
-          element: <div>MI PERFIL</div>,
+          element: <Profile />,
         },
         {
           path: pathRoutes.CHATS.to,
