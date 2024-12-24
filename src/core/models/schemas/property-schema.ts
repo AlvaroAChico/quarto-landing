@@ -87,6 +87,7 @@ export const CreatePropStep03Schema = object({
     }),
   ),
 })
+
 export const CreatePropStep04Schema = object({
   parameters: array().of(
     object({
@@ -96,14 +97,31 @@ export const CreatePropStep04Schema = object({
   ),
 })
 
+export const CreatePropStep05Schema = object({
+  // video_link: string(),
+  img_property: mixed().required("Ingresa una imagen"),
+  img_cedula: mixed().required("Ingresa una imagen"),
+  img_rif: mixed().required("Ingresa una imagen"),
+  other_images: array().of(
+    mixed().test("is-valid-file", "File type is not allowed", file => {
+      if (file instanceof File) {
+        return fileTypeValidation(file)
+      }
+      return false
+    }),
+  ),
+})
+
 export type CreatePropStep01Form = InferType<typeof CreatePropStep01Schema>
 export type CreatePropStep02Form = InferType<typeof CreatePropStep02Schema>
 export type CreatePropStep03Form = InferType<typeof CreatePropStep03Schema>
 export type CreatePropStep04Form = InferType<typeof CreatePropStep04Schema>
+export type CreatePropStep05Form = InferType<typeof CreatePropStep05Schema>
 
 export const CreatePropertySchema = object().shape({
   ...CreatePropStep01Schema.fields,
   ...CreatePropStep02Schema.fields,
   ...CreatePropStep03Schema.fields,
   ...CreatePropStep04Schema.fields,
+  ...CreatePropStep05Schema.fields,
 })

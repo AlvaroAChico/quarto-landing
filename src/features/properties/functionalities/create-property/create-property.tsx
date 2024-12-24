@@ -12,6 +12,7 @@ import {
   ContainerSwitchTwo,
   ContainerThreeInputs,
   ContainerTwoInputs,
+  ContainerUpInputs,
   ContainerUploadFiles,
   ItemStepper,
   ResidentialFormStyles,
@@ -55,6 +56,8 @@ import {
   CreatePropStep03Schema,
   CreatePropStep04Form,
   CreatePropStep04Schema,
+  CreatePropStep05Form,
+  CreatePropStep05Schema,
 } from "../../../../core/models/schemas/property-schema"
 import Textarea from "../../../../components/textarea/textarea"
 import { setErrResponse } from "../../../../utils/erros-util"
@@ -81,6 +84,8 @@ import { OwnerDTO } from "../../../../core/models/interfaces/visits-model"
 import { planRepository } from "../../../../api/repositories/plan-repository"
 import { PlanDTO } from "../../../../core/models/interfaces/plan-model"
 import FileUpload from "../../../../components/file-upload/file-upload"
+import MultiFileUpload from "../../../../components/multi-file-upload/multi-file-upload"
+import MultipleFileUpload from "../../../../components/multi-file-upload/multi-file-upload"
 
 const CreateProperty: React.FC = () => {
   const [stepActive, setStepActive] = React.useState<number>(1)
@@ -150,6 +155,7 @@ const CreateProperty: React.FC = () => {
     register: registerStep01,
     setValue: setValueStep01,
     getValues: getValuesStep01,
+    reset: resetStep01,
   } = methodsStep01
 
   // ********** Step 02 **********
@@ -171,6 +177,7 @@ const CreateProperty: React.FC = () => {
     register: registerStep02,
     setValue: setValueStep02,
     getValues: getValuesStep02,
+    reset: resetStep02,
   } = methodsStep02
 
   // ********** Step 03 **********
@@ -188,6 +195,7 @@ const CreateProperty: React.FC = () => {
     register: registerStep03,
     setValue: setValueStep03,
     getValues: getValuesStep03,
+    reset: resetStep03,
   } = methodsStep03
 
   // ********** Step 04 **********
@@ -204,7 +212,28 @@ const CreateProperty: React.FC = () => {
     register: registerStep04,
     setValue: setValueStep04,
     getValues: getValuesStep04,
+    reset: resetStep04,
   } = methodsStep04
+
+  // ********** Step 05 **********
+  const methodsStep05 = useForm<CreatePropStep05Form>({
+    resolver: yupResolver(CreatePropStep05Schema),
+    defaultValues: {
+      img_property: "",
+      img_cedula: "",
+      img_rif: "",
+      other_images: [],
+    },
+  })
+
+  const {
+    handleSubmit: submitWrapperStep05,
+    formState: { errors: errorsStep05 },
+    register: registerStep05,
+    setValue: setValueStep05,
+    getValues: getValuesStep05,
+    reset: resetStep05,
+  } = methodsStep05
 
   const [seleOpRentDuration, setSeleOpRentDuration] = React.useState(null)
   const handleChangeOptionRentDuration = (value: any) => {
@@ -380,26 +409,6 @@ const CreateProperty: React.FC = () => {
     fetchDataAsync()
   }, [])
 
-  // const methods = useForm<CreatePropStep01Form>({
-  //   resolver: yupResolver(CreatePropStep01Schema),
-  //   defaultValues: {
-  //     category_id: "",
-  //     title: "",
-  //     description: "",
-  //     type_id: "1",
-  //     price: 0,
-  //     owner_id: "",
-  //   },
-  // })
-
-  // const {
-  //   handleSubmit: submitWrapperStep01,
-  //   formState: { errors: errorsStep01 },
-  //   register: registerStep01,
-  //   setValue: setValueStep01,
-  //   getValues: getValuesStep01,
-  // } = methods
-
   // Componente principal del formulario
 
   const [isSubmitUserCreate, setIsSubmitUserCreate] = React.useState(false)
@@ -429,7 +438,8 @@ const CreateProperty: React.FC = () => {
   const handleSubmit05 = React.useCallback(
     async (data: any) => {
       const finalData = { ...formSteps, ...data }
-      // Envía finalData a tu API
+      finalData.price = parseFloat(finalData.price).toFixed(2)
+
       console.log(finalData)
 
       if (isSubmitting) return
@@ -446,13 +456,13 @@ const CreateProperty: React.FC = () => {
             key != "parameters" &&
             key != "gallery_images"
           ) {
-            console.log("AAAAAAA => ", key)
-            console.log("BBBBBB => ", finalData[key])
+            // console.log("AAAAAAA => ", key)
+            // console.log("BBBBBB => ", finalData[key])
             formData.append(key, finalData[key])
           }
         }
 
-        console.log("Form Data result => ", JSON.stringify(formData))
+        // console.log("Form Data result => ", JSON.stringify(formData))
         listParams.forEach((param, index) => {
           if (
             param.value !== null &&
@@ -464,16 +474,9 @@ const CreateProperty: React.FC = () => {
           }
         })
 
-        listFiles.forEach((param, index) => {
-          console.log("Params listFiles => ", {
-            nameFile: param.name,
-          })
-          if (
-            param.name !== null &&
-            param.name !== undefined &&
-            param.name !== ""
-          ) {
-            formData.append(`gallery_images[${index}]`, `${param}`)
+        listFiles.forEach((file, index) => {
+          if (file && file instanceof File) {
+            formData.append(`gallery_images[${index}]`, file)
           }
         })
 
@@ -489,7 +492,23 @@ const CreateProperty: React.FC = () => {
           )) as CreateUserResponseDTO
         if (!!response) {
           toast.success(response.message)
-          // navigate(pathRoutes.PROPERTIES.LIST)
+          resetStep01()
+          resetStep02()
+          resetStep03()
+          resetStep04()
+          resetStep05()
+          setInfoPicture(null)
+          setInfoCedula(null)
+          setInfoRifOwner(null)
+          setInfoTitleProp(null)
+          setSeleOpCity(null)
+          setSeleOpCategory(null)
+          setSeleOpMunicipality(null)
+          setSeleOpOwner(null)
+          setSeleOpPlan(null)
+          setSeleOpRentDuration(null)
+          setSeleOpUrbanization(null)
+          navigate(pathRoutes.PROPERTY.to)
         }
       } finally {
         setIsSubmitUserCreate(false)
@@ -499,58 +518,13 @@ const CreateProperty: React.FC = () => {
     [formSteps],
   )
 
-  // Init Upload picture Title Image
   const [infoPicture, setInfoPicture] = React.useState<any>()
-  const handleDeletePictureUser = () => {
-    setValueStep03("title_image", "")
-    setInfoPicture("")
-  }
+  const [infoTitleProp, setInfoTitleProp] = React.useState<any>()
+  const [infoCedula, setInfoCedula] = React.useState<any>()
+  const [infoRifOwner, setInfoRifOwner] = React.useState<any>()
 
-  const onDrop = React.useCallback((acceptedFiles: any, rejectedFiles: any) => {
-    if (acceptedFiles.length > 0) {
-      if (acceptedFiles.length > 1) {
-        toast.error("Solo se permite un archivo.")
-        return
-      }
-      const file = acceptedFiles[0]
-      // setValue("picture", file)
-
-      const reader = new FileReader()
-
-      reader.onabort = () => toast.error("File reading was aborted")
-      reader.onerror = () => toast.error("File reading has failed")
-      reader.onload = () => {
-        const binaryStr = reader.result
-        if (binaryStr instanceof ArrayBuffer) {
-          const blob = new Blob([binaryStr], { type: file.type })
-          const imageUrl = URL.createObjectURL(blob)
-          setInfoPicture(imageUrl)
-        } else {
-          toast.error("Error al leer el archivo.")
-        }
-      }
-      reader.readAsArrayBuffer(file)
-    }
-
-    if (rejectedFiles.length > 0) {
-      toast.error(
-        'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
-      )
-    }
-  }, [])
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: {
-      "image/png": [".png"],
-      "image/jpeg": [".jpg", ".jpeg"],
-    },
-    maxFiles: 1,
-  })
-  // End Upload picture Title Image
-
-  // Init Upload picture Gallery image
   const [listFiles, setListFiles] = React.useState<File[]>([])
+  const [listOtherDocuments, setListOtherDocuments] = React.useState<File[]>([])
 
   const onDropGallery = React.useCallback(
     (acceptedFiles: any, rejectedFiles: any) => {
@@ -887,88 +861,27 @@ const CreateProperty: React.FC = () => {
                 keyValue="picture"
                 isActiveChange={true}
               />
-              {/* <CustomWrapperInputAvatar>
-                <label htmlFor="picture-create-project">
-                  Imagen del titulo
-                </label>
-                <div>
-                  {!!infoPicture ? (
-                    <ContainerImageAvatar>
-                      <img src={infoPicture} />
-                      <div onClick={handleDeletePictureUser}>
-                        <Trash />
-                      </div>
-                    </ContainerImageAvatar>
-                  ) : (
-                    <ContainerDragAndDropAvatar
-                      {...getRootProps()}
-                      isDragActive={isDragActive}
-                    >
-                      <CardImage />
-                      <input {...getInputProps()} />
-                      {isDragActive ? (
-                        <p>Suelta la imagen aquí</p>
-                      ) : (
-                        <p>Arrastra o haz clic para cargar una imagen</p>
-                      )}
-                    </ContainerDragAndDropAvatar>
-                  )}
-                </div>*/}
               {!!(errorsStep03.title_image as any)?.message && (
                 <ErrorMessage>
                   {(errorsStep03.title_image as any)?.message}
                 </ErrorMessage>
               )}
-              {/* </CustomWrapperInputAvatar>  */}
-              {/* <CustomWrapperInputAvatar>
-                <label htmlFor="picture-create-project">Imagen 3D</label>
-                <div>
-                  {!!infoPicture3D ? (
-                    <ContainerImageAvatar>
-                      <img src={infoPicture3D} />
-                      <div onClick={handleDeletePictureUser3D}>
-                        <Trash />
-                      </div>
-                    </ContainerImageAvatar>
-                  ) : (
-                    <ContainerDragAndDropAvatar
-                      {...getRootProps3D()}
-                      isDragActive={isDragActive3D}
-                    >
-                      <CardImage />
-                      <input {...getInputProps3D()} />
-                      {isDragActive3D ? (
-                        <p>Suelta la imagen aquí</p>
-                      ) : (
-                        <p>Arrastra o haz clic para cargar una imagen</p>
-                      )}
-                    </ContainerDragAndDropAvatar>
-                  )}
-                </div> */}
-              {/* <FileUpload
-                title={"Imagen 3D"}
-                imageUrl={infoPicture3D}
-                setImageUrl={url => setInfoPicture3D(url)}
-                setValueBinary={setValueStep03}
-                keyValue="picture"
-              />
-              {!!(errorsStep03.title_image as any)?.message && (
-                <ErrorMessage>
-                  {(errorsStep03.title_image as any)?.message}
-                </ErrorMessage>
-              )} */}
-              {/* </CustomWrapperInputAvatar> */}
             </ContainerTwoInputs>
             <ContainerUploadFiles>
-              <CustomWrapperInputFiles>
+              <MultipleFileUpload
+                title={"Galería de Imágenes"}
+                files={listFiles}
+                setFiles={setListFiles}
+              />
+              {/* <CustomWrapperInputFiles>
                 <label htmlFor="picture-create-project">Files</label>
                 <ContainerDragAndDropFiles
                   {...getRootPropsGallery()}
-                  isDragActive={isDragActive}
+                  isDragActive={isDragActiveGallery}
                 >
                   <Files />
-                  <input {...getInputProps()} />
-                  {isDragActive ? (
+                  <input {...getInputPropsGallery()} />
+                  {isDragActiveGallery ? (
                     <p>Drop picture here</p>
                   ) : (
                     <p>Drag or click this container to upload an image</p>
@@ -988,7 +901,7 @@ const CreateProperty: React.FC = () => {
                       />
                     ))}
                 </ContainerListFiles>
-              </CustomWrapperInputFiles>
+              </CustomWrapperInputFiles> */}
             </ContainerUploadFiles>
           </ResidentialFormStyles>
         )}
@@ -1040,7 +953,69 @@ const CreateProperty: React.FC = () => {
             </ResidentialFormStyles>
           </>
         )}
-        {stepActive == 5 && <>aaa</>}
+        {stepActive == 5 && (
+          <ResidentialFormStyles>
+            <ContainerThreeInputs>
+              <div>
+                <FileUpload
+                  title={"Titulo de propiedad"}
+                  imageUrl={infoTitleProp}
+                  setImageUrl={url => setInfoTitleProp(url)}
+                  setValueBinary={setValueStep05}
+                  keyValue="picture"
+                  isActiveChange={true}
+                />
+                {!!(errorsStep03.title_image as any)?.message && (
+                  <ErrorMessage>
+                    {(errorsStep03.title_image as any)?.message}
+                  </ErrorMessage>
+                )}
+              </div>
+              <div>
+                <FileUpload
+                  title={"Cédula"}
+                  imageUrl={infoCedula}
+                  setImageUrl={url => setInfoCedula(url)}
+                  setValueBinary={setValueStep05}
+                  keyValue="picture"
+                  isActiveChange={true}
+                />
+                {!!(errorsStep03.title_image as any)?.message && (
+                  <ErrorMessage>
+                    {(errorsStep03.title_image as any)?.message}
+                  </ErrorMessage>
+                )}
+              </div>
+              <div>
+                <FileUpload
+                  title={"Rif del Propietario"}
+                  imageUrl={infoRifOwner}
+                  setImageUrl={url => setInfoRifOwner(url)}
+                  setValueBinary={setValueStep05}
+                  keyValue="picture"
+                  isActiveChange={true}
+                />
+                {!!(errorsStep03.title_image as any)?.message && (
+                  <ErrorMessage>
+                    {(errorsStep03.title_image as any)?.message}
+                  </ErrorMessage>
+                )}
+              </div>
+            </ContainerThreeInputs>
+            <ContainerOneInputs>
+              <MultipleFileUpload
+                title={"Otros documentos"}
+                files={listOtherDocuments}
+                setFiles={setListOtherDocuments}
+              />
+              {!!(errorsStep05.other_images as any)?.message && (
+                <ErrorMessage>
+                  {(errorsStep05.other_images as any)?.message}
+                </ErrorMessage>
+              )}
+            </ContainerOneInputs>
+          </ResidentialFormStyles>
+        )}
         <ContainerButton>
           {/* <button onClick={submitWrapper(handleSubmit)()}>aaa</button> */}
           <Button
