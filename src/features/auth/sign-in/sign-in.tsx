@@ -37,7 +37,6 @@ import { updateActionTitleApp } from "../../../core/store/app-store/appSlice"
 import useDataUser from "../../../utils/use-data-user"
 import { pathRoutes } from "../../../config/routes/paths"
 import { authRepository } from "../../../api/repositories/auth-repository"
-import BgIMG from "../../../assets/img/bg_geometry.svg"
 import LogoWhiteIMG from "../../../assets/img/logo_white.svg"
 
 const SignIn: React.FC = () => {
@@ -90,7 +89,7 @@ const SignIn: React.FC = () => {
 
   return (
     <ContainerSignIn>
-      <ContainerBg bg={BgIMG}>
+      <ContainerBg>
         <FormContainer>
           <ContainerLogo>
             <img src={LogoWhiteIMG} />

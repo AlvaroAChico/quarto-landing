@@ -31,9 +31,12 @@ import Table from "../../components/table/table"
 import { ArrowIosDownward } from "styled-icons/evaicons-solid"
 import { rentalRepository } from "../../api/repositories/rental-repository"
 import RentalsJSON from "../../config/mocks/features/rentals/rentals-list.json"
+import Pagination from "../../components/table/pagination/pagination"
 
 const Rentals: React.FC = () => {
   const [listRentals, setListRentals] = React.useState<RentalDTO[]>([])
+  const [currentPage, setCurrentPage] = React.useState<number>(1)
+  const [totalPages, setTotalPages] = React.useState<number>(1)
   // Filter ID
   const [optionsId, setOptionsId] = React.useState<any>([])
   const [selectedOptionId, setSelectedOptionId] = React.useState<any>(null)
@@ -74,14 +77,16 @@ const Rentals: React.FC = () => {
     try {
       setIsLoadingListRentals(true)
       const response: RentalDTO[] =
-        (await rentalRepository.getAll()) as RentalDTO[]
+        (await rentalRepository.getAll({
+          page: currentPage,
+        })) as RentalDTO[]
       if (!!response) {
         setListRentals(response)
       }
     } finally {
       setIsLoadingListRentals(false)
     }
-  }, [])
+  }, [currentPage])
 
   return (
     <ContainerRentals>
@@ -222,6 +227,11 @@ const Rentals: React.FC = () => {
               ))}
             </Table.Body>
           </Table>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </ContainerListRentals>
       </ContentStylesSection>
     </ContainerRentals>

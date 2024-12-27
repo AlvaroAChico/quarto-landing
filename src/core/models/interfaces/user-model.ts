@@ -17,6 +17,7 @@ export interface MeDTO {
   isActive: boolean
   createdAt: string
   username: string
+  message: string
   roles: string[]
 }
 

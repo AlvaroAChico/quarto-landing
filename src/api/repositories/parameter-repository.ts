@@ -6,15 +6,19 @@ export const parameterRepository = {
     return await apiService.get<any>(`/parameters`)
   },
 
+  getState: async (): Promise<any> => {
+    return await apiService.get<any>(`/states`)
+  },
+
+  getCity: async (): Promise<any> => {
+    return await apiService.get<any>(`/cities`)
+  },
+
   getMuni: async (): Promise<any> => {
     return await apiService.get<any>(`/municipalities`)
   },
 
   getNei: async (): Promise<any> => {
     return await apiService.get<any>(`/neighborhoods`)
-  },
-
-  getState: async (): Promise<any> => {
-    return await apiService.get<any>(`/states`)
   },
 }

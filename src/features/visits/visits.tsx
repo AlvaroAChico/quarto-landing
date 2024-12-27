@@ -34,9 +34,16 @@ import { pathRoutes } from "../../config/routes/paths"
 import { ArrowIosDownward } from "@styled-icons/evaicons-solid/ArrowIosDownward"
 import { visitRepository } from "../../api/repositories/visit-repository"
 import VisitsJSON from "../../config/mocks/features/visits/visits-list.json"
+import Pagination from "../../components/table/pagination/pagination"
+import {
+  IPaginatedRes,
+  IRequestPaginated,
+} from "../../core/models/interfaces/general-model"
 
 const Visits: React.FC = () => {
   const [listVisits, setListVisits] = React.useState<VisitDTO[]>([])
+  const [currentPage, setCurrentPage] = React.useState<number>(1)
+  const [totalPages, setTotalPages] = React.useState<number>(1)
   // Filter ID
   const [optionsId, setOptionsId] = React.useState<any>([])
   const [selectedOptionId, setSelectedOptionId] = React.useState<any>(null)
@@ -73,15 +80,17 @@ const Visits: React.FC = () => {
   const fetchDataProperties = React.useCallback(async () => {
     try {
       setIsLoadingListVisits(true)
-      const response: VisitDTO[] =
-        (await visitRepository.getAll()) as VisitDTO[]
+      const response: IPaginatedRes<VisitDTO> = (await visitRepository.getAll({
+        page: currentPage,
+      })) as IPaginatedRes<VisitDTO>
       if (!!response) {
-        setListVisits(response)
+        setTotalPages(response.total)
+        setListVisits(response.data || [])
       }
     } finally {
       setIsLoadingListVisits(false)
     }
-  }, [])
+  }, [currentPage])
 
   const handleNavigateView = (id: string) => () =>
     navigate(routeWithReplaceId(pathRoutes.VISITS.otherPaths.VIEW.to, id))
@@ -195,7 +204,7 @@ const Visits: React.FC = () => {
               </tr>
             </Table.Header>
             <Table.Body>
-              {(listVisits.length > 0 ? listVisits : VisitsJSON).map(vis => (
+              {listVisits.map(vis => (
                 <Table.Row
                   key={vis.id}
                   onDoubleClick={handleNavigateView(vis.id.toString())}
@@ -227,6 +236,11 @@ const Visits: React.FC = () => {
               ))}
             </Table.Body>
           </Table>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </ContainerListVisits>
       </ContentStylesSection>
     </ContainerVisits>

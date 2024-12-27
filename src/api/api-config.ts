@@ -3,6 +3,7 @@ import Cookies from "js-cookie"
 import { COOKIES_APP } from "../constants/app"
 import { settingsApp } from "../config/environment/settings"
 import { setErrResponse } from "../utils/erros-util"
+import { pathRoutes } from "../config/routes/paths"
 
 const axiosInstance = axios.create({
   baseURL: settingsApp.api.base,
@@ -43,6 +44,9 @@ axiosInstance.interceptors.response.use(
   response => response,
   error => {
     setErrResponse(error)
+    if (error.response.status == 401) {
+      // window.location.href = `${settingsApp.app.local}${pathRoutes.SIGN_IN.to}`
+    }
     return Promise.reject(error)
   },
 )

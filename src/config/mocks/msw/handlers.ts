@@ -17,11 +17,14 @@ export const handlers = [
   http.post(`${settingsApp.api.base}/auth/login`, async ({ request }) => {
     return HttpResponse.json(SignInJSON)
   }),
-  // http.get(`${settingsApp.api.base}/auth/me`, async ({ request }) => {
-  //   return HttpResponse.json(meJSON)
-  // }),
+  http.get(`${settingsApp.api.base}/auth/me`, async ({ request }) => {
+    return HttpResponse.json(meJSON)
+  }),
   // ******************** VISITS ********************
   http.get(`${settingsApp.api.base}/visits`, () => {
+    return HttpResponse.json(VisitsListJSON)
+  }),
+  http.get(`${settingsApp.api.base}/visits&page=1 `, () => {
     return HttpResponse.json(VisitsListJSON)
   }),
   http.get(`${settingsApp.api.base}/visits/1`, () => {

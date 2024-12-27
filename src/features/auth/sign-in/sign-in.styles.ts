@@ -1,15 +1,15 @@
 import styled from "styled-components"
-import { breakpoints } from "../../../constants/breakpoints"
 import { palette } from "../../../config/theme/theme"
 import { NavLink } from "react-router-dom"
 import { WrapperInput } from "../../../config/theme/global-styles"
+import BgIMG from "../../../assets/img/bg_geometry.svg"
 
 export const ContainerSignIn = styled.div`
   height: 100vh;
   width: 100vw;
 `
-export const ContainerBg = styled.div<{ bg: string }>`
-  background-image: url(${props => props.bg});
+export const ContainerBg = styled.div`
+  background-image: url(${BgIMG});
   background-position: center;
   background-repeat: no-repeat;
   justify-content: center;

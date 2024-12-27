@@ -77,7 +77,9 @@ import { ETypeParam, listSteppersProperty } from "../../../../constants/app"
 import { propertyRepository } from "../../../../api/repositories/property-repository"
 import ModalAddOwner from "../../../../components/modal/variants/modal-add-owner/modal-add-owner"
 import {
+  CityDTO,
   MunicipalityDTO,
+  StateDTO,
   UrbanizationDTO,
 } from "../../../../core/models/interfaces/city-model"
 import { OwnerDTO } from "../../../../core/models/interfaces/visits-model"
@@ -162,9 +164,9 @@ const CreateProperty: React.FC = () => {
   const methodsStep02 = useForm<CreatePropStep02Form>({
     resolver: yupResolver(CreatePropStep02Schema),
     defaultValues: {
+      state: "",
       city: "",
       municipality: "",
-      urbanization: "",
       full_address: "",
       plan_id: "",
       rent_duration: "",
@@ -240,7 +242,23 @@ const CreateProperty: React.FC = () => {
     setValueStep02("rent_duration", value.value)
     setSeleOpRentDuration(value)
   }
+  // State
+  const [optionsState, setOptionsState] = React.useState<any>([])
+  const [seleOpState, setSeleOpState] = React.useState(null)
+  const handleChangeOptionState = (value: any) => {
+    setValueStep02("state", value.value)
+    setSeleOpState(value)
+    setOptionsCity(
+      allCity
+        .filter(ft => ft.stateId == value.value)
+        .map(it => ({
+          value: it.id,
+          label: it.name,
+        })),
+    )
+  }
   // City
+  const [allCity, setAllCity] = React.useState<CityDTO[]>([])
   const [optionsCity, setOptionsCity] = React.useState<any>([])
   const [seleOpCity, setSeleOpCity] = React.useState(null)
   const handleChangeOptionCity = (value: any) => {
@@ -264,28 +282,7 @@ const CreateProperty: React.FC = () => {
   const handleChangeOptionMunicipality = (value: any) => {
     setValueStep02("municipality", value.value)
     setSeleOpMunicipality(value)
-    setOptionsUrbanization(
-      allUrbanization
-        .filter(ft => ft.municipalityId == value.value)
-        .map(it => ({
-          value: it.id,
-          label: it.name,
-        })),
-    )
   }
-  // Urbanization
-  const [allUrbanization, setAllUrbanization] = React.useState<
-    UrbanizationDTO[]
-  >([])
-  const [optionsUrbanization, setOptionsUrbanization] = React.useState<any>([])
-  const [seleOpUrbanization, setSeleOpUrbanization] = React.useState(null)
-  const handleChangeOptionUrbanization = (value: any) => {
-    setValueStep02("urbanization", value.value)
-    setSeleOpUrbanization(value)
-  }
-  // // Category
-  // const [optionsCategory, setOptionsCategory] = React.useState<any>([])
-  // const [seleOpCategory, setSeleOpCategory] = React.useState(null)
   // Type Property
   const [typeProperty, setTypeProperty] = React.useState<any>(1)
   const [listParams, setListParams] = React.useState<ParameterDTO[]>([])
@@ -359,13 +356,25 @@ const CreateProperty: React.FC = () => {
 
   const fetchDataStates = async () => {
     try {
-      const response: any[] = (await parameterRepository.getState()) as any[]
+      const response: StateDTO[] =
+        (await parameterRepository.getState()) as StateDTO[]
       if (!!response) {
         const listData = (response || []).map(it => ({
           value: it.id,
           label: it.name,
         }))
-        setOptionsCity(listData)
+        setOptionsState(listData)
+      }
+    } finally {
+    }
+  }
+
+  const fetchDataCities = async () => {
+    try {
+      const response: CityDTO[] =
+        (await parameterRepository.getCity()) as CityDTO[]
+      if (!!response) {
+        setAllCity(response)
       }
     } finally {
     }
@@ -382,17 +391,6 @@ const CreateProperty: React.FC = () => {
     }
   }
 
-  const fetchDataNeighborhoods = async () => {
-    try {
-      const response: UrbanizationDTO[] =
-        (await parameterRepository.getNei()) as UrbanizationDTO[]
-      if (!!response) {
-        setAllUrbanization(response)
-      }
-    } finally {
-    }
-  }
-
   React.useEffect(() => {
     const fetchDataAsync = async () => {
       await Promise.all([
@@ -401,8 +399,9 @@ const CreateProperty: React.FC = () => {
         fetchDataOwners(),
         fetchDataParameters(),
         fetchDataStates(),
+        fetchDataCities(),
         fetchDataMunicipalities(),
-        fetchDataNeighborhoods(),
+        // fetchDataNeighborhoods(),
       ])
     }
 
@@ -501,13 +500,13 @@ const CreateProperty: React.FC = () => {
           setInfoCedula(null)
           setInfoRifOwner(null)
           setInfoTitleProp(null)
+          setSeleOpState(null)
           setSeleOpCity(null)
-          setSeleOpCategory(null)
           setSeleOpMunicipality(null)
+          setSeleOpCategory(null)
           setSeleOpOwner(null)
           setSeleOpPlan(null)
           setSeleOpRentDuration(null)
-          setSeleOpUrbanization(null)
           navigate(pathRoutes.PROPERTY.to)
         }
       } finally {
@@ -526,70 +525,13 @@ const CreateProperty: React.FC = () => {
   const [listFiles, setListFiles] = React.useState<File[]>([])
   const [listOtherDocuments, setListOtherDocuments] = React.useState<File[]>([])
 
-  const onDropGallery = React.useCallback(
-    (acceptedFiles: any, rejectedFiles: any) => {
-      if (acceptedFiles.length > 0) {
-        const updatedFiles = [...listFiles]
-        acceptedFiles.forEach((file: any) => {
-          // if (updatedFiles.length >= 5) {
-          //   toast.error("Se permite un máximo de 5 archivos.")
-          //   return
-          // }
-          updatedFiles.push(file)
-
-          const reader = new FileReader()
-
-          reader.onabort = () => toast.error("File reading was aborted")
-          reader.onerror = () => toast.error("File reading has failed")
-          reader.onload = () => {
-            const binaryStr = reader.result
-            if (binaryStr instanceof ArrayBuffer) {
-              const blob = new Blob([binaryStr], { type: file.type })
-              const imageUrl = URL.createObjectURL(blob)
-              // Aquí puedes hacer algo con imageUrl, como agregarlo a un estado de URLs
-            } else {
-              toast.error("Error al leer el archivo.")
-            }
-          }
-          reader.readAsArrayBuffer(file)
-        })
-
-        setValueStep03("gallery_images", updatedFiles)
-        setListFiles(updatedFiles)
-      }
-
-      if (rejectedFiles.length > 0) {
-        toast.error(
-          'Solo se permite un archivo y debe ser de tipo "PNG", "JPG" o "JPEG".',
-        )
-      }
-    },
-    [listFiles],
-  )
-
-  const {
-    getRootProps: getRootPropsGallery,
-    getInputProps: getInputPropsGallery,
-    isDragActive: isDragActiveGallery,
-  } = useDropzone({
-    onDrop: onDropGallery,
-    accept: {
-      "image/png": [".png"],
-      "image/jpeg": [".jpg", ".jpeg"],
-    },
-  })
-
-  const handleDeleteOneFile = React.useCallback(
-    (fileToDelete: File) => {
-      const newList = listFiles.filter(file => file !== fileToDelete)
-      setListFiles(newList)
-    },
-    [listFiles],
-  )
-
   React.useEffect(() => {
     setValueStep03("gallery_images", listFiles)
   }, [listFiles])
+
+  React.useEffect(() => {
+    setValueStep05("other_images", listOtherDocuments)
+  }, [listOtherDocuments])
 
   const handleChangeTypeProperty = (typeProperty: number) => () => {
     setValueStep01("type_id", `${typeProperty}`)
@@ -746,6 +688,22 @@ const CreateProperty: React.FC = () => {
           <ResidentialFormStyles>
             <ContainerThreeInputs>
               <WrapperInput>
+                <label htmlFor="state-create-project">Estado</label>
+                <Select
+                  id="state-create-project"
+                  defaultValue={seleOpState}
+                  onChange={handleChangeOptionState}
+                  options={optionsState}
+                  isSearchable={true}
+                  styles={selectStyles}
+                />
+                {!!(errorsStep02.state as any)?.message && (
+                  <ErrorMessage>
+                    {(errorsStep02.state as any)?.message}
+                  </ErrorMessage>
+                )}
+              </WrapperInput>
+              <WrapperInput>
                 <label htmlFor="city-create-project">Ciudad</label>
                 <Select
                   id="city-create-project"
@@ -776,24 +734,6 @@ const CreateProperty: React.FC = () => {
                 {!!(errorsStep02.municipality as any)?.message && (
                   <ErrorMessage>
                     {(errorsStep02.municipality as any)?.message}
-                  </ErrorMessage>
-                )}
-              </WrapperInput>
-              <WrapperInput>
-                <label htmlFor="urbanization-create-project">
-                  Urbanización
-                </label>
-                <Select
-                  id="urbanization-create-project"
-                  defaultValue={seleOpUrbanization}
-                  onChange={handleChangeOptionUrbanization}
-                  options={optionsUrbanization}
-                  isSearchable={true}
-                  styles={selectStyles}
-                />
-                {!!(errorsStep02.urbanization as any)?.message && (
-                  <ErrorMessage>
-                    {(errorsStep02.urbanization as any)?.message}
                   </ErrorMessage>
                 )}
               </WrapperInput>

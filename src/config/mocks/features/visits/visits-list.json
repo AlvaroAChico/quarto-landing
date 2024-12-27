@@ -1,482 +1,512 @@
-[
-  {
-    "id": 1,
-    "image": "https://nexoinmobiliario.pe/blog/wp-content/uploads/2022/06/destacada-identificar-departamentos-modernos-nexo-inmobiliario.jpg",
-    "address": "Av. Bolívar, Caracas, Venezuela",
-    "date": "2023-10-01",
-    "category": "apartamento",
-    "status": "realizada"
-  },
-  {
-    "id": 2,
-    "image": "https://media.admagazine.com/photos/6467b71e70d3fa4f8a2aa26c/16:9/w_2560%2Cc_limit/FedeC-LowRes7463.jpg",
-    "address": "Calle 23, Maracaibo, Venezuela",
-    "date": "2023-09-15",
-    "category": "casa",
-    "status": "Cancelada"
-  },
-  {
-    "id": 3,
-    "image": "https://1557540.fs1.hubspotusercontent-na1.net/hubfs/1557540/Harmonia%20Elevated%20Apartments/Depa%20Harmonia%20Web%201-1.jpg",
-    "address": "Av. Urdaneta, Valencia, Venezuela",
-    "date": "2023-09-20",
-    "category": "comercial",
-    "status": "rechazada"
-  },
-  {
-    "id": 4,
-    "image": "https://theressa.net/images/projects/5d7eda980fc46-f1a.jpg",
-    "address": "Calle La Paz, Caracas, Venezuela",
-    "date": "2023-10-05",
-    "category": "anexo",
-    "status": "realizada"
-  },
-  {
-    "id": 5,
-    "image": "https://i0.wp.com/ventasprimeras.com/wp-content/uploads/2021/01/VENTA-DEPA-ESTRENO-SAN-ISIDRO-A1-TERRAZA-COUNTRY-CLUB-EXCLUSIVO-15A.jpg?fit=1000%2C565&ssl=1",
-    "address": "Calle Los Jardines, Barquisimeto, Venezuela",
-    "date": "2023-09-10",
-    "category": "habitación",
-    "status": "Cancelada"
-  },
-  {
-    "id": 6,
-    "image": "https://grupolar.com.mx/wp-content/uploads/2022/09/donde-comprar-departamento-para-inversion-interior-2-1.jpg",
-    "address": "Calle Santa Rosa, Valencia, Venezuela",
-    "date": "2023-09-25",
-    "category": "apartamento",
-    "status": "rechazada"
-  },
-  {
-    "id": 7,
-    "image": "https://taleinmobiliaria.com/wp-content/uploads/2023/04/decoracion-departamento-vista-panoramica.jpg",
-    "address": "Calle Sucre, Maracay, Venezuela",
-    "date": "2023-10-02",
-    "category": "casa",
-    "status": "realizada"
-  },
-  {
-    "id": 8,
-    "image": "https://gestion.pe/resizer/vIP7RBJCN_73whSFDqTBMEA0lH8=/620x0/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/5VDFRLTLBJCSNAXQMFZBRF3LSI.jpg",
-    "address": "Av. Los Próceres, Caracas, Venezuela",
-    "date": "2023-10-03",
-    "category": "comercial",
-    "status": "aceptada"
-  },
-  {
-    "id": 9,
-    "image": "https://lajoya.ec/wp-content/uploads/2015/02/LJ-CONDOMINIO-2-SALA-COMEDOR-1108x960.png",
-    "address": "Calle Carabobo, Ciudad Bolívar, Venezuela",
-    "date": "2023-10-04",
-    "category": "anexo",
-    "status": "Cancelada"
-  },
-  {
-    "id": 10,
-    "image": "https://edifica.com.pe/blog/wp-content/uploads/diferencias-loft-departamento-espacio.jpg",
-    "address": "Calle 30, Lechería, Venezuela",
-    "date": "2023-10-01",
-    "category": "habitación",
-    "status": "realizada"
-  },
-  {
-    "id": 11,
-    "image": "https://images.homify.com/v1512601972/p/photo/image/2350734/DSC_0453-Editar-Editar.jpg",
-    "address": "Calle San Juan, Maracay, Venezuela",
-    "date": "2023-09-28",
-    "category": "apartamento",
-    "status": "aceptada"
-  },
-  {
-    "id": 12,
-    "image": "https://static1.sosiva451.com/73676031/3cb5fb70-834c-475e-847a-61cca583143d_u_medium.jpg",
-    "address": "Av. Las Américas, San Cristóbal, Venezuela",
-    "date": "2023-09-30",
-    "category": "casa",
-    "status": "rechazada"
-  },
-  {
-    "id": 13,
-    "image": "https://images.homify.com/v1500852451/p/photo/image/2139867/Metropolitan-Center-Monterrey-Sierra-Madre-Arquitectura-Departamento-Enrique-Serrano-Fotografia.jpg",
-    "address": "Calle La Florida, Maturín, Venezuela",
-    "date": "2023-09-22",
-    "category": "comercial",
-    "status": "realizada"
-  },
-  {
-    "id": 14,
-    "image": "https://info.inmobilia.mx/hubfs/Inmobilia/humana-tulum/landing-page-feb19/renders/Humana-Departamentos-De-Lujo-Tulum-5.jpg",
-    "address": "Calle El Comercio, Caracas, Venezuela",
-    "date": "2023-09-16",
-    "category": "anexo",
-    "status": "aceptada"
-  },
-  {
-    "id": 15,
-    "image": "https://www.construyehogar.com/wp-content/uploads/2014/06/Dise%C3%B1o-de-sala-de-lujo-de-apartamento.jpg",
-    "address": "Calle 5 de Julio, Puerto La Cruz, Venezuela",
-    "date": "2023-09-18",
-    "category": "habitación",
-    "status": "rechazada"
-  },
-  {
-    "id": 16,
-    "image": "https://nexoinmobiliario.pe/blog/wp-content/uploads/2022/06/destacada-identificar-departamentos-modernos-nexo-inmobiliario.jpg",
-    "address": "Calle 1, Cabimas, Venezuela",
-    "date": "2023-10-01",
-    "category": "apartamento",
-    "status": "realizada"
-  },
-  {
-    "id": 17,
-    "image": "https://media.admagazine.com/photos/6467b71e70d3fa4f8a2aa26c/16:9/w_2560%2Cc_limit/FedeC-LowRes7463.jpg",
-    "address": "Calle Independencia, Mérida, Venezuela",
-    "date": "2023-09-14",
-    "category": "casa",
-    "status": "aceptada"
-  },
-  {
-    "id": 18,
-    "image": "https://1557540.fs1.hubspotusercontent-na1.net/hubfs/1557540/Harmonia%20Elevated%20Apartments/Depa%20Harmonia%20Web%201-1.jpg",
-    "address": "Calle Libertador, Valencia, Venezuela",
-    "date": "2023-09-20",
-    "category": "comercial",
-    "status": "rechazada"
-  },
-  {
-    "id": 19,
-    "image": "https://theressa.net/images/projects/5d7eda980fc46-f1a.jpg",
-    "address": "Calle 21, Caracas, Venezuela",
-    "date": "2023-10-05",
-    "category": "anexo",
-    "status": "realizada"
-  },
-  {
-    "id": 20,
-    "image": "https://i0.wp.com/ventasprimeras.com/wp-content/uploads/2021/01/VENTA-DEPA-ESTRENO-SAN-ISIDRO-A1-TERRAZA-COUNTRY-CLUB-EXCLUSIVO-15A.jpg?fit=1000%2C565&ssl=1",
-    "address": "Calle Las Delicias, Barquisimeto, Venezuela",
-    "date": "2023-09-10",
-    "category": "habitación",
-    "status": "aceptada"
-  },
-  {
-    "id": 21,
-    "image": "https://grupolar.com.mx/wp-content/uploads/2022/09/donde-comprar-departamento-para-inversion-interior-2-1.jpg",
-    "address": "Calle Zulia, Maracay, Venezuela",
-    "date": "2023-09-25",
-    "category": "apartamento",
-    "status": "rechazada"
-  },
-  {
-    "id": 22,
-    "image": "https://taleinmobiliaria.com/wp-content/uploads/2023/04/decoracion-departamento-vista-panoramica.jpg",
-    "address": "Calle La Concordia, Mérida, Venezuela",
-    "date": "2023-10-02",
-    "category": "casa",
-    "status": "realizada"
-  },
-  {
-    "id": 23,
-    "image": "https://gestion.pe/resizer/vIP7RBJCN_73whSFDqTBMEA0lH8=/620x0/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/5VDFRLTLBJCSNAXQMFZBRF3LSI.jpg",
-    "address": "Av. Los Abogados, Caracas, Venezuela",
-    "date": "2023-10-03",
-    "category": "comercial",
-    "status": "aceptada"
-  },
-  {
-    "id": 24,
-    "image": "https://lajoya.ec/wp-content/uploads/2015/02/LJ-CONDOMINIO-2-SALA-COMEDOR-1108x960.png",
-    "address": "Calle El Carmen, Maracaibo, Venezuela",
-    "date": "2023-10-04",
-    "category": "anexo",
-    "status": "rechazada"
-  },
-  {
-    "id": 25,
-    "image": "https://edifica.com.pe/blog/wp-content/uploads/diferencias-loft-departamento-espacio.jpg",
-    "address": "Calle del Progreso, Valencia, Venezuela",
-    "date": "2023-10-01",
-    "category": "habitación",
-    "status": "realizada"
-  },
-  {
-    "id": 26,
-    "image": "https://images.homify.com/v1512601972/p/photo/image/2350734/DSC_0453-Editar-Editar.jpg",
-    "address": "Calle de Los Cerezos, Lechería, Venezuela",
-    "date": "2023-09-28",
-    "category": "apartamento",
-    "status": "aceptada"
-  },
-  {
-    "id": 27,
-    "image": "https://static1.sosiva451.com/73676031/3cb5fb70-834c-475e-847a-61cca583143d_u_medium.jpg",
-    "address": "Av. Bolívar, Mérida, Venezuela",
-    "date": "2023-09-30",
-    "category": "casa",
-    "status": "rechazada"
-  },
-  {
-    "id": 28,
-    "image": "https://images.homify.com/v1500852451/p/photo/image/2139867/Metropolitan-Center-Monterrey-Sierra-Madre-Arquitectura-Departamento-Enrique-Serrano-Fotografia.jpg",
-    "address": "Calle La Paz, Barquisimeto, Venezuela",
-    "date": "2023-09-22",
-    "category": "comercial",
-    "status": "realizada"
-  },
-  {
-    "id": 29,
-    "image": "https://info.inmobilia.mx/hubfs/Inmobilia/humana-tulum/landing-page-feb19/renders/Humana-Departamentos-De-Lujo-Tulum-5.jpg",
-    "address": "Calle San Martín, Caracas, Venezuela",
-    "date": "2023-09-16",
-    "category": "anexo",
-    "status": "aceptada"
-  },
-  {
-    "id": 30,
-    "image": "https://www.construyehogar.com/wp-content/uploads/2014/06/Dise%C3%B1o-de-sala-de-lujo-de-apartamento.jpg",
-    "address": "Calle 10 de diciembre, Puerto La Cruz, Venezuela",
-    "date": "2023-09-18",
-    "category": "habitación",
-    "status": "rechazada"
-  },
-  {
-    "id": 31,
-    "image": "https://nexoinmobiliario.pe/blog/wp-content/uploads/2022/06/destacada-identificar-departamentos-modernos-nexo-inmobiliario.jpg",
-    "address": "Calle 4, Cabimas, Venezuela",
-    "date": "2023-10-01",
-    "category": "apartamento",
-    "status": "realizada"
-  },
-  {
-    "id": 32,
-    "image": "https://media.admagazine.com/photos/6467b71e70d3fa4f8a2aa26c/16:9/w_2560%2Cc_limit/FedeC-LowRes7463.jpg",
-    "address": "Calle José Antonio, Mérida, Venezuela",
-    "date": "2023-09-14",
-    "category": "casa",
-    "status": "aceptada"
-  },
-  {
-    "id": 33,
-    "image": "https://1557540.fs1.hubspotusercontent-na1.net/hubfs/1557540/Harmonia%20Elevated%20Apartments/Depa%20Harmonia%20Web%201-1.jpg",
-    "address": "Av. 19 de Abril, Valencia, Venezuela",
-    "date": "2023-09-20",
-    "category": "comercial",
-    "status": "rechazada"
-  },
-  {
-    "id": 34,
-    "image": "https://theressa.net/images/projects/5d7eda980fc46-f1a.jpg",
-    "address": "Calle San Felipe, Caracas, Venezuela",
-    "date": "2023-10-05",
-    "category": "anexo",
-    "status": "realizada"
-  },
-  {
-    "id": 35,
-    "image": "https://i0.wp.com/ventasprimeras.com/wp-content/uploads/2021/01/VENTA-DEPA-ESTRENO-SAN-ISIDRO-A1-TERRAZA-COUNTRY-CLUB-EXCLUSIVO-15A.jpg?fit=1000%2C565&ssl=1",
-    "address": "Calle San José, Barquisimeto, Venezuela",
-    "date": "2023-09-10",
-    "category": "habitación",
-    "status": "aceptada"
-  },
-  {
-    "id": 36,
-    "image": "https://grupolar.com.mx/wp-content/uploads/2022/09/donde-comprar-departamento-para-inversion-interior-2-1.jpg",
-    "address": "Calle Las Flores, Maracay, Venezuela",
-    "date": "2023-09-25",
-    "category": "apartamento",
-    "status": "rechazada"
-  },
-  {
-    "id": 37,
-    "image": "https://taleinmobiliaria.com/wp-content/uploads/2023/04/decoracion-departamento-vista-panoramica.jpg",
-    "address": "Calle Norte, Tequesquitengo, Venezuela",
-    "date": "2023-10-02",
-    "category": "casa",
-    "status": "realizada"
-  },
-  {
-    "id": 38,
-    "image": "https://gestion.pe/resizer/vIP7RBJCN_73whSFDqTBMEA0lH8=/620x0/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/5VDFRLTLBJCSNAXQMFZBRF3LSI.jpg",
-    "address": "Calle La Paz, Caracas, Venezuela",
-    "date": "2023-10-03",
-    "category": "comercial",
-    "status": "aceptada"
-  },
-  {
-    "id": 39,
-    "image": "https://lajoya.ec/wp-content/uploads/2015/02/LJ-CONDOMINIO-2-SALA-COMEDOR-1108x960.png",
-    "address": "Calle Miranda, Maracaibo, Venezuela",
-    "date": "2023-10-04",
-    "category": "anexo",
-    "status": "rechazada"
-  },
-  {
-    "id": 40,
-    "image": "https://edifica.com.pe/blog/wp-content/uploads/diferencias-loft-departamento-espacio.jpg",
-    "address": "Calle de los Abetos, Valencia, Venezuela",
-    "date": "2023-10-01",
-    "category": "habitación",
-    "status": "realizada"
-  },
-  {
-    "id": 41,
-    "image": "https://images.homify.com/v1512601972/p/photo/image/2350734/DSC_0453-Editar-Editar.jpg",
-    "address": "Calle Los Años, Barquisimeto, Venezuela",
-    "date": "2023-09-28",
-    "category": "apartamento",
-    "status": "aceptada"
-  },
-  {
-    "id": 42,
-    "image": "https://static1.sosiva451.com/73676031/3cb5fb70-834c-475e-847a-61cca583143d_u_medium.jpg",
-    "address": "Av. El Libertador, Ciudad Guayana, Venezuela",
-    "date": "2023-09-30",
-    "category": "casa",
-    "status": "rechazada"
-  },
-  {
-    "id": 43,
-    "image": "https://images.homify.com/v1500852451/p/photo/image/2139867/Metropolitan-Center-Monterrey-Sierra-Madre-Arquitectura-Departamento-Enrique-Serrano-Fotografia.jpg",
-    "address": "Calle Las Brisas, La Guaira, Venezuela",
-    "date": "2023-09-22",
-    "category": "comercial",
-    "status": "realizada"
-  },
-  {
-    "id": 44,
-    "image": "https://info.inmobilia.mx/hubfs/Inmobilia/humana-tulum/landing-page-feb19/renders/Humana-Departamentos-De-Lujo-Tulum-5.jpg",
-    "address": "Calle 12 de Octubre, Mérida, Venezuela",
-    "date": "2023-09-16",
-    "category": "anexo",
-    "status": "aceptada"
-  },
-  {
-    "id": 45,
-    "image": "https://www.construyehogar.com/wp-content/uploads/2014/06/Dise%C3%B1o-de-sala-de-lujo-de-apartamento.jpg",
-    "address": "Calle El Ávila, Barinas, Venezuela",
-    "date": "2023-09-18",
-    "category": "habitación",
-    "status": "rechazada"
-  },
-  {
-    "id": 46,
-    "image": "https://nexoinmobiliario.pe/blog/wp-content/uploads/2022/06/destacada-identificar-departamentos-modernos-nexo-inmobiliario.jpg",
-    "address": "Calle del Cobre, Caracas, Venezuela",
-    "date": "2023-10-01",
-    "category": "apartamento",
-    "status": "realizada"
-  },
-  {
-    "id": 47,
-    "image": "https://media.admagazine.com/photos/6467b71e70d3fa4f8a2aa26c/16:9/w_2560%2Cc_limit/FedeC-LowRes7463.jpg",
-    "address": "Calle Verde, Maracaibo, Venezuela",
-    "date": "2023-09-14",
-    "category": "casa",
-    "status": "aceptada"
-  },
-  {
-    "id": 48,
-    "image": "https://1557540.fs1.hubspotusercontent-na1.net/hubfs/1557540/Harmonia%20Elevated%20Apartments/Depa%20Harmonia%20Web%201-1.jpg",
-    "address": "Calle Francisco de Miranda, Valencia, Venezuela",
-    "date": "2023-09-20",
-    "category": "comercial",
-    "status": "rechazada"
-  },
-  {
-    "id": 49,
-    "image": "https://theressa.net/images/projects/5d7eda980fc46-f1a.jpg",
-    "address": "Calle Siria, Caracas, Venezuela",
-    "date": "2023-10-05",
-    "category": "anexo",
-    "status": "realizada"
-  },
-  {
-    "id": 50,
-    "image": "https://i0.wp.com/ventasprimeras.com/wp-content/uploads/2021/01/VENTA-DEPA-ESTRENO-SAN-ISIDRO-A1-TERRAZA-COUNTRY-CLUB-EXCLUSIVO-15A.jpg?fit=1000%2C565&ssl=1",
-    "address": "Calle La Cima, Puerto La Cruz, Venezuela",
-    "date": "2023-09-10",
-    "category": "habitación",
-    "status": "aceptada"
-  },
-  {
-    "id": 51,
-    "image": "https://grupolar.com.mx/wp-content/uploads/2022/09/donde-comprar-departamento-para-inversion-interior-2-1.jpg",
-    "address": "Calle 8 de Diciembre, Maracay, Venezuela",
-    "date": "2023-09-25",
-    "category": "apartamento",
-    "status": "rechazada"
-  },
-  {
-    "id": 52,
-    "image": "https://taleinmobiliaria.com/wp-content/uploads/2023/04/decoracion-departamento-vista-panoramica.jpg",
-    "address": "Calle La Virgen, La Guaira, Venezuela",
-    "date": "2023-10-02",
-    "category": "casa",
-    "status": "realizada"
-  },
-  {
-    "id": 53,
-    "image": "https://gestion.pe/resizer/vIP7RBJCN_73whSFDqTBMEA0lH8=/620x0/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/5VDFRLTLBJCSNAXQMFZBRF3LSI.jpg",
-    "address": "Calle de Los Reyes, Caracas, Venezuela",
-    "date": "2023-10-03",
-    "category": "comercial",
-    "status": "aceptada"
-  },
-  {
-    "id": 54,
-    "image": "https://lajoya.ec/wp-content/uploads/2015/02/LJ-CONDOMINIO-2-SALA-COMEDOR-1108x960.png",
-    "address": "Calle Vargas, Maracaibo, Venezuela",
-    "date": "2023-10-04",
-    "category": "anexo",
-    "status": "rechazada"
-  },
-  {
-    "id": 55,
-    "image": "https://edifica.com.pe/blog/wp-content/uploads/diferencias-loft-departamento-espacio.jpg",
-    "address": "Calle La Tierra, Valencia, Venezuela",
-    "date": "2023-10-01",
-    "category": "habitación",
-    "status": "realizada"
-  },
-  {
-    "id": 56,
-    "image": "https://images.homify.com/v1512601972/p/photo/image/2350734/DSC_0453-Editar-Editar.jpg",
-    "address": "Calle Sol, Barquisimeto, Venezuela",
-    "date": "2023-09-28",
-    "category": "apartamento",
-    "status": "aceptada"
-  },
-  {
-    "id": 57,
-    "image": "https://static1.sosiva451.com/73676031/3cb5fb70-834c-475e-847a-61cca583143d_u_medium.jpg",
-    "address": "Av. Los Calderones, Ciudad Guayana, Venezuela",
-    "date": "2023-09-30",
-    "category": "casa",
-    "status": "rechazada"
-  },
-  {
-    "id": 58,
-    "image": "https://images.homify.com/v1500852451/p/photo/image/2139867/Metropolitan-Center-Monterrey-Sierra-Madre-Arquitectura-Departamento-Enrique-Serrano-Fotografia.jpg",
-    "address": "Calle Las Palomas, La Guaira, Venezuela",
-    "date": "2023-09-22",
-    "category": "comercial",
-    "status": "realizada"
-  },
-  {
-    "id": 59,
-    "image": "https://info.inmobilia.mx/hubfs/Inmobilia/humana-tulum/landing-page-feb19/renders/Humana-Departamentos-De-Lujo-Tulum-5.jpg",
-    "address": "Calle San Miguel, Mérida, Venezuela",
-    "date": "2023-09-16",
-    "category": "anexo",
-    "status": "aceptada"
-  },
-  {
-    "id": 60,
-    "image": "https://www.construyehogar.com/wp-content/uploads/2014/06/Dise%C3%B1o-de-sala-de-lujo-de-apartamento.jpg",
-    "address": "Calle El Viento, Puerto La Cruz, Venezuela",
-    "date": "2023-09-18",
-    "category": "habitación",
-    "status": "rechazada"
-  }
-]
+{
+  "currentPage": 1,
+  "data": [
+    {
+      "id": 1,
+      "image": "https://nexoinmobiliario.pe/blog/wp-content/uploads/2022/06/destacada-identificar-departamentos-modernos-nexo-inmobiliario.jpg",
+      "address": "Av. Bolívar, Caracas, Venezuela",
+      "date": "2023-10-01",
+      "category": "apartamento",
+      "status": "realizada"
+    },
+    {
+      "id": 2,
+      "image": "https://media.admagazine.com/photos/6467b71e70d3fa4f8a2aa26c/16:9/w_2560%2Cc_limit/FedeC-LowRes7463.jpg",
+      "address": "Calle 23, Maracaibo, Venezuela",
+      "date": "2023-09-15",
+      "category": "casa",
+      "status": "Cancelada"
+    },
+    {
+      "id": 3,
+      "image": "https://1557540.fs1.hubspotusercontent-na1.net/hubfs/1557540/Harmonia%20Elevated%20Apartments/Depa%20Harmonia%20Web%201-1.jpg",
+      "address": "Av. Urdaneta, Valencia, Venezuela",
+      "date": "2023-09-20",
+      "category": "comercial",
+      "status": "rechazada"
+    },
+    {
+      "id": 4,
+      "image": "https://theressa.net/images/projects/5d7eda980fc46-f1a.jpg",
+      "address": "Calle La Paz, Caracas, Venezuela",
+      "date": "2023-10-05",
+      "category": "anexo",
+      "status": "realizada"
+    },
+    {
+      "id": 5,
+      "image": "https://i0.wp.com/ventasprimeras.com/wp-content/uploads/2021/01/VENTA-DEPA-ESTRENO-SAN-ISIDRO-A1-TERRAZA-COUNTRY-CLUB-EXCLUSIVO-15A.jpg?fit=1000%2C565&ssl=1",
+      "address": "Calle Los Jardines, Barquisimeto, Venezuela",
+      "date": "2023-09-10",
+      "category": "habitación",
+      "status": "Cancelada"
+    },
+    {
+      "id": 6,
+      "image": "https://grupolar.com.mx/wp-content/uploads/2022/09/donde-comprar-departamento-para-inversion-interior-2-1.jpg",
+      "address": "Calle Santa Rosa, Valencia, Venezuela",
+      "date": "2023-09-25",
+      "category": "apartamento",
+      "status": "rechazada"
+    },
+    {
+      "id": 7,
+      "image": "https://taleinmobiliaria.com/wp-content/uploads/2023/04/decoracion-departamento-vista-panoramica.jpg",
+      "address": "Calle Sucre, Maracay, Venezuela",
+      "date": "2023-10-02",
+      "category": "casa",
+      "status": "realizada"
+    },
+    {
+      "id": 8,
+      "image": "https://gestion.pe/resizer/vIP7RBJCN_73whSFDqTBMEA0lH8=/620x0/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/5VDFRLTLBJCSNAXQMFZBRF3LSI.jpg",
+      "address": "Av. Los Próceres, Caracas, Venezuela",
+      "date": "2023-10-03",
+      "category": "comercial",
+      "status": "aceptada"
+    },
+    {
+      "id": 9,
+      "image": "https://lajoya.ec/wp-content/uploads/2015/02/LJ-CONDOMINIO-2-SALA-COMEDOR-1108x960.png",
+      "address": "Calle Carabobo, Ciudad Bolívar, Venezuela",
+      "date": "2023-10-04",
+      "category": "anexo",
+      "status": "Cancelada"
+    },
+    {
+      "id": 10,
+      "image": "https://edifica.com.pe/blog/wp-content/uploads/diferencias-loft-departamento-espacio.jpg",
+      "address": "Calle 30, Lechería, Venezuela",
+      "date": "2023-10-01",
+      "category": "habitación",
+      "status": "realizada"
+    },
+    {
+      "id": 11,
+      "image": "https://images.homify.com/v1512601972/p/photo/image/2350734/DSC_0453-Editar-Editar.jpg",
+      "address": "Calle San Juan, Maracay, Venezuela",
+      "date": "2023-09-28",
+      "category": "apartamento",
+      "status": "aceptada"
+    },
+    {
+      "id": 12,
+      "image": "https://static1.sosiva451.com/73676031/3cb5fb70-834c-475e-847a-61cca583143d_u_medium.jpg",
+      "address": "Av. Las Américas, San Cristóbal, Venezuela",
+      "date": "2023-09-30",
+      "category": "casa",
+      "status": "rechazada"
+    },
+    {
+      "id": 13,
+      "image": "https://images.homify.com/v1500852451/p/photo/image/2139867/Metropolitan-Center-Monterrey-Sierra-Madre-Arquitectura-Departamento-Enrique-Serrano-Fotografia.jpg",
+      "address": "Calle La Florida, Maturín, Venezuela",
+      "date": "2023-09-22",
+      "category": "comercial",
+      "status": "realizada"
+    },
+    {
+      "id": 14,
+      "image": "https://info.inmobilia.mx/hubfs/Inmobilia/humana-tulum/landing-page-feb19/renders/Humana-Departamentos-De-Lujo-Tulum-5.jpg",
+      "address": "Calle El Comercio, Caracas, Venezuela",
+      "date": "2023-09-16",
+      "category": "anexo",
+      "status": "aceptada"
+    },
+    {
+      "id": 15,
+      "image": "https://www.construyehogar.com/wp-content/uploads/2014/06/Dise%C3%B1o-de-sala-de-lujo-de-apartamento.jpg",
+      "address": "Calle 5 de Julio, Puerto La Cruz, Venezuela",
+      "date": "2023-09-18",
+      "category": "habitación",
+      "status": "rechazada"
+    },
+    {
+      "id": 16,
+      "image": "https://nexoinmobiliario.pe/blog/wp-content/uploads/2022/06/destacada-identificar-departamentos-modernos-nexo-inmobiliario.jpg",
+      "address": "Calle 1, Cabimas, Venezuela",
+      "date": "2023-10-01",
+      "category": "apartamento",
+      "status": "realizada"
+    },
+    {
+      "id": 17,
+      "image": "https://media.admagazine.com/photos/6467b71e70d3fa4f8a2aa26c/16:9/w_2560%2Cc_limit/FedeC-LowRes7463.jpg",
+      "address": "Calle Independencia, Mérida, Venezuela",
+      "date": "2023-09-14",
+      "category": "casa",
+      "status": "aceptada"
+    },
+    {
+      "id": 18,
+      "image": "https://1557540.fs1.hubspotusercontent-na1.net/hubfs/1557540/Harmonia%20Elevated%20Apartments/Depa%20Harmonia%20Web%201-1.jpg",
+      "address": "Calle Libertador, Valencia, Venezuela",
+      "date": "2023-09-20",
+      "category": "comercial",
+      "status": "rechazada"
+    },
+    {
+      "id": 19,
+      "image": "https://theressa.net/images/projects/5d7eda980fc46-f1a.jpg",
+      "address": "Calle 21, Caracas, Venezuela",
+      "date": "2023-10-05",
+      "category": "anexo",
+      "status": "realizada"
+    },
+    {
+      "id": 20,
+      "image": "https://i0.wp.com/ventasprimeras.com/wp-content/uploads/2021/01/VENTA-DEPA-ESTRENO-SAN-ISIDRO-A1-TERRAZA-COUNTRY-CLUB-EXCLUSIVO-15A.jpg?fit=1000%2C565&ssl=1",
+      "address": "Calle Las Delicias, Barquisimeto, Venezuela",
+      "date": "2023-09-10",
+      "category": "habitación",
+      "status": "aceptada"
+    },
+    {
+      "id": 21,
+      "image": "https://grupolar.com.mx/wp-content/uploads/2022/09/donde-comprar-departamento-para-inversion-interior-2-1.jpg",
+      "address": "Calle Zulia, Maracay, Venezuela",
+      "date": "2023-09-25",
+      "category": "apartamento",
+      "status": "rechazada"
+    },
+    {
+      "id": 22,
+      "image": "https://taleinmobiliaria.com/wp-content/uploads/2023/04/decoracion-departamento-vista-panoramica.jpg",
+      "address": "Calle La Concordia, Mérida, Venezuela",
+      "date": "2023-10-02",
+      "category": "casa",
+      "status": "realizada"
+    },
+    {
+      "id": 23,
+      "image": "https://gestion.pe/resizer/vIP7RBJCN_73whSFDqTBMEA0lH8=/620x0/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/5VDFRLTLBJCSNAXQMFZBRF3LSI.jpg",
+      "address": "Av. Los Abogados, Caracas, Venezuela",
+      "date": "2023-10-03",
+      "category": "comercial",
+      "status": "aceptada"
+    },
+    {
+      "id": 24,
+      "image": "https://lajoya.ec/wp-content/uploads/2015/02/LJ-CONDOMINIO-2-SALA-COMEDOR-1108x960.png",
+      "address": "Calle El Carmen, Maracaibo, Venezuela",
+      "date": "2023-10-04",
+      "category": "anexo",
+      "status": "rechazada"
+    },
+    {
+      "id": 25,
+      "image": "https://edifica.com.pe/blog/wp-content/uploads/diferencias-loft-departamento-espacio.jpg",
+      "address": "Calle del Progreso, Valencia, Venezuela",
+      "date": "2023-10-01",
+      "category": "habitación",
+      "status": "realizada"
+    },
+    {
+      "id": 26,
+      "image": "https://images.homify.com/v1512601972/p/photo/image/2350734/DSC_0453-Editar-Editar.jpg",
+      "address": "Calle de Los Cerezos, Lechería, Venezuela",
+      "date": "2023-09-28",
+      "category": "apartamento",
+      "status": "aceptada"
+    },
+    {
+      "id": 27,
+      "image": "https://static1.sosiva451.com/73676031/3cb5fb70-834c-475e-847a-61cca583143d_u_medium.jpg",
+      "address": "Av. Bolívar, Mérida, Venezuela",
+      "date": "2023-09-30",
+      "category": "casa",
+      "status": "rechazada"
+    },
+    {
+      "id": 28,
+      "image": "https://images.homify.com/v1500852451/p/photo/image/2139867/Metropolitan-Center-Monterrey-Sierra-Madre-Arquitectura-Departamento-Enrique-Serrano-Fotografia.jpg",
+      "address": "Calle La Paz, Barquisimeto, Venezuela",
+      "date": "2023-09-22",
+      "category": "comercial",
+      "status": "realizada"
+    },
+    {
+      "id": 29,
+      "image": "https://info.inmobilia.mx/hubfs/Inmobilia/humana-tulum/landing-page-feb19/renders/Humana-Departamentos-De-Lujo-Tulum-5.jpg",
+      "address": "Calle San Martín, Caracas, Venezuela",
+      "date": "2023-09-16",
+      "category": "anexo",
+      "status": "aceptada"
+    },
+    {
+      "id": 30,
+      "image": "https://www.construyehogar.com/wp-content/uploads/2014/06/Dise%C3%B1o-de-sala-de-lujo-de-apartamento.jpg",
+      "address": "Calle 10 de diciembre, Puerto La Cruz, Venezuela",
+      "date": "2023-09-18",
+      "category": "habitación",
+      "status": "rechazada"
+    },
+    {
+      "id": 31,
+      "image": "https://nexoinmobiliario.pe/blog/wp-content/uploads/2022/06/destacada-identificar-departamentos-modernos-nexo-inmobiliario.jpg",
+      "address": "Calle 4, Cabimas, Venezuela",
+      "date": "2023-10-01",
+      "category": "apartamento",
+      "status": "realizada"
+    },
+    {
+      "id": 32,
+      "image": "https://media.admagazine.com/photos/6467b71e70d3fa4f8a2aa26c/16:9/w_2560%2Cc_limit/FedeC-LowRes7463.jpg",
+      "address": "Calle José Antonio, Mérida, Venezuela",
+      "date": "2023-09-14",
+      "category": "casa",
+      "status": "aceptada"
+    },
+    {
+      "id": 33,
+      "image": "https://1557540.fs1.hubspotusercontent-na1.net/hubfs/1557540/Harmonia%20Elevated%20Apartments/Depa%20Harmonia%20Web%201-1.jpg",
+      "address": "Av. 19 de Abril, Valencia, Venezuela",
+      "date": "2023-09-20",
+      "category": "comercial",
+      "status": "rechazada"
+    },
+    {
+      "id": 34,
+      "image": "https://theressa.net/images/projects/5d7eda980fc46-f1a.jpg",
+      "address": "Calle San Felipe, Caracas, Venezuela",
+      "date": "2023-10-05",
+      "category": "anexo",
+      "status": "realizada"
+    },
+    {
+      "id": 35,
+      "image": "https://i0.wp.com/ventasprimeras.com/wp-content/uploads/2021/01/VENTA-DEPA-ESTRENO-SAN-ISIDRO-A1-TERRAZA-COUNTRY-CLUB-EXCLUSIVO-15A.jpg?fit=1000%2C565&ssl=1",
+      "address": "Calle San José, Barquisimeto, Venezuela",
+      "date": "2023-09-10",
+      "category": "habitación",
+      "status": "aceptada"
+    },
+    {
+      "id": 36,
+      "image": "https://grupolar.com.mx/wp-content/uploads/2022/09/donde-comprar-departamento-para-inversion-interior-2-1.jpg",
+      "address": "Calle Las Flores, Maracay, Venezuela",
+      "date": "2023-09-25",
+      "category": "apartamento",
+      "status": "rechazada"
+    },
+    {
+      "id": 37,
+      "image": "https://taleinmobiliaria.com/wp-content/uploads/2023/04/decoracion-departamento-vista-panoramica.jpg",
+      "address": "Calle Norte, Tequesquitengo, Venezuela",
+      "date": "2023-10-02",
+      "category": "casa",
+      "status": "realizada"
+    },
+    {
+      "id": 38,
+      "image": "https://gestion.pe/resizer/vIP7RBJCN_73whSFDqTBMEA0lH8=/620x0/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/5VDFRLTLBJCSNAXQMFZBRF3LSI.jpg",
+      "address": "Calle La Paz, Caracas, Venezuela",
+      "date": "2023-10-03",
+      "category": "comercial",
+      "status": "aceptada"
+    },
+    {
+      "id": 39,
+      "image": "https://lajoya.ec/wp-content/uploads/2015/02/LJ-CONDOMINIO-2-SALA-COMEDOR-1108x960.png",
+      "address": "Calle Miranda, Maracaibo, Venezuela",
+      "date": "2023-10-04",
+      "category": "anexo",
+      "status": "rechazada"
+    },
+    {
+      "id": 40,
+      "image": "https://edifica.com.pe/blog/wp-content/uploads/diferencias-loft-departamento-espacio.jpg",
+      "address": "Calle de los Abetos, Valencia, Venezuela",
+      "date": "2023-10-01",
+      "category": "habitación",
+      "status": "realizada"
+    },
+    {
+      "id": 41,
+      "image": "https://images.homify.com/v1512601972/p/photo/image/2350734/DSC_0453-Editar-Editar.jpg",
+      "address": "Calle Los Años, Barquisimeto, Venezuela",
+      "date": "2023-09-28",
+      "category": "apartamento",
+      "status": "aceptada"
+    },
+    {
+      "id": 42,
+      "image": "https://static1.sosiva451.com/73676031/3cb5fb70-834c-475e-847a-61cca583143d_u_medium.jpg",
+      "address": "Av. El Libertador, Ciudad Guayana, Venezuela",
+      "date": "2023-09-30",
+      "category": "casa",
+      "status": "rechazada"
+    },
+    {
+      "id": 43,
+      "image": "https://images.homify.com/v1500852451/p/photo/image/2139867/Metropolitan-Center-Monterrey-Sierra-Madre-Arquitectura-Departamento-Enrique-Serrano-Fotografia.jpg",
+      "address": "Calle Las Brisas, La Guaira, Venezuela",
+      "date": "2023-09-22",
+      "category": "comercial",
+      "status": "realizada"
+    },
+    {
+      "id": 44,
+      "image": "https://info.inmobilia.mx/hubfs/Inmobilia/humana-tulum/landing-page-feb19/renders/Humana-Departamentos-De-Lujo-Tulum-5.jpg",
+      "address": "Calle 12 de Octubre, Mérida, Venezuela",
+      "date": "2023-09-16",
+      "category": "anexo",
+      "status": "aceptada"
+    },
+    {
+      "id": 45,
+      "image": "https://www.construyehogar.com/wp-content/uploads/2014/06/Dise%C3%B1o-de-sala-de-lujo-de-apartamento.jpg",
+      "address": "Calle El Ávila, Barinas, Venezuela",
+      "date": "2023-09-18",
+      "category": "habitación",
+      "status": "rechazada"
+    },
+    {
+      "id": 46,
+      "image": "https://nexoinmobiliario.pe/blog/wp-content/uploads/2022/06/destacada-identificar-departamentos-modernos-nexo-inmobiliario.jpg",
+      "address": "Calle del Cobre, Caracas, Venezuela",
+      "date": "2023-10-01",
+      "category": "apartamento",
+      "status": "realizada"
+    },
+    {
+      "id": 47,
+      "image": "https://media.admagazine.com/photos/6467b71e70d3fa4f8a2aa26c/16:9/w_2560%2Cc_limit/FedeC-LowRes7463.jpg",
+      "address": "Calle Verde, Maracaibo, Venezuela",
+      "date": "2023-09-14",
+      "category": "casa",
+      "status": "aceptada"
+    },
+    {
+      "id": 48,
+      "image": "https://1557540.fs1.hubspotusercontent-na1.net/hubfs/1557540/Harmonia%20Elevated%20Apartments/Depa%20Harmonia%20Web%201-1.jpg",
+      "address": "Calle Francisco de Miranda, Valencia, Venezuela",
+      "date": "2023-09-20",
+      "category": "comercial",
+      "status": "rechazada"
+    },
+    {
+      "id": 49,
+      "image": "https://theressa.net/images/projects/5d7eda980fc46-f1a.jpg",
+      "address": "Calle Siria, Caracas, Venezuela",
+      "date": "2023-10-05",
+      "category": "anexo",
+      "status": "realizada"
+    },
+    {
+      "id": 50,
+      "image": "https://i0.wp.com/ventasprimeras.com/wp-content/uploads/2021/01/VENTA-DEPA-ESTRENO-SAN-ISIDRO-A1-TERRAZA-COUNTRY-CLUB-EXCLUSIVO-15A.jpg?fit=1000%2C565&ssl=1",
+      "address": "Calle La Cima, Puerto La Cruz, Venezuela",
+      "date": "2023-09-10",
+      "category": "habitación",
+      "status": "aceptada"
+    },
+    {
+      "id": 51,
+      "image": "https://grupolar.com.mx/wp-content/uploads/2022/09/donde-comprar-departamento-para-inversion-interior-2-1.jpg",
+      "address": "Calle 8 de Diciembre, Maracay, Venezuela",
+      "date": "2023-09-25",
+      "category": "apartamento",
+      "status": "rechazada"
+    },
+    {
+      "id": 52,
+      "image": "https://taleinmobiliaria.com/wp-content/uploads/2023/04/decoracion-departamento-vista-panoramica.jpg",
+      "address": "Calle La Virgen, La Guaira, Venezuela",
+      "date": "2023-10-02",
+      "category": "casa",
+      "status": "realizada"
+    },
+    {
+      "id": 53,
+      "image": "https://gestion.pe/resizer/vIP7RBJCN_73whSFDqTBMEA0lH8=/620x0/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/5VDFRLTLBJCSNAXQMFZBRF3LSI.jpg",
+      "address": "Calle de Los Reyes, Caracas, Venezuela",
+      "date": "2023-10-03",
+      "category": "comercial",
+      "status": "aceptada"
+    },
+    {
+      "id": 54,
+      "image": "https://lajoya.ec/wp-content/uploads/2015/02/LJ-CONDOMINIO-2-SALA-COMEDOR-1108x960.png",
+      "address": "Calle Vargas, Maracaibo, Venezuela",
+      "date": "2023-10-04",
+      "category": "anexo",
+      "status": "rechazada"
+    },
+    {
+      "id": 55,
+      "image": "https://edifica.com.pe/blog/wp-content/uploads/diferencias-loft-departamento-espacio.jpg",
+      "address": "Calle La Tierra, Valencia, Venezuela",
+      "date": "2023-10-01",
+      "category": "habitación",
+      "status": "realizada"
+    },
+    {
+      "id": 56,
+      "image": "https://images.homify.com/v1512601972/p/photo/image/2350734/DSC_0453-Editar-Editar.jpg",
+      "address": "Calle Sol, Barquisimeto, Venezuela",
+      "date": "2023-09-28",
+      "category": "apartamento",
+      "status": "aceptada"
+    },
+    {
+      "id": 57,
+      "image": "https://static1.sosiva451.com/73676031/3cb5fb70-834c-475e-847a-61cca583143d_u_medium.jpg",
+      "address": "Av. Los Calderones, Ciudad Guayana, Venezuela",
+      "date": "2023-09-30",
+      "category": "casa",
+      "status": "rechazada"
+    },
+    {
+      "id": 58,
+      "image": "https://images.homify.com/v1500852451/p/photo/image/2139867/Metropolitan-Center-Monterrey-Sierra-Madre-Arquitectura-Departamento-Enrique-Serrano-Fotografia.jpg",
+      "address": "Calle Las Palomas, La Guaira, Venezuela",
+      "date": "2023-09-22",
+      "category": "comercial",
+      "status": "realizada"
+    },
+    {
+      "id": 59,
+      "image": "https://info.inmobilia.mx/hubfs/Inmobilia/humana-tulum/landing-page-feb19/renders/Humana-Departamentos-De-Lujo-Tulum-5.jpg",
+      "address": "Calle San Miguel, Mérida, Venezuela",
+      "date": "2023-09-16",
+      "category": "anexo",
+      "status": "aceptada"
+    },
+    {
+      "id": 60,
+      "image": "https://www.construyehogar.com/wp-content/uploads/2014/06/Dise%C3%B1o-de-sala-de-lujo-de-apartamento.jpg",
+      "address": "Calle El Viento, Puerto La Cruz, Venezuela",
+      "date": "2023-09-18",
+      "category": "habitación",
+      "status": "rechazada"
+    }
+  ],
+  "firstPageUrl": "http://3.85.120.166:8080/api/visits?render=paginate&page=1",
+  "from": null,
+  "lastPage": 1,
+  "lastPageUrl": "http://3.85.120.166:8080/api/visits?render=paginate&page=1",
+  "links": [
+    {
+      "url": null,
+      "label": "&laquo; Previous",
+      "active": false
+    },
+    {
+      "url": "http://3.85.120.166:8080/api/visits?render=paginate&page=1",
+      "label": "1",
+      "active": true
+    },
+    {
+      "url": null,
+      "label": "Next &raquo;",
+      "active": false
+    }
+  ],
+  "nextPageUrl": null,
+  "path": "http://3.85.120.166:8080/api/visits",
+  "perPage": 15,
+  "prevPageUrl": null,
+  "to": null,
+  "total": 0
+}

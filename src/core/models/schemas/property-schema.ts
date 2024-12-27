@@ -67,9 +67,10 @@ export const CreatePropStep01Schema = object({
 })
 
 export const CreatePropStep02Schema = object({
+  state: string(),
   city: string(),
   municipality: string(),
-  urbanization: string(),
+  // urbanization: string(),
   full_address: string(),
   plan_id: string().required("Ingresa una respuesta"),
   rent_duration: string(),

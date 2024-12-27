@@ -10,10 +10,15 @@ import { settingsApp } from "./config/environment/settings"
 
 // Inicia el worker de MSW
 // if (settingsApp.app.mocks) {
+//   worker.start()
 // }
 
 const container = document.getElementById("root")
-// worker.start()
+// worker.start({
+//   serviceWorker: {
+//     url: "/realtor/mockServiceWorker.js",
+//   },
+// })
 
 if (container) {
   const root = createRoot(container)

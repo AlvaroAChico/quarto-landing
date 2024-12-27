@@ -1,13 +1,19 @@
+export interface StateDTO {
+  id: number
+  name: string
+  createdAt: string
+}
+
 export interface CityDTO {
   id: number
   name: string
+  stateId: number
   createdAt: string
 }
 
 export interface MunicipalityDTO {
   id: number
   name: string
-  stateId: number
   cityId: number
   createdAt: string
 }
