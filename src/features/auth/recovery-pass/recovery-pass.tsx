@@ -77,7 +77,7 @@ const RecoveryPass: React.FC = () => {
 
   return (
     <ContainerSignIn>
-      <ContainerBg bg={BgIMG}>
+      <ContainerBg>
         <FormContainer>
           <ContainerLogo>
             <img src={LogoWhiteIMG} />
