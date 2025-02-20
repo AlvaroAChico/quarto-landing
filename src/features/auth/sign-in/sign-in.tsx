@@ -152,3 +152,38 @@ const SignIn: React.FC = () => {
 }
 
 export default SignIn
+
+// import React from 'react';
+// import styled from 'styled-components';
+// import Header from './Header';
+// import PropertySearch from './PropertySearch';
+// import FeatureSection from './FeatureSection';
+// import PublishProperty from './PublishProperty';
+// import AppDownload from './AppDownload';
+// import Footer from './Footer';
+// import FAQ from './FAQ';
+
+// const HomeAlquilerWrapper = styled.div`
+//   background-color: #fff;
+//   position: relative;
+//   display: flex;
+//   flex-direction: column;
+//   overflow: hidden;
+//   justify-content: start;
+// `;
+
+// const SignIn: React.FC = () => {
+//   return (
+//     <HomeAlquilerWrapper>
+//       <Header />
+//       <PropertySearch />
+//       <FeatureSection />
+//       <PublishProperty />
+//       <FAQ />
+//       <AppDownload />
+//       <Footer />
+//     </HomeAlquilerWrapper>
+//   );
+// };
+
+// export default SignIn;
