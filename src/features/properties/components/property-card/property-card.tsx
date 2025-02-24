@@ -3,6 +3,8 @@ import {
   ContainerCard,
   ContainerInfo,
   ContainerHeadImage,
+  ContainerPriceStatus,
+  ContainerInfoProp,
 } from "./property-card.styles"
 import Button from "../../../../components/button/button"
 import { palette } from "../../../../config/theme/theme"
@@ -22,23 +24,27 @@ const PropertyCard: React.FC<IOwnProps> = ({ property }) => {
         }
       />
       <ContainerInfo status={property.status} type={property.type || "quarto"}>
-        <p>{property.fullAddress}</p>
-        <p>
-          $ {property.price}
-          <span>{property.status}</span>
-        </p>
-        <div>
-          <Button
-            onClick={() => console.log}
-            text="Editar"
-            customStyles={`
-              background: #F1F1F1;
-              color: ${palette.blackColor};
-              font-weight: 600;
-              width: 100%;
-              `}
-          />
-        </div>
+        <ContainerPriceStatus>
+          <p>
+            <span>$</span>
+            <span>{property.price}</span>
+            <span>/mes</span>
+          </p>
+          <p>
+            <span>{property.status}</span>
+          </p>
+        </ContainerPriceStatus>
+        <ContainerInfoProp>
+          {/* <p>{property.fullAddress}</p> */}
+          <p>Av. Urdaneta Mun, Libertador</p>
+          <p>
+            <span>Apartamento</span>
+            <span />
+            <span>230m2</span>
+            <span />
+            <span>1 Habitaciones</span>
+          </p>
+        </ContainerInfoProp>
         <p>{property.type || "Quarto"}</p>
       </ContainerInfo>
     </ContainerCard>

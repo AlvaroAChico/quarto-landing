@@ -21,8 +21,16 @@ interface Route {
 }
 
 export const pathRoutes = {
+  HOME: {
+    to: `/`,
+    basePath: "/home",
+    label: "Dashboard",
+    icon: DashboardIMG,
+    visible: true,
+    otherPaths: {},
+  },
   DASHBOARD: {
-    to: `/realtor/dashboard`,
+    to: `/dashboard`,
     basePath: "/dashboard",
     label: "Dashboard",
     icon: DashboardIMG,
@@ -30,14 +38,14 @@ export const pathRoutes = {
     otherPaths: {},
   },
   VISITS: {
-    to: `/realtor/visitas`,
+    to: `/visitas`,
     basePath: "/visitas",
     label: "Visitas",
     icon: VisitsIMG,
     visible: true,
     otherPaths: {
       VIEW: {
-        to: `/realtor/visitas/:id`,
+        to: `/visitas/:id`,
         basePath: "/visitas",
         label: "Crear propiedad",
         visible: false,
@@ -45,7 +53,7 @@ export const pathRoutes = {
     },
   },
   RENTALS: {
-    to: `/realtor/alquileres`,
+    to: `/alquileres`,
     basePath: "/alquileres",
     label: "Alquileres",
     icon: RentalsIMG,
@@ -53,7 +61,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   CALENDAR: {
-    to: `/realtor/calendario`,
+    to: `/calendario`,
     basePath: "/calendario",
     label: "Calendario",
     icon: CalendarIMG,
@@ -61,20 +69,26 @@ export const pathRoutes = {
     otherPaths: {},
   },
   PROPERTY: {
-    to: `/realtor/propiedades`,
+    to: `/propiedades`,
     basePath: "/propiedades",
     label: "Mis Propiedades",
     icon: PropertiesIMG,
     visible: true,
     otherPaths: {
+      DETAIL: {
+        to: `/propiedades/:id`,
+        basePath: "/propiedades",
+        label: "Detalle de propiedad",
+        visible: false,
+      },
       CREATE: {
-        to: `/realtor/propiedades/crear`,
+        to: `/propiedades/crear`,
         basePath: "/propiedades",
         label: "Crear propiedad",
         visible: false,
       },
       EDIT: {
-        to: `/realtor/propiedades/editar`,
+        to: `/propiedades/editar`,
         basePath: "/propiedades",
         label: "Crear propiedad",
         visible: false,
@@ -82,14 +96,14 @@ export const pathRoutes = {
     },
   },
   REFERRALS: {
-    to: `/realtor/referidos`,
+    to: `/referidos`,
     basePath: "/referidos",
     label: "Inq. Referidos",
     icon: ReferralsIMG,
     visible: true,
     otherPaths: {
       CREATE: {
-        to: `/realtor/referidos/crear`,
+        to: `/referidos/crear`,
         basePath: "/referidos",
         label: "Añadir Referido",
         visible: false,
@@ -97,7 +111,7 @@ export const pathRoutes = {
     },
   },
   WALLET: {
-    to: `/realtor/billetera`,
+    to: `/billetera`,
     basePath: "/billetera",
     label: "Billetera",
     icon: WalletIMG,
@@ -105,7 +119,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   PROFILE: {
-    to: `/realtor/perfil`,
+    to: `/perfil`,
     basePath: "/perfil",
     label: "Perfil",
     icon: ProfileIMG,
@@ -113,7 +127,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   CONTACTS: {
-    to: `/realtor/contactos`,
+    to: `/contactos`,
     basePath: "/contactos",
     label: "Contactos",
     icon: ContactsIMG,
@@ -121,7 +135,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   CHATS: {
-    to: `/realtor/chats`,
+    to: `/chats`,
     basePath: "/chats",
     label: "Chats",
     icon: ChatsIMG,
@@ -129,7 +143,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   INFO_PRODUCTS: {
-    to: `/realtor/productos`,
+    to: `/productos`,
     basePath: "/productos",
     label: "Productos",
     icon: ProductsIMG,
@@ -137,15 +151,15 @@ export const pathRoutes = {
     otherPaths: {},
   },
   SIGN_IN: {
-    to: `/realtor/`,
-    basePath: "/",
+    to: `/sign-in`,
+    basePath: "/sign-in",
     label: "Iniciar Sesión",
     icon: "",
     visible: false,
     otherPaths: {},
   },
   RECOVERY_PASS: {
-    to: `/realtor/recuperar-contraseña`,
+    to: `/recuperar-contraseña`,
     basePath: "/recuperar-contraseña",
     label: "Recuperar contraseña",
     icon: "",
@@ -153,7 +167,7 @@ export const pathRoutes = {
     otherPaths: {},
   },
   RESET_PASSWORD: {
-    to: `/realtor/resetear-contraseña`,
+    to: `/resetear-contraseña`,
     basePath: "/resetear-contraseña",
     label: "Resetear contraseña",
     icon: "",

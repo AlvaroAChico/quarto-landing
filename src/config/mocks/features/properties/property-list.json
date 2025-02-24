@@ -3,180 +3,180 @@
     "id": 1,
     "image": "https://nexoinmobiliario.pe/blog/wp-content/uploads/2022/06/destacada-identificar-departamentos-modernos-nexo-inmobiliario.jpg",
     "name": "Apartment 401",
-    "address": "Av. Bolívar, Caracas",
+    "fullAddress": "Av. Bolívar, Caracas",
     "price": 18000,
     "type": "Quarto",
-    "status": "aceptado"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 2,
     "image": "https://media.admagazine.com/photos/6467b71e70d3fa4f8a2aa26c/16:9/w_2560%2Cc_limit/FedeC-LowRes7463.jpg",
     "name": "Apartment 402",
-    "address": "Calle Pajaritos, Maracaibo",
+    "fullAddress": "Calle Pajaritos, Maracaibo",
     "price": 20000,
     "type": "Inmobiliaria",
-    "status": "rechazado"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 3,
     "image": "https://1557540.fs1.hubspotusercontent-na1.net/hubfs/1557540/Harmonia%20Elevated%20Apartments/Depa%20Harmonia%20Web%201-1.jpg",
     "name": "Apartment 403",
-    "address": "Av. Urdaneta, Valencia",
+    "fullAddress": "Av. Urdaneta, Valencia",
     "price": 22000,
     "type": "Estándar",
-    "status": "en proceso"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 4,
     "image": "https://theressa.net/images/projects/5d7eda980fc46-f1a.jpg",
     "name": "Apartment 404",
-    "address": "Calle Sucre, Puerto La Cruz",
+    "fullAddress": "Calle Sucre, Puerto La Cruz",
     "price": 25000,
     "type": "Quarto",
-    "status": "aceptado"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 5,
     "image": "https://i0.wp.com/ventasprimeras.com/wp-content/uploads/2021/01/VENTA-DEPA-ESTRENO-SAN-ISIDRO-A1-TERRAZA-COUNTRY-CLUB-EXCLUSIVO-15A.jpg?fit=1000%2C565&ssl=1",
     "name": "Apartment 405",
-    "address": "Calle Los Abetos, Caracas",
+    "fullAddress": "Calle Los Abetos, Caracas",
     "price": 18000,
     "type": "Inmobiliaria",
-    "status": "rechazado"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 6,
     "image": "https://grupolar.com.mx/wp-content/uploads/2022/09/donde-comprar-departamento-para-inversion-interior-2-1.jpg",
     "name": "Apartment 406",
-    "address": "Pasaje Libertad, Valera",
+    "fullAddress": "Pasaje Libertad, Valera",
     "price": 19500,
     "type": "Estándar",
-    "status": "en proceso"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 7,
     "image": "https://taleinmobiliaria.com/wp-content/uploads/2023/04/decoracion-departamento-vista-panoramica.jpg",
     "name": "Apartment 407",
-    "address": "Calle 5 de Julio, Mérida",
+    "fullAddress": "Calle 5 de Julio, Mérida",
     "price": 21000,
     "type": "Quarto",
-    "status": "aceptado"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 8,
     "image": "https://gestion.pe/resizer/vIP7RBJCN_73whSFDqTBMEA0lH8=/620x0/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/5VDFRLTLBJCSNAXQMFZBRF3LSI.jpg",
     "name": "Apartment 408",
-    "address": "Calle 12 de Octubre, Maracay",
+    "fullAddress": "Calle 12 de Octubre, Maracay",
     "price": 24000,
     "type": "Inmobiliaria",
-    "status": "rechazado"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 9,
     "image": "https://lajoya.ec/wp-content/uploads/2015/02/LJ-CONDOMINIO-2-SALA-COMEDOR-1108x960.png",
     "name": "Apartment 409",
-    "address": "Av. Universidad, Caracas",
+    "fullAddress": "Av. Universidad, Caracas",
     "price": 26500,
     "type": "Estándar",
-    "status": "en proceso"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 10,
     "image": "https://edifica.com.pe/blog/wp-content/uploads/diferencias-loft-departamento-espacio.jpg",
     "name": "Apartment 410",
-    "address": "Calle La Paz, Caracas",
+    "fullAddress": "Calle La Paz, Caracas",
     "price": 30000,
     "type": "Quarto",
-    "status": "aceptado"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 11,
     "image": "https://images.homify.com/v1512601972/p/photo/image/2350734/DSC_0453-Editar-Editar.jpg",
     "name": "Apartment 411",
-    "address": "Calle Miranda, Caracas",
+    "fullAddress": "Calle Miranda, Caracas",
     "price": 32000,
     "type": "Inmobiliaria",
-    "status": "rechazado"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 12,
     "image": "https://static1.sosiva451.com/73676031/3cb5fb70-834c-475e-847a-61cca583143d_u_medium.jpg",
     "name": "Apartment 412",
-    "address": "Av. Bolívar, Valencia",
+    "fullAddress": "Av. Bolívar, Valencia",
     "price": 34000,
     "type": "Estándar",
-    "status": "en proceso"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 13,
     "image": "https://images.homify.com/v1500852451/p/photo/image/2139867/Metropolitan-Center-Monterrey-Sierra-Madre-Arquitectura-Departamento-Enrique-Serrano-Fotografia.jpg",
     "name": "Apartment 413",
-    "address": "Calle 14 de Febrero, Barquisimeto",
+    "fullAddress": "Calle 14 de Febrero, Barquisimeto",
     "price": 36000,
     "type": "Quarto",
-    "status": "aceptado"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 14,
     "image": "https://info.inmobilia.mx/hubfs/Inmobilia/humana-tulum/landing-page-feb19/renders/Humana-Departamentos-De-Lujo-Tulum-5.jpg",
     "name": "Apartment 414",
-    "address": "Calle Los Pinos, Caracas",
+    "fullAddress": "Calle Los Pinos, Caracas",
     "price": 38000,
     "type": "Inmobiliaria",
-    "status": "rechazado"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 15,
     "image": "https://www.construyehogar.com/wp-content/uploads/2014/06/Dise%C3%B1o-de-sala-de-lujo-de-apartamento.jpg",
     "name": "Apartment 415",
-    "address": "Calle 7, San Cristóbal",
+    "fullAddress": "Calle 7, San Cristóbal",
     "price": 40000,
     "type": "Estándar",
-    "status": "en proceso"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 16,
     "image": "https://nexoinmobiliario.pe/blog/wp-content/uploads/2022/06/destacada-identificar-departamentos-modernos-nexo-inmobiliario.jpg",
     "name": "Apartment 401",
-    "address": "Av. Bolívar, Caracas",
+    "fullAddress": "Av. Bolívar, Caracas",
     "price": 18000,
     "type": "Quarto",
-    "status": "aceptado"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 17,
     "image": "https://media.admagazine.com/photos/6467b71e70d3fa4f8a2aa26c/16:9/w_2560%2Cc_limit/FedeC-LowRes7463.jpg",
     "name": "Apartment 402",
-    "address": "Calle Pajaritos, Maracaibo",
+    "fullAddress": "Calle Pajaritos, Maracaibo",
     "price": 20000,
     "type": "Inmobiliaria",
-    "status": "rechazado"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 18,
     "image": "https://1557540.fs1.hubspotusercontent-na1.net/hubfs/1557540/Harmonia%20Elevated%20Apartments/Depa%20Harmonia%20Web%201-1.jpg",
     "name": "Apartment 403",
-    "address": "Av. Urdaneta, Valencia",
+    "fullAddress": "Av. Urdaneta, Valencia",
     "price": 22000,
     "type": "Estándar",
-    "status": "en proceso"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 19,
     "image": "https://theressa.net/images/projects/5d7eda980fc46-f1a.jpg",
     "name": "Apartment 404",
-    "address": "Calle Sucre, Puerto La Cruz",
+    "fullAddress": "Calle Sucre, Puerto La Cruz",
     "price": 25000,
     "type": "Quarto",
-    "status": "aceptado"
+    "status": "Sin adelantos ni depósitos"
   },
   {
     "id": 20,
     "image": "https://i0.wp.com/ventasprimeras.com/wp-content/uploads/2021/01/VENTA-DEPA-ESTRENO-SAN-ISIDRO-A1-TERRAZA-COUNTRY-CLUB-EXCLUSIVO-15A.jpg?fit=1000%2C565&ssl=1",
     "name": "Apartment 405",
-    "address": "Calle Los Abetos, Caracas",
+    "fullAddress": "Calle Los Abetos, Caracas",
     "price": 18000,
     "type": "Inmobiliaria",
-    "status": "rechazado"
+    "status": "Sin adelantos ni depósitos"
   }
 ]

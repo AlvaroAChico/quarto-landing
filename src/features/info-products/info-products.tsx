@@ -77,7 +77,7 @@ const InfoProducts: React.FC = () => {
 
   return (
     <>
-      <HeaderSection />
+      <HeaderSection title="" />
       <ContainerProducts>
         <ItemProduct>
           <ContainerHeadCard>

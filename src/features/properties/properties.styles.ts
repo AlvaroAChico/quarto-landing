@@ -12,8 +12,28 @@ export const ContentStylesSection = styled.div`
   flex-direction: column;
   gap: 30px;
 `
+export const MoreResults = styled.div`
+  place-items: center;
+  display: grid;
+  padding: 40px 20px;
 
-export const SectionRoute = styled.div``
+  > button {
+    border: 1px solid #e1e1e1;
+    border-radius: 40px;
+    padding: 20px 40px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      transform: scale(0.98);
+    }
+  }
+`
+
+export const SectionRoute = styled.div`
+  max-width: 1200px;
+  margin: auto;
+`
 
 export const NameStylesTD = styled.td`
   > div {

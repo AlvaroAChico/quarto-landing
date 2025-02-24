@@ -5,6 +5,7 @@ import {
   ContainerListProperties,
   ContainerOffer,
   ContentStylesSection,
+  MoreResults,
   SectionRoute,
 } from "./properties.styles"
 import { PropertyDTO } from "../../core/models/interfaces/property-model"
@@ -20,9 +21,12 @@ import {
   ContainerFilters,
   ContainerReset,
   ContainerResetMobileFilter,
+  ContainerSearchSection,
+  ContainerSelectSections,
   ContainerText,
   ItemFilterStyle,
   selectFilterStyles,
+  selectStylesFilterList,
   selectStylesFilterTable,
 } from "../../config/theme/global-styles"
 import { Filter2 } from "@styled-icons/remix-line/Filter2"
@@ -30,8 +34,10 @@ import Select from "react-select"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { Replay } from "@styled-icons/material/Replay"
-import { ArrowIosDownward } from "styled-icons/evaicons-solid"
+import { ArrowIosDownward, Search } from "styled-icons/evaicons-solid"
 import { propertyRepository } from "../../api/repositories/property-repository"
+import PropertyListJSON from "../../config/mocks/features/properties/property-list.json"
+import Input from "../../components/input/input"
 
 const Properties: React.FC = () => {
   const [listRentals, setListRentals] = React.useState<any[]>([])
@@ -62,7 +68,10 @@ const Properties: React.FC = () => {
   const { handleGetToken } = useDataUser()
   const navigate = useNavigate()
 
-  const [listProperties, setListProperties] = React.useState<PropertyDTO[]>([])
+  // const [listProperties, setListProperties] = React.useState<PropertyDTO[]>([])
+  const [listProperties, setListProperties] = React.useState<PropertyDTO[]>(
+    PropertyListJSON as unknown as PropertyDTO[],
+  )
   const [isLoadingListProperties, setIsLoadingListProperties] =
     React.useState<boolean>(false)
 
@@ -88,99 +97,60 @@ const Properties: React.FC = () => {
 
   return (
     <SectionRoute>
-      <HeaderSection />
+      <HeaderSection title={"Propiedades"} />
       <ContentStylesSection>
-        <ContainerResetMobileFilter>
-          <ContainerText>
-            <span>
-              <Filter2 />
-            </span>
-            <span>Filtrar por</span>
-          </ContainerText>
-          <ContainerReset>
-            <span>
-              <Replay />
-            </span>
-            <span>Reiniciar filtro</span>
-          </ContainerReset>
-        </ContainerResetMobileFilter>
         <ContainerFilters>
-          <ItemFilterStyle>
-            <ContainerText>
-              <span>
-                <Filter2 />
-              </span>
-              <span>Filtrar por</span>
-            </ContainerText>
-          </ItemFilterStyle>
-          <ItemFilterStyle>
-            <Select
-              defaultValue={selectedOptionId}
-              onChange={handleChangeOptionId}
-              options={optionsId}
-              isSearchable={false}
-              styles={selectStylesFilterTable}
-              placeholder="ID"
-              noOptionsMessage={() => <>Sin resultados</>}
-            />
-          </ItemFilterStyle>
-          <ItemFilterStyle>
-            {/* <input placeHolder */}
-            <DatePicker
-              id="date-create-apartment"
-              showIcon
-              selected={daySelected}
-              icon={<></>}
-              toggleCalendarOnIconClick
-              onChange={(date: any) => {
-                setDaySelected(date)
-                // setValue("date", date)
-              }}
-              placeholderText="Fecha"
-              popperPlacement="top-end"
-              popperModifiers={[
-                {
-                  name: "myModifier",
-                  fn(state) {
-                    return state
-                  },
-                },
-              ]}
-            />
-            <span>
-              <ArrowIosDownward />
-            </span>
-          </ItemFilterStyle>
-          <ItemFilterStyle>
-            <Select
-              defaultValue={selectedOptionId}
-              onChange={handleChangeOptionId}
-              options={optionsId}
-              isSearchable={false}
-              styles={selectStylesFilterTable}
-              placeholder="Categoría"
-              noOptionsMessage={() => <>Sin resultados</>}
-            />
-          </ItemFilterStyle>
-          <ItemFilterStyle>
-            <Select
-              defaultValue={selectedOptionId}
-              onChange={handleChangeOptionId}
-              options={optionsId}
-              isSearchable={false}
-              styles={selectStylesFilterTable}
-              placeholder="Estado"
-              noOptionsMessage={() => <>Sin resultados</>}
-            />
-          </ItemFilterStyle>
-          <ItemFilterStyle>
-            <ContainerReset>
-              <span>
-                <Replay />
-              </span>
-              <span>Reiniciar filtro</span>
-            </ContainerReset>
-          </ItemFilterStyle>
+          <ContainerSearchSection>
+            <ItemFilterStyle>
+              <Input placeholder="Busar por dirección" icon={Search} />
+            </ItemFilterStyle>
+          </ContainerSearchSection>
+          <ContainerSelectSections>
+            <ItemFilterStyle>
+              <Select
+                defaultValue={selectedOptionId}
+                onChange={handleChangeOptionId}
+                options={optionsId}
+                isSearchable={false}
+                styles={selectStylesFilterList}
+                placeholder="Modo"
+                noOptionsMessage={() => <>Sin resultados</>}
+              />
+            </ItemFilterStyle>
+            <ItemFilterStyle>
+              <Select
+                defaultValue={selectedOptionId}
+                onChange={handleChangeOptionId}
+                options={optionsId}
+                isSearchable={false}
+                styles={selectStylesFilterList}
+                placeholder="Tipo de vivienda"
+                noOptionsMessage={() => <>Sin resultados</>}
+              />
+            </ItemFilterStyle>
+            <ItemFilterStyle>
+              <Select
+                defaultValue={selectedOptionId}
+                onChange={handleChangeOptionId}
+                options={optionsId}
+                isSearchable={false}
+                styles={selectStylesFilterList}
+                placeholder="Precio"
+                noOptionsMessage={() => <>Sin resultados</>}
+              />
+            </ItemFilterStyle>
+            <ItemFilterStyle>
+              <Select
+                defaultValue={selectedOptionId}
+                onChange={handleChangeOptionId}
+                options={optionsId}
+                isSearchable={false}
+                styles={selectStylesFilterList}
+                placeholder="Nº de habitaciones"
+                noOptionsMessage={() => <>Sin resultados</>}
+              />
+            </ItemFilterStyle>
+          </ContainerSelectSections>
         </ContainerFilters>
         <ContainerListProperties>
           {(listProperties || []).map(prop => (
@@ -188,6 +158,9 @@ const Properties: React.FC = () => {
           ))}
         </ContainerListProperties>
       </ContentStylesSection>
+      <MoreResults>
+        <button>Mostrar más propiedades</button>
+      </MoreResults>
     </SectionRoute>
   )
 }

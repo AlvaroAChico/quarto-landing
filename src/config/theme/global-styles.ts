@@ -438,56 +438,18 @@ export const NameStylesTD = styled.td`
 `
 
 export const ContainerFilters = styled.div`
-  border: 1px solid ${palette.inputBorderolor};
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+  grid-template-columns: min(30%, 500px) 1fr;
+  display: grid;
+  width: 100%;
+  gap: 20px;
+`
+
+export const ContainerSearchSection = styled.div``
+
+export const ContainerSelectSections = styled.div`
   flex-direction: row;
-  border-radius: 15px;
-  width: fit-content;
-  background: white;
   display: flex;
-  gap: 5px;
-
-  > div {
-    width: 25%;
-    height: 40px;
-    min-width: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-  }
-
-  ${breakpoints.laptopMax} {
-    justify-content: flex-start;
-    width: 100%;
-
-    > div {
-      &:nth-child(1) {
-        display: none;
-      }
-      &:nth-last-child(1) {
-        display: none;
-      }
-
-      &:nth-last-child(2) {
-        border: none;
-      }
-    }
-  }
-
-  ${breakpoints.tabletMediumMax} {
-    flex-wrap: wrap;
-    justify-content: space-between;
-
-    > div {
-      width: calc(50% - 2.5px);
-
-      &:nth-last-child(4) {
-        border: none;
-      }
-    }
-  }
+  gap: 20px;
 `
 
 export const ContainerResetMobileFilter = styled.div`
@@ -511,9 +473,7 @@ export const ContainerResetMobileFilter = styled.div`
 `
 
 export const ItemFilterStyle = styled.div`
-  border-right: 1px solid ${palette.inputBorderolor};
   position: relative;
-  padding: 32px 10px;
 
   > div {
     width: 100%;
@@ -663,6 +623,48 @@ export const selectStylesFilterTable = {
     borderRadius: 0,
     outline: "none",
     fontSize: "0.8rem",
+    "> div:nth-child(1) div": {
+      color: "#000000",
+      fontWeight: 600,
+    },
+    "> div:nth-child(2)": {
+      paddingRight: "5px",
+      "> span": {
+        display: "none",
+      },
+      "> div svg": {
+        fill: "black",
+      },
+    },
+  }),
+  option: (provided: any, state: any) => ({
+    ...provided,
+    backgroundColor: state.isFocused ? palette.primaryColor : "white",
+    color: state.isSelected ? "black" : "black",
+    "&:hover": {
+      backgroundColor: palette.primaryColor,
+      color: "white",
+    },
+  }),
+  placeholder: (provided: any) => ({
+    ...provided,
+    color: "#000",
+    fontWeight: "600",
+    fontSize: "0.8rem",
+  }),
+}
+
+export const selectStylesFilterList = {
+  control: (provided: any, state: any) => ({
+    ...provided,
+    border: "1px solid #e1e1e1",
+    backgroundColor: "transparent",
+    boxShadow: "none",
+    borderRadius: 20,
+    padding: 10,
+    outline: "none",
+    fontSize: "0.8rem",
+    background: "#f0f0f0",
     "> div:nth-child(1) div": {
       color: "#000000",
       fontWeight: 600,

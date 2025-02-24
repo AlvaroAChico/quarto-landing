@@ -1,5 +1,5 @@
 export interface PropertyDTO {
-  id: 1
+  id: number
   uuid: string
   title: string
   description: string

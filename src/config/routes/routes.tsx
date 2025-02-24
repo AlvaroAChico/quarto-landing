@@ -10,7 +10,6 @@ import CreateProperty from "../../features/properties/functionalities/create-pro
 import RecoveryPass from "../../features/auth/recovery-pass/recovery-pass"
 import ResetPassword from "../../features/auth/reset-password/reset-password"
 import Visits from "../../features/visits/visits"
-import Dashboard from "../../features/dashboard/dashboard"
 import Rentals from "../../features/rentals/rentals"
 import Referrals from "../../features/referrals/referrals"
 import Contacts from "../../features/contacts/contacts"
@@ -23,103 +22,123 @@ import NotFound from "../../features/not-found/not-found"
 import { settingsApp } from "../environment/settings"
 import Profile from "../../features/profile/profile"
 import MyCalendar from "../../features/my-calendar/my-calendar"
+import LandingLayout from "../../components/landing-layout/landing-layout"
+import Home from "../../features/auth/home/home"
+import PropertyDetails from "../../features/properties/property-details/property-details"
 
-export const router = createBrowserRouter(
-  [
-    {
-      path: pathRoutes.SIGN_IN.to,
-      element: <SignIn />,
-    },
-    {
-      element: <DashboardLayout />,
-      children: [
-        {
-          path: pathRoutes.DASHBOARD.to,
-          element: <Dashboard />,
-        },
-        {
-          path: pathRoutes.PROPERTY.to,
-          children: [
-            {
-              path: pathRoutes.PROPERTY.to,
-              element: <Properties />,
-            },
-            {
-              path: pathRoutes.PROPERTY.otherPaths.CREATE.to,
-              element: <CreateProperty />,
-            },
-          ],
-        },
-        {
-          path: pathRoutes.VISITS.to,
-          children: [
-            {
-              path: pathRoutes.VISITS.to,
-              element: <Visits />,
-            },
-            {
-              path: pathRoutes.VISITS.otherPaths.VIEW.to,
-              element: <DetailVisits />,
-            },
-          ],
-        },
-        {
-          path: pathRoutes.RENTALS.to,
-          element: <Rentals />,
-        },
-        {
-          path: pathRoutes.REFERRALS.to,
-          children: [
-            {
-              path: pathRoutes.REFERRALS.to,
-              element: <Referrals />,
-            },
-            {
-              path: pathRoutes.REFERRALS.otherPaths.CREATE.to,
-              element: <CreateReferral />,
-            },
-          ],
-        },
-        {
-          path: pathRoutes.WALLET.to,
-          element: <Wallet />,
-        },
-        {
-          path: pathRoutes.CONTACTS.to,
-          element: <Contacts />,
-        },
-        {
-          path: pathRoutes.CALENDAR.to,
-          element: <MyCalendar />,
-        },
-        {
-          path: pathRoutes.PROFILE.to,
-          element: <Profile />,
-        },
-        {
-          path: pathRoutes.CHATS.to,
-          element: <Chats />,
-        },
-        {
-          path: pathRoutes.INFO_PRODUCTS.to,
-          element: <InfoProducts />,
-        },
-      ],
-    },
-    {
-      path: pathRoutes.RECOVERY_PASS.to,
-      element: <RecoveryPass />,
-    },
-    {
-      path: pathRoutes.RESET_PASSWORD.to,
-      element: <ResetPassword />,
-    },
-    {
-      path: `/realtor/*`,
-      element: <NotFound />,
-    },
-  ],
+export const router = createBrowserRouter([
+  {
+    path: pathRoutes.SIGN_IN.to,
+    element: <SignIn />,
+  },
+  {
+    element: <LandingLayout />,
+    children: [
+      {
+        path: pathRoutes.HOME.to,
+        element: <Home />,
+      },
+      {
+        path: pathRoutes.PROPERTY.to,
+        children: [
+          {
+            path: pathRoutes.PROPERTY.to,
+            element: <Properties />,
+          },
+          {
+            path: pathRoutes.PROPERTY.otherPaths.DETAIL.to,
+            element: <PropertyDetails />,
+          },
+        ],
+      },
+    ],
+  },
   // {
-  //   basename: settingsApp.app.basePath,
+  //   element: <DashboardLayout />,
+  //   children: [
+  //     {
+  //       path: pathRoutes.DASHBOARD.to,
+  //       element: <Dashboard />,
+  //     },
+  //     {
+  //       path: pathRoutes.PROPERTY.to,
+  //       children: [
+  //         {
+  //           path: pathRoutes.PROPERTY.to,
+  //           element: <Properties />,
+  //         },
+  //         {
+  //           path: pathRoutes.PROPERTY.otherPaths.CREATE.to,
+  //           element: <CreateProperty />,
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       path: pathRoutes.VISITS.to,
+  //       children: [
+  //         {
+  //           path: pathRoutes.VISITS.to,
+  //           element: <Visits />,
+  //         },
+  //         {
+  //           path: pathRoutes.VISITS.otherPaths.VIEW.to,
+  //           element: <DetailVisits />,
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       path: pathRoutes.RENTALS.to,
+  //       element: <Rentals />,
+  //     },
+  //     {
+  //       path: pathRoutes.REFERRALS.to,
+  //       children: [
+  //         {
+  //           path: pathRoutes.REFERRALS.to,
+  //           element: <Referrals />,
+  //         },
+  //         {
+  //           path: pathRoutes.REFERRALS.otherPaths.CREATE.to,
+  //           element: <CreateReferral />,
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       path: pathRoutes.WALLET.to,
+  //       element: <Wallet />,
+  //     },
+  //     {
+  //       path: pathRoutes.CONTACTS.to,
+  //       element: <Contacts />,
+  //     },
+  //     {
+  //       path: pathRoutes.CALENDAR.to,
+  //       element: <MyCalendar />,
+  //     },
+  //     {
+  //       path: pathRoutes.PROFILE.to,
+  //       element: <Profile />,
+  //     },
+  //     {
+  //       path: pathRoutes.CHATS.to,
+  //       element: <Chats />,
+  //     },
+  //     {
+  //       path: pathRoutes.INFO_PRODUCTS.to,
+  //       element: <InfoProducts />,
+  //     },
+  //   ],
   // },
-)
+  {
+    path: pathRoutes.RECOVERY_PASS.to,
+    element: <RecoveryPass />,
+  },
+  {
+    path: pathRoutes.RESET_PASSWORD.to,
+    element: <ResetPassword />,
+  },
+  {
+    path: `/*`,
+    element: <NotFound />,
+  },
+])

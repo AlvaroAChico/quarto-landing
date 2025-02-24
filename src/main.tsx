@@ -16,7 +16,7 @@ import { settingsApp } from "./config/environment/settings"
 const container = document.getElementById("root")
 // worker.start({
 //   serviceWorker: {
-//     url: "/realtor/mockServiceWorker.js",
+//     url: "/mockServiceWorker.js",
 //   },
 // })
 

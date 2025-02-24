@@ -3,7 +3,7 @@
     "name": "Quarto",
     "mocks": false,
     "local": "https://localhost",
-    "basePath": "/realtor"
+    "basePath": "/"
   },
   "api": {
     "base": "https://localhost/api",
