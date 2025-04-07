@@ -5,7 +5,7 @@ export const faqData: IFaq[] = [
     open: false,
     question: "¿Qué es Quarto?",
     answer:
-      "Quarto es una plataforma innovadora para alquilar y comprar propiedades...",
+      "Quarto es una plataforma innovadora para alquiler y venta de propiedades...",
   },
   {
     open: false,

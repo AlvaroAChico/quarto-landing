@@ -1,18 +1,14 @@
 import styled from "styled-components"
+import { breakpoints } from "../../../../../constants/breakpoints"
 
 export const FAQWrapper = styled.section`
   flex-direction: column;
   justify-content: center;
-  padding: 40px 60px;
+  padding: 30px;
   display: flex;
   width: 100%;
   color: #000;
-  gap: 30px;
-
-  @media (max-width: 991px) {
-    max-width: 100%;
-    padding: 0 20px;
-  }
+  gap: 20px;
 `
 
 export const FAQTitle = styled.h2`
@@ -22,6 +18,14 @@ export const FAQTitle = styled.h2`
 
   @media (max-width: 991px) {
     max-width: 100%;
+  }
+
+  ${breakpoints.tabletLargeMax} {
+    font-size: 1.6rem;
+  }
+
+  ${breakpoints.tabletSmallMax} {
+    font-size: 1.2rem;
   }
 `
 

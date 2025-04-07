@@ -1,24 +1,14 @@
 import styled from "styled-components"
+import { useAppSelector } from "../../../../../app/hooks"
+import { getPropertyDetail } from "../../../../../core/store/app-store/appSlice"
 
 export const PropertyDescription = () => {
+  const data = useAppSelector(getPropertyDetail)
+
   return (
     <section>
       <SectionTitle>Descripción</SectionTitle>
-      <Description>
-        Lorem ipsum dolor sit amet consectetur. Sed duis nullam pharetra a
-        feugiat lectus egestas egestas. Egestas tortor sapien pharetra et urna
-        enim malesuada lectus eget. Est senectus lacus accumsan pellentesque. Ac
-        libero justo vel nibh. Vitae non quam lorem posuere vel tempor urna
-        diam.
-        <br />
-        <br />
-        Est eu id amet nullam. Lobortis rutrum venenatis ipsum nibh mi duis enim
-        sed diam. Diam vitae vulputate est eu amet. Id mi posuere sit velit
-        interdum egestas feugiat nisl. Vitae integer justo et arcu. Volutpat
-        elementum molestie tincidunt donec. Orci vitae euismod mi ut ipsum.
-        Adipiscing nisl purus eu dui. Mauris a dolor semper felis massa
-        fermentum sodales. Senectus amet.
-      </Description>
+      <Description>{data.description}</Description>
     </section>
   )
 }

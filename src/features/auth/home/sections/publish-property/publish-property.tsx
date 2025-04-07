@@ -1,6 +1,7 @@
 import React from "react"
 import PublishIMG from "../../../../../assets/img/image-adds.png"
 import {
+  ContainerPublishSection,
   CTAButton,
   CTAText,
   PublishContainer,
@@ -14,22 +15,24 @@ import { ArrowForward } from "styled-icons/evaicons-solid"
 
 const PublishProperty: React.FC = () => {
   return (
-    <PublishWrapper>
-      <PublishContainer>
-        <PublishImage loading="lazy" src={PublishIMG} />
-        <PublishContent>
-          <PublishTitle>
-            Publicar tu propiedad en Quarto es totalmente gratis.
-          </PublishTitle>
-          <PublishCTA>
-            <CTAText>Comienza ahora</CTAText>
-            <CTAButton aria-label="Comenzar a publicar">
-              <ArrowForward />
-            </CTAButton>
-          </PublishCTA>
-        </PublishContent>
-      </PublishContainer>
-    </PublishWrapper>
+    <ContainerPublishSection>
+      <PublishWrapper>
+        <PublishContainer>
+          <PublishImage loading="lazy" src={PublishIMG} />
+          <PublishContent>
+            <PublishTitle>
+              Publicar tu propiedad en Quarto es totalmente gratis.
+            </PublishTitle>
+            <PublishCTA>
+              <CTAText>Comienza ahora</CTAText>
+              <CTAButton aria-label="Comenzar a publicar">
+                <ArrowForward />
+              </CTAButton>
+            </PublishCTA>
+          </PublishContent>
+        </PublishContainer>
+      </PublishWrapper>
+    </ContainerPublishSection>
   )
 }
 

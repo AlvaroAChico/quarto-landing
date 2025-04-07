@@ -78,9 +78,9 @@ const SignIn: React.FC = () => {
           expires: 7,
         })
 
-        setTimeout(() => {
-          navigate(pathRoutes.DASHBOARD.to)
-        }, 300)
+        // setTimeout(() => {
+        //   navigate(pathRoutes.DASHBOARD.to)
+        // }, 300)
       }
     } finally {
       setIsSubmitLogin(false)

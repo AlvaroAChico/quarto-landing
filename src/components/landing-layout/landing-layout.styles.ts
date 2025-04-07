@@ -43,7 +43,6 @@ export const ContainerSidebar = styled.div<{ open: boolean }>`
 
 export const ContainerOutlet = styled.div<{ isOpen: boolean }>`
   width: 100%;
-  padding: 60px 30px;
 `
 
 export const ContainerLogo = styled.div`
@@ -190,65 +189,6 @@ export const SubMenuItem = styled(NavLink)`
     > img {
       color: ${palette.primaryColor};
       filter: invert(1);
-    }
-  }
-`
-
-export const ContainerBar = styled.div`
-  flex-direction: row;
-  justify-content: start;
-  align-items: start;
-  font-size: 20px;
-  display: flex;
-  width: 50%;
-  gap: 10px;
-
-  ${breakpoints.tabletMediumMax} {
-    width: 70%;
-  }
-
-  > div {
-    &:nth-child(1) {
-      height: 100%;
-      width: 0px;
-
-      > svg {
-        margin-top: 10px;
-        cursor: pointer;
-        display: none;
-        height: 20px;
-        width: 20px;
-
-        ${breakpoints.tabletLargeMax} {
-          display: block;
-        }
-      }
-
-      ${breakpoints.tabletLargeMax} {
-        display: block;
-        width: 50px;
-      }
-    }
-    &:nth-child(2) {
-      height: 100%;
-      width: 0px;
-
-      > svg {
-        margin-top: 10px;
-        cursor: pointer;
-        display: block;
-        height: 20px;
-        width: 20px;
-
-        ${breakpoints.tabletLargeMax} {
-          display: none;
-        }
-      }
-
-      ${breakpoints.tabletLargeMax} {
-        display: block;
-        width: 50px;
-      }
     }
   }
 `

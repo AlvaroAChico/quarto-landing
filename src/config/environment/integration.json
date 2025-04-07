@@ -6,9 +6,9 @@
     "basePath": "/"
   },
   "api": {
-    "base": "http://3.85.120.166:8080/api",
-    "auth": "http://3.85.120.166:8080/api",
-    "base_prod": "http://3.85.120.166:8080/api"
+    "base": "https://api-admin.quartorent.com/api",
+    "auth": "https://api-admin.quartorent.com/api",
+    "base_prod": "https://api-admin.quartorent.com/api"
   },
   "i18nDebug": false,
   "cloudEnv": "int"

@@ -16,10 +16,10 @@ import {
 interface FileUploadProps {
   title?: string
   imageUrl: string | null
-  keyValue: keyof UpdateUserForm
+  keyValue: string
   isActiveChange?: boolean
   setImageUrl: (url: string | null) => void
-  setValueBinary: (key: keyof UpdateUserForm | any, file: any) => void
+  setValueBinary: (key: string, file: File) => void
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({

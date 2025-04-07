@@ -13,10 +13,15 @@ const useDataUser = () => {
   }
 
   const handleGetUser = (): UserDTO => {
-    const storedUser = Cookies.get(COOKIES_APP.USER_RES)
-    if (storedUser != null && storedUser != undefined) {
-      return JSON.parse(storedUser) as UserDTO
+    try {
+      const storedUser = Cookies.get(COOKIES_APP.USER_RES)
+      if (storedUser) {
+        return JSON.parse(storedUser) as UserDTO
+      }
+    } catch (error) {
+      console.error("Error al parsear la cookie del usuario:", error)
     }
+    // En caso de no existir la cookie o ocurrir un error, se retorna un objeto vacío.
     return {} as UserDTO
   }
 

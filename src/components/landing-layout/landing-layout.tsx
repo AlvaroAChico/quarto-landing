@@ -4,7 +4,6 @@ import {
   AvatarStyles,
   ContainerAvatar,
   ContainerAvatarSide,
-  ContainerBar,
   ContainerDashboardLayout,
   ContainerUploadProperty,
   ContainerLogo,
@@ -32,8 +31,6 @@ import { ExitToApp } from "@styled-icons/material-rounded/ExitToApp"
 import { getRoutes, pathRoutes } from "../../config/routes/paths"
 import { COOKIES_APP } from "../../constants/app"
 import { MeDTO, UserDTO } from "../../core/models/interfaces/user-model"
-import Cookies from "js-cookie"
-import { toast } from "sonner"
 import axios from "axios"
 import { settingsApp } from "../../config/environment/settings"
 import useDataUser from "../../utils/use-data-user"
@@ -42,7 +39,6 @@ import {
   getActionTitleApp,
   updateActionTitleApp,
 } from "../../core/store/app-store/appSlice"
-import { Bars } from "@styled-icons/fa-solid/Bars"
 import { Close } from "styled-icons/evaicons-solid"
 import Button from "../button/button"
 import LogoutIMG from "../../assets/img/icons/logout.svg"
@@ -68,27 +64,6 @@ const LandingLayout: React.FC = () => {
     setIsHiddenMenu(!isHiddenMenu)
   }
 
-  const refreshDataMe = async () => {
-    try {
-      const response: MeDTO = (await authRepository.getMe()) as MeDTO
-      if (!!response && !!response.id) {
-        const expiration = {
-          expires: 7,
-        }
-        const { roles, ...meUser } = response
-        Cookies.set(COOKIES_APP.USER_RES, JSON.stringify(meUser), expiration)
-        Cookies.set(COOKIES_APP.ROLES_APP, JSON.stringify(roles), expiration)
-      }
-    } finally {
-    }
-  }
-
-  React.useEffect(() => {
-    refreshDataMe()
-    const intervalId = setInterval(refreshDataMe, 60000)
-    return () => clearInterval(intervalId)
-  }, [])
-
   const handleLogout = React.useCallback(() => {
     navigate(pathRoutes.SIGN_IN.to)
   }, [])
@@ -105,19 +80,7 @@ const LandingLayout: React.FC = () => {
     <ContainerDashboardLayout>
       <Header />
       <ContainerOutlet isOpen={isMenuOpen}>
-        {/* <div>
-          <ContainerBar>
-            <div onClick={toggleMenu}>
-              <Bars />
-            </div>
-            <div onClick={toggleMenuLarge}>
-              <Bars />
-            </div>
-          </ContainerBar>
-        </div> */}
-        {/* <ContainerOutletStyles isOpen={isMenuOpen}> */}
         <Outlet />
-        {/* </ContainerOutletStyles> */}
       </ContainerOutlet>
       <Footer />
     </ContainerDashboardLayout>

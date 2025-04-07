@@ -2,53 +2,70 @@ import styled from "styled-components"
 import { palette } from "../../config/theme/theme"
 
 export const CardFileStyles = styled.div`
-  border: 1px solid ${palette.inputBorderolor};
-  flex-direction: column;
+  height: 150px;
+  width: 150px;
+  min-height: 150px;
+  min-width: 150px;
+  max-height: 150px;
+  max-width: 150px;
   border-radius: 10px;
-  height: fit-content;
+  overflow: hidden;
   position: relative;
-  max-width: 100px;
-  display: flex;
-  padding: 10px;
-  width: 100%;
-  color: red;
-  gap: 10px;
 
-  > div {
-    flex-direction: column;
-    display: flex;
-    gap: 5px;
+  > img {
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+  }
 
-    > img {
-      max-width: 40px;
-      width: 100%;
-      margin: auto;
-    }
-
-    > span {
-      &:nth-child(1) {
-        color: ${palette.primaryColor};
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        max-width: 100px;
-        overflow: hidden;
-        font-size: 12px;
-        display: block;
-      }
-      &:nth-child(2) {
-        color: ${palette.errorColor};
-        font-size: 12px;
-      }
+  &:hover {
+    > div {
+      transform: translate(0%);
     }
   }
 `
 
-export const CloseStyles = styled.div`
-  background: ${palette.errorColor};
+export const OverlayFile = styled.div`
   position: absolute;
-  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  transform: translate(-100%);
+  place-items: center;
+  transition: 0.3s;
   cursor: pointer;
-  color: white;
-  right: -5px;
-  top: -5px;
+  display: grid;
+  margin: auto;
+  height: 100%;
+  width: 100%;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+
+  > span {
+    border: 1px solid white;
+    padding: 10px 10px;
+    border-radius: 20px;
+    font-size: 0.6rem;
+    width: 100%;
+    max-width: 100px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &:hover {
+    > img {
+      transform: scale(1.05);
+    }
+  }
+`
+export const PrincipalTag = styled.div`
+  position: absolute;
+  background: #00000066;
+  top: 6px;
+  left: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
 `

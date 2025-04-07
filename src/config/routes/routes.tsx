@@ -9,27 +9,25 @@ import CreateProperty from "../../features/properties/functionalities/create-pro
 // End PROPERTIES IMPORTS
 import RecoveryPass from "../../features/auth/recovery-pass/recovery-pass"
 import ResetPassword from "../../features/auth/reset-password/reset-password"
-import Visits from "../../features/visits/visits"
-import Rentals from "../../features/rentals/rentals"
-import Referrals from "../../features/referrals/referrals"
-import Contacts from "../../features/contacts/contacts"
-import Chats from "../../features/chats/chats"
-import DetailVisits from "../../features/visits/functionalities/detail-visits/detail-visits"
-import CreateReferral from "../../features/referrals/functionalities/create-referral/create-referral"
-import Wallet from "../../features/wallet/wallet"
-import InfoProducts from "../../features/info-products/info-products"
 import NotFound from "../../features/not-found/not-found"
-import { settingsApp } from "../environment/settings"
-import Profile from "../../features/profile/profile"
-import MyCalendar from "../../features/my-calendar/my-calendar"
 import LandingLayout from "../../components/landing-layout/landing-layout"
 import Home from "../../features/auth/home/home"
 import PropertyDetails from "../../features/properties/property-details/property-details"
+import ScheduleProperty from "../../features/properties/schedule-property/schedule-property"
+import EmptyLayout from "../../components/empty-layout/empty-layout"
+import Register from "../../features/register/register"
+import VerifyEmail from "../../features/auth/verify-email/verify-email"
+import SignInVerify from "../../features/auth/sign-in/sign-in-verify/sign-in-verify"
+import CompleteRegister from "../../features/auth/register/complete-register/complete-register"
 
 export const router = createBrowserRouter([
   {
     path: pathRoutes.SIGN_IN.to,
     element: <SignIn />,
+  },
+  {
+    path: pathRoutes.SIGN_IN.otherPaths.VERIFY.to,
+    element: <SignInVerify />,
   },
   {
     element: <LandingLayout />,
@@ -49,86 +47,44 @@ export const router = createBrowserRouter([
             path: pathRoutes.PROPERTY.otherPaths.DETAIL.to,
             element: <PropertyDetails />,
           },
+          {
+            path: pathRoutes.PROPERTY.otherPaths.SCHEDULE.to,
+            element: <ScheduleProperty />,
+          },
         ],
       },
     ],
   },
-  // {
-  //   element: <DashboardLayout />,
-  //   children: [
-  //     {
-  //       path: pathRoutes.DASHBOARD.to,
-  //       element: <Dashboard />,
-  //     },
-  //     {
-  //       path: pathRoutes.PROPERTY.to,
-  //       children: [
-  //         {
-  //           path: pathRoutes.PROPERTY.to,
-  //           element: <Properties />,
-  //         },
-  //         {
-  //           path: pathRoutes.PROPERTY.otherPaths.CREATE.to,
-  //           element: <CreateProperty />,
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       path: pathRoutes.VISITS.to,
-  //       children: [
-  //         {
-  //           path: pathRoutes.VISITS.to,
-  //           element: <Visits />,
-  //         },
-  //         {
-  //           path: pathRoutes.VISITS.otherPaths.VIEW.to,
-  //           element: <DetailVisits />,
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       path: pathRoutes.RENTALS.to,
-  //       element: <Rentals />,
-  //     },
-  //     {
-  //       path: pathRoutes.REFERRALS.to,
-  //       children: [
-  //         {
-  //           path: pathRoutes.REFERRALS.to,
-  //           element: <Referrals />,
-  //         },
-  //         {
-  //           path: pathRoutes.REFERRALS.otherPaths.CREATE.to,
-  //           element: <CreateReferral />,
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       path: pathRoutes.WALLET.to,
-  //       element: <Wallet />,
-  //     },
-  //     {
-  //       path: pathRoutes.CONTACTS.to,
-  //       element: <Contacts />,
-  //     },
-  //     {
-  //       path: pathRoutes.CALENDAR.to,
-  //       element: <MyCalendar />,
-  //     },
-  //     {
-  //       path: pathRoutes.PROFILE.to,
-  //       element: <Profile />,
-  //     },
-  //     {
-  //       path: pathRoutes.CHATS.to,
-  //       element: <Chats />,
-  //     },
-  //     {
-  //       path: pathRoutes.INFO_PRODUCTS.to,
-  //       element: <InfoProducts />,
-  //     },
-  //   ],
-  // },
+  {
+    element: <EmptyLayout />,
+    children: [
+      {
+        path: pathRoutes.PROPERTY.otherPaths.SCHEDULE.to,
+        children: [
+          {
+            path: pathRoutes.PROPERTY.otherPaths.SCHEDULE.to,
+            element: <ScheduleProperty />,
+          },
+        ],
+      },
+      {
+        path: pathRoutes.PROPERTY.otherPaths.CREATE.to,
+        element: <CreateProperty />,
+      },
+      {
+        path: pathRoutes.REGISTER.to,
+        element: <Register />,
+      },
+      {
+        path: pathRoutes.REGISTER.otherPaths.COMPLETE_REGISTER.to,
+        element: <CompleteRegister />,
+      },
+      {
+        path: pathRoutes.VERIFY_EMAIL.to,
+        element: <VerifyEmail />,
+      },
+    ],
+  },
   {
     path: pathRoutes.RECOVERY_PASS.to,
     element: <RecoveryPass />,

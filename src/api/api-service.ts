@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from "axios"
 import axiosInstance from "./api-config"
 
 const apiService = {
@@ -6,8 +7,8 @@ const apiService = {
     return response.data as T
   },
 
-  post: async <T>(url: string, data: T) => {
-    const response = await axiosInstance.post(url, data)
+  post: async <T>(url: string, data: T, options?: AxiosRequestConfig) => {
+    const response = await axiosInstance.post(url, data, options)
     return response.data
   },
 

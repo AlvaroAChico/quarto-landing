@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { breakpoints } from "../../../../constants/breakpoints"
 
 export const FooterWrapper = styled.footer`
   background-color: #fff;
@@ -7,41 +8,42 @@ export const FooterWrapper = styled.footer`
   border-top-style: solid;
   z-index: 0;
   display: flex;
-  min-height: 380px;
+  // min-height: 380px;
+  height: fit-content;
   width: 100%;
   flex-direction: column;
   overflow: hidden;
   justify-content: space-between;
   padding: 40px;
-
-  @media (max-width: 991px) {
-    max-width: 100%;
-    padding: 0 20px;
-  }
 `
 
 export const FooterContent = styled.div`
-  display: flex;
+  grid-template-columns: repeat(4, 1fr);
+  display: grid;
   width: 100%;
-  align-items: start;
-  gap: 24px;
-  justify-content: start;
-  flex-wrap: wrap;
+  gap: 25px;
 
-  @media (max-width: 991px) {
-    max-width: 100%;
+  ${breakpoints.tabletLargeMax} {
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+  }
+
+  ${breakpoints.tabletSmallMax} {
+    grid-template-columns: 1fr;
+    justify-items: flex-start;
+
+    > div:nth-child(4) {
+      display: none;
+    }
   }
 `
 
 export const FooterColumn = styled.div`
-  align-self: stretch;
-  display: flex;
-  min-width: 240px;
   flex-direction: column;
-  align-items: start;
   justify-content: start;
-  flex-grow: 1;
-  width: 210px;
+  width: fit-content;
+  align-items: start;
+  display: flex;
 `
 export const LogoWrapper = styled.div`
   > img {
@@ -82,12 +84,6 @@ export const WhatsAppButton = styled.button`
     sans-serif;
   border: none;
   cursor: pointer;
-
-  @media (max-width: 991px) {
-    margin-top: 40px;
-    white-space: initial;
-    padding: 0 20px;
-  }
 `
 
 export const FooterLinkList = styled.ul`
@@ -138,7 +134,7 @@ export const Copyright = styled.div`
   align-self: center;
   margin-top: 57px;
   gap: 24px;
-  color: #000;
+  color: #676767;
   font:
     400 12px/1.4 DM Sans,
     sans-serif;

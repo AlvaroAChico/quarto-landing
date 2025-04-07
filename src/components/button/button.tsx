@@ -11,6 +11,7 @@ interface ButtonProps {
   IconLeft?: any
   IconRight?: any
   customStyles?: any
+  disabled?: boolean
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -22,6 +23,7 @@ const Button: React.FC<ButtonProps> = ({
   IconLeft,
   IconRight,
   customStyles,
+  disabled = false,
 }) => {
   const handleClick = () => {
     if (!isLoading) {
@@ -35,6 +37,7 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       className={className}
       customStyles={customStyles}
+      disabled={disabled}
     >
       {!!IconLeft && <IconLeft />}
       {isLoading ? <LoaderStyles /> : <>{text}</>}

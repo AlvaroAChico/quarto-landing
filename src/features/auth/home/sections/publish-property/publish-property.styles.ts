@@ -1,20 +1,16 @@
 import styled from "styled-components"
+import { breakpoints } from "../../../../../constants/breakpoints"
 
-export const PublishWrapper = styled.section`
+export const ContainerPublishSection = styled.section`
+  padding: 30px;
+`
+
+export const PublishWrapper = styled.div`
   border-radius: 24px;
   overflow: hidden;
   height: 360px;
   width: 100%;
   background: #4568df;
-
-  //   background-color: #fff;
-  //   z-index: 0;
-  //   display: flex;
-  //   width: 100%;
-  //   flex-direction: column;
-  //   color: #010101;
-  //   font-weight: 700;
-  //   justify-content: center;
 `
 
 export const PublishContainer = styled.div`
@@ -24,6 +20,11 @@ export const PublishContainer = styled.div`
   display: grid;
   height: 360px;
   width: 100%;
+
+  ${breakpoints.tabletSmallMax} {
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr;
+  }
 `
 
 export const PublishImage = styled.img`
@@ -31,6 +32,10 @@ export const PublishImage = styled.img`
   object-fit: cover;
   height: 100%;
   width: 100%;
+
+  ${breakpoints.tabletSmallMax} {
+    max-height: 200px;
+  }
 `
 
 export const PublishContent = styled.div`
@@ -40,10 +45,18 @@ export const PublishContent = styled.div`
   display: flex;
   padding: 30px;
   color: white;
+
+  ${breakpoints.tabletSmallMax} {
+    padding: 20px;
+  }
 `
 
 export const PublishTitle = styled.h2`
   font-size: 1.8rem;
+
+  ${breakpoints.tabletSmallMax} {
+    font-size: 1.2rem;
+  }
 `
 
 export const PublishCTA = styled.div`
@@ -58,6 +71,10 @@ export const PublishCTA = styled.div`
 export const CTAText = styled.span`
   align-self: stretch;
   margin: auto 0;
+
+  ${breakpoints.tabletSmallMax} {
+    font-size: 0.7rem;
+  }
 `
 
 export const CTAButton = styled.button`
@@ -75,5 +92,14 @@ export const CTAButton = styled.button`
     color: #4568df;
     max-width: 25px;
     width: 100%;
+  }
+
+  ${breakpoints.tabletSmallMax} {
+    height: 30px;
+    width: 30px;
+
+    > svg {
+      max-width: 15px;
+    }
   }
 `

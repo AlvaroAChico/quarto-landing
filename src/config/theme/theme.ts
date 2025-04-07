@@ -11,7 +11,7 @@ export const palette = {
   whiteColor: "#FFFFFF",
   // Components color
   inputBgColor: "#F5F6FA",
-  inputBorderolor: "#D5D5D5",
+  inputBorderolor: "#E5E7EB",
   inputTextrolor: "#A6A6A6",
   // Alerts color
   successColor: "#00B634",

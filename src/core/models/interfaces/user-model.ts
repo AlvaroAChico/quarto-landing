@@ -73,3 +73,52 @@ export type Option = {
   value: string
   label: string
 }
+
+export interface RegisterForm {
+  email: string
+  password: string
+  interest: string
+  first_name: string
+  last_name: string
+}
+
+export interface VerifyEmailForm {
+  id: string
+  hash: string
+  expires: string
+  signature: string
+}
+
+export interface VerifyEmailResponse {
+  message: string
+  status: boolean
+}
+
+export interface RegisterResponse {
+  "0": UserDTO
+  roles: string[]
+  token: string
+}
+
+export interface UserWebDTO {
+  id: number
+  uuid: string
+  firstName: string
+  lastName: string
+  email: string
+  interest: string
+  isActive: boolean
+  status: string
+  picture: string
+  createdAt: string
+  username: string
+  roles: RoleWebDTO[]
+}
+
+export interface RoleWebDTO {
+  id: number
+  name: string
+  guardName: string
+  createdAt: string
+  updatedAt: string
+}

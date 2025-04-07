@@ -120,23 +120,23 @@ export enum ETypeParam {
 export const listSteppersProperty = [
   {
     step: 1,
-    name: "Detalles",
+    name: "Operación",
   },
   {
     step: 2,
-    name: "Ubicación",
+    name: "Datos del inmueble",
   },
   {
     step: 3,
-    name: "Galeria",
+    name: "Cond. de Pago",
   },
   {
     step: 4,
-    name: "Especificaciones",
+    name: "Características",
   },
   {
     step: 5,
-    name: "Documentación legal",
+    name: "Fotos",
   },
 ]
 
@@ -152,5 +152,142 @@ export const optionsTypesDocument = [
   {
     value: "Carnet de Extranjeria", //Carnet de Extranjeria CE
     label: "Carnet de Extranjeria",
+  },
+]
+
+export enum ETypeModeSearch {
+  ALQUILAR = "ALQUILAR",
+  VENTA = "VENTA",
+}
+
+export enum EStepRegister {
+  NONE = "NONE",
+  WELCOME = "WELCOME",
+  SELECT_INTEREST = "SELECT_INTEREST",
+  SIGN_IN = "SIGN_IN",
+  SIGN_IN_INFO = "SIGN_IN_INFO",
+  BUY = "BUY",
+  REGISTER_COMPLETE = "REGISTER_COMPLETE",
+  VERIFY_EMAIL = "VERIFY_EMAIL",
+  CHECK_EMAIL_SIGNIN = "CHECK_EMAIL_SIGNIN",
+  // FLUJO CREAR CUENTA
+  REGISTER = "REGISTER",
+  REGISTER_INFO = "REGISTER_INFO",
+  CHECK_EMAIL_CREATE = "CHECK_EMAIL_CREATE",
+  REGISTER_INFO_NEXT = "REGISTER_INFO_NEXT",
+}
+
+export const globalParams = [
+  {
+    id: 1,
+    name: "Piso #",
+    type: "number",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 3,
+    name: "Habitaciones",
+    type: "number",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 4,
+    name: "Baños",
+    type: "number",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 5,
+    name: "Puestos",
+    type: "number",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 6,
+    name: "Lavandero",
+    type: "checkbox",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 7,
+    name: "m2",
+    type: "number",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 8,
+    name: "Aceptan Mascotas",
+    type: "checkbox",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 9,
+    name: "Amoblado",
+    type: "checkbox",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 10,
+    name: "Piscina",
+    type: "checkbox",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 11,
+    name: "Gimnasio",
+    type: "checkbox",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 12,
+    name: "Ascensor",
+    type: "checkbox",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 13,
+    name: "Vigilancia 24H",
+    type: "checkbox",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 14,
+    name: "Pozo de agua",
+    type: "checkbox",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 15,
+    name: "Planta eléctrica",
+    type: "checkbox",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 16,
+    name: "Internet",
+    type: "checkbox",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
+  },
+  {
+    id: 17,
+    name: "Aire acondicionado",
+    type: "checkbox",
+    isActive: true,
+    createdAt: "2025-03-17 12:08:03",
   },
 ]

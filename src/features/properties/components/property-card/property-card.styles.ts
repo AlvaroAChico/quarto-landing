@@ -3,21 +3,15 @@ import { breakpoints } from "../../../../constants/breakpoints"
 import { palette } from "../../../../config/theme/theme"
 
 export const ContainerCard = styled.div`
-  // box-shadow: 8px 10px 30px 4px rgba(238, 236, 243, 1);
   border-radius: 20px;
-  position: relative;
+  // position: relative;
   background: white;
   transition: 0.3s;
-  max-width: 350px;
   cursor: pointer;
   width: 100%;
 
   &:hover {
     transform: scale(0.98);
-  }
-
-  ${breakpoints.tabletMediumMax} {
-    max-width: none;
   }
 `
 
@@ -126,4 +120,16 @@ export const ContainerInfoProp = styled.div`
       }
     }
   }
+`
+
+export const ContainerSinglesSpan = styled.div`
+  display: flex;
+  gap: 10px;
+`
+
+export const SingleSpan = styled.span`
+  background:rgb(224, 224, 224) !important;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.8rem;
 `

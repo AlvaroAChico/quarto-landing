@@ -20,7 +20,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   config => {
-    const token = Cookies.get(COOKIES_APP.TOKEN_APP)?.slice(1, -1) ?? ""
+    // const token = JSON.parse(Cookies.get(COOKIES_APP.TOKEN_APP) || '""') ?? ""
 
     // const isPathWithoutToken = pathsWithoutToken.some(path =>
     //   config.url?.endsWith(path),
@@ -29,9 +29,9 @@ axiosInstance.interceptors.request.use(
     //   config.method === "post" && config.url?.endsWith("/users")
 
     // if (token && !isPathWithoutToken && !isUsersPost) {
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`
-    }
+    // if (token) {
+    //   config.headers["Authorization"] = `Bearer ${token}`
+    // }
 
     return config
   },
@@ -44,9 +44,9 @@ axiosInstance.interceptors.response.use(
   response => response,
   error => {
     setErrResponse(error)
-    if (error.response.status == 401) {
-      // window.location.href = `${settingsApp.app.local}${pathRoutes.SIGN_IN.to}`
-    }
+    // if (error.response.status == 401) {
+    // window.location.href = `${settingsApp.app.local}${pathRoutes.SIGN_IN.to}`
+    // }
     return Promise.reject(error)
   },
 )

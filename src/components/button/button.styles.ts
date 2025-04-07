@@ -18,6 +18,12 @@ export const StyledButton = styled.button<{ customStyles: string }>`
     transform: scale(1.05);
   }
 
+  &:disabled {
+    cursor: not-allowed;
+    color: gray;
+    background: #f6f6f6;
+  }
+
   > svg {
     width: 100%;
     max-width: 20px;

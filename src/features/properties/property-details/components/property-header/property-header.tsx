@@ -1,17 +1,44 @@
 import styled from "styled-components"
+import HomeICON from "../../../../../assets/img/icons/icon_home.png"
+import { useAppSelector } from "../../../../../app/hooks"
+import { getPropertyDetail } from "../../../../../core/store/app-store/appSlice"
 
 export const PropertyHeader = () => {
+  const data = useAppSelector(getPropertyDetail)
+  const params = data?.parameters ? JSON.parse(data.parameters) : []
+
   return (
     <div>
-      <Title>El Encantado, Mun. Sucre #347</Title>
+      <Title>{data.fullAddress}</Title>
       <PropertyMeta>
+        <span>
+          <img src={HomeICON} />
+        </span>
         <span>Casa</span>
         <Separator>•</Separator>
         <span>Caracas</span>
         <Separator>•</Separator>
-        <span>200 m²</span>
+        <span>
+          {
+            (
+              params?.find(
+                (mp: { id: string; value: string }) => mp.id === "7",
+              ) || { value: "0" }
+            ).value
+          }{" "}
+          m²
+        </span>
         <Separator>•</Separator>
-        <span>2 Habitaciones</span>
+        <span>
+          {
+            (
+              params?.find(
+                (mp: { id: string; value: string }) => mp.id === "3",
+              ) || { value: "0" }
+            ).value
+          }{" "}
+          Habitaciones
+        </span>
       </PropertyMeta>
     </div>
   )

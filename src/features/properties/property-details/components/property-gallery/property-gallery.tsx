@@ -1,7 +1,17 @@
-import { FC } from "react"
-import styled from "styled-components"
-import { Layout } from "styled-icons/evaicons-solid"
+import { FC, useState } from "react"
 import LayoutICON from "../../../../../assets/img/icons/icon_layout-gallery.png"
+import {
+  AdditionalImagesGrid,
+  GalleryContainer,
+  GridImage,
+  ImageWrapper,
+  MainImage,
+  PetTag,
+  ViewAllOverlay,
+} from "./property-gallery.styles"
+import { useAppSelector } from "../../../../../app/hooks"
+import { getPropertyDetail } from "../../../../../core/store/app-store/appSlice"
+import ModalViewImages from "../../../../../components/modal/variants/modal-view-images/modal-view-images"
 
 interface GalleryProps {
   mainImage: string
@@ -12,107 +22,59 @@ export const PropertyGallery: FC<GalleryProps> = ({
   mainImage,
   additionalImages,
 }) => {
+  const [openViewImages, setOpenViewImages] = useState<boolean>(false)
+  const [showImages, setShowImages] = useState<string[]>([])
+  const data = useAppSelector(getPropertyDetail)
+
+  const handleViewImages = (images: string[]) => () => {
+    setShowImages(images)
+    setOpenViewImages(true)
+  }
+
   return (
     <GalleryContainer>
-      <MainImage src={mainImage} alt="Property main view" />
+      <MainImage
+        src={data?.images?.[0]?.url || "fallback.jpg"}
+        alt="Property main view"
+        onClick={handleViewImages([
+          data?.images?.[0]?.url || "",
+          ...(data?.images?.map(mp => mp.url) || []),
+        ])}
+      />
       <PetTag>Acepta mascotas</PetTag>
       <AdditionalImagesGrid>
-        {additionalImages.map((img, index) => (
+        {data?.images?.slice(1, 5).map((img, index) => (
           <ImageWrapper key={index}>
             {index === 3 ? (
               <ViewAllOverlay>
                 <div>
-                  <img src={LayoutICON} />
-                  <span>Todas las fotos</span>
+                  <div>
+                    <img src={LayoutICON} alt="Icono de layout" />
+                  </div>
+                  <span
+                    onClick={handleViewImages(data?.images.map(mp => mp.url))}
+                  >
+                    Todas las fotos
+                  </span>
                 </div>
               </ViewAllOverlay>
             ) : null}
-            <GridImage src={img} alt={`Property view ${index + 1}`} />
+            <GridImage
+              src={img.url}
+              alt={`Property view ${index + 2}`}
+              onClick={handleViewImages([
+                img.url,
+                ...data?.images.map(mp => mp.url),
+              ])}
+            />
           </ImageWrapper>
         ))}
       </AdditionalImagesGrid>
+      <ModalViewImages
+        handleClose={() => setOpenViewImages(false)}
+        images={showImages}
+        isOpen={openViewImages}
+      />
     </GalleryContainer>
   )
 }
-
-const GalleryContainer = styled.section`
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr;
-  position: relative;
-  display: grid;
-  gap: 20px;
-
-  @media (max-width: 991px) {
-    flex-direction: column;
-    height: auto;
-  }
-`
-
-const MainImage = styled.img`
-  border-radius: 8px 0 0 8px;
-  object-position: center;
-  object-fit: cover;
-  height: 100%;
-  width: 100%;
-
-  @media (max-width: 991px) {
-    width: 100%;
-  }
-`
-
-const PetTag = styled.span`
-  position: absolute;
-  left: 16px;
-  top: 16px;
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 12px;
-  color: #242424;
-`
-
-const AdditionalImagesGrid = styled.div`
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  display: grid;
-  gap: 20px;
-
-  > div {
-    &:nth-child(2) > img {
-      border-radius: 0 8px 0 0;
-    }
-
-    &:nth-child(4) > img {
-      border-radius: 0 0 8px 0;
-    }
-  }
-
-  @media (max-width: 991px) {
-    width: 100%;
-  }
-`
-
-const ImageWrapper = styled.div`
-  position: relative;
-  cursor: pointer;
-`
-
-const GridImage = styled.img`
-  object-fit: cover;
-  height: 100%;
-  width: 100%;
-`
-
-const ViewAllOverlay = styled.div`
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 0 0 8px 0;
-  place-items: center;
-  position: absolute;
-  display: grid;
-  height: 100%;
-  width: 100%;
-  color: white;
-
-  > div {
-  }
-`

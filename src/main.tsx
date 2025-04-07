@@ -7,6 +7,9 @@ import { router } from "./config/routes/routes"
 import { store } from "./core/store/store"
 import { worker } from "./config/mocks/msw/browser" // Importa el worker de MSW
 import { settingsApp } from "./config/environment/settings"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { ThemeProvider } from "@mui/material/styles"
+import { materialTheme } from "./config/theme/material-theme"
 
 // Inicia el worker de MSW
 // if (settingsApp.app.mocks) {
@@ -20,15 +23,23 @@ const container = document.getElementById("root")
 //   },
 // })
 
+// Crear una instancia de QueryClient
+const queryClient = new QueryClient()
+
 if (container) {
   const root = createRoot(container)
 
   root.render(
     <React.StrictMode>
-      <Provider store={store}>
-        <RouterProvider router={router} />
-        <App />
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <ThemeProvider theme={materialTheme}>
+            <RouterProvider router={router} />
+            <App />
+          </ThemeProvider>
+        </Provider>
+      </QueryClientProvider>
+      ,
     </React.StrictMode>,
   )
 } else {

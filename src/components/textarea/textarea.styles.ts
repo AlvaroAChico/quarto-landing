@@ -9,7 +9,7 @@ export const InputWrapper = styled.div`
   border-radius: 10px; // Radio del borde
   padding: 14px;
   width: 100%;
-  background: ${palette.inputBgColor};
+  background: white;
 
   &:focus-within {
     border-color: ${palette.primaryColor};
@@ -21,7 +21,7 @@ export const InputWrapper = styled.div`
   }
 `
 export const StyledInput = styled.textarea`
-  background: ${palette.inputBgColor};
+  background: white;
   color: ${palette.inputTextrolor};
   font-size: 15px;
   resize: none;

@@ -368,18 +368,18 @@ export const ContainerDragAndDropAvatar = styled.div<{ isDragActive: boolean }>`
 `
 
 export const ContainerDragAndDropFiles = styled.div<{ isDragActive: boolean }>`
-  border: 1px solid
+  border: 2px dashed
     ${p => (p.isDragActive ? palette.successColor : palette.inputBorderolor)};
-  background: ${palette.inputBgColor};
+  background: #fcfdfd;
   color: ${palette.inputTextrolor};
+  flex-direction: column !important;
   justify-content: center;
-  flex-direction: column;
   align-items: center;
   text-align: center;
   border-radius: 20px;
   padding: 4px 14px;
   display: flex;
-  height: 100px;
+  height: 180px;
   gap: 10px;
 
   > svg {
@@ -393,8 +393,8 @@ export const ContainerDragAndDropFiles = styled.div<{ isDragActive: boolean }>`
   }
 
   &:focus-within {
-    border-color: #f59e36; // Color del borde cuando está enfocado
-    box-shadow: 0 0 8px rgba(245, 158, 54, 0.5); // Sombra cuando está enfocado
+    border-color: rgb(122, 255, 110); // Color del borde cuando está enfocado
+    box-shadow: 0 0 8px rgba(122, 255, 110, 0.5); // Sombra cuando está enfocado
   }
 `
 
@@ -442,6 +442,10 @@ export const ContainerFilters = styled.div`
   display: grid;
   width: 100%;
   gap: 20px;
+
+  ${breakpoints.laptopMax} {
+    grid-template-columns: 1fr;
+  }
 `
 
 export const ContainerSearchSection = styled.div``
@@ -449,7 +453,12 @@ export const ContainerSearchSection = styled.div``
 export const ContainerSelectSections = styled.div`
   flex-direction: row;
   display: flex;
-  gap: 20px;
+  width: 100%;
+  gap: 10px;
+
+  ${breakpoints.laptopMax} {
+    flex-wrap: wrap;
+  }
 `
 
 export const ContainerResetMobileFilter = styled.div`
@@ -512,10 +521,6 @@ export const ItemFilterStyle = styled.div`
       max-width: 20px;
     }
   }
-
-  ${breakpoints.tabletMediumMax} {
-    padding: 25px 10px;
-  }
 `
 
 export const ContainerText = styled.div`
@@ -558,11 +563,46 @@ export const selectStyles = {
       ? palette.primaryColor
       : palette.inputBorderolor,
     boxShadow: state.isFocused ? "0 0 0 #fff" : provided.boxShadow,
-    background: palette.inputBgColor,
+    background: "white",
     borderRadius: 10,
     padding: "10px 10px",
     height: "100%",
     cursor: "pointer",
+    color: "#000000 !important",
+    "&:hover": {
+      borderColor: state.isFocused ? palette.grayColor : "none",
+      // transform: "scale(1.05)",
+    },
+  }),
+  option: (provided: any, state: any) => ({
+    ...provided,
+    backgroundColor: state.isFocused ? palette.primaryColor : "white",
+    color: state.isSelected ? "black" : "black",
+    "&:hover": {
+      backgroundColor: palette.primaryColor,
+      color: "black",
+    },
+  }),
+  placeholder: (provided: any) => ({
+    ...provided,
+    color: "black",
+  }),
+}
+
+export const minSelectStyles = {
+  control: (provided: any, state: any) => ({
+    ...provided,
+    borderColor: state.isFocused
+      ? palette.primaryColor
+      : palette.inputBorderolor,
+    boxShadow: state.isFocused ? "0 0 0 #fff" : provided.boxShadow,
+    background: "white",
+    borderRadius: 10,
+    padding: "10px 10px",
+    height: "100%",
+    width: "100px",
+    cursor: "pointer",
+    color: "black",
     "&:hover": {
       borderColor: state.isFocused ? palette.grayColor : "none",
       // transform: "scale(1.05)",
@@ -593,6 +633,7 @@ export const selectFilterStyles = {
     padding: "10px 10px",
     height: "100%",
     cursor: "pointer",
+    color: "black",
     "&:hover": {
       borderColor: state.isFocused ? palette.grayColor : "none",
       // transform: "scale(1.05)",
@@ -623,6 +664,7 @@ export const selectStylesFilterTable = {
     borderRadius: 0,
     outline: "none",
     fontSize: "0.8rem",
+    color: "black",
     "> div:nth-child(1) div": {
       color: "#000000",
       fontWeight: 600,
@@ -665,6 +707,7 @@ export const selectStylesFilterList = {
     outline: "none",
     fontSize: "0.8rem",
     background: "#f0f0f0",
+    color: "black",
     "> div:nth-child(1) div": {
       color: "#000000",
       fontWeight: 600,

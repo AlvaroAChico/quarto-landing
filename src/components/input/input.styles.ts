@@ -6,15 +6,19 @@ export const InputWrapper = styled.div`
   display: flex;
   align-items: center;
   border: 1px solid ${palette.inputBorderolor};
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 4px 14px;
   width: 100%;
-  background: ${palette.inputBgColor};
+  background: white;
   height: 58px;
 
   &:focus-within {
     border-color: ${palette.primaryColor};
     // box-shadow: 0 0 8px ${palette.primaryColor};
+  }
+
+  > input {
+    color: black;
   }
 
   ${breakpoints.phoneSmall} {
@@ -27,7 +31,7 @@ export const StyledInput = styled.input`
   flex: 1;
   padding: 8px;
   font-size: 15px;
-  background: ${palette.inputBgColor};
+  background: white;
   color: ${palette.inputTextrolor};
 
   &::placeholder {

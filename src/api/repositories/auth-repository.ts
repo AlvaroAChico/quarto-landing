@@ -1,5 +1,12 @@
 import { MessageResponsedDTO } from "../../core/models/interfaces/general-model"
-import { MeDTO, SignInResponse } from "../../core/models/interfaces/user-model"
+import {
+  MeDTO,
+  RegisterForm,
+  RegisterResponse,
+  SignInResponse,
+  VerifyEmailForm,
+  VerifyEmailResponse,
+} from "../../core/models/interfaces/user-model"
 import apiService from "../api-service"
 
 export const authRepository = {
@@ -39,9 +46,20 @@ export const authRepository = {
     })
   },
 
-  // register: async (data: RegisterFormData): Promise<MessageResponsedDTO> => {
-  //   return await apiService.post<RegisterFormData>(`/users`, data)
-  // },
+  register: async (
+    data: RegisterForm,
+    cancelToken: any,
+  ): Promise<RegisterResponse> => {
+    return await apiService.post<RegisterForm>(`/register`, data, {
+      cancelToken,
+    })
+  },
+
+  verifyEmail: async (data: VerifyEmailForm): Promise<VerifyEmailResponse> => {
+    return await apiService.get<VerifyEmailResponse>(
+      `/email/verify/${data.id}/${data.hash}?expires=${data.expires}&signature=${data.signature}`,
+    )
+  },
 
   // SignIn Social
   // signInWithProvider: async (provider: string): Promise<any> => {

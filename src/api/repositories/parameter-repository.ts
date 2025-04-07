@@ -21,4 +21,8 @@ export const parameterRepository = {
   getNei: async (): Promise<any> => {
     return await apiService.get<any>(`/neighborhoods`)
   },
+
+  getUrba: async (): Promise<any> => {
+    return await apiService.get<any>(`/urbanizations`)
+  },
 }

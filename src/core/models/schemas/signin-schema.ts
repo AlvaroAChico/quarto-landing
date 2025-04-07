@@ -9,7 +9,6 @@ export const SignInSchema = object({
   email: string()
     .matches(rgxEmail, "Enter a valid email")
     .required("Enter a email"),
-  password: string().required("Enter a password"),
 })
 
 export type SignInForm = InferType<typeof SignInSchema>

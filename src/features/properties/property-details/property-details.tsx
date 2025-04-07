@@ -5,26 +5,55 @@ import { PropertyDescription } from "./components/property-description/property-
 import { PropertyFeatures } from "./components/property-features/property-features"
 import { PropertyPricing } from "./components/property-pricing/property-pricing"
 import { SimilarProperties } from "./components/similar-properties/similar-properties"
-import { FC } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
 import { PropertyHeader } from "./components/property-header/property-header"
+import { breakpoints } from "../../../constants/breakpoints"
+import { propertyRepository } from "../../../api/repositories/property-repository"
+import { PropertyDTO } from "../../../core/models/interfaces/property-model"
+import { useParams } from "react-router-dom"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import {
+  getPropertyDetail,
+  updatePropertyDetail,
+} from "../../../core/store/app-store/appSlice"
 
 const images = [
   "https://cdn.builder.io/api/v1/image/assets/e9515abc9ca94eaab6a0444e40b2e5f2/998aef31883d6d2b094674e130c31a9e97cc6897717760bca6c0a87b75d89f6b",
   "https://cdn.builder.io/api/v1/image/assets/e9515abc9ca94eaab6a0444e40b2e5f2/21a67e5e62dd02c59bbedfa6b9f597488462cd16a7c2f0f13073a0be07d52bab",
   "https://cdn.builder.io/api/v1/image/assets/e9515abc9ca94eaab6a0444e40b2e5f2/929cfbd2fc091ba79a2eb8485f9906028daf1ae2fb09091f004d04c1d04407d8",
   "https://cdn.builder.io/api/v1/image/assets/e9515abc9ca94eaab6a0444e40b2e5f2/1b6d5d4e16f2a8649cd0e49015e34474784fbff9690d095fc2b083ed0bf45587",
-  "https://s3-alpha-sig.figma.com/img/18a4/bdb5/8ec371ffb25635b2305708b0b47cee99?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=n3lcTVbEY1yg563gobdvUAFcq3omjNmuuOUpn~Tc9uxJbV7rf5dZz0D9X8oRwbgpWVkTphVrHVaUcAGBoT3mHaGR6fsYeKQaaOAdrmnWQTCVQTsK-a8XyVbbvYBiSW-GQxEv1oEk-kddHAv2u~kaQIDrR2jPUI4KXbjrMb8XrQI5IwnNYjK1r9wOTX8FNhML~0luIsByVw7WeeLZDFP4Qcc454hbpRSLGUFRUnDclodeg1gSoWVQxM4FsToc~RnurPHIOApdm5mYeX9HETDt6lqNSPX1Mk9UdEFXhaDWIe4pUbNZEWAKl-3zMaNX-u2PyyrxPZK0xKqnObSAmLH97A__",
+  "https://cdn.builder.io/api/v1/image/assets/e9515abc9ca94eaab6a0444e40b2e5f2/1b6d5d4e16f2a8649cd0e49015e34474784fbff9690d095fc2b083ed0bf45587",
 ]
 
 export const PropertyDetails: FC = () => {
+  const [isLoadingData, setIsLoadingData] = useState<boolean>(false)
+  const [data, setData] = useState<PropertyDTO>()
+  const dispatch = useAppDispatch()
+  const { id } = useParams()
+
+  const fetchDataProperties = useCallback(async () => {
+    try {
+      setIsLoadingData(true)
+      const response: PropertyDTO[] =
+        (await propertyRepository.getPropertiesById(`${id}`)) as PropertyDTO[]
+      if (!!response) {
+        setData(response[0])
+        dispatch(updatePropertyDetail(response[0]))
+      }
+    } finally {
+      setIsLoadingData(false)
+    }
+  }, [id])
+
+  useEffect(() => {
+    fetchDataProperties()
+  }, [])
+
   return (
     <Container>
       <Content>
         <PropertyBreadcrumb />
-        <PropertyGallery
-          mainImage={images[0]}
-          additionalImages={images.slice(1)}
-        />
+        <PropertyGallery mainImage={""} additionalImages={[]} />
 
         <MainSection>
           <LeftColumn>
@@ -55,22 +84,25 @@ const Content = styled.div`
   width: 100%;
   flex-direction: column;
   justify-content: start;
+  gap: 20px;
 `
 
 const MainSection = styled.div`
-  display: flex;
-  margin-top: 32px;
-  gap: 58px;
+  grid-template-columns: 1fr fit-content(100%);
+  margin-top: 20px;
+  display: grid;
+  gap: 20px;
 
-  @media (max-width: 640px) {
-    flex-direction: column;
-    gap: 32px;
+  ${breakpoints.tabletMediumMax} {
+    grid-template-columns: 1fr;
   }
 `
 
 const LeftColumn = styled.div`
+  flex-direction: column;
+  display: flex;
+  gap: 15px;
   flex: 1;
-  max-width: 550px;
 `
 
 export default PropertyDetails

@@ -4,10 +4,10 @@ import { useAppSelector } from "../../app/hooks"
 import { getActionTitleApp } from "../../core/store/app-store/appSlice"
 
 interface IOwnProps {
-  title: string
+  title?: string
 }
 
-const HeaderSection: React.FC<IOwnProps> = ({ title }) => {
+const HeaderSection: React.FC<IOwnProps> = ({ title = "" }) => {
   // const title = useAppSelector(getActionTitleApp)
 
   return (

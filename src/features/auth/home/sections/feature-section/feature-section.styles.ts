@@ -1,10 +1,21 @@
 import styled from "styled-components"
+import { breakpoints } from "../../../../../constants/breakpoints"
 
-export const FeatureSectionWrapper = styled.section`
-  display: grid;
+export const ContainerFeatureSection = styled.section`
+  padding: 30px;
+`
+
+export const FeatureSectionWrapper = styled.div`
   grid-template-columns: 1fr 1fr;
   padding: 50px 0;
+  display: grid;
+  padding: 30px;
   gap: 30px;
+
+  ${breakpoints.tabletLargeMax} {
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr;
+  }
 `
 
 export const FeatureColumn = styled.div`
@@ -23,14 +34,6 @@ export const FeatureCard = styled.div<{ backgroundColor: string }>`
   display: grid;
   padding: 40px;
   width: 100%;
-  // max-width: 550px;
-  // flex-direction: column;
-  // overflow: hidden;
-  // justify-content: start;
-
-  // @media (max-width: 991px) {
-  //   max-width: 100%;
-  // }
 `
 
 export const FeatureUpCard = styled(FeatureCard)<{ backgroundColor: string }>`º`
@@ -62,7 +65,7 @@ export const FeatureDownContent = styled(FeatureContent)`
   color: white;
 `
 
-export const FeatureTitle = styled.h3`
+export const FeatureTitle = styled.h2`
   font-size: 1.8rem;
   font-weight: 700;
   line-height: 38px;

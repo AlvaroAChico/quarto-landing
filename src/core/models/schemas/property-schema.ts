@@ -5,42 +5,6 @@ const fileTypeValidation = (file: File): boolean => {
   return allowedTypes.includes(file.type)
 }
 
-// export const CreatePropertySchema = object({
-//   // Details
-//   title: string().required("Ingresa una respuesta"),
-//   description: string(),
-//   type_id: string(),
-//   rent_duration: string(),
-//   plan_id: string(),
-//   price: number(),
-//   // -------------
-//   category_id: string(),
-//   owner_id: string(),
-//   // Location
-//   full_address: string(),
-//   city: string(),
-//   municipality: string(),
-//   urbanization: string(),
-//   // Gallery
-//   video_link: string(),
-//   title_image: mixed(),
-//   d_image: mixed(),
-//   gallery_images: array().of(
-//     mixed().test("is-valid-file", "File type is not allowed", file => {
-//       if (file instanceof File) {
-//         return fileTypeValidation(file)
-//       }
-//       return false
-//     }),
-//   ),
-//   parameters: array().of(
-//     object({
-//       parameter_id: string(),
-//       value: string(),
-//     }),
-//   ),
-// })
-
 export const UpdatePropertySchema = object({
   picture: mixed(),
   first_name: string(),
@@ -57,39 +21,78 @@ export type UpdatePropertyForm = InferType<typeof UpdatePropertySchema>
 // ************************************************************************************
 
 export const CreatePropStep01Schema = object({
-  // Details
-  category_id: string(),
-  title: string().required("Ingresa una respuesta"),
-  description: string(),
   type_id: string().required("Ingresa una respuesta"),
-  price: number(),
-  owner_id: string(),
+  category_id: string(),
+  plan_id: string(),
+  full_address: string(),
+  title: string(),
 })
 
 export const CreatePropStep02Schema = object({
-  state: string(),
-  city: string(),
-  municipality: string(),
-  // urbanization: string(),
-  full_address: string(),
-  plan_id: string().required("Ingresa una respuesta"),
-  rent_duration: string(),
+  // Details
+  category_id: string().required("Ingresa una respuesta"),
+  city: string().required("Ingresa una respuesta"),
+  city_id: string().required("Ingresa una respuesta"),
+  municipality: string().required("Ingresa una respuesta"),
+  municipality_id: string().required("Ingresa una respuesta"),
+  urbanization: string(),
+  urbanization_id: string(),
 })
 
+interface CreatePropStep03SchemaFields {
+  checkMode: string
+  canon_alquiler?: string
+  canon_venta?: string
+  price: string
+  price_sell: string
+  initial?: string
+  percentage_initial_payment: string
+  initial_payment: string
+  number_quotes: string
+  quota_payment: string
+}
+
 export const CreatePropStep03Schema = object({
-  // video_link: string(),
-  title_image: mixed(),
-  gallery_images: array().of(
-    mixed().test("is-valid-file", "File type is not allowed", file => {
-      if (file instanceof File) {
-        return fileTypeValidation(file)
-      }
-      return false
-    }),
-  ),
+  checkMode: string().required(),
+  price: string().when("checkMode", {
+    is: (value: string) => value === "1" || value === "3",
+    then: schema => schema.required("Ingresa una respuesta"),
+    otherwise: schema => schema.notRequired(),
+  }),
+  price_sell: string().when("checkMode", {
+    is: (value: string) => value === "2" || value === "3",
+    then: schema => schema.required("Ingresa una respuesta"),
+    otherwise: schema => schema.notRequired(),
+  }),
+  initial: string().when("checkMode", {
+    is: (value: string) => value === "2" || value === "3",
+    then: schema => schema.required("Ingresa una respuesta"),
+    otherwise: schema => schema.notRequired(),
+  }),
+  percentage_initial_payment: string().when("checkMode", {
+    is: (value: string) => value === "2" || value === "3",
+    then: schema => schema.required("Ingresa una respuesta"),
+    otherwise: schema => schema.notRequired(),
+  }),
+  initial_payment: string().when("checkMode", {
+    is: (value: string) => value === "2" || value === "3",
+    then: schema => schema.required("Ingresa una respuesta"),
+    otherwise: schema => schema.notRequired(),
+  }),
+  number_quotes: string().when("checkMode", {
+    is: (value: string) => value === "2" || value === "3",
+    then: schema => schema.required("Ingresa una respuesta"),
+    otherwise: schema => schema.notRequired(),
+  }),
+  quota_payment: string().when("checkMode", {
+    is: (value: string) => value === "2" || value === "3",
+    then: schema => schema.required("Ingresa una respuesta"),
+    otherwise: schema => schema.notRequired(),
+  }),
 })
 
 export const CreatePropStep04Schema = object({
+  description: string().required("Ingresa una respuesta"),
   parameters: array().of(
     object({
       parameter_id: string(),
@@ -99,18 +102,17 @@ export const CreatePropStep04Schema = object({
 })
 
 export const CreatePropStep05Schema = object({
-  // video_link: string(),
-  img_property: mixed().required("Ingresa una imagen"),
-  img_cedula: mixed().required("Ingresa una imagen"),
-  img_rif: mixed().required("Ingresa una imagen"),
-  other_images: array().of(
-    mixed().test("is-valid-file", "File type is not allowed", file => {
-      if (file instanceof File) {
-        return fileTypeValidation(file)
-      }
-      return false
-    }),
-  ),
+  title_image: mixed(),
+  gallery_images: array()
+    .of(
+      mixed().test("is-valid-file", "File type is not allowed", file => {
+        if (file instanceof File) {
+          return fileTypeValidation(file)
+        }
+        return false
+      }),
+    )
+    .optional(),
 })
 
 export type CreatePropStep01Form = InferType<typeof CreatePropStep01Schema>

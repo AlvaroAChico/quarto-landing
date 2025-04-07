@@ -24,7 +24,7 @@ const FAQ: React.FC = () => {
     title: (
       <AccordionTitle>
         <li>
-          {question}
+          <h3>{question}</h3>
           <ArrowDown />
         </li>
       </AccordionTitle>
@@ -38,11 +38,11 @@ const FAQ: React.FC = () => {
 
   return (
     <FAQWrapper>
-      <FAQTitle>Preguntas Frecuentes</FAQTitle>
+      <FAQTitle>Preguntas Frecuentes sobre alquiler o venta en Quarto</FAQTitle>
       <AccordionWrapper>
         <Accordion items={itemsFaqs} duration={300} multiple={false} />
       </AccordionWrapper>
-      <ShowMoreButton>Ver más</ShowMoreButton>
+      {/* <ShowMoreButton>Ver más</ShowMoreButton> */}
     </FAQWrapper>
   )
 }

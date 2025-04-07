@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { palette } from "../../config/theme/theme"
+import { breakpoints } from "../../constants/breakpoints"
 
 export const CardStadistics = styled.div`
   flex-direction: row;
@@ -126,4 +127,108 @@ export const ContainerListProperties = styled.div`
   justify-items: center;
   display: grid;
   gap: 20px;
+
+  ${breakpoints.tabletLargeMax} {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  ${breakpoints.tabletSmallMax} {
+    grid-template-columns: 1fr;
+  }
+`
+
+export const MoreFilterItem = styled.div`
+  justify-content: space-between;
+  border: 1px solid #e1e1e1;
+  background: #f0f0f0;
+  align-items: center;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  min-height: 60px;
+  cursor: pointer;
+  display: flex;
+  height: 100%;
+  gap: 8px;
+
+  > img {
+    max-width: 12px;
+    width: 100%;
+  }
+`
+
+export const ContainerProperties = styled.div`
+  padding: 30px;
+`
+
+export const MoreFilterDrawer = styled.div<{ isActiveFilters: boolean }>`
+  transform: ${p =>
+    p.isActiveFilters ? "translateX(0%)" : "translateX(-100%)"};
+  background: rgba(0, 0, 0, 0.58);
+  transition: 0.3s;
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  z-index: 1;
+  left: 0;
+  top: 0;
+`
+
+export const FiltersDrawer = styled.div`
+  grid-template-rows: 1fr fit-content(100%);
+  position: absolute;
+  background: white;
+  padding: 10px 30px 20px;
+  height: 100vh;
+  display: grid;
+  width: 480px;
+  z-index: 1;
+  left: 0;
+  top: 0;
+`
+
+export const SearchButtonsOption = styled.div`
+  flex-direction: row;
+  display: flex;
+  gap: 20px;
+`
+
+export const ResetFiltersButton = styled.div`
+  border-radius: 40px;
+  background-color: #f6f6f6;
+  border: 1px solid #e1e1e1;
+  min-height: 52px;
+  width: 100%;
+  gap: 8px;
+  overflow: hidden;
+  color: #000;
+  white-space: nowrap;
+  padding: 18px 8px;
+  font:
+    600 16px/1 DM Sans,
+    sans-serif;
+  cursor: pointer;
+  display: grid;
+  align-items: center;
+  text-align: center;
+`
+
+export const SearchWithFiltersButton = styled.div`
+  border-radius: 40px;
+  background-color: #00c49a;
+  min-height: 52px;
+  width: 100%;
+  gap: 8px;
+  overflow: hidden;
+  color: #000;
+  white-space: nowrap;
+  padding: 18px 8px;
+  font:
+    600 16px/1 DM Sans,
+    sans-serif;
+  cursor: pointer;
+  display: grid;
+  align-items: center;
+  text-align: center;
 `
